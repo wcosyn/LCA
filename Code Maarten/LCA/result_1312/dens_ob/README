@@ -1,0 +1,29 @@
+The projection is done with 
+      if( !(E<0) && (2*nA+lA != E || 2*nB+lB != E) ) 
+
+qmax= 3
+
+
+Problems:
+- Sum of E=0,1,2,.. mf part is not equal to total sum?
+  Reason: total sum is exact, the selected sum are cut by qmax.
+  The correlated part stays the same because corr part in both -1 and E!=-1 calculations
+  are limited by the qmax parameter.
+  But here, the way the selection is performed can give a difference 
+  in the norm of the correlated part in the total distributions (E=-1) and
+  the sum of the norms of the correlated parts of the selected distributions.
+
+- How do we now is qmax is big enough for the mf part?
+  The total distribution (E=-1) is exact, so the sum of the selected integrals 
+  should be close to the mf integral of the total distribution.
+
+- How do we now is qmax is big enough for the correlated part?
+  The total sum and the selected sums both depend on same parameter qmax.
+  So the same solution as for mf part is not possible.
+  But the calculation of the one body norm is exact,
+  so the integral should be close to the result form the ob norm.
+  There the total distribution is normalized with the calculated ob norm,
+  a good qmax for correlated part should give a good normalization of the 
+  total (E=-1) distribution (which is independent of effect of qmax on mf
+  part in E!=-1 calculations)
+

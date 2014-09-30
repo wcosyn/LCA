@@ -1,0 +1,19 @@
+mf projection is wrong
+
+        if(2*nA+lA != E || 2*nB+lB != E)
+        {
+          continue;
+        }
+
+Instead of
+
+        if(2*nA+lA != E || 2*nB+lB != E)
+        {
+          preifactor*= 0.5;
+        }
+
+
+and something else (TA == TB if t == 0 )
+
+But the E=-1 results are still correct and can be used for A < Ca48
+(for A >= CA48, they are derived as the sum of the projected ones, so not correct)
