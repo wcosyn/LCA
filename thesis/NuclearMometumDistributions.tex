@@ -1,0 +1,153 @@
+\documentclass[12pt]{article}
+\usepackage{braket}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\setlength\parindent{0pt}
+\title{Nuclear Momentum Distributions}
+\author{Jarrick Nys}
+
+\begin{document}
+\maketitle
+\section{Definitions}
+
+\subsection{1-particle momentum distribution}
+
+The 1-particle momentum distribution is defined as
+\begin{equation}
+	n(\vec{k})=\frac{1}{(2\pi)^3}\int d\vec{r}_1 \int 		    d\vec{r}_1' \exp{i\vec{k}\cdot (\vec{r}_1-\vec{r}'_1)}\rho_1(\vec{r}_1,\vec{r}_1')
+\end{equation}
+
+where $\rho_1(\vec{r}_1,\vec{r}'_1)$ is the one-body non-diagonal density matrix
+
+
+\begin{equation}
+\rho_1(\vec{r}_1,\vec{r}'_1) = \int \{d\vec{r}_{2-N}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A).
+\end{equation}
+
+
+
+Here, $\Psi_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)$ is the ground state wave function of the nucleus A and with the notation 
+
+\begin{equation}
+\{d\vec{r}_{i-N}\}  = d\vec{r}_i d\vec{r}_{i+1}...\vec{r}_A.
+\end{equation}
+ 
+
+
+For $\Braket{\Psi_A|\Psi_A}=1$, one has that
+
+
+\begin{equation}
+\int d\vec{k}n_1(\vec{k})=1
+\end{equation}
+ 
+
+
+
+\subsection{2-particle momentum distribution}
+
+The two-particle momentum distribution can be defined as
+
+\begin{equation}
+n(\vec{k}_1,\vec{k}_2)=\frac{1}{(2\pi)^6}\int d\vec{r}_1 \int d\vec{r}_2 \int  
+    						d\vec{r}_1' \int d\vec{r}_2' 
+    						\mathrm{e}^{i\vec{k}_1\cdot (\vec{r}_1-\vec{r}'_1)} 
+    						\mathrm{e}^{i\vec{k}_2\cdot(\vec{r}_2-\vec{r}'_2)}
+    						\rho_2(\vec{r}_1,\vec{r}_2; \vec{r}_1',\vec{r}_2')
+\end{equation}
+
+where $\rho_2(\vec{r}_1,\vec{r}_2, \vec{r}_1',\vec{r}_2')$ is the two-body non-diagonal density matrix
+
+
+\begin{equation}
+\rho_1(\vec{r}_1,\vec{r}_2, \vec{r}_1',\vec{r}_2') = \int \{d\vec{r}_{3-N}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2',\vec{r}_3, ... ,\vec{r}_A).
+\end{equation}
+
+One can also define the two-particle momentum distribution in the relative and centre of mass (rcm) coordinates instead of the centre well (cw) coordinates
+\begin{equation}
+\vec{r}_{12}= \frac{1}{\sqrt{2}} \left(\vec{r}_1 - \vec{r}_2\right)  
+\end{equation}
+
+\begin{equation}
+\vec{R}_{12}= \frac{1}{\sqrt{2}} \left(\vec{r}_1 + \vec{r}_2\right)
+\end{equation}
+
+\begin{equation}
+\vec{p}= \frac{1}{\sqrt{2}} \left(\vec{k}_1 + \vec{k}_2\right)
+\end{equation}
+
+\begin{equation}
+\vec{P}= \frac{1}{\sqrt{2}} \left(\vec{r}_1 + \vec{r}_2\right)
+\end{equation}
+
+
+\begin{equation}
+n(\vec{p},\vec{P})=\frac{1}{(2\pi)^6}
+						\int d\vec{r}_{12} \int d\vec{R}_{12} \int d\vec{r}_{12}' \int d\vec{R}_{12}' 
+    						\mathrm{e}^{i\vec{p}\cdot (\vec{r}_{12}-\vec{r}_{12}')} 
+    						\mathrm{e}^{i\vec{P}\cdot(\vec{R}_{12}-\vec{R}_{12}')} 
+    						\rho_2(\vec{r}_{12},\vec{R}_{12}; \vec{r}_{12}',\vec{R}_{12}')
+\end{equation}
+
+where 
+
+\begin{equation}
+\rho_2(\vec{r}_{12},\vec{R}_{12}; \vec{r}_{12}',\vec{R}_{12}') = 
+							\rho_2\left(	
+							\vec{r}_1=\frac{\vec{r}_{12} + \vec{R}_{12}}{\sqrt{2}},
+							\vec{r}_2=\frac{-\vec{r}_{12} + \vec{R}_{12}}{\sqrt{2}},
+						    \vec{r}_1'=\frac{\vec{r}'_{12} + \vec{R}'_{12}}{\sqrt{2}},	
+						    \vec{r}_2'=\frac{-\vec{r}_{12}' + \vec{R}_{12}'}{\sqrt{2}}
+						    \right)
+\end{equation}
+ 
+
+
+
+
+
+\section{1-particle momentum distribution for IPM}
+
+In an independent particle model the total wave function of the nucleus is a slater determinant of the one-particle wave functions. A nucleon moves independent in a sort of mean field potential created by all the other nucleons. 
+
+\begin{equation}
+\Psi_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)= \frac{1}{\sqrt{A!}} \sum_{\substack{P}} 
+													  (-1)^P \psi_{P1}(\vec{r}_1)
+													         \psi_{P2}(\vec{r}_2)...
+													         \psi_{PA}(\vec{r}_A)
+\end{equation}
+
+where the sum is over all permutations of the indices of the one-particle wave functions. We also have 
+
+\begin{equation}
+\int d\vec{r}_i \psi^*_l(\vec{r}_i)\psi_m(\vec{r}_i) = \delta_{lm}
+\end{equation}
+
+The one-particle non-diagonal density matrix becomes
+
+\begin{equation}
+\rho_1(\vec{r}_1,\vec{r}'_1)  = \frac{1}{A!} 	 \sum_{\substack{P}} \sum_{\substack{L}} (-1)^{P+L} \int d\vec{r}_2 d\vec{r}_3 ... d\vec{r}_A 
+\psi^*_{P1}(\vec{r}_1)\psi^*_{P2}(\vec{r}_2)...\psi^*_{PA}(\vec{r}_A)
+\psi_{L1}(\vec{r}_1')\psi_{L2}(\vec{r}_2)...\psi_{LA}(\vec{r}_A)
+\end{equation}
+
+\begin{equation}
+\rho_1(\vec{r}_1,\vec{r}'_1)  = \frac{1}{A!} 	 \sum_{\substack{P}} \sum_{\substack{L}} (-1)^{P+L} \psi^*_{P1}(\vec{r}_1) \psi_{L1}(\vec{r}_1') 
+\delta_{P2,L2}\delta_{P3,L3}...\delta_{PA,LA} 
+\end{equation}
+
+\begin{equation}
+\rho_1(\vec{r}_1,\vec{r}'_1)  \propto \sum_{\substack{i}} \psi^*_i(\vec{r}_1) \psi_i(\vec{r}_1')
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
