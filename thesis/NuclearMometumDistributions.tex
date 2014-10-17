@@ -5,23 +5,23 @@
 \setlength\parindent{0pt}
 \title{Nuclear Momentum Distributions}
 \author{Jarrick Nys}
-%%%%%%%%%%%%%%%%%%
+
 \begin{document}
 \maketitle
 \section{Definitions}
 
-\subsection{1-particle momentum distribution}
+\subsection{One-particle momentum distribution}
 
-The 1-particle momentum distribution is defined as
-\begin{equation}
-	n(\vec{k})=\frac{1}{(2\pi)^3}\int d\vec{r}_1 \int 		    d\vec{r}_1' \exp{i\vec{k}\cdot (\vec{r}_1-\vec{r}'_1)}\rho_1(\vec{r}_1,\vec{r}_1')
+The One-particle momentum distribution gives the chance of finding a particle with a momentum in the interval $[\vec{k},\vec{k}+d\vec{k}]$. It is given by the following expression
+\begin{equation} \label{eq:one_patricle_distr}
+	n_1(\vec{k})=\frac{1}{(2\pi)^3}\int d\vec{r}_1 \int d\vec{r}_1' e^{i\vec{k}\cdot (\vec{r}_1-\vec{r}'_1)}\rho_1(\vec{r}_1,\vec{r}_1')
 \end{equation}
 
 where $\rho_1(\vec{r}_1,\vec{r}'_1)$ is the one-body non-diagonal density matrix
 
 
 \begin{equation}
-\rho_1(\vec{r}_1,\vec{r}'_1) = \int \{d\vec{r}_{2-N}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A).
+\rho_1(\vec{r}_1,\vec{r}'_1) = \int \{d\vec{r}_{2-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A).
 \end{equation}
 
 
@@ -29,7 +29,7 @@ where $\rho_1(\vec{r}_1,\vec{r}'_1)$ is the one-body non-diagonal density matrix
 Here, $\Psi_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)$ is the ground state wave function of the nucleus A and with the notation 
 
 \begin{equation}
-\{d\vec{r}_{i-N}\}  = d\vec{r}_i d\vec{r}_{i+1}...\vec{r}_A.
+\{d\vec{r}_{i-A}\}  = d\vec{r}_i d\vec{r}_{i+1}...\vec{r}_A.
 \end{equation}
  
 
@@ -40,13 +40,29 @@ For $\Braket{\Psi_A|\Psi_A}=1$, one has that
 \begin{equation}
 \int d\vec{k}n_1(\vec{k})=1
 \end{equation}
- 
+
+In the second quantization of quantum field theory one can express the one-particle momentum distribution as
+
+\begin{equation}
+n_1(\vec{k})= \bra{\Psi_A} c^\dagger_k c_k \ket{\Psi_A}
+\end{equation}
+
+and the one ony-body non-diagonal density matrix as
+
+\begin{align}
+\rho_1(\vec{r}_1,\vec{r}'_1) & = \int \{d\vec{r}_{2-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A) \\
+& = \int \{d\vec{r}_{2-A}\} \Braket{\Psi_A|\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A} 
+\Braket{\vec{r}_1',\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A|\Psi_A} \\
+& = \int \{d\vec{r}_{2-A}\} \bra{\Psi_A} \psi^\dagger(\vec{r}_1) \psi^\dagger(\vec{r}_2) \ldots \psi^\dagger(\vec{r}_A) \ket{0} 
+\bra{0} \psi(\vec{r}_1) \psi(\vec{r}_2) \ldots \psi(\vec{r}_A)  \ket{\Psi_A} 
+\end{align}
 
 
 
-\subsection{2-particle momentum distribution}
 
-The two-particle momentum distribution can be defined as
+\subsection{Two-particle momentum distribution}
+
+The two-particle momentum distribution gives the chance of finding a particle with momentum in the interval $[\vec{k}_1,\vec{k}_1+d\vec{k}]$ when there is another particle with a momentum in the interval $[\vec{k}_2,\vec{k}_2+d\vec{k}]$. It is given by the following expression
 
 \begin{equation}
 n(\vec{k}_1,\vec{k}_2)=\frac{1}{(2\pi)^6}\int d\vec{r}_1 \int d\vec{r}_2 \int  
@@ -73,11 +89,11 @@ One can also define the two-particle momentum distribution in the relative and c
 \end{equation}
 
 \begin{equation}
-\vec{p}= \frac{1}{\sqrt{2}} \left(\vec{k}_1 + \vec{k}_2\right)
+\vec{p}= \frac{1}{\sqrt{2}} \left(\vec{k}_1 - \vec{k}_2\right)
 \end{equation}
 
 \begin{equation}
-\vec{P}= \frac{1}{\sqrt{2}} \left(\vec{r}_1 + \vec{r}_2\right)
+\vec{P}= \frac{1}{\sqrt{2}} \left(\vec{k}_1 + \vec{k}_2\right)
 \end{equation}
 
 
@@ -100,13 +116,20 @@ where
 						    \vec{r}_2'=\frac{-\vec{r}_{12}' + \vec{R}_{12}'}{\sqrt{2}}
 						    \right)
 \end{equation}
+
+In the second quantization formalism one can write the two-patricle momemtum distribution as
+
+\begin{equation}
+n_2(\vec{k_1},\vec{k_2})= \bra{\Psi_A} c^\dagger_{k_1} c^\dagger_{k_2} c_{k_1} c_{k_2} \ket{\Psi_A}
+\end{equation}
+
  
 
 
 
 
 
-\section{1-particle momentum distribution for IPM}
+\section{One-particle momentum distribution for IPM}
 
 In an independent particle model the total wave function of the nucleus is a slater determinant of the one-particle wave functions. A nucleon moves independent in a sort of mean field potential created by all the other nucleons. 
 
@@ -125,26 +148,23 @@ where the sum is over all permutations of the indices of the one-particle wave f
 
 The one-particle non-diagonal density matrix becomes
 
-\begin{equation}
-\rho_1(\vec{r}_1,\vec{r}'_1)  = \frac{1}{A!} 	 \sum_{\substack{P}} \sum_{\substack{L}} (-1)^{P+L} \int d\vec{r}_2 d\vec{r}_3 ... d\vec{r}_A 
-\psi^*_{P1}(\vec{r}_1)\psi^*_{P2}(\vec{r}_2)...\psi^*_{PA}(\vec{r}_A)
-\psi_{L1}(\vec{r}_1')\psi_{L2}(\vec{r}_2)...\psi_{LA}(\vec{r}_A)
-\end{equation}
+\begin{align}
+\rho_1(\vec{r}_1,\vec{r}'_1) & = \frac{1}{A!} 	 \sum_{\substack{P}} \sum_{\substack{L}} (-1)^{P+L} \int d\vec{r}_2 d\vec{r}_3 ... d\vec{r}_A 
+\psi^*_{P_1}(\vec{r}_1)\psi^*_{P_2}(\vec{r}_2)...\psi^*_{P_A}(\vec{r}_A)
+\psi_{L_1}(\vec{r}_1')\psi_{L_2}(\vec{r}_2)...\psi_{L_A}(\vec{r}_A) \\
+&  = \frac{1}{A!} 	 \sum_{\substack{P}} \sum_{\substack{L}} (-1)^{P+L} \psi^*_{P_1}(\vec{r}_1) \psi_{L_1}(\vec{r}_1') 
+\delta_{P_2,L_2}\delta_{P_3,L_3}...\delta_{P_A,L_A} \\
+& = \sum_{\substack{i}} \psi^*_i(\vec{r}_1) \psi_i(\vec{r}_1').
+\end{align}
 
-\begin{equation}
-\rho_1(\vec{r}_1,\vec{r}'_1)  = \frac{1}{A!} 	 \sum_{\substack{P}} \sum_{\substack{L}} (-1)^{P+L} \psi^*_{P1}(\vec{r}_1) \psi_{L1}(\vec{r}_1') 
-\delta_{P2,L2}\delta_{P3,L3}...\delta_{PA,LA} 
-\end{equation}
+We can plug this into (\ref{eq:one_patricle_distr})
 
-\begin{equation}
-\rho_1(\vec{r}_1,\vec{r}'_1)  \propto \sum_{\substack{i}} \psi^*_i(\vec{r}_1) \psi_i(\vec{r}_1')
-\end{equation}
-
-
-
-
-
-
+\begin{align} 
+	n_1(\vec{k})&=\frac{1}{(2\pi)^3} \sum_{\substack{i}} \int d\vec{r}_1 \int d\vec{r}_1' e^{i\vec{k}\cdot (\vec{r}_1-\vec{r}'_1)}
+	\psi^*_i(\vec{r}_1)\psi_i(\vec{r}_1') \\
+	& = \sum_{\substack{i}} \psi^*_i(\vec{k})\psi_i(-\vec{k})
+\end{align}
+	
 
 
 
