@@ -42,7 +42,7 @@ For $\Braket{\Psi_A|\Psi_A}=1$, one has that
 \int d\vec{k}n_1(\vec{k})=1
 \end{equation}
 
-In the second quantization of quantum field theory one can express the one-particle momentum distribution as
+In the second quantization formalism one can express the one-particle momentum distribution as
 
 \begin{equation}
 n_1(\vec{k})= \bra{\Psi_A} c^\dagger_k c_k \ket{\Psi_A}.
@@ -90,7 +90,7 @@ where $\rho_2(\vec{r}_1,\vec{r}_2, \vec{r}_1',\vec{r}_2')$ is the two-body non-d
 
 
 \begin{equation}
-\rho_1(\vec{r}_1,\vec{r}_2, \vec{r}_1',\vec{r}_2') = \int \{d\vec{r}_{3-N}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2',\vec{r}_3, ... ,\vec{r}_A).
+\rho_2(\vec{r}_1,\vec{r}_2, \vec{r}_1',\vec{r}_2') = \int \{d\vec{r}_{3-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2',\vec{r}_3, ... ,\vec{r}_A).
 \end{equation}
 
 One can also define the two-particle momentum distribution in the relative and centre of mass (rcm) coordinates instead of the centre well (cw) coordinates
@@ -121,7 +121,7 @@ n(\vec{p},\vec{P})=\frac{1}{(2\pi)^6}
 
 where 
 
-\begin{equation}
+\begin{equation} \label{eq:twobodydensity}
 \rho_2(\vec{r}_{12},\vec{R}_{12}; \vec{r}_{12}',\vec{R}_{12}') = 
 							\rho_2\left(	
 							\vec{r}_1=\frac{\vec{r}_{12} + \vec{R}_{12}}{\sqrt{2}},
@@ -136,19 +136,31 @@ In the second quantization formalism one can write the two-patricle momemtum dis
 \begin{equation}
 n_2(\vec{k_1},\vec{k_2})= \bra{\Psi_A} c^\dagger_{k_1} c^\dagger_{k_2} c_{k_1} c_{k_2} \ket{\Psi_A}
 \end{equation}
+For the non-diagonal two-body density operator
+\begin{equation}
+\hat{\rho} = \sum_{i<j} \hat{\rho}(\vec{r}_i, \vec{r}_j; \vec{r}_i', \vec{r}_j')
+\end{equation}
+with the corresponding matrix element between two states in position space
+\begin{equation}
+\Braket{\vec{r}'_1, \vec{r}'_2, \dotso, \vec{r}'_A|\hat{\rho}|\vec{r}_1, \vec{r}_2, \dotso, \vec{r}_A} = \left( \prod_{\substack{k\neq i  \\  k\neq j}}^{A} \delta(\vec{r}_k-\vec{r}_k') \right) \sum_{i<j} \hat{\rho}(\vec{r}_i, \vec{r}_j; \vec{r}_i', \vec{r}_j')
+\end{equation}
+\begin{align}
+\rho(\vec{r}_1, \vec{r}_2; \vec{r}_1', \vec{r}_2') & =  \int \{d\vec{r}_{3-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2',\vec{r}_3, ... ,\vec{r}_A) \\
+& = \frac{1}{A!} \int \{d\vec{r}_{3-A}\} \Braket{\Psi_A | \psi^\dagger(\vec{r}'_1) \psi^\dagger(\vec{r}'_2)\psi^\dagger(\vec{r}_3) ...\psi^\dagger(\vec{r}_A) \psi(\vec{r}_A) ...\psi(\vec{r}_3)\psi(\vec{r}_2) \psi(\vec{r}_1)|\Psi_A } \\
+& = \frac{1}{A(A-1)} \Braket{\Psi_A | \psi^\dagger(\vec{r}'_1) \psi^\dagger(\vec{r}'_2)\psi(\vec{r}_2) \psi(\vec{r}_1)|\Psi_A } \\
+& = \frac{1}{A(A-1)} \Braket{\Psi_A | \sum_{\alpha\beta\gamma\delta} c^\dagger_\alpha c^\dagger_\beta u*_\alpha(\vec{r}_1') u*_\beta(\vec{r}_2') u_\gamma(\vec{r}_1) u_\delta(\vec{r}_2)c_\gamma c_\delta|\Psi_A } 
+\end{align}
 
- 
 
 
 
 
-
-\section{One-particle momentum distribution for IPM}
+\section{Momentum distributions for IPM}
 \subsection{General properties}
 
 In an independent particle model the total wave function of the nucleus is a slater determinant of the one-particle wave functions. A nucleon moves independent in a sort of mean field potential created by all the other nucleons. 
 
-\begin{equation}
+\begin{equation} \label{eq:slater}
 \Psi_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)= \frac{1}{\sqrt{A!}} \sum_{\substack{P}} 
 													  (-1)^P \phi_{P_1}(\vec{r}_1)
 													         \phi_{P_2}(\vec{r}_2)...
@@ -157,7 +169,7 @@ In an independent particle model the total wave function of the nucleus is a sla
 
 where the sum is over all permutations of the indices of the one-particle wave functions. We also have 
 
-\begin{equation}
+\begin{equation} \label{eq:orthogonality}
 \int d\vec{r}_i \phi^*_l(\vec{r}_i)\phi_m(\vec{r}_i) = \delta_{lm}
 \end{equation}
 
@@ -177,8 +189,14 @@ We can plug this into (\ref{eq:one_patricle_distr})
 \begin{align} 
 	n_1(\vec{k})&=\frac{1}{(2\pi)^3} \sum_{\substack{i}} \int d\vec{r}_1 \int d\vec{r}_1' e^{i\vec{k}\cdot (\vec{r}_1-\vec{r}'_1)}
 	\phi^*_i(\vec{r}_1)\phi_i(\vec{r}_1') \\
-	& = \sum_{\substack{i}} \tilde{\phi}^*_i(\vec{k})\tilde{\phi}_i(-\vec{k})
+	& = \sum_{\substack{i}} \tilde{\phi}^*_i(\vec{k})\tilde{\phi}_i(-\vec{k}).
 \end{align}
+
+To find an expression for the two-body non-diagonal density one can plug the slater deteminant (\ref{eq:slater}) into equation (\ref{eq:twobodydensity}). Taking into account the orthogonality relation (\ref{eq:orthogonality}) one has
+
+\begin{equation}
+\rho_2(\vec{r}_1,\vec{r}_2, \vec{r}_1',\vec{r}_2') = \frac{1}{A(A-1)} \sum_{i \neq j } \phi^*_i(\vec{r}_1) \phi^*_i(\vec{r}_2) \phi_j(\vec{r}_1') \phi_j(\vec{r}_2').
+\end{equation}
 	
 \subsection{IPM for harmonic oscillator potential}
 We consider the nucleons moving independently in a spherical symmetric harmonic oscillator potential. From the above we know that we only need to calculate the one-particle wave functions and their fourier transforms. The 3D time independent Schrodinger equation for one patricle is
@@ -209,7 +227,7 @@ One can now see that this equation has the same form as equation (\ref{eq:HO}). 
 \begin{equation}
 \phi_{nlm}(\vec{k}) \equiv \Braket{\vec{k}|nlm} = K_{nl}(k)Y_{lm}(\Omega)	
 \end{equation}
-where $Y_{lm}(\Omega)$ are the spherical harmonics and the radial wave functions are given in function of the generalized Laguerre polynomals $L^\alpha_n(p)$ by
+where $Y_{lm}(\Omega)$ are the spherical harmonics and the radial wave functions are given in function of the generalized Laguerre polynomals $L^\alpha_n(k)$ by
 \begin{equation}
  K_{nl}(k) = \left[ \frac{2n!}{\Gamma(n+l+\frac{3}{2})}\nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} k^l e^{-\frac{\nu' k^2}{2}} L^{l+\frac{1}{2}}_n(\nu' r^2)
 \end{equation}
