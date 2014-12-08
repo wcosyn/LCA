@@ -1,0 +1,7 @@
+#plotje maken
+set terminal png font "/Library/Fonts/Arial.ttf" 14
+set xlabel "k or r (1/fm or fm)"
+set ylabel "ratio"
+set term png
+set output "wave.png" 
+plot "wave_function.txt" u 2:1

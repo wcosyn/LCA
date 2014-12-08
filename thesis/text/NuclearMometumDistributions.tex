@@ -189,7 +189,7 @@ We can plug this into (\ref{eq:one_patricle_distr})
 \begin{align} 
 	n_1(\vec{k})&=\frac{1}{(2\pi)^3} \sum_{\substack{i}} \int d\vec{r}_1 \int d\vec{r}_1' e^{i\vec{k}\cdot (\vec{r}_1-\vec{r}'_1)}
 	\phi^*_i(\vec{r}_1)\phi_i(\vec{r}_1') \\
-	& = \sum_{\substack{i}} \tilde{\phi}^*_i(\vec{k})\tilde{\phi}_i(-\vec{k}).
+	& = \sum_{\substack{i}} \tilde{\phi}^*_i(\vec{k})\tilde{\phi}_i(\vec{k}).
 \end{align}
 
 To find an expression for the two-body non-diagonal density one can plug the slater deteminant (\ref{eq:slater}) into equation (\ref{eq:twobodydensity}). Taking into account the orthogonality relation (\ref{eq:orthogonality}) one has
@@ -235,6 +235,14 @@ where
 \begin{equation}
 \nu' \equiv \frac{\hbar}{M_N \omega}
 \end{equation}
+
+Now one can calculate the radial one-body momentum distribution
+\begin{align}
+n_1(k) & = \int d\Omega n_1(\vec{k}) \\
+	   & = 2 \sum_{nlm} K^2_{nl}(k) \int d\Omega Y^*_{lm}(\theta, \varphi) Y_{lm}(\theta, \varphi)  \\
+	   & = 2 \sum_{nl} (2l+1) K^2_{nl}(k)\\
+\end{align}
+where the factor 2 is for spin degeneracy and each state $(n,l)$ is $(2l+1)$ times degenerate. Fist we need to calculate the energy of each state. The sum goes over the lowest energy states $(n,l)$ until al nucleons are in a state. We consider the proton and the neutron to be identical in mass.
 
 \end{document}
 
