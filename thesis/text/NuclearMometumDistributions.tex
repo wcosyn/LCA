@@ -1,7 +1,10 @@
 \documentclass[12pt]{article}
 \usepackage{braket}
+\usepackage{feynmf}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{dsfont}
 \setlength\parindent{0pt}
 \usepackage[a4paper, total={7.6in, 10in}]{geometry}
 \title{Nuclear Momentum Distributions}
@@ -11,18 +14,90 @@
 \maketitle
 \section{Definitions}
 
-\subsection{One-particle momentum distribution}
-
-The One-particle momentum distribution gives the chance of finding a particle with a momentum in the interval $[\vec{k},\vec{k}+d\vec{k}]$. It is given by the following expression
-\begin{equation} \label{eq:one_patricle_distr}
-	n_1(\vec{k})=\frac{1}{(2\pi)^3}\int d\vec{r}_1 \int d\vec{r}_1' e^{i\vec{k}\cdot (\vec{r}_1-\vec{r}'_1)}\rho_1(\vec{r}_1,\vec{r}_1')
+\subsection{Second quantziation formalism}
+State vector: how many particles in each single-particle orbital $u_\alpha$
+\begin{equation}
+\ket{n_1, n_2, n_3 , \ldots}.
 \end{equation}
 
-where $\rho_1(\vec{r}_1,\vec{r}'_1)$ is the one-body non-diagonal density matrix
+Creation and annihilation operators: $c^\dagger_\alpha$ adds one particle to one-paricle state $u_\alpha$ and $c_\alpha$ removes one particle from this state.
+\begin{align}
+c^\dagger_\alpha\ket{n_1, n_2, \ldots, n_i, \ldots} & = \left(\mathds{1} \otimes \mathds{1} \otimes \cdots \otimes c^\dagger_\alpha \otimes  \cdots \otimes \mathds{1} \right) \ket{n_1} \otimes \ket{n_2} \otimes \cdots \otimes \ket{n_\alpha} \otimes \cdots \\
+& = (-1)^{s_\alpha}\ket{n_1} \otimes \ket{n_2} \otimes \cdots \otimes c^\dagger_\alpha \ket{n_\alpha} \otimes \cdots \\
+& = \delta_{0n_\alpha}(-1)^{s_\alpha}\ket{n_1, \ldots, n_{\alpha-1},  n_\alpha+1,  n_{\alpha+1}, \ldots }.
+\end{align}
+with
+\begin{equation}
+s_\alpha= n_1 + n_2 + \ldots + n_{\alpha-1}.
+\end{equation}
+The kronecker delta ensures the Pauli principle for fermions is satisfied. The factor $(-1)^{s_\alpha}$ follows from the commutation relations for fermions
+\begin{align}
+& \{c_\alpha, c^\dagger_\beta \} = \delta_{\alpha \beta} \\
+& \{c_\alpha, c_\beta \} =\{c^\dagger_\alpha, c^\dagger_\beta \}  = 0
+\end{align}
+For the same reasons we have
+\begin{equation}
+c_\alpha \ket{n_1, n_2, \ldots, n_\alpha, \ldots} = \delta_{1n_\alpha}(-1)^{s_\alpha}\ket{n_1, \ldots, n_{\alpha-1},  n_\alpha-1,  n_{\alpha+1}, \ldots }.
+\end{equation}
+One can define a number operator
+\begin{equation}
+\hat{N} = \sum_\alpha c^\dagger_\alpha c_\alpha
+\end{equation}
+which has eigenvalues N $\in \mathds{N}$ and wave functions with a fixed number of particles as eigenfunctions. A normalized many-body state can now be expressed as
+\begin{equation}
+\ket{n_1, n_2, n_3 , \ldots} = (c^\dagger_1)^{n_1} (c^\dagger_2)^{n_2} \cdots \ket{0}
+\end{equation}
+This normalization holds for fermions and the $n_i$s are either 1 or 0. Here we chose a specific order for the single-particle states $\{u_\alpha\}$ and keep it fixed. 
+
+One can define a creation operator that creates a particle at position $\vec{r}$
+\begin{align}
+\psi^\dagger(\vec{r}) = \sum_\alpha c^\dagger_\alpha  u^*_\alpha(\vec{r})
+\end{align}
+with	
+\begin{equation}
+c^\dagger_\alpha = \int d\vec{r} \psi^\dagger(\vec{r}) u^*_\alpha(\vec{r})
+\end{equation}
+To check our definitions one can create a particle in state $\alpha$
+\begin{align}
+\ket{\alpha} & = \int d\vec{r} u_\alpha(\vec{r}) \ket{\vec{r}} \\
+ & = \int d\vec{r} u_\alpha(\vec{r}) \psi^\dagger(\vec{r}) \ket{0} \\
+ & = \int d\vec{r} u_\alpha(\vec{r}) \sum_\beta c^\dagger_\beta  u^*_\beta(\vec{r}) \ket{0} \\
+ & = c^\dagger_\alpha \ket{0}.
+\end{align}
+In the last step we used the orthonormality relation of the single-particle states 
+\begin{equation}
+\int d\vec{r} u_\alpha(\vec{r}) u^*_\beta(\vec{r}) = \delta_{\alpha \beta}
+\end{equation}
+We also have the following relations
+\begin{align}
+& u_\alpha(\vec{r})  = \braket{\vec{r}|\vec{\alpha}}  \\
+& \braket{\vec{r}|\vec{r}^{\ \prime}} = \delta(\vec{r}-\vec{r}^{\ \prime}) \\
+& \braket{\vec{r}|\vec{k}} = \frac{1}{(2\pi)^{3/2}} e^{i\vec{k}\cdot \vec{r}} \\
+& \braket{\vec{k}|\vec{r}} = \frac{1}{(2\pi)^{3/2}} e^{-i\vec{k}\cdot \vec{r}}.
+\end{align}
+
+Now we can write down a normailzed A-body Fockstate in first quantization 
+\begin{equation}
+\ket{\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_A } = \frac{1}{\sqrt{N!}} \psi^\dagger(\vec{r}_1) \psi^\dagger(\vec{r}_2) \cdots \psi^\dagger(\vec{r}_A) \ket{0}
+\end{equation}
+And the wave function in configuration space
+\begin{equation}
+\braket{\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_A | n_1, n_2, n_3 , \ldots} = \Psi_A(\vec{r}_1, \vec{r}_2, \ldots, \vec{r}_A ).
+\end{equation}
+
+
+\subsection{One-particle momentum distribution}
+
+The chance of finding a particle with a momentum in the interval $[k,k+dk]$ is $n_1(k) k^2dk$.
+\begin{equation} \label{eq:one_patricle_distr}
+	n_1(\vec{k})=\frac{1}{(2\pi)^3}\int d\vec{r}_1 \int d\vec{r}_1^{\ \prime} e^{i\vec{k}\cdot (\vec{r}_1-\vec{r}^{\ \prime}_1)}\rho_1(\vec{r}_1,\vec{r}_1^{\ \prime})
+\end{equation}
+
+with $\rho_1(\vec{r}_1,\vec{r}^{\ \prime}_1)$  the one-body non-diagonal density matrix defined as
 
 
 \begin{equation}
-\rho_1(\vec{r}_1,\vec{r}'_1) = \int \{d\vec{r}_{2-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A).
+\rho_1(\vec{r}_1,\vec{r}^{\ \prime}_1) = \int \{d\vec{r}_{2-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1^{\ \prime},\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A).
 \end{equation}
 
 
@@ -35,7 +110,7 @@ Here, $\Psi_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)$ is the ground stat
  
 
 
-For $\Braket{\Psi_A|\Psi_A}=1$, one has that
+For $\braket{\Psi_A|\Psi_A}=1$, one has that
 
 
 \begin{equation}
@@ -45,30 +120,37 @@ For $\Braket{\Psi_A|\Psi_A}=1$, one has that
 In the second quantization formalism one can express the one-particle momentum distribution as
 
 \begin{equation}
-n_1(\vec{k})= \bra{\Psi_A} c^\dagger_k c_k \ket{\Psi_A}.
+n_1(\vec{k})= \frac{1}{A}\bra{\Psi_A} \psi^\dagger(\vec{k}) \psi(\vec{k})\ket{\Psi_A}.
 \end{equation}
+Intuitively, the operator $\psi^\dagger(\vec{k}) \psi(\vec{k})$ counts the number of particles with momentum $\vec{k}$.
 
-For the one ony-body non-diagonal density matrix one can write
+Mathematically, this can be seen as following
 \begin{align}
-\Braket{\vec{r}'_1, \vec{r}'_2, \dotso, \vec{r}'_A|\hat{\rho}|\vec{r}_1, \vec{r}_2, \dotso, \vec{r}_A} = \left( \prod_{\substack{j=1 \\ j \neq i }}^{A} \delta(\vec{r}_j-\vec{r}_j') \right) \sum_{i=1}^{A} \rho(\vec{r}_i)
+n_1(\vec{k}) & =\frac{1}{(2\pi)^3}\int d\vec{r}_1 \int d\vec{r}_1^{\ \prime}\  e^{i\vec{k}\cdot (\vec{r}_1-\vec{r}^{\ \prime}_1)}\rho_1(\vec{r}_1,\vec{r}_1^{\ \prime}) \\
+& =\int d\vec{r}_1 \int d\vec{r}_1^{\ \prime}  \int d\{\vec{r}_{2-A}\} \braket{\vec{r}_1| \vec{k}} \braket{\vec{k}| \vec{r}_1^{\ \prime}} \braket{\Psi_A | \vec{r}_1, \{ \vec{r}_{2-A}\} } \braket{\vec{r}_1^{\ \prime}, \{ \vec{r}_{2-A}\}|\Psi_A  } \\
+& = \frac{1}{A!} \int d\vec{r}_1^{\ \prime}  \int d\{\vec{r}_{2-A}\} \braket{\vec{r}_1| \vec{k}} \braket{\vec{k}| \vec{r}_1^{\ \prime}} \bra{\Psi_A} \psi^\dagger(\vec{r}_1) \psi^\dagger(\vec{r}_2) \cdots \psi^\dagger(\vec{r}_A) \ket{0} \bra{0} \psi(\vec{r}_A) \cdots \psi(\vec{r}_2) \psi(\vec{r}_1^{\ \prime}) \ket{\Psi_A}
+\end{align}
+The projection on the vacuum state $\ket{0} \bra{0}$ can be subsituted with the identity because the operators $\psi(\vec{r}) \; (\psi^\dagger(\vec{r}))$ have already annihilated all the particles contained in the ket (bra) vectors.
+\begin{align}
+n_1(\vec{k}) & = \frac{1}{A!} \int d\vec{r}_1^{\ \prime}  \int d{\vec{r}_{2-A}} \braket{\vec{r}_1| \vec{k}} \braket{\vec{k}| \vec{r}_1^{\ \prime}} \bra{\Psi_A} \psi^\dagger(\vec{r}_1) \psi^\dagger(\vec{r}_2) \cdots \psi^\dagger(\vec{r}_A) \psi(\vec{r}_A) \cdots \psi(\vec{r}_2) \psi(\vec{r}_1^{\ \prime}) \ket{\Psi_A}
+\end{align}
+The integration on the coordinates $\vec{r}_2$ to $\vec{r}_A$ can be done by noticing that $\int d\vec{r} \psi^\dagger(\vec{r}) \psi(\vec{r})$ is the particle number operator in configuration space. So the integration over $\vec{r}_A$ gives a factor one since it acts one a state vecor $\psi(\vec{r}_{A-1}) \cdots \psi(\vec{r}_2) \psi(\vec{r}_1) \ket{\Psi_A}$, so all particles are annihilated except for 1. The integration over $\vec{r}_{A-1}$ gives a factor 2 for the same reasons. So if we integrate over all coordinates $\vec{r}_2$ to $\vec{r}_A$, we get a factor $(A-1)!$.  The one-particle momentum distribution can now be written as
+\begin{align}
+n_1(\vec{k}) & = \frac{1}{A}  \int d\vec{r}_1\int d\vec{r}_1^{\ \prime}  \braket{\vec{r}_1| \vec{k}} \braket{\vec{k}| \vec{r}_1^{\ \prime}} \bra{\Psi_A} \psi^\dagger(\vec{r}_1) \psi(\vec{r}_1^{\ \prime}) \ket{\Psi_A} \\
+& = \frac{1}{A}  \bra{\Psi_A} \psi^\dagger(\vec{k}) \psi(\vec{k}) \ket{\Psi_A} 
+\end{align}
+In the last line we defined the creation and annihilation operators in momentum space
+\begin{align}
+\psi(\vec{k}) & = \frac{1}{(2\pi)^{3/2}} \int d\vec{r} e^{-i\vec{k} \cdot \vec{r}} \psi(\vec{r}) \\
+& = \int d\vec{r} \braket{\vec{k}| \vec{r}}  \psi(\vec{r}) 
 \end{align}
 
-\begin{align}
-\Braket{\Psi_A|\hat{\rho}|\Psi_A} & =\sum_{i=1}^{A} \int d\vec{r}_1 \cdots d\vec{r}_i \cdots d\vec{r}_A \int d\vec{r}'_1 \cdots d\vec{r}'_i \cdots d\vec{r}'_A \Braket{\Psi_A|\vec{r}_1,..., \vec{r}'_i, ..., \vec{r}_A}  \rho(\vec{r}_i, \vec{r}'_i)\Braket{\vec{r}_1,..., \vec{r}_i, ..., \vec{r}_A|\Psi_A} \\
-& = \frac{A}{A!} \int d\vec{r}_1 \cdots d\vec{r}_A \int d\vec{r}'_1 \Braket{\Psi_A|\psi^\dagger(\vec{r}'_1) \psi^\dagger(\vec{r}_2) ...\psi^\dagger(\vec{r}_A) \rho(\vec{r}_1,\vec{r}'_1) \psi(\vec{r}_1) ... \psi(\vec{r}_A)|\Psi_A } \\
-& = \int d\vec{r} \int d\vec{r}' \Braket{\Psi_A|\psi^\dagger(\vec{r'}) \rho(\vec{r}, \vec{r}') \psi(\vec{r})|\Psi_A } 
-\end{align}
-So the one-body non-diagonal operator in second quantization becomes
-\begin{equation}
-\hat{\rho}_{off-diag} = \int d\vec{r} d \vec{r}' \psi^\dagger(\vec{r}) \rho(\vec{r}, \vec{r}') \psi(\vec{r}') 
-\end{equation}
 The density operator in the second quantization formalism can also be written as
 \begin{align}
-\rho(\vec{r}_1,\vec{r}'_1) & =  \int \{d\vec{r}_{2-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ...,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A) \\
-& = \int \{d\vec{r}_{2-A}\} \Braket{\Psi_A|\vec{r}'_1,\vec{r}_2, ...,\vec{r}_A} \Braket{\vec{r}_1,\vec{r}_2, ...,\vec{r}_A |\Psi_A} \\
-& = \frac{1}{A!} \int \{d\vec{r}_{2-A}\} \Braket{\Psi_A|\psi^\dagger(\vec{r}'_1) \psi^\dagger(\vec{r}_2) ...\psi^\dagger(\vec{r}_A) \psi(\vec{r}_1) ... \psi(\vec{r}_A)|\Psi_A } \\
-& = \Braket{\Psi_A|\psi^\dagger(\vec{r}'_1) \psi(\vec{r}_1)|\Psi_A } \\
-& = \Braket{\Psi_A|\sum_{\alpha \beta} c^\dagger_{\alpha} u_\alpha(\vec{r}')c_{\beta} u_\beta(\vec{r})) |\Psi_A }
+\rho(\vec{r}_1,\vec{r}^{\ \prime}_1) & =  \int \{d\vec{r}_{2-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ...,\vec{r}_A)\Psi_A(\vec{r}_1^{\ \prime},\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A) \\
+& = \frac{1}{A!} \int \{d\vec{r}_{2-A}\} \braket{\Psi_A|\psi^\dagger(\vec{r}_1) \psi^\dagger(\vec{r}_2) ...\psi^\dagger(\vec{r}_A) \psi(\vec{r}_{A-1}) ...  \psi(\vec{r}_2)\psi(\vec{r}_1^{\ \prime})|\Psi_A } \\
+& = \frac{1}{A}\braket{\Psi_A|\psi^\dagger(\vec{r}_1) \psi(\vec{r}_1^{\ \prime})|\Psi_A } \\
+& = \frac{1}{A}\braket{\Psi_A|\sum_{\alpha \beta} c^\dagger_{\alpha} u^*_\alpha(\vec{r})c_{\beta} u_\beta(\vec{r}^{\ \prime})) |\Psi_A }
 \end{align}
 
 
@@ -76,22 +158,24 @@ The density operator in the second quantization formalism can also be written as
 
 \subsection{Two-particle momentum distribution}
 
-The two-particle momentum distribution gives the chance of finding a particle with momentum in the interval $[\vec{k}_1,\vec{k}_1+d\vec{k}]$ when there is another particle with a momentum in the interval $[\vec{k}_2,\vec{k}_2+d\vec{k}]$. It is given by the following expression
+The chance of finding a particle with momentum in the interval $[k_1,k_1+dk_1]$ when there is another particle with a momentum in the interval $[k_2,k_2+dk_2]$ is is $ n_2(k_1,k_2)dk_1dk_2$.
 
 \begin{equation}
-n(\vec{k}_1,\vec{k}_2)=\frac{1}{(2\pi)^6}\int d\vec{r}_1 \int d\vec{r}_2 \int  
-    						d\vec{r}_1' \int d\vec{r}_2' 
-    						\mathrm{e}^{i\vec{k}_1\cdot (\vec{r}_1-\vec{r}'_1)} 
-    						\mathrm{e}^{i\vec{k}_2\cdot(\vec{r}_2-\vec{r}'_2)}
-    						\rho_2(\vec{r}_1,\vec{r}_2; \vec{r}_1',\vec{r}_2')
+n_2(\vec{k}_1,\vec{k}_2)=\frac{1}{(2\pi)^6}\int d\vec{r}_1 \int d\vec{r}_2 \int  
+    						d\vec{r}_1^{\ \prime} \int d\vec{r}_2^{\ \prime} 
+    						\mathrm{e}^{i\vec{k}_1\cdot (\vec{r}_1-\vec{r}^{\ \prime}_1)} 
+    						\mathrm{e}^{i\vec{k}_2\cdot(\vec{r}_2-\vec{r}^{\ \prime}_2)}
+    						\rho_2(\vec{r}_1,\vec{r}_2; \vec{r}_1^{\ \prime},\vec{r}_2^{\ \prime})
 \end{equation}
 
-where $\rho_2(\vec{r}_1,\vec{r}_2, \vec{r}_1',\vec{r}_2')$ is the two-body non-diagonal density matrix
+with the two-body non-diagonal density matrix
 
 
 \begin{equation}
-\rho_2(\vec{r}_1,\vec{r}_2, \vec{r}_1',\vec{r}_2') = \int \{d\vec{r}_{3-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2',\vec{r}_3, ... ,\vec{r}_A).
+\rho_2(\vec{r}_1,\vec{r}_2, \vec{r}_1^{\ \prime},\vec{r}_2^{\ \prime}) = \int \{d\vec{r}_{3-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1^{\ \prime},\vec{r}_2^{\ \prime},\vec{r}_3, ... ,\vec{r}_A)
 \end{equation}
+
+the two-body non-diagonal density matrix.
 
 One can also define the two-particle momentum distribution in the relative and centre of mass (rcm) coordinates instead of the centre well (cw) coordinates
 \begin{equation}
@@ -113,44 +197,56 @@ One can also define the two-particle momentum distribution in the relative and c
 
 \begin{equation}
 n(\vec{p},\vec{P})=\frac{1}{(2\pi)^6}
-						\int d\vec{r}_{12} \int d\vec{R}_{12} \int d\vec{r}_{12}' \int d\vec{R}_{12}' 
-    						\mathrm{e}^{i\vec{p}\cdot (\vec{r}_{12}-\vec{r}_{12}')} 
-    						\mathrm{e}^{i\vec{P}\cdot(\vec{R}_{12}-\vec{R}_{12}')} 
-    						\rho_2(\vec{r}_{12},\vec{R}_{12}; \vec{r}_{12}',\vec{R}_{12}')
+						\int d\vec{r}_{12} \int d\vec{R}_{12} \int d\vec{r}_{12}^{\ \prime} \int d\vec{R}_{12}^{\ \prime} 
+    						\mathrm{e}^{i\vec{p}\cdot (\vec{r}_{12}-\vec{r}_{12}^{\ \prime})} 
+    						\mathrm{e}^{i\vec{P}\cdot(\vec{R}_{12}-\vec{R}_{12}^{\ \prime})} 
+    						\rho_2(\vec{r}_{12},\vec{R}_{12}; \vec{r}_{12}^{\ \prime},\vec{R}_{12}^{\ \prime})
 \end{equation}
 
-where 
+with
 
 \begin{equation} \label{eq:twobodydensity}
-\rho_2(\vec{r}_{12},\vec{R}_{12}; \vec{r}_{12}',\vec{R}_{12}') = 
+\rho_2(\vec{r}_{12},\vec{R}_{12}; \vec{r}_{12}^{\ \prime},\vec{R}_{12}^{\ \prime}) = 
 							\rho_2\left(	
 							\vec{r}_1=\frac{\vec{r}_{12} + \vec{R}_{12}}{\sqrt{2}},
 							\vec{r}_2=\frac{-\vec{r}_{12} + \vec{R}_{12}}{\sqrt{2}},
-						    \vec{r}_1'=\frac{\vec{r}'_{12} + \vec{R}'_{12}}{\sqrt{2}},	
-						    \vec{r}_2'=\frac{-\vec{r}_{12}' + \vec{R}_{12}'}{\sqrt{2}}
+						    \vec{r}_1^{\ \prime}=\frac{\vec{r}^{\ \prime}_{12} + \vec{R}^{\ \prime}_{12}}{\sqrt{2}},	
+						    \vec{r}_2^{\ \prime}=\frac{-\vec{r}_{12}^{\ \prime} + \vec{R}_{12}^{\ \prime}}{\sqrt{2}}
 						    \right)
 \end{equation}
 
 In the second quantization formalism one can write the two-patricle momemtum distribution as
 
 \begin{equation}
-n_2(\vec{k_1},\vec{k_2})= \bra{\Psi_A} c^\dagger_{k_1} c^\dagger_{k_2} c_{k_1} c_{k_2} \ket{\Psi_A}
+n_2(\vec{k_1},\vec{k_2})= \frac{1}{A(A-1)}\bra{\Psi_A} \psi^\dagger(\vec{k}_1) \psi^\dagger(\vec{k}_2)  \psi(\vec{k}_1)  \psi(\vec{k}_2)  \ket{\Psi_A}
 \end{equation}
-For the non-diagonal two-body density operator
-\begin{equation}
-\hat{\rho} = \sum_{i<j} \hat{\rho}(\vec{r}_i, \vec{r}_j; \vec{r}_i', \vec{r}_j')
-\end{equation}
-with the corresponding matrix element between two states in position space
-\begin{equation}
-\Braket{\vec{r}'_1, \vec{r}'_2, \dotso, \vec{r}'_A|\hat{\rho}|\vec{r}_1, \vec{r}_2, \dotso, \vec{r}_A} = \left( \prod_{\substack{k\neq i  \\  k\neq j}}^{A} \delta(\vec{r}_k-\vec{r}_k') \right) \sum_{i<j} \hat{\rho}(\vec{r}_i, \vec{r}_j; \vec{r}_i', \vec{r}_j')
-\end{equation}
+and the two-body non-diagonal density matrix as
+
 \begin{align}
-\rho(\vec{r}_1, \vec{r}_2; \vec{r}_1', \vec{r}_2') & =  \int \{d\vec{r}_{3-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1',\vec{r}_2',\vec{r}_3, ... ,\vec{r}_A) \\
-& = \frac{1}{A!} \int \{d\vec{r}_{3-A}\} \Braket{\Psi_A | \psi^\dagger(\vec{r}'_1) \psi^\dagger(\vec{r}'_2)\psi^\dagger(\vec{r}_3) ...\psi^\dagger(\vec{r}_A) \psi(\vec{r}_A) ...\psi(\vec{r}_3)\psi(\vec{r}_2) \psi(\vec{r}_1)|\Psi_A } \\
-& = \frac{1}{A(A-1)} \Braket{\Psi_A | \psi^\dagger(\vec{r}'_1) \psi^\dagger(\vec{r}'_2)\psi(\vec{r}_2) \psi(\vec{r}_1)|\Psi_A } \\
-& = \frac{1}{A(A-1)} \Braket{\Psi_A | \sum_{\alpha\beta\gamma\delta} c^\dagger_\alpha c^\dagger_\beta u*_\alpha(\vec{r}_1') u*_\beta(\vec{r}_2') u_\gamma(\vec{r}_1) u_\delta(\vec{r}_2)c_\gamma c_\delta|\Psi_A } 
+\rho(\vec{r}_1, \vec{r}_2; \vec{r}_1^{\ \prime}, \vec{r}_2^{\ \prime}) & =  \int \{d\vec{r}_{3-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1^{\ \prime},\vec{r}_2^{\ \prime},\vec{r}_3, ... ,\vec{r}_A) \\
+& = \frac{1}{A!} \int \{d\vec{r}_{3-A}\} \braket{\Psi_A | \psi^\dagger(\vec{r}_1) \psi^\dagger(\vec{r}_2)\psi^\dagger(\vec{r}_3) ...\psi^\dagger(\vec{r}_A) \psi(\vec{r}_A) ...\psi(\vec{r}_3)\psi(\vec{r}^{\ \prime}_2) \psi(\vec{r}^{\ \prime}_1)|\Psi_A } \\
+& = \frac{1}{A(A-1)} \braket{\Psi_A | \psi^\dagger(\vec{r}_1) \psi^\dagger(\vec{r}_2)\psi(\vec{r}^{\ \prime}_2) \psi(\vec{r}^{\ \prime}_1)|\Psi_A } \\
+& = \frac{1}{A(A-1)} \braket{\Psi_A | \sum_{\alpha\beta\gamma\delta} c^\dagger_\alpha c^\dagger_\beta u^*_\alpha(\vec{r}_1) u^*_\beta(\vec{r}_2) u_\gamma(\vec{r}^{\ \prime}_1) u_\delta(\vec{r}^{\ \prime}_2)c_\gamma c_\delta|\Psi_A }.
 \end{align}
 
+\subsubsection{Two-particle momentum distribution in rcm coordinates}
+
+In rcm coordinates the form of the harmonic oscillator wave functions is still te same as in centre of well coordinates but with other quantum numbers. Now we have $n,\  l$ which characterize the relative motion and $N,\ L$ which characterize the centre-of-mass motion. The orbital momenta of the two subsystems can be coupled to a total angular momentum $L$ 
+\begin{align}
+& \left| l_1-l_2 \right| \leq \Lambda \leq l_1 + l_2 \\
+& \left| l-L \right| \leq \lambda \leq l+ L
+\end{align}
+
+Two particles are coupled to a well-defined total orbital momentum $\Lambda$ with projection $M_\Lambda$
+\begin{align}
+&\Ket{n_1l_1n_2l_2;\Lambda M_\Lambda} = \sum_{m_1, m_2} \Ket{n_1l_1m_1n_2l_2m_2} \Braket{l_1m_1,l_2m_2| \Lambda M_\Lambda} \\
+&\Ket{nlNL;\Lambda M_\Lambda} = \sum_{m, M} \Ket{nlm NLM} \Braket{lm LM|\Lambda M_\Lambda} 
+\end{align}
+For the two body wave function which has the total angular momentum $\Lambda$  and projection $M_\Lambda$ there is a orthogonal transformation between the center-of-well and the relative and center-of-mass coordinates
+\begin{align}
+\Ket{n_1l_1n_2l_2;\Lambda M_\Lambda} = \sum_{nl, N\Lambda} \Ket{nlNL;\Lambda M_\Lambda} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}.
+\end{align}
+the transformation coefficients $\Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}$ are known as the Moshinsky brackets and are independent of $M_\Lambda$.
 
 
 
@@ -158,16 +254,16 @@ with the corresponding matrix element between two states in position space
 \section{Momentum distributions for IPM}
 \subsection{General properties}
 
-In an independent particle model the total wave function of the nucleus is a slater determinant of the one-particle wave functions. A nucleon moves independent in a sort of mean field potential created by all the other nucleons. 
+In an independent particle model (IPM )the total wave function of the nucleus is a Slater determinant of the one-particle wave functions. A nucleon moves independent in a  mean field potential created by all the other nucleons. 
 
 \begin{equation} \label{eq:slater}
-\Psi_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)= \frac{1}{\sqrt{A!}} \sum_{\substack{P}} 
-													  (-1)^P \phi_{P_1}(\vec{r}_1)
-													         \phi_{P_2}(\vec{r}_2)...
-													         \phi_{P_A}(\vec{r}_A)
+\Psi_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)= \frac{1}{\sqrt{A!}} \sum_{\substack{i_1 i_2 \ldots i_A}} 
+													  \varepsilon_{i_1 i_2 \ldots i_A} \phi_{i_1}(\vec{r}_1)
+													         \phi_{i_2}(\vec{r}_2)...
+													         \phi_{i_A}(\vec{r}_A).
 \end{equation}
 
-where the sum is over all permutations of the indices of the one-particle wave functions. We also have 
+Here, $\varepsilon_{i_1 i_2 \ldots i_A}$ is the Levi-Civita symbol and the summations is over the indices $i_1$ to $i_A$ go from one to A. We also have
 
 \begin{equation} \label{eq:orthogonality}
 \int d\vec{r}_i \phi^*_l(\vec{r}_i)\phi_m(\vec{r}_i) = \delta_{lm}
@@ -176,40 +272,81 @@ where the sum is over all permutations of the indices of the one-particle wave f
 The one-particle non-diagonal density matrix becomes
 
 \begin{align}
-\rho_1(\vec{r}_1,\vec{r}'_1) & = \frac{1}{A!} 	 \sum_{\substack{P}} \sum_{\substack{L}} (-1)^{P+L} \int d\vec{r}_2 d\vec{r}_3 ... d\vec{r}_A 
-\phi^*_{P_1}(\vec{r}_1)\phi^*_{P_2}(\vec{r}_2)...\phi^*_{P_A}(\vec{r}_A)
-\phi_{L_1}(\vec{r}_1')\phi_{L_2}(\vec{r}_2)...\phi_{L_A}(\vec{r}_A) \\
-&  = \frac{1}{A!} 	 \sum_{\substack{P}} \sum_{\substack{L}} (-1)^{P+L} \phi^*_{P_1}(\vec{r}_1) \phi_{L_1}(\vec{r}_1') 
-\delta_{P_2,L_2}\delta_{P_3,L_3}...\delta_{P_A,L_A} \\
-& = \sum_{\substack{i}} \phi^*_i(\vec{r}_1) \phi_i(\vec{r}_1').
+\rho_1(\vec{r}_1,\vec{r}^{\ \prime}_1) & = \frac{1}{A!} 	 \sum_{i_1 i_2 \ldots i_A} \sum_{j_1 j_2 \ldots j_A} \varepsilon_{i_1 i_2 \ldots i_A} \varepsilon_{j_1j_2 \ldots j_A}\int \{d\vec{r}_{2-A}\} 
+\phi^*_{i_1}(\vec{r}_1)\phi^*_{i_2}(\vec{r}_2)...\phi^*_{i_A}(\vec{r}_A)
+\phi_{j_1}(\vec{r}_1^{\ \prime})\phi_{j_2}(\vec{r}_2)...\phi_{j_A}(\vec{r}_A) \\
+&  = \frac{1}{A!} 	 \sum_{\substack{i_1 i_2 \ldots i_A}} \sum_{\substack{j_1j_2 \ldots j_A}} \varepsilon_{i_1 i_2 \ldots i_A} \varepsilon_{j_1j_2 \ldots j_A} \phi^*_{i_1}(\vec{r}_1) \phi_{j_1}(\vec{r}_1^{\ \prime}) 
+\delta_{i_2,j_2}\delta_{i_3,j_3}...\delta_{i_A,j_A} \\
+& = \frac{1}{A}\sum_{\substack{i}} \phi^*_i(\vec{r}_1) \phi_i(\vec{r}_1^{\ \prime}).
 \end{align}
 
 We can plug this into (\ref{eq:one_patricle_distr})
 
 \begin{align} 
-	n_1(\vec{k})&=\frac{1}{(2\pi)^3} \sum_{\substack{i}} \int d\vec{r}_1 \int d\vec{r}_1' e^{i\vec{k}\cdot (\vec{r}_1-\vec{r}'_1)}
-	\phi^*_i(\vec{r}_1)\phi_i(\vec{r}_1') \\
-	& = \sum_{\substack{i}} \tilde{\phi}^*_i(\vec{k})\tilde{\phi}_i(\vec{k}).
+	n_1(\vec{k})&=\frac{1}{A(2\pi)^3} \sum_{\substack{i}} \int d\vec{r}_1 \int d\vec{r}_1^{\ \prime} e^{i\vec{k}\cdot (\vec{r}_1-\vec{r}^{\ \prime}_1)}
+	\phi^*_i(\vec{r}_1)\phi_i(\vec{r}_1^{\ \prime}) \\
+	& = \frac{1}{A} \sum_{\substack{i}} \tilde{\phi}^*_i(\vec{k})\tilde{\phi}_i(\vec{k}).
 \end{align}
 
 To find an expression for the two-body non-diagonal density one can plug the slater deteminant (\ref{eq:slater}) into equation (\ref{eq:twobodydensity}). Taking into account the orthogonality relation (\ref{eq:orthogonality}) one has
 
-\begin{equation}
-\rho_2(\vec{r}_1,\vec{r}_2, \vec{r}_1',\vec{r}_2') = \frac{1}{A(A-1)} \sum_{i \neq j } \phi^*_i(\vec{r}_1) \phi^*_i(\vec{r}_2) \phi_j(\vec{r}_1') \phi_j(\vec{r}_2').
-\end{equation}
+\begin{align}
+\rho_2(\vec{r}_1,\vec{r}_2;\vec{r}^{\ \prime}_1,\vec{r}^{\ \prime}_2) 
+&  = \frac{1}{A!} 	 \sum_{\substack{i_1 i_2 \ldots i_A}} \sum_{\substack{j_1j_2 \ldots j_A}} \varepsilon_{i_1 i_2 \ldots i_A} \varepsilon_{j_1j_2 \ldots j_A} \phi^*_{i_1}(\vec{r}_1)\phi^*_{i_2}(\vec{r}_2) \phi_{j_1}(\vec{r}_1^{\ \prime})\phi_{j_2}(\vec{r}_2^{\ \prime})
+\delta_{i_3,j_3}...\delta_{i_A,j_A} \\
+&  = \frac{1}{A(A-1)} 	 \sum_{\substack{i_1 i_2}} \sum_{\substack{j_1j_2}} \left(\delta_{i_1j_1}\delta_{i_2j_2} - \delta_{i_1j_2}\delta_{i_2j_1} \right)
+\phi^*_{i_1}(\vec{r}_1)\phi^*_{i_2}(\vec{r}_2) \phi_{j_1}(\vec{r}_1^{\ \prime})\phi_{j_2}(\vec{r}_2^{\ \prime}) \\
+& = \frac{1}{A(A-1)}\sum_{\substack{i j}} \left[\phi^*_{i}(\vec{r}_1)\phi^*_{j}(\vec{r}_2) \phi_{i}(\vec{r}_1^{\ \prime})\phi_{j}(\vec{r}_2^{\ \prime})  - \phi^*_{i}(\vec{r}_1)\phi^*_{j}(\vec{r}_2) \phi_{j}(\vec{r}_1^{\ \prime})\phi_{i}(\vec{r}_2^{\ \prime}) \right].
+\end{align}
+
+The two-particle momentum distribution can be written as
+
+\begin{align}
+n_2(\vec{k}_1,\vec{k}_2) & = \frac{1}{A(A-1)}\sum_{\substack{i j}} \left[\phi^*_{i}(\vec{k}_1)\phi^*_{j}(\vec{k}_2) \right] \left[ \phi_{i}(\vec{k}_1)\phi_{j}(\vec{k}_2)  - \phi_{j}(\vec{k}_1)\phi_{i}(\vec{k}_2) \right]\\
+& = \frac{4}{A(A-1)}\sum_{\substack{n_1l_1m_1}} \sum_{\substack{n_2l_2m_2}}\left[\phi^*_{n_1l_1m_1}(\vec{k}_1)\phi^*_{n_2l_2m_2}(\vec{k}_2) \right] \left[ \phi_{n_1l_1m_1}(\vec{k}_1)\phi_{n_2l_2m_2}(\vec{k}_2)  - \phi_{n_2l_2m_2}(\vec{k}_1)\phi_{n_1l_1m_1}(\vec{k}_2) \right] 
+\end{align}
+
+For Harmonic oscillator two-body states one has
+\begin{align*}
+\left[ \phi_{n_1l_1}(\vec{k}_1)\phi_{n_2l_2}(\vec{k}_2) \right]_{\Lambda M_\Lambda} = \sum_{\substack{nl}} \sum_{\substack{NL}} \left[ \phi_{nl}(\vec{k})\phi_{NL}(\vec{P}) \right]_{\Lambda M_\Lambda} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}
+\end{align*}
+with notation 
+\begin{equation*}
+\left[ \phi_{n_1l_1}(\vec{k}_1)\phi_{n_2l_2}(\vec{k}_2) \right]_{\Lambda M_\Lambda} \equiv \sum_{m_1m_2} \phi_{n_1l_1m_1}(\vec{k}_1) \phi_{n_2l_2m_2}(\vec{k}_2) \Braket{l_1m_1l_2m_2|\Lambda M_\Lambda}
+\end{equation*}
+
+Thus
+\begin{align}
+n_2(\vec{k},\vec{P}) 
+& = \frac{4}{A(A-1)}\sum_{\substack{n_1l_1}} \sum_{\substack{n_2l_2}} \sum_{\substack{\Lambda M_\Lambda}} \sum_{\substack{\Lambda^\prime M_\Lambda^\prime}} \sum_{\substack{nl}} \sum_{\substack{NL}} \sum_{\substack{n^\prime l^\prime}} \sum_{\substack{N^\prime L^\prime}} \left[ \phi^*_{nl}(\vec{k})\phi^*_{NL}(\vec{P}) \right]_{\Lambda M_\Lambda} \nonumber \\
+  & \times \left[ \phi_{n^\prime l^\prime}(\vec{k})\phi_{N^\prime L^\prime}(\vec{P}) -  \phi_{n^\prime l^\prime}(-\vec{k})\phi_{N^\prime L^\prime}(\vec{P})\right]_{\Lambda^\prime M_\Lambda^\prime} \\
+  & \times	\Braket{n_1l_1n_2l_2;\Lambda | nlNL;\Lambda} \Braket{n^\prime l^\prime N^\prime L^\prime;\Lambda^\prime |n_1l_1n_2l_2;\Lambda^\prime}
+\end{align}
+
+\begin{align}
+n_2(k,P) & = \int d\Omega_k \int d\Omega_P\  n_2(\vec{k},\vec{P})  \\
+& = \frac{4}{A(A-1)}\sum_{\substack{n_1l_1}} \sum_{\substack{n_2l_2}} \sum_{\substack{\Lambda M_\Lambda}} \sum_{\substack{\Lambda^\prime M_\Lambda^\prime}} \sum_{\substack{nl}} \sum_{\substack{NL}} \sum_{\substack{n^\prime}} \sum_{\substack{N^\prime }} \left[ K_{nl}(k) K_{NL}(P) \right]_{\Lambda M_\Lambda} \nonumber \\
+  & \times \left[ K_{n^\prime l}(k) K_{N^\prime L}(P)\right]_{\Lambda^\prime M_\Lambda^\prime}  \times \left[ 1 - (-1)^l \right] \\
+  & \times	\Braket{n_1l_1n_2l_2;\Lambda | nlNL;\Lambda} \Braket{n^\prime l N^\prime L;\Lambda^\prime |n_1l_1n_2l_2;\Lambda^\prime}.
+\end{align}
+
+
+
+
 	
 \subsection{IPM for harmonic oscillator potential}
+\subsubsection{General properties of the spherical Harmonic Oscillator}
 We consider the nucleons moving independently in a spherical symmetric harmonic oscillator potential. From the above we know that we only need to calculate the one-particle wave functions and their fourier transforms. The 3D time independent Schrodinger equation for one patricle is
 \begin{equation} \label{eq:HO}
-\left( -\frac{\hbar^2}{2M_N} \nabla^2 + \frac{1}{2} M_N \omega^2 r^2 \right) \phi_{nlm}(\vec{r}) = E\phi_{nlm}(\vec{r})
+\left( -\frac{\hbar^2}{2M_N} \nabla^2 + \frac{1}{2} M_N \omega^2 r^2 \right) \phi_{nlm}(\vec{r}) = E\phi_{nlm}(\vec{r}).
 \end{equation}
-where the parameter $\hbar\omega$ can be parameterized as
+The parameter $\hbar\omega$ can be parameterized as
 \begin{equation}
 \hbar\omega (MeV) = 45A^{-1/3}-25A^{-2/3},
 \end{equation}
-where A is the mass number of the nucleus. The general solution of (\ref{eq:HO}) is given by
+with A the mass number of the nucleus. The general solution of (\ref{eq:HO}) is given by
 \begin{equation}
-\phi_{nlm}(\vec{r}) \equiv \Braket{\vec{r}|nlm} = R_{nl}(r)Y_{lm}(\Omega)	
+\phi_{nlm}(\vec{r}) \equiv \braket{\vec{r}|nlm} = R_{nl}(r)Y_{lm}(\Omega)	
 \end{equation}
 where $Y_{lm}(\Omega)$ are the spherical harmonics and the radial wave functions are given in function of the generalized Laguerre polynomals $L^\alpha_n(r)$ by
 \begin{equation}
@@ -221,28 +358,31 @@ where
 \end{equation}
 One can calculate the fourier transform of these wave functions explicitly or one can transform equation \ref{eq:HO}, which is written in configuration space, into momentum space
 \begin{equation} \label{eq:HO_momentum}
-\left( -\frac{M_N \omega^2 \hbar^2}{2} \nabla^2 + \frac{1}{2M_N} k^2 \right) \tilde{\phi}_{nlm}(\vec{k}) = E\tilde{\phi}_{nlm}(\vec{k}).
+\left( -\frac{M_N \omega^2}{2} \nabla^2 + \frac{\hbar^2}{2M_N} k^2 \right) \tilde{\phi}_{nlm}(\vec{k}) = E\tilde{\phi}_{nlm}(\vec{k}).
 \end{equation}
 One can now see that this equation has the same form as equation (\ref{eq:HO}). So the solutions have the same form
 \begin{equation}
-\phi_{nlm}(\vec{k}) \equiv \Braket{\vec{k}|nlm} = K_{nl}(k)Y_{lm}(\Omega)	
+\phi_{nlm}(\vec{k}) \equiv \braket{\vec{k}|nlm} = K_{nl}(k)Y_{lm}(\Omega)	
 \end{equation}
 where $Y_{lm}(\Omega)$ are the spherical harmonics and the radial wave functions are given in function of the generalized Laguerre polynomals $L^\alpha_n(k)$ by
 \begin{equation}
- K_{nl}(k) = \left[ \frac{2n!}{\Gamma(n+l+\frac{3}{2})}\nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} k^l e^{-\frac{\nu' k^2}{2}} L^{l+\frac{1}{2}}_n(\nu' r^2)
+ K_{nl}(k) = \left[ \frac{2n!}{\Gamma(n+l+\frac{3}{2})}\nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} k^l e^{-\frac{\nu' k^2}{2}} L^{l+\frac{1}{2}}_n(\nu' k^2)
 \end{equation}
 where 
 \begin{equation}
-\nu' \equiv \frac{\hbar}{M_N \omega}
+\nu^{\ \prime} \equiv \frac{\hbar}{M_N \omega}.
 \end{equation}
 
-Now one can calculate the radial one-body momentum distribution
+\subsubsection{Nuclear momentum distributions for HO potential}
+Because the harmonic oscillator potential is spherically symmetric we can split the solution in radial and angular parts. For graphical illustration one can plot the radial part of the momentum distribution
 \begin{align}
-n_1(k) & = \int d\Omega n_1(\vec{k}) \\
-	   & = 2 \sum_{nlm} K^2_{nl}(k) \int d\Omega Y^*_{lm}(\theta, \varphi) Y_{lm}(\theta, \varphi)  \\
-	   & = 2 \sum_{nl} (2l+1) K^2_{nl}(k)\\
+n_1(k) &  =  \frac{1}{A} \int d\Omega \sum_{nlm, spin}\phi^*_{nlm}(\vec{k}) \phi_{nlm}(\vec{k}) \\
+& =   \frac{2}{A} \sum_{nlm} K^2_{nl}(k) \int d\Omega Y^*_{lm}(\Omega)  Y_{lm}(\Omega) \\
+& =  \frac{2}{A} \sum_{nl} (2l+1) K^2_{nl}(k) 
 \end{align}
-where the factor 2 is for spin degeneracy and each state $(n,l)$ is $(2l+1)$ times degenerate. Fist we need to calculate the energy of each state. The sum goes over the lowest energy states $(n,l)$ until al nucleons are in a state. We consider the proton and the neutron to be identical in mass.
+The sum over the spin variables gives a factor 2 because there is no spin dependence in the wave functions. The other sums go over all occupied states.
+
+
 
 \end{document}
 

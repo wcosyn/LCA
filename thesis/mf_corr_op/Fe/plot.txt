@@ -1,0 +1,8 @@
+set terminal png font "/Library/Fonts/Arial.ttf" 14
+set xlabel "k (1/fm)"
+set ylabel "n(k) (fm^3)"
+set log y
+set yrange [0.0001:500]
+set term png
+set output "Fe_mf.png" 
+plot "Fe_mf.txt" u 1:2
