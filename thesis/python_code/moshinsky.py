@@ -154,9 +154,11 @@ def clebsch_gordan(j_1, j_2, j_3, m_1, m_2, m_3):
 
     - Jens Rasch (2009-03-24): initial version
     """
-    res = (-1) ** sympify(j_1 - j_2 + m_3) * sqrt(2 * j_3 + 1) * \
+    res = (-1) ** sympify(j_1 - j_2 + m_3) * ma.sqrt(2 * j_3 + 1) * \
         wigner_3j(j_1, j_2, j_3, m_1, m_2, -m_3)
     return res
+
+print clebsch_gordan(2, 2, 4, 2, 1, 3)
 
 
 def _big_delta_coeff(aa, bb, cc, prec=None):
@@ -401,7 +403,7 @@ def Moshinsky(n, l, N, L, n1, l1, n2, l2, c):
      else:
           return 0
 
-print clebsch_gordan(2,1,3,1,1,2)
+
           
 def format(value):
     return "%.9f" % value
