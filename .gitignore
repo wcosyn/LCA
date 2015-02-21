@@ -1,0 +1,7 @@
+# get rid of mac folder info files
+#
+.DS_Store
+
+# get rid of backups on ubuntu, often suffixed by tilde ~
+#
+*~
