@@ -64,7 +64,7 @@ def twobody_1(k, M_w, i, mt_1, mt_2, n1 , n2):
                     for M_S in xrange(-S, S+1):
                          for T in xrange(0, 2):
                               for M_T in xrange(-T, T+1):
-                                   if(ms_1 != ms_2 and mt_1 != mt_2):
+                                   if(ms_1 != ms_2 or mt_1 != mt_2):
                                         result = result + ((1-(-1)*(S+T))**2)*(clebsch_gordan(0.5,0.5,S,ms_1-0.5,ms_2-0.5,M_S)**2)*(clebsch_gordan(0.5,0.5,T,mt_1,mt_2,M_T)**2)*Rad_wavefunc(k/np.sqrt(2), v_mom(M_w,i), 0, 0)*Rad_wavefunc(k/np.sqrt(2), v_mom(M_w,i), 0, 0)*norm(v_mom(M_w,i), 0, 0)*norm(v_mom(M_w,i), 0, 0)
      return (1/16.)*result
      
@@ -77,7 +77,7 @@ def twobody_2(k, M_w, i, mt_1, mt_2, n1 , n2):
                     for M_S in xrange(-S, S+1):
                          for T in xrange(0, 2):
                               for M_T in xrange(-T, T+1):
-                                   if(ms_1 != ms_2 and mt_1 != mt_2):
+                                   if(ms_1 != ms_2 or mt_1 != mt_2):
                                         result = result + ((1-(-1)*(S+T))**2)*(clebsch_gordan(0.5,0.5,S,ms_1-0.5,ms_2-0.5,M_S)**2)*(clebsch_gordan(0.5,0.5,T,mt_1,mt_2,M_T)**2)*wave_part(0,0, M_w, i,k)*wave_part(0, 0, M_w, i,k)
      return (1./np.pi)*result
      
