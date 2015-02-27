@@ -1,4 +1,4 @@
-#calculate two-body momentum distribution
+#calculate two-body total momentum (\vec{P} = \vec{k_1} + \vec{k_2}) distribution 
 
 import math
 from moshinsky import clebsch_gordan, Moshinsky 
@@ -36,23 +36,27 @@ def v_mom(M, index):
 def Rad_wavefunc(k, a, n, l):
 	t = a*(k**2)
 	return (k**l)*sp.special.eval_genlaguerre(n, l+0.5, t)*np.exp(-(a/2.)*k**2)
-
+     
+#norm radial wave function
 def norm(a, n, l):
 	return np.sqrt((2*math.factorial(n)*a**(l+(3./2.)))/math.gamma(n+l+(3./2.)))
      
+#returns spherical bessel function of order n in point z     
 def sph_Bessel(n,z):
      x = sp.special.sph_jn(n,z)
      return x[0][n]
-
+     
+#integrand for integrals thesis M. Vanhalst p.75 eq.16
 def integr(r,n,l, M_w, i,k):
-     return r**2*Rad_wavefunc(np.sqrt(2)*r, v(M_w,i), n, l)*norm(v(M_w,i), n, l)*sph_Bessel(n, k*r)
-
+     return r**2*Rad_wavefunc(r*np.sqrt(2), v(M_w,i), n, l)*norm(v(M_w,i), n, l)*sph_Bessel(n, k*r)
+     
+#integral thesis M. Vanhalst p.75 eq.16
 def wave_part(n, l, M_w, i,k): 
      result, err = sp.integrate.quad(integr,0, 10, args=(n,l, M_w, i,k))
      return result
      
-
-def twobody(k, M_w, i, mt_1, mt_2, n1 , n2):
+#rechtstreekse input van k-space golffuncties Rad_wavefunc(P, v_mom, N, L)
+def twobody_1(k, M_w, i, mt_1, mt_2, n1 , n2):
      result = 0
      for ms_1 in xrange(0, 2):
           for ms_2 in xrange(0, 2):
@@ -60,23 +64,47 @@ def twobody(k, M_w, i, mt_1, mt_2, n1 , n2):
                     for M_S in xrange(-S, S+1):
                          for T in xrange(0, 2):
                               for M_T in xrange(-T, T+1):
-                                   result = result + ((1-(-1)*(S+T))**2)*(clebsch_gordan(0.5,0.5,S,ms_1-0.5,ms_2-0.5,M_S)**2)*(clebsch_gordan(0.5,0.5,T,mt_1,mt_2,M_T)**2)*(clebsch_gordan(0,0,0,0,0,0)*clebsch_gordan(0,0,0,0,0,0))*(clebsch_gordan(0,0,0,0,0,0)*clebsch_gordan(0,0,0,0,0,0))*(Moshinsky(0,0,0,0,0,0,0,0,0)*Moshinsky(0,0,0,0,0,0,0,0,0))*wave_part(0, 0, M_w, i,k)*wave_part(0, 0, M_w, i,k)
+                                   if(ms_1 != ms_2 or mt_1 != mt_2):
+                                        result = result + ((1-(-1)*(S+T))**2)*(clebsch_gordan(0.5,0.5,S,ms_1-0.5,ms_2-0.5,M_S)**2)*(clebsch_gordan(0.5,0.5,T,mt_1,mt_2,M_T)**2)*Rad_wavefunc(k/np.sqrt(2), v_mom(M_w,i), 0, 0)*Rad_wavefunc(k/np.sqrt(2), v_mom(M_w,i), 0, 0)*norm(v_mom(M_w,i), 0, 0)*norm(v_mom(M_w,i), 0, 0)
+     return (1/16.)*result
+     
+#berekening eq 16 p75 thesis M. Vanhalst
+def twobody_2(k, M_w, i, mt_1, mt_2, n1 , n2):
+     result = 0
+     for ms_1 in xrange(0, 2):
+          for ms_2 in xrange(0, 2):
+               for S in xrange(0, 2):
+                    for M_S in xrange(-S, S+1):
+                         for T in xrange(0, 2):
+                              for M_T in xrange(-T, T+1):
+                                   if(ms_1 != ms_2 or mt_1 != mt_2):
+                                        result = result + ((1-(-1)*(S+T))**2)*(clebsch_gordan(0.5,0.5,S,ms_1-0.5,ms_2-0.5,M_S)**2)*(clebsch_gordan(0.5,0.5,T,mt_1,mt_2,M_T)**2)*wave_part(0,0, M_w, i,k)*wave_part(0, 0, M_w, i,k)
      return (1./np.pi)*result
      
- 
-def opvulling(k,Q_1, Q_2, M_w, i, mt_1, mt_2):
-     return twobody(k, M_w, i, mt_1, mt_2,0, 0)
-#twobody summation for pp, nn and pn
-def distribution(k, i):
-     return (1.0/(A[i]*(A[i]-1)))*(opvulling(k, Z[i], Z[i],M_average, i, 0.5, 0.5) + opvulling(k,N[i], N[i], M_average, i, -0.5, -0.5) + opvulling(k, Z[i], N[i],M_average, i, 0.5, -0.5) + opvulling(k, N[i], Z[i],M_average, i, -0.5, 0.5))
+def opvulling_1(k,Q_1, Q_2, M_w, i, mt_1, mt_2):
+     return twobody_1(k, M_w, i, mt_1, mt_2,0, 0)
      
-  
+#twobody summation for pp, nn and pn
+def distribution_1(k, i):
+     return (1.0/(A[i]*(A[i]-1)))*(opvulling_1(k, Z[i], Z[i],M_average, i, 0.5, 0.5) + opvulling_1(k,N[i], N[i], M_average, i, -0.5, -0.5) + opvulling_1(k, Z[i], N[i],M_average, i, 0.5, -0.5) + opvulling_1(k, N[i], Z[i],M_average, i, -0.5, 0.5))
+     
+
+def opvulling_2(k,Q_1, Q_2, M_w, i, mt_1, mt_2):
+     return twobody_2(k, M_w, i, mt_1, mt_2,0, 0)
+     
+#twobody summation for pp, nn and pn
+def distribution_2(k, i):
+     return (1.0/(A[i]*(A[i]-1)))*(opvulling_2(k, Z[i], Z[i],M_average, i, 0.5, 0.5) + opvulling_2(k,N[i], N[i], M_average, i, -0.5, -0.5) + opvulling_2(k, Z[i], N[i],M_average, i, 0.5, -0.5) + opvulling_2(k, N[i], Z[i],M_average, i, -0.5, 0.5))
+     
+def integrand(k,i):
+     return distribution_2(k,i)*k**2
 #helpfunction: round values     
 def format(value):
     return "%.8f" % value
 
 nuclides = [0]
-distr_array = []
+distr_array_1 = []
+distr_array_2 = []
 for j in nuclides:
      f = open("{:s}_mf_twobody.txt".format(nuc[j]), "w")
      f.write("# mass number (A) = " + str(A[j]) +  '\n')
@@ -84,16 +112,19 @@ for j in nuclides:
      f.write("# k (1/fm)" + '\t' + "mf (fm^3)" + '\n')
      print str(A[j])
      i = 0
-     while (i < 25):
+     while (i < 50):
           print i
-          c = distribution(0.1*i, j)
-          distr_array.append(c*(0.1*i)**2)
-          txt = str(0.1*i) + '\t' + str(format(c))
+          c = distribution_1(0.1*i, j)
+          d = distribution_2(0.1*i, j)
+          distr_array_1.append(c*(0.1*i)**2)
+          distr_array_2.append(d*(0.1*i)**2)
+          txt = str(0.1*i) + '\t' + str(format(c)) + '\t' + str(format(d))  + '\t' + str(format(c/d))
           f.write(txt)
           f.write('\n')
           i = i+1
-     nor = sp.integrate.trapz(distr_array,x=None,dx = 0.1)
-     f.write("#normalisation = " + str(nor) + '\n') 
+     nor_1 = sp.integrate.trapz(distr_array_1,x=None,dx = 0.1)
+     nor_2 = sp.integrate.trapz(distr_array_2,x=None,dx = 0.1)
+     f.write("#normalisation = " + str(nor_1) + '\t' + str(nor_2) + '\n') 
      f.close()
 
    
