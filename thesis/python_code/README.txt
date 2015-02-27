@@ -3,3 +3,4 @@
 2. moshinsky.py berekent clebsch-gordan coefficienten en moshinsky brackets voor de two-body momentum distributie
 3. twobody.py berekent two-body relative momentum distr volgens formule (89) uit men voorlopige thesis (Nuclearmomentumdistributions.pdf)
 3. twobody_short.py berekent two-body relative momentum distr volgens formule (90) uit men voorlopige thesis (Nuclearmomentumdistributions.pdf)
+4. helium.py calculates two-body cm momentum distribution following thesis M. Vanhalst, p74-75
