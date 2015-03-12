@@ -1,20 +1,25 @@
 #two-body momentum for full shell nucleus
 import math
-from moshinsky import Moshinsky, clebsch_gordan
+from matrices import clebsch_gordan, clebsch_gordan_spin
 import scipy as sp
 import numpy as np
-from scipy import special
+from sympy.physics.quantum.cg import CG
+from sympy import S
 from scipy.integrate import quad
+from read import choose_file
 
 
-nuc = ["He","O","Ca40"]
-A   = [4,16,40]
-Z   = [2,8,20]
+nuc = ["He","O"]
+A   = [4,16]
+Z   = [2,8]
 N = [m - n for m,n in zip(A,Z)] #number of neutrons
+
 
 Omega = []
 for i in range(len(A)):
-     Omega.append((45*(A[i]**(-1./3.)))-(25*(A[i]**(-2./3.))))
+     a = (45*(A[i]**(-1./3.)))-(25*(A[i]**(-2./3.)))
+     Omega.append(a)
+
      
 hbarc = 197.327 #(MeV*fm)
 M_n = 939.565 #mass neutron (MeV) [Particle Data Group]
@@ -53,33 +58,56 @@ def integr(r,n,l, M_w,k):
 def wave_part(n, l, M_w,k): 
      result, err = sp.integrate.quad(integr,0, 100, args=(n,l, M_w, k))
      return result
-     
-def coefficient(S,M_S,T,M_T, n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n,l , m_l, N, L, M_L):
+
+
+#summation over Lambda, M_lambda of clebsch_gordan(l_1, m_1, l_2, m_2, Lambda, M_lambda) * Moshinsky_bracket(n_1, l_1, n_2, l_2, n, l , N , L, Lambda) * clebsch_gordan(l, m_l, L, M_L, Lambda, M_lambda) (see thesis Maarten p74 eq 14)
+def CG_MB_CG(n_1, l_1, m_1, n_2, l_2, m_2, n,l , m_l, N, L, M_L):
      result = 0
-     for lambd in xrange(abs(l_1 - l_2), l_1 + l_2 +1):
-          for M_lambd in xrange(-lambd, lambd +1):
-               result = result + clebsch_gordan(l_1, l_2, lambd, m_1, m_2, M_lambd)*Moshinsky(n,l,N,L,n_1,l_1,n_2,l_2,lambd)*clebsch_gordan(l, L, lambd, m_l, M_L, M_lambd)
-     return (1./math.sqrt(2))*(1-(-1)**(S+T+l))*clebsch_gordan(0.5, 0.5, S, s_1, s_2, M_S)*clebsch_gordan(0.5, 0.5, T, t_1, t_2, M_T)*result
-     
-def twobody(P,n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, i):
+     z = choose_file(n_1, l_1, n_2, l_2)
+     mosh_bracket = 0
+     if(abs(l_1 - l_2) <= abs(l - L)):
+          x = abs(l - L)
+     else:
+          x = abs(l_1 - l_2)
+     if(l_1 + l_2 <= l + L):
+          y = l_1 + l_2
+     else:
+          y = l + L
+     for lambd in xrange(x, y + 1):
+          for i in xrange(0,len(z)):
+               if(n == z[i][0] and l == z[i][1] and N == z[i][2] and L == z[i][3] and lambd == z[i][4]):
+                    if(abs(z[i][6]) > 0.00000001):
+                         mosh_bracket = z[i][6]
+                         result = result + mosh_bracket*clebsch_gordan[lambd][l_1][l_2][m_1+6][m_2+6]*clebsch_gordan[lambd][l][L][m_l+6][M_L+6]
+                         #conventie clebsch_gordan arrays zie matrices.py
+     return result
+
+#coefficient see thesis Maarten P74 eq 14.                            
+def coefficient(S_,T, n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n,l , m_l, N, L, M_L):           
+     return (1./math.sqrt(2))*(1-(-1)**(S_+T+l))*clebsch_gordan_spin[S_][s_1][s_2]*clebsch_gordan_spin[T][t_1][t_2]*CG_MB_CG(n_1, l_1, m_1, n_2, l_2, m_2, n,l , m_l, N, L, M_L)
+                    
+
+def total_twobody(P, n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, i):
      result = 0
      for N in xrange(0, 2*n_1 + l_1 +2*n_2 + l_2 + 1):
-          for L in xrange(0, 2*n_1 + l_1 +2*n_2 + l_2 + 1):
+          for L in xrange(0, l_1 + l_2 + 1):
                a = Rad_wavefunc(P, v_mom(M_average,i), N, L)*norm(v_mom(M_average,i), N, L)
                for N_ in xrange(0, 2*n_1 + l_1 +2*n_2 + l_2 + 1):
                     b = Rad_wavefunc(P, v_mom(M_average,i), N_, L)*norm(v_mom(M_average,i), N_, L)
-                    for n in xrange(0, 2*n_1 + l_1 +2*n_2 + l_2 + 1):
-                         for l in xrange(0, 2*n_1 + l_1 +2*n_2 + l_2 + 1):
-                              if(2*n_1 + l_1 +2*n_2 + l_2  == 2*n + l + 2*N + L and 2*n_1 + l_1 +2*n_2 + l_2 == 2*n + l + 2*N_ + L):
+                    for n in xrange(0, 2*n_1 + l_1 + 2*n_2 + l_2 + 1):
+                         for l in xrange(0, l_1 + l_2 + 1):
+                              if(2*n_1 + l_1 + 2*n_2 + l_2  == 2*n + l + 2*N + L and 2*n_1 + l_1 + 2*n_2 + l_2 == 2*n + l + 2*N_ + L):
                                    for m_l in xrange(-l, l+1):
                                         for M_L in xrange(-L,L+1):
-                                             for S in xrange(0,2):
+                                             for S_ in xrange(0,2):
                                                   for T in xrange(0,2):
-                                                       result = result + coefficient(S, s_1 + s_2, T, t_1 + t_2, n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n,l , m_l, N, L, M_L)*coefficient(S, s_1 + s_2, T, t_1 + t_2, n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n,l , m_l, N_, L, M_L)*a*b
+                                                       result = result + coefficient(S_, T, n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n,l , m_l, N, L, M_L)*coefficient(S_,T, n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n,l , m_l, N_, L, M_L)*a*b
      return (1.0/(A[i]*(A[i]-1)))*result
 
 shell = [0,1,2]
-     
+orbital = ["s","p","d","f"]
+ 
+#Opvulling  van de schillen van Harmonische Oscillator   
 def opvulling(P,i):
      result = 0
      for N_1 in xrange(0,shell[i]+1):
@@ -87,42 +115,40 @@ def opvulling(P,i):
                start_1 = 0
           else:
                start_1 = 1
-          for l_1 in xrange(start_1,shell[i]+1,2):
-               n_1 = int((N_1 - l_1)/2)
+          for l_1 in xrange(start_1, N_1 + 1,2):
+               n_1 = int((N_1 - l_1)/2.0)
                for m_1 in xrange(-l_1, l_1 +1):
                     for N_2 in xrange(0,shell[i]+1):
                          if(N_2 % 2 == 0):
                               start_2 = 0
                          else:
                               start_2 = 1
-                         for l_2 in xrange(start_2,shell[i]+1, 2):
-                              n_2 = int((N_2 - l_2)/2)
-                              print "n_1 = " + str(n_1)
-                              print "n_2 = " + str(n_2)
-                              for m_2 in xrange(-l_2, l_2 +1):
+                         for l_2 in xrange(start_2, N_2 + 1, 2):
+                              n_2 = int((N_2 - l_2)/2.0)
+                              for m_2 in xrange(-l_2, l_2 + 1):
                                    for s_1 in xrange(0,2):
                                         for s_2 in xrange(0,2):
                                              for t_1 in xrange(0,2):
                                                   for t_2 in xrange(0,2):
                                                        if(n_1 != n_2 or l_1 != l_2 or m_1 != m_2 or s_1 != s_2 or t_1 != t_2):
-                                                            result = result + twobody(P,n_1, l_1, m_1, s_1-0.5, t_1-0.5, n_2, l_2, m_2, s_2-0.5, t_2-0.5, i)
+                                                            result = result + total_twobody(P,n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, i)
      return result
      
 
 def format_(value):
     return "%.8f" % value
 
-distr_array = []
+
 step = 0.1
-upperlimit = 26
+upperlimit = 25
 for j in xrange(0,2):
      f = open("{:s}.txt".format(nuc[j]), "w")
      f.write("# mass number (A) = " + str(A[j]) +  '\n')
      f.write("# number of protons (Z) = " + str(Z[j]) +'\n')
      f.write("# k (1/fm)" + '\t' + "total two_body (fm^3)"  +  '\n')
      i = 0
+     distr_array = []
      while (i < upperlimit):
-          print i
           c = 0
           c = opvulling(step*i, j)
           distr_array.append(c*((step*i)**2))
@@ -134,17 +160,3 @@ for j in xrange(0,2):
      f.write("#normalisation = " + str(nor) +'\n') 
      f.close()
 
-                                                       
-                                   
-                              
-                         
-                         
-                         
-                
-
-     
-     
-     
-     
-     
-     

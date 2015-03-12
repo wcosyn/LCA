@@ -1,0 +1,3 @@
+0 0 0 0 0 0 1
+2 2 2 2 2 2 0
+#lijn 2 wordt niet gebruikt voor berekeningen in full_shell code maar zorgt er wel voor dat we een 2D array input krijgen (wat de code verwacht)
