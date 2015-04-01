@@ -8,7 +8,7 @@ rc('text', usetex=True)
 rc('font', size=24)
 #rc('font',family='serif')
 
-len= len(sys.argv)-1
+len= len(sys.argv)-1 # WUT? seriously Maarten?!?
 fig=pl.figure()
 fig.subplots_adjust(bottom=0.15, left=0.15)
 
@@ -36,8 +36,8 @@ pl.ylabel( "$P_2$" )
 normalization = sum( total*X*X) * (X[1]-X[0] )
 print "Normalization is ", normalization
 
-#pl.show()
-pl.savefig( sys.argv[1] )
+pl.show()
+#pl.savefig( sys.argv[1] )
 
 
 
