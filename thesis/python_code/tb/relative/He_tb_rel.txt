@@ -1,0 +1,6 @@
+# mass number (A) = 4
+# number of protons (Z) = 2
+# k (1/fm)	relative two_body (fm^3)
+0.0	7.63061507977
+2.0	0.000931326494379
+#normalisation = 0.00372530597752
