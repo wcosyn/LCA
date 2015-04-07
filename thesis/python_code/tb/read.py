@@ -12,23 +12,21 @@ def choose_file( n_1, l_1, n_2, l_2):
 
 def moshinsky( n_1, l_1, n_2, l_2, n, l, N, L, Lambd):
      result = 0
-     if(n_1 > n_2):
+     if(n_1*10 + l_1 > n_2*10 + l_2):
           z = choose_file(n_2, l_2, n_1, l_1)
      else:
           z = choose_file(n_1, l_1, n_2, l_2)
      number = 100000*n + 10000*l + 1000*N + 100*L + 10*Lambd
      for i in xrange(0, len(z)):
           if(number == z[i][0]):
-               if(abs(z[i][1]) > 0.000000001):
-                    if(n_1 > n_2):
+               if(abs(z[i][1]) > 0.000000000001):
+                    if(n_1*10 + l_1 > n_2*10 + l_2):
                          result = ((-1.0)**(L-Lambd))*z[i][1]
                     else:
                          result = z[i][1]
                else:
                     result = 0
                break
-          else:
-               result = 0
      return result
                
 

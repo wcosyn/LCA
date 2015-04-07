@@ -32,8 +32,8 @@ for i in range(len(A)):
      Omega.append((45.0*(A[i]**(-1./3.)))-(25.0*(A[i]**(-2./3.))))
      
 hbarc = 197.327 #(MeV*fm)
-M_n = 938 #mass neutron (MeV) [Particle Data Group]
-M_p = 938 #mass proton (MeV) [Particle Data Group]
+M_n = 938.0 #mass neutron (MeV) [Particle Data Group]
+M_p = 938.0 #mass proton (MeV) [Particle Data Group]
 M_average = (M_n + M_p)/2.
 
 degen   = np.array([2,4,2,6,2,4,8,4,6,2,10,8,6,4,2,12,10,8,6,4,2,14,10,6,12,8,2,4])
@@ -96,31 +96,7 @@ def clebsch_gordan_spin(ms_1, ms_2, S):
                result = a[u][3]
                break
      return result
-               
 
-def six_j(j_1, j_2, j_3, j_4, j_5, j_6):
-     result = 0
-     if( j_1 >= abs(j_2 - j_3) and j_1 <= j_2 + j_3 and j_1 >= abs(j_5 - j_6) and j_1 <= j_5 + j_6 and j_4 >= abs(j_2 - j_6) and j_4 <= j_2 + j_6 and j_4 >= abs(j_5 - j_3) and j_4 <= j_5 + j_3 ):
-          if((j_1 + j_2 + j_3) % 1 == 0 and (j_1 + j_5 + j_6) % 1 == 0 and (j_4 + j_2 + j_6) % 1 == 0 and (j_4 + j_5 + j_3) % 1 == 0 ):
-               result = wigner_6j(j_1, j_2, j_3, j_4, j_5, j_6,prec=10)
-     return result
-     
-def nine_j(j_1, j_2, j_3, j_4, j_5, j_6, j_7, j_8, j_9):
-     result = 0
-     if(abs(j_1 - j_2) <= j_3 and j_1 + j_2 >= j_3 and abs(j_4 - j_5) <= j_6 and j_4 + j_5 >= j_6 and abs(j_7 - j_8) <= j_9 and j_7 + j_8 >= j_9 ):
-          if(abs(j_1 - j_4) <= j_7 and j_1 + j_4 >= j_7 and abs(j_2 - j_5) <= j_8 and j_2 + j_5 >= j_8 and abs(j_3 - j_6) <= j_9 and j_3 + j_6 >= j_9 ):
-               if(((j_1 + j_2 + j_3) % 1) == 0 and ((j_4 + j_5 + j_6) % 1) == 0 and ((j_7 + j_8 + j_9) % 1) == 0):
-                    result = wigner_9j(j_1, j_2, j_3, j_4, j_5, j_6, j_7, j_8, j_9,prec=10)
-               else: 
-                    result = 0
-          else: 
-               result = 0
-     else:
-          result = 0
-     return result
-     
-
-               
 def CG_MB_CG(n_1, l_1, m_1, n_2, l_2, m_2, n,l , m_l, N, L, M_L):
      result = 0
      if(math.fabs(l_1 - l_2) <= math.fabs(l - L)):
@@ -133,7 +109,8 @@ def CG_MB_CG(n_1, l_1, m_1, n_2, l_2, m_2, n,l , m_l, N, L, M_L):
           y = l + L
      if(m_1 + m_2 == m_l + M_L):
           for lambd in xrange(x, y + 1):
-               result = result + (moshinsky(n_1, l_1, n_2, l_2, n,l , N, L, lambd)*(clebsch_gordan(l_1, m_1, l_2, m_2, lambd))*(clebsch_gordan(l, m_l, L, M_L, lambd)))
+               if(abs(m_1 + m_2) <= lambd):
+                    result = result + (moshinsky(n_1, l_1, n_2, l_2, n,l , N, L, lambd)*(clebsch_gordan(l_1, m_1, l_2, m_2, lambd))*(clebsch_gordan(l, m_l, L, M_L, lambd)))
      return result
 
 def coefficient(S_, T, n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n,l , m_l, N, L, M_L):           
@@ -145,7 +122,7 @@ def hulp(n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n, l, n_):
      key = (n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n, l, n_)
      result = 0
      for N in xrange(0, 2*n_1 + l_1 + 2*n_2 + l_2 + 1):
-          for L in xrange(0, 2*n_1 + l_1 + 2*n_2 + l_2 + 1):
+          for L in xrange(0, 2*n_1 + l_1 + 2*n_2 + l_2 + 1 - 2*N):
                if(2*n_1 + l_1 + 2*n_2 + l_2  == 2*n + l + 2*N + L and 2*n_1 + l_1 + 2*n_2 + l_2 == 2*n_ + l + 2*N + L):
                     for m_l in xrange(-l, l+1):
                          for M_L in xrange(-L,L+1):
@@ -160,7 +137,7 @@ def hulp(n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n, l, n_):
 def twobody(P,n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, i):
      result = 0
      for n in xrange(0, 2*n_1 + l_1 + 2*n_2 + l_2 + 1):
-          for l in xrange(0, l_1 + l_2 + 1):
+          for l in xrange(0, 2*n_1 + l_1 + 2*n_2 + l_2 + 1):
                a = Rad_wavefunc(P, v_mom(M_average, i), n, l)*norm(v_mom(M_average, i), n, l)
                for n_ in xrange(0, 2*n_1 + l_1 + 2*n_2 + l_2 + 1):
                     b = Rad_wavefunc(P, v_mom(M_average, i), n_, l)*norm(v_mom(M_average, i), n_, l)
@@ -169,7 +146,7 @@ def twobody(P,n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, i):
                     else:
                          key = (n_1, l_1, m_1, s_1, t_1, n_2, l_2, m_2, s_2, t_2, n, l, n_)
                          result = result + a*b*cc[key]
-     return (1.0/(A[i]*(A[i]-1)))*result    
+     return result*(1.0/(A[i]*(A[i]-1)))   
 
 def level(Q):
      j = 0
@@ -204,9 +181,9 @@ def opvulling(P,i):
                          n_2 = radial[lvl_2]
                          l_2 = orbital[lvl_2]
                          if(t_1 == t_2 and n_1 == n_2 and l_1 == l_2 and degen[lvl_2] == degen[lvl_1]):
-                              c = float(degen[lvl_2]-1)/ ((2*(2*l_2 + 1))-1)
+                              c = float(degen[lvl_2]-1)/ float((2*(2*l_2 + 1))-1)
                          else:
-                              c = float(degen[lvl_2])/(2*(2*l_2 + 1))
+                              c = float(degen[lvl_2])/float(2*(2*l_2 + 1))
                          if(nos[lvl_2]-Q_2 > 0):
                               if(t_1 == t_2 and n_1 == n_2 and l_1 == l_2 and degen[lvl_2] == degen[lvl_1]):
                                    d = float(Q_2-nos[lvl_2-1]-1)/float(degen[lvl_2]-1)
@@ -235,7 +212,7 @@ f.write("# number of protons (Z) = " + str(Z[NUC]) +'\n')
 f.write("# k (1/fm)" + '\t' + "relative two_body (fm^3)"  +  '\n')
 j = 0
 distr_array = []
-cc= defaultdict(int)
+cc= defaultdict(float)
 while (j <= upperlimit):
 	print j
 	c = opvulling(step*j, NUC)
