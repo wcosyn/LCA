@@ -38,9 +38,18 @@ def level(Q):
           j = j + 1
      return j
        
-"""k = open("tabel.txt", "w")  
+k = open("tabel.txt", "w")  
 k.write("#t_1" + '\t' +  "t_2" + "n_1" + '\t' + "l_1" +  '\t'+ "n_2" + '\t' + "l_2" + '\t' +"d_1" + '\t' +"d_2"+ '\t' +  "p? "+ '\t' +  "numbr of states" )
-k.write('\n') """
+k.write('\n') 
+def level(Q):
+     j = 0
+     s = 0
+     while(s < Q):
+          s = s + degen[j]
+          j = j + 1
+     return j
+
+
 def opvulling(i):
      result = 0
      for t_1 in xrange(0,2):
@@ -56,7 +65,7 @@ def opvulling(i):
                     b = float(Q_1-nos[lvl_1-1])/float(degen[lvl_1])
                else:
                     b = 1
-               for t_2 in xrange(0,2 ):
+               for t_2 in xrange(0,2):
                     if(t_2 == 0):
                          Q_2 = N[i]
                     elif(t_2 == 1):
@@ -65,9 +74,9 @@ def opvulling(i):
                          n_2 = radial[lvl_2]
                          l_2 = orbital[lvl_2]
                          if(t_1 == t_2 and n_1 == n_2 and l_1 == l_2 and degen[lvl_2] == degen[lvl_1]):
-                              c = float(degen[lvl_2]-1)/ ((2*(2*l_2 + 1))-1)
+                              c = float(degen[lvl_2]-1)/ float((2*(2*l_2 + 1))-1)
                          else:
-                              c = float(degen[lvl_2])/(2*(2*l_2 + 1))
+                              c = float(degen[lvl_2])/float(2*(2*l_2 + 1))
                          if(nos[lvl_2]-Q_2 > 0):
                               if(t_1 == t_2 and n_1 == n_2 and l_1 == l_2 and degen[lvl_2] == degen[lvl_1]):
                                    d = float(Q_2-nos[lvl_2-1]-1)/float(degen[lvl_2]-1)
@@ -80,28 +89,22 @@ def opvulling(i):
                                    for s_1 in xrange(0,2):
                                         for s_2 in xrange(0,2):
                                              if(t_1 != t_2 or n_1 != n_2 or l_1 != l_2 or m_1 != m_2 or s_1 != s_2 or degen[lvl_2] != degen[lvl_1]):
-                                                  """if(t_1 != t_2 or n_1 != n_2 or l_1 != l_2):
-                                                  p = "no"
-                                                  else:
-                                                  p = "yes" """
-                                                  """if(t_1 != t_2 or n_1 != n_2 or l_1 != l_2 or s_1 != s_2 or m_1 != m_2):"""
-                                                  result = result + a*b*c*d 
-                                               
-                         """txt = str(t_1) +'\t' + str(t_2) +'\t'+ str(n_1) + '\t' + str(l_1)  + '\t'+ str(n_2) + '\t' + str(l_2)  + '\t'+ str(degen[lvl_1]) + '\t'+ str(degen[lvl_2]) + '\t' +str(result)+ '\t' + str(c*d*a*b)
+                                                  result = result + a*b*c*d
+                         txt = str(t_1) +'\t' + str(t_2) +'\t'+ str(n_1) + '\t' + str(l_1)  + '\t'+ str(n_2) + '\t' + str(l_2)  + '\t'+ str(degen[lvl_1]) + '\t'+ str(degen[lvl_2]) + '\t' +str(result)+ '\t' + str(c*d*a*b)
                          k.write(txt)
                          k.write('\n')
-                         k.write('\n')"""
+                         k.write('\n')
      return result
 
 
-#k.close()
 
-for i in range(0,len(A)):
+
+for i in range(3,4):
      print str(opvulling(i)) + '\t' + str(A[i]*(A[i]-1)) +'\t' +nuc[i]
 """som = 0    
 z = np.loadtxt("tabel.txt")
 for i in xrange(0,len(z)):
      som = som + z[i][8]
 print som """
-     
+k.close()
    

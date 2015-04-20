@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2014)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: NuclearMometumDistributions.aux
+The style file: plain.bst
+Database file #1: moshinsky.bib
+Database file #2: symbolic_algorithms_moshinsky.bib
+Database file #3: subatomic.bib
+Database file #4: argoneutrino.bib
+Database file #5: ankowski.bib
+Database file #6: qsrc.bib
+Database file #7: transformation.bib
+You've used 7 entries,
+            2118 wiz_defined-function locations,
+            546 strings with 5503 characters,
+and the built_in function-call counts, 2607 in all, are:
+= -- 231
+> -- 194
+< -- 0
++ -- 77
+- -- 70
+* -- 213
+:= -- 477
+add.period$ -- 21
+call.type$ -- 7
+change.case$ -- 51
+chr.to.int$ -- 0
+cite$ -- 7
+duplicate$ -- 76
+empty$ -- 156
+format.name$ -- 70
+if$ -- 501
+int.to.chr$ -- 0
+int.to.str$ -- 7
+missing$ -- 8
+newline$ -- 38
+num.names$ -- 14
+pop$ -- 55
+preamble$ -- 1
+purify$ -- 47
+quote$ -- 0
+skip$ -- 49
+stack$ -- 0
+substring$ -- 103
+swap$ -- 7
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 24
+warning$ -- 0
+while$ -- 19
+width$ -- 8
+write$ -- 76

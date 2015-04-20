@@ -1,0 +1,91 @@
+\documentclass[12pt]{article}
+\usepackage{braket}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{dsfont}
+\usepackage{commath}
+\setlength\parindent{0pt}
+\usepackage[a4paper, total={7.6in, 10in}]{geometry}
+\title{Two-body momentum distribution for IPM with HO potential}
+\author{Jarrick Nys}
+
+\begin{document}
+\maketitle
+Two-body momentum distribution in centre of well coordinates is given by
+\begin{align} \label{two-body}
+n_2(\vec{k}_1,\vec{k}_2) = \frac{1}{2A(A-1)}\sum_{\substack{\alpha \beta \\ \alpha  \neq \beta}} \left[\phi^*_{\alpha}(\vec{x}_1)\phi^*_{\beta}(\vec{x}_2)- \phi^*_{\beta}(\vec{x}_1)\phi^*_{\alpha}(\vec{x}_2) \right] \left[ \phi_{\alpha}(\vec{x}_1)\phi_{\beta}(\vec{x}_2)  - \phi_{\beta}(\vec{x}_1)\phi_{\alpha}(\vec{x}_2) \right].
+\end{align}
+Here, $\vec{x}$ is a shorthand notation for all the coordinates ($\vec{k}$, $\vec{\sigma}$, $\vec{\tau}$). Integration over spin and isospin coordinates is implied.
+The summation goes over all occupied states  ($n_\alpha$, $l_\alpha$, $m_\alpha$, $\sigma_\alpha$, $\tau_\alpha$).
+
+The total one-particle wavefunction is given by
+\begin{equation}
+\phi_\alpha (\vec{x_1}) = \psi_{n_\alpha l_\alpha m_\alpha}(\vec{k}) \chi_{\sigma_\alpha}(\vec{\sigma}) \xi_{\tau_\alpha}(\vec{\tau}).
+\end{equation}
+
+Consider the product of two momentum-space wave functions
+\begin{equation}
+\psi_{n_\alpha l_\alpha  m_\alpha }(\vec{k}_1)\psi_{n_\beta l_\beta m_\beta}(\vec{k}_2) 
+\end{equation}
+To change to relative and centre of mass coordinates one needs to couple the angular momenta of the two particles
+\begin{align*}
+\psi_{n_\alpha l_\alpha  m_\alpha }(\vec{k}_1)\psi_{n_\beta l_\beta m_\beta}(\vec{k}_2)  & = \sum_{\Lambda M_\Lambda} \Braket{\Lambda M_\Lambda | l_\alpha  m_\alpha  l_\beta m_\beta} \sum_{m^{\prime}_\alpha  m^{\prime}_\beta } \Braket{ l_\alpha  m^{\prime}_\alpha  l_\beta m^{\prime}_\beta | \Lambda M_\Lambda} \psi_{n_\alpha l_\alpha  m^{\prime}_\alpha }(\vec{k}_1)\psi_{n_\beta l_\beta m^{\prime}_\beta }(\vec{k}_2) \\
+& = \sum_{\Lambda M_\Lambda} \Braket{\Lambda M_\Lambda | l_\alpha  m_\alpha  l_\beta m_\beta} \left[ \psi_{n_\alpha l_\alpha }(\vec{k}_1)\psi_{n_\beta l_\beta}(\vec{k}_2) \right]_{\Lambda M_\Lambda} 
+\end{align*}
+
+with notation 
+\begin{equation*}
+\left[ \psi_{n_\alpha l_\alpha}(\vec{k}_1) \psi_{n_\beta l_\beta}(\vec{k}_2) \right]_{\Lambda M_\Lambda} \equiv \sum_{m_\alpha m_\beta} \psi_{n_\alpha l_\alpha m_\alpha}(\vec{k}_1) \psi_{n_\beta l_\beta m_\beta}(\vec{k}_2) \Braket{l_\alpha m_\alpha l_\beta m_\beta |\Lambda M_\Lambda}
+\end{equation*}
+For harmonic oscillator two-body states there is a simple transformation from cw coordinates to rcm coordinates, namely the Moshinsky transformation
+
+\begin{align*}
+\left[ \psi_{n_\alpha l_\alpha}(\vec{k}_1) \psi_{n_\beta l_\beta}(\vec{k}_2) \right]_{\Lambda M_\Lambda} & = \sum_{\substack{nl}} \sum_{\substack{NL}} \left[ \psi_{nl}(\vec{k})\psi_{NL}(\vec{P}) \right]_{\Lambda M_\Lambda} \Braket{nlNL;\Lambda | n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB} \\
+& = \sum_{\substack{nlm_l}} \sum_{\substack{NLM_L}} \Braket{lm_l L M_L|\Lambda M_\Lambda} \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB} \psi_{nlm_l}(\vec{k}) \psi_{NLM_L}(\vec{P}) 
+\end{align*}
+where $\Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB}$ is called the Moshinsky Braket.
+\begin{multline}
+\psi_{n_\alpha l_\alpha  m_\alpha}(\vec{k}_1)\psi_{n_\beta l_\beta m_\beta}(\vec{k}_2)  =  \\ \sum_{\substack{nlm_l \\ NLM_L}}\sum_{\Lambda M_\Lambda} \Braket{\Lambda M_\Lambda | l_\alpha m_\alpha l_\beta m_\beta}\Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB}  \Braket{lm_l L M_L|\Lambda M_\Lambda}  \psi_{nlm_l}(\vec{k}) \psi_{NLM_L}(\vec{P}) 
+\end{multline}
+
+One wants to write down the anti-symmetric state
+\begin{equation}
+\psi_{n_\alpha l_\alpha  m_\alpha }(\vec{k}_1)\psi_{n_\beta l_\beta m_\beta}(\vec{k}_2) - \psi_{n_\alpha l_\alpha  m_\alpha }(\vec{k}_2)\psi_{n_\beta l_\beta m_\beta}(\vec{k}_1)
+\end{equation}
+To find an expression for the second term one can choose between interchanging the momentum coordinates $\vec{k}_1$ and $\vec{k}_2$ or interchanging the quantum numbers $n_\alpha l_\alpha  m_\alpha$ and $n_\beta l_\beta m_\beta$.
+Interchanging $\vec{k}_1$ and $\vec{k}_2$ result in the tranfformation $\vec{k} \rightarrow - \vec{k}$. one can use the parity realtion of the spherical harmonics $Y_{lm_l}(\theta, \varphi ) \rightarrow Y_{lm_l}(\pi - \theta, \pi + \varphi ) = (-1)^l Y_{lm_l}(\theta, \varphi )  $
+\begin{equation}
+\psi_{nlm_l}(\vec{k}) = K_{nl}(k) Y_{lm_l}(\theta, \varphi ) \rightarrow \psi_{nlm_l}(-\vec{k})  = (-1)^l K_{nl}(k) Y_{lm_l}(\theta, \varphi ) 
+\end{equation}
+If one interchanges the quantum numbers $n_\alpha l_\alpha  m_\alpha$ and $n_\beta l_\beta m_\beta$ one needs to use the symmetry realtions of the Clebsch-Gordan brackets and the Moshinsky brackets. one has, respectively,
+\begin{equation} \label{CG}
+\Braket{\Lambda M_\Lambda | l_\alpha m_\alpha l_\beta m_\beta} \rightarrow \Braket{\Lambda M_\Lambda |  l_\beta m_\beta l_\alpha m_\alpha}  = (-1)^{l_\alpha + l_\beta - \Lambda} \Braket{\Lambda M_\Lambda | l_\alpha m_\alpha l_\beta m_\beta}
+\end{equation}
+and 
+\begin{equation}
+\Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB} \rightarrow  \Braket{nlNL;\Lambda |  n_\beta l_\beta  n_\alpha l_\alpha;\Lambda}_{MB}  = (-1)^{L-\Lambda} \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB} 
+\end{equation}
+So the factor for interchanging the quantum number becomes $(-1)^{l_\alpha + l_\beta +  L - 2\Lambda}= (-1)^{l_\alpha + l_\beta +  L }$. Energy should be conserved in the transformation from cw to rcm coordinates, so one has $2n_\alpha + l_\alpha +2n_\beta + l_\beta = 2n + l + 2N + L$. If one uses this relation, one gets a factor $(-1)^l$. The same factor we got when interchaning the momentum coordinates. So this should be correct.
+So the two-body antisymmetric state (only momentum wave functions) can be written as
+\begin{multline} \label{anti}
+\psi_{n_\alpha l_\alpha  m_\alpha }(\vec{k}_1)\psi_{n_\beta l_\beta m_\beta}(\vec{k}_2) - \psi_{n_\alpha l_\alpha  m_\alpha }(\vec{k}_2) \psi_{n_\beta l_\beta m_\beta}(\vec{k}_1)   =  \\ \sum_{\substack{nlm_l \\ NLM_L}}\sum_{\Lambda M_\Lambda} \left[ 1-(-1)^l \right] \Braket{\Lambda M_\Lambda | l_\alpha m_\alpha l_\beta m_\beta}\Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB}  \Braket{lm_l L M_L|\Lambda M_\Lambda}  \psi_{nlm_l}(\vec{k}) \psi_{NLM_L}(\vec{P}) 
+\end{multline}
+For the spin and isospin part of the two-body anti-symmetric wave function one has, for example
+\begin{align*}
+\chi_{\sigma_\alpha}(\vec{\sigma}_1) \chi_{\sigma_\beta}(\vec{\sigma}_2)  = \sum_{S M_S} \Braket{S M_S | \frac{1}{2}  \sigma_\alpha  \frac{1}{2} \sigma_\beta} \sum_{\sigma^{\prime}_\alpha  \sigma^{\prime}_\beta } \Braket{   \frac{1}{2}  \sigma^{\prime}_\alpha  \frac{1}{2} \sigma^{\prime}_\beta | S M_S }  \chi_{\sigma^{\prime}_\alpha}(\vec{\sigma}_1) \chi_{\sigma^{\prime}_\beta}(\vec{\sigma}_2).
+\end{align*}
+With the use of the Clebsch-Gordan symmetry relation ($\ref{CG}$), now for half-integer spin values, one can write
+\begin{align} \label{spin}
+\chi_{\sigma_\alpha}(\vec{\sigma}_2) \chi_{\sigma_\beta}(\vec{\sigma}_1)  = \sum_{S M_S}  (-1)^{1 + S} \Braket{S M_S | \frac{1}{2}  \sigma_\alpha  \frac{1}{2} \sigma_\beta} \sum_{\sigma^{\prime}_\alpha  \sigma^{\prime}_\beta } \Braket{   \frac{1}{2}  \sigma^{\prime}_\alpha  \frac{1}{2} \sigma^{\prime}_\beta | S M_S }  \chi_{\sigma^{\prime}_\alpha}(\vec{\sigma}_1) \chi_{\sigma^{\prime}_\beta}(\vec{\sigma}_2).
+\end{align}
+An analogue expression is found for the isospin part. If one puts results ($\ref{anti}, \ref{spin}$) together one gets
+\begin{multline}
+\phi_{\alpha}(\vec{x}_1)\phi_{\beta}(\vec{x}_2)  - \phi_{\beta}(\vec{x}_1)\phi_{\alpha}(\vec{x}_2)  = \sum_{\substack{nlm_l \\ NLM_L}}\sum_{\Lambda M_\Lambda} \sum_{S M_S} \sum_{\sigma^{\prime}_\alpha  \sigma^{\prime}_\beta }  \sum_{T M_T} \sum_{\tau^{\prime}_\alpha  \tau^{\prime}_\beta } \left[ 1-(-1)^{l+S+T} \right] \Braket{\Lambda M_\Lambda | l_\alpha m_\alpha l_\beta m_\beta}\\ \Braket{S M_S | \frac{1}{2}  \sigma_\alpha  \frac{1}{2} \sigma_\beta} \Braket{   \frac{1}{2}  \sigma^{\prime}_\alpha  \frac{1}{2} \sigma^{\prime}_\beta | S M_S }  \Braket{T M_T | \frac{1}{2}  \tau_\alpha  \frac{1}{2} \tau_\beta}  \Braket{   \frac{1}{2}  \tau^{\prime}_\alpha  \frac{1}{2} \tau^{\prime}_\beta | T M_T } \\ \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB}  \Braket{lm_l L M_L|\Lambda M_\Lambda}  \phi_{nlm_l}(\vec{k}) \phi_{NLM_L}(\vec{P}) \chi_{\sigma^{\prime}_\alpha}(\vec{\sigma}_1) \chi_{\sigma^{\prime}_\beta}(\vec{\sigma}_2) \xi_{\tau^\prime_\alpha}(\vec{\tau}_1) \xi_{\tau^prime_\beta}(\vec{\tau}_2)
+\end{multline}
+Thus, one has (integrated over spin and isospin variables)
+\begin{multline}
+n_2(\vec{k},\vec{P}) =  \frac{1}{2A(A-1)}\sum_{\substack{\alpha \beta \\ \alpha  \neq \beta}} \sum_{\substack{nlm_l \\ NLM_L}}\sum_{\Lambda M_\Lambda} \sum_{S M_S} \sum_{\sigma^{\prime}_\alpha  \sigma^{\prime}_\beta }  \sum_{T M_T} \sum_{\tau^{\prime}_\alpha  \tau^{\prime}_\beta } \left[ 1-(-1)^{l+S+T} \right]^2 \Braket{\Lambda M_\Lambda | l_\alpha m_\alpha l_\beta m_\beta}\\ \Braket{S M_S | \frac{1}{2}  \sigma_\alpha  \frac{1}{2} \sigma_\beta} \Braket{   \frac{1}{2}  \sigma^{\prime}_\alpha  \frac{1}{2} \sigma^{\prime}_\beta | S M_S }  \Braket{T M_T | \frac{1}{2}  \tau_\alpha  \frac{1}{2} \tau_\beta}  \Braket{   \frac{1}{2}  \tau^{\prime}_\alpha  \frac{1}{2} \tau^{\prime}_\beta | T M_T } \\ \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB}  \Braket{lm_l L M_L|\Lambda M_\Lambda}  \phi_{nlm_l}(\vec{k}) \phi_{NLM_L}(\vec{P}) \chi_{\sigma^{\prime}_\alpha}(\vec{\sigma}_1) \chi_{\sigma^{\prime}_\beta}(\vec{\sigma}_2) \xi_{\tau^\prime_\alpha}(\vec{\tau}_1) \xi_{\tau^prime_\beta}(\vec{\tau}_2)
+\end{multline}
+
+\end{document}

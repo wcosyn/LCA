@@ -1,0 +1,44 @@
+\begin{thebibliography}{1}
+
+\bibitem{anderson2012first}
+C~Anderson, M~Antonello, B~Baller, T~Bolton, C~Bromberg, F~Cavanna, E~Church,
+  D~Edmunds, A~Ereditato, S~Farooq, et~al.
+\newblock First measurements of inclusive muon neutrino charged current
+  differential cross sections on argon.
+\newblock {\em Physical review letters}, 108(16):161802, 2012.
+
+\bibitem{ankowski2014}
+A~Ankowski, R~Beminiwattha, O~Benhar, DG~Crabb, DB~Day, F~Garibaldi, G~Garvey,
+  D~Gaskell, C~Giusti, O~Hansen, et~al.
+\newblock Measurement of the spectral function of $^{40}$ar through the $(e,
+  e^{\prime} p) $ reaction.
+\newblock {\em arXiv preprint arXiv:1406.4080}, 2014.
+
+\bibitem{brody1967tables}
+Thomas~A Brody and Marco Moshinsky.
+\newblock {\em Tables of transformation brackets for nuclear shell-model
+  calculations}.
+\newblock Gordon and Breach, 1967.
+
+\bibitem{moshinsky1959transformation}
+Marcos Moshinsky.
+\newblock Transformation brackets for harmonic oscillator functions.
+\newblock {\em Nuclear Physics}, 13(1):104--116, 1959.
+
+\bibitem{povh2008particles}
+Bogdan Povh, Martin Lavelle, Klaus Rith, Christoph Scholz, and Frank Zetsche.
+\newblock {\em Particles and nuclei: an introduction to the physical concepts}.
+\newblock Springer Science \& Business Media, 2008.
+
+\bibitem{ursescu2005symbolic}
+D~Ursescu, M~Tomaselli, T~Kuehl, and S~Fritzsche.
+\newblock Symbolic algorithms for the computation of moshinsky brackets and
+  nuclear matrix elements.
+\newblock {\em Computer physics communications}, 173(3):140--161, 2005.
+
+\bibitem{maarten}
+Maarten Vanhalst.
+\newblock {\em Quantifying short-range correlations in nuclei}.
+\newblock PhD thesis, Universiteit Gent, 2014.
+
+\end{thebibliography}

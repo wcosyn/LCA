@@ -9,7 +9,7 @@ upperlimit = int(input("upperlimit momentum k (fm): "))
 step = float(input("delta_k between data points(fm): "))
 
 nuc = ["He","Be","C","O","Al","Ca40","Ca48","Fe","Ag","Ar","Pb"]
-A   = [4,9,12,16,27,40,48,56,109,40,208]
+A   = [4,9,12,16,27,40,48,56,108,40,208]
 Z   = [2,4,6,8,13,20,20,26,47,18,82]
 N = [m - n for m,n in zip(A,Z)] #number of neutrons
 
@@ -73,44 +73,48 @@ def level(Q):
      return j
 
 
-def opvulling(k,i):
+def opvulling(k,t,i):
      result = 0
-     for t in xrange(0,2):
-          if(t == 0):
-               Q = N[i]
-               M = M_n
-          elif(t == 1):
-               Q = Z[i]
-               M = M_p
-          for lvl in xrange(0, level(Q)):
-               n = radial[lvl]
-               l = orbital[lvl]
-               a = float(degen[lvl])/ float(2*(2*l + 1))
-               if(nos[lvl]-Q > 0):
-                    b = float(Q-nos[lvl-1])/float(degen[lvl])
-               else:
-                    b = 1
-               result = result + a*b*(2*(2*l + 1))*(norm(v_mom(M, i), n, l)*Rad_wavefunc(k, v_mom(M, i), n, l))**2
-     return (1.0/A[i])*result       
+     if(t == 0):
+          Q = N[i]
+          M = M_n
+     elif(t == 1):
+          Q = Z[i]
+          M = M_p
+     for lvl in xrange(0, level(Q)):
+          n = radial[lvl]
+          l = orbital[lvl]
+          a = float(degen[lvl])/ float(2*(2*l + 1))
+          if(nos[lvl]-Q > 0):
+               b = float(Q-nos[lvl-1])/float(degen[lvl])
+          else:
+               b = 1
+          result = result + a*b*(2*(2*l + 1))*(norm(v_mom(M, i), n, l)*Rad_wavefunc(k, v_mom(M, i), n, l))**2
+     return result       
 
 def format_(value):
     return "%.8f" % value
+    
+
 
 
 upperlimit = upperlimit/step
 
 for i in xrange(0,len(nuc)):
-     f = open("{:s}_ob_mf.txt".format(nuc[i]), "w")
+     f = open("./data/{:s}_ob_mf.txt".format(nuc[i]), "w")
      f.write("# mass number (A) = " + str(A[i]) +  '\n')
      f.write("# number of protons (Z) = " + str(Z[i]) +'\n')
-     f.write("# k (1/fm)" + '\t' + "n_1(k) (fm^3)"  +  '\n')
+     f.write("#units k = 1/fm , units n_1(k) = fm^3"+'\n')
+     f.write("# k (1/fm)" + '\t' + "n" +  '\t' + "p" +  '\t' + "tot"  + '\n')
      j = 0
      distr_array = []
      while (j <= upperlimit):
           print j
-          c = opvulling(step*j, i)
-          distr_array.append(c*(step*j)**2)
-          txt = str(step*j) + '\t' + str(format_(c)) 
+          n = opvulling(step*j, 0, i)
+          p = opvulling(step*j, 1, i)
+          tot = n + p
+          distr_array.append(tot*(step*j)**2)
+          txt = str(step*j) + '\t' + str(n) + '\t' + str(p) + '\t' + str(tot)
           f.write(txt)
           f.write('\n')
           j = j+1

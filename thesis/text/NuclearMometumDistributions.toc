@@ -1,0 +1,19 @@
+\select@language {dutch}
+\contentsline {section}{\numberline {1}Inleiding}{1}
+\contentsline {section}{\numberline {2}E\'{e}ndeeltjes impulsdistributie}{2}
+\contentsline {subsection}{\numberline {2.1}Algemene kenmerken}{2}
+\contentsline {subsection}{\numberline {2.2}Het onafhankelijk-deeltjes model}{4}
+\contentsline {subsubsection}{\numberline {2.2.1}Verantwoording}{4}
+\contentsline {subsubsection}{\numberline {2.2.2}Oplossen van de Schr\"{o}dingervergelijking voor een sferische harmonische oscillator potentiaal}{5}
+\contentsline {subsubsection}{\numberline {2.2.3}E\'{e}ndeeltjes impulsdistributie in een harminsche oscillator potentiaal}{7}
+\contentsline {subsection}{\numberline {2.3}Resultaten}{9}
+\contentsline {section}{\numberline {3}Tweedeeltjes impulsdistributie}{10}
+\contentsline {subsection}{\numberline {3.1}Algemene kenmerken}{10}
+\contentsline {subsection}{\numberline {3.2}Het onafhankelijk-deeltjes model}{12}
+\contentsline {subsubsection}{\numberline {3.2.1}Twee-deeltjes momentumdistributies in relatieve- massacentrumcoordinaten}{13}
+\contentsline {subsubsection}{\numberline {3.2.2}Tweedeeltjes momentumdistributie met HO potentiaal}{14}
+\contentsline {subsection}{\numberline {3.3}Resultaten}{16}
+\contentsline {section}{\numberline {A}Conventies Tweede kwantisatie}{16}
+\contentsline {section}{\numberline {B}Moshinsky Brackets}{19}
+\contentsline {subsection}{\numberline {B.1}Recursieve berekening}{19}
+\contentsline {subsection}{\numberline {B.2}Eigenschappen}{20}
