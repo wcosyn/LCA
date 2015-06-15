@@ -13,3 +13,11 @@ This project now uses CMake to build and install. Perform the following steps:
 	- $> make install
 
 [numOfProcessors] is the number of processors you want to use for building, this flag is optional.
+
+
+If you have doxygen installed you can generate html documentation by doing
+
+	- $> cd build;
+	- $> make doc;
+
+The documentation will be generated in the doc/ directory.
