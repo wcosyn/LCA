@@ -1,6 +1,0 @@
-# A- dependent correction factor.
-# 12C, 56Fe and 208Pb are calculated
-# A	factor	stddev
-12	1.327	0.007
-56	1.410	0.009
-208	1.465	0.011

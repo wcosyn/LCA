@@ -5,3 +5,7 @@
 # get rid of backups on ubuntu, often suffixed by tilde ~
 #
 *~
+# get rid of .aux, .log files of latex builds
+#
+*.aux
+*.log

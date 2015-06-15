@@ -23,32 +23,36 @@ using std::vector;
 #include <gsl/gsl_sf_laguerre.h>
 #include <gsl/gsl_sf_legendre.h>
 
-double cluster_central( double r );
-double min_cluster_central( double r );
-double cluster_tensor( double r );
-int read_alle_drie();
-double pieper_min_central( double r );
-double pieper_min_central_tensor( double r );
-double pieper_central( double r );
-double pieper_tensor( double r );
-double pieper_spinisospin( double r);
-double min_gd_central( double r );
-double nothing( double r );
-double gd_central( double r );
-//double gd_central( double x, void* params );
-double min_gfmc_central( double r );
-double gfmc_central( double r );
-double gfmc_tensor( double r );
 
-double uncorrelatedradialwf(int n, int l, double r, int A);
+
+/**
+ * Collection of GLOBAL function concerning correlation function
+ * and HO wave functions
+ * Be Carefull with factor sqrt(2) in the def of distance r
+ */
 double exponent(double x);
 double gamma( int two_n);
-double norm( double nu, int n, int l);
+double binomial( double n, int k);
+double laguerre_coeff( double nu, int n, int l, int k);
+double laguerre_coeff(  int n, int l, int k);
+double ho_norm( double nu, int n, int l);
+double ho_norm( int n, int l);
 
-double fourier_central_sq( double p, double (*f)(double) );
-double fourier_central( double p, double (*f)(double) );
-double fourier_tensor_sq( double p, double (*f)(double) );
-double fourier_tensor( double p, double (*f)(double) );
+double get_central_exp();
+double get_central_pow(int lambda);
+double get_tensor_exp();
+double get_tensor_exp2();
+double get_tensor_exp3();
+double get_tensor_pow(int lambda);
+double get_spinisospin_exp();
+double get_spinisospin_pow(int lambda);
+
+double uncorrelatedradialwf(int n, int l, double r, int A);
+
+double nothing( double r );
+double min_central_fit( double r );
+double tensor_fit( double r );
+double spinisospin_fit( double r );
 
 
 #endif

@@ -57,15 +57,15 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
         break;
       else
       {
-        swap( &two_j2, &two_j3);
-        swap( &two_m2, &two_m3);
+        std::swap( two_j2, two_j3);
+        std::swap( two_m2, two_m3);
         prefactor*= phase;
       }
     }
     else
     {
-      swap( &two_j1, &two_j3);
-      swap( &two_m1, &two_m3);
+      std::swap( two_j1, two_j3);
+      std::swap( two_m1, two_m3);
       prefactor*= phase;
     }
   }
@@ -98,9 +98,9 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
   if( !((max - min )%3) )
   {
 //    cout << "transpose " << phase << endl;
-    swap( &Regge_values[1], &Regge_values[3] );
-    swap( &Regge_values[2], &Regge_values[6] );
-    swap( &Regge_values[5], &Regge_values[7] );
+    std::swap( Regge_values[1], Regge_values[3] );
+    std::swap( Regge_values[2], Regge_values[6] );
+    std::swap( Regge_values[5], Regge_values[7] );
     if( min % 4 == 1 )
       min+= 2;
     else if( min % 4 == 3 )
@@ -131,7 +131,7 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
 //   cout << "row perm" << endl;
     int row= min/3;
     for( int i= 0; i < 3; i++ )
-      swap( &Regge_values[row*3+i], &Regge_values[i] );
+      std::swap( Regge_values[row*3+i], Regge_values[i] );
     Regge_prefactor*= phase;
     min= min%3;
     max= max%3;
@@ -148,7 +148,7 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
   {
 //    cout << "col perm" << endl;
     for( int i= 0; i < 3; i++ )
-      swap( &Regge_values[min+3*i], &Regge_values[3*i] );
+      std::swap( Regge_values[min+3*i], Regge_values[3*i] );
     Regge_prefactor*= phase;
     if (max == 0 )
       max= min;
@@ -166,7 +166,7 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
   {
 //    cout << "col perm" << endl;
     for( int i= 0; i < 3; i++ )
-      swap( &Regge_values[3*i+1], &Regge_values[3*i+2] );
+      std::swap( Regge_values[3*i+1], Regge_values[3*i+2] );
     max= 1;
     Regge_prefactor*= phase;
 /*    for( int i= 0; i < 9; i++ )
@@ -184,7 +184,7 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
     {
 //      cout << "row perm" << endl;
       for( int i= 0; i < 3; i++ )
-        swap( &Regge_values[3+i], &Regge_values[6+i] );
+        std::swap( Regge_values[3+i], Regge_values[6+i] );
       Regge_prefactor*= phase;
     }
     else
@@ -193,7 +193,7 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
       {
 //        cout << "row perm" << endl;
         for( int i= 0; i < 3; i++ )
-          swap( &Regge_values[3+i], &Regge_values[6+i] );
+          std::swap( Regge_values[3+i], Regge_values[6+i] );
         Regge_prefactor*= phase;
       }
     }
@@ -260,13 +260,6 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
       }
     }
   }
-}
-
-void threej::swap( int* i, int* j )
-{
-  int tmp= *i;
-  *i= *j;
-  *j= tmp;
 }
 
 int threej::triangle_selection_fails(int two_ja, int two_jb, int two_jc)
