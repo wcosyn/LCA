@@ -9,3 +9,6 @@
 #
 *.aux
 *.log
+# ignore compiled python modules
+#
+*.pyc

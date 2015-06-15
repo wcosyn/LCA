@@ -1,0 +1,85 @@
+ Inputdir is /user/scratch/gent/vsc403/vsc40368/input ... 
+ Creating resultdir /user/scratch/gent/vsc403/vsc40368/results/dens_ob_O_160667.master15.delcatty.gent.vsc ... 
+Start program dens_ob ... 
+ Start program: dens_ob /user/scratch/gent/vsc403/vsc40368/input /user/scratch/gent/vsc403/vsc40368/results/dens_ob_O_160667.master15.delcatty.gent.vsc 16 8 O 1 ... 
+norm_ob operator made
+11 pairs made.
+total pairs 28
+-1-1 pairs made.
+total pairs 56
+-11 pairs made.
+total pairs 120
+norm	1	0.355263	1.35526	21.6842
+ob density operator made
+total normalisation mf		11.8058
+total normalisation corr	4.19418
+
+selected normalisation mf	5.90291
+selected normalisation corr	1.11928
+start initialization
+initialization done ... 
+0.5 done by 2/8
+0.4 done by 4/8
+0.6 done by 5/8
+0.7 done by 7/8
+0.3 done by 0/8
+0.1 done by 1/8
+0.2 done by 3/8
+0.8 done by 6/8
+0.9 done by 2/8
+1 done by 4/8
+1.1 done by 5/8
+1.2 done by 7/8
+1.3 done by 0/8
+1.4 done by 1/8
+1.5 done by 3/8
+1.6 done by 6/8
+1.7 done by 2/8
+1.8 done by 4/8
+1.9 done by 5/8
+2 done by 7/8
+2.1 done by 0/8
+2.2 done by 1/8
+2.3 done by 3/8
+2.4 done by 6/8
+2.5 done by 2/8
+2.6 done by 4/8
+2.7 done by 5/8
+2.8 done by 7/8
+2.9 done by 0/8
+3 done by 1/8
+3.1 done by 3/8
+3.2 done by 6/8
+3.3 done by 2/8
+3.4 done by 4/8
+3.5 done by 5/8
+3.6 done by 7/8
+3.7 done by 0/8
+3.8 done by 1/8
+3.9 done by 3/8
+4 done by 6/8
+4.1 done by 2/8
+4.2 done by 4/8
+4.3 done by 5/8
+4.4 done by 7/8
+4.5 done by 0/8
+4.6 done by 1/8
+4.7 done by 3/8
+4.8 done by 6/8
+4.9 done by 2/8
+written to file /user/scratch/gent/vsc403/vsc40368/results/dens_ob_O_160667.master15.delcatty.gent.vsc/dens_ob.00.110.O.1
+mf integral is 5.87964
+cor integral is 1.11453
+tot integral is 6.99418
+mf 5.90291	5.87964	0.996058
+corr 1.11928	1.11453	0.995758
+~MapRecMosh 4
+0000 recmosh removed 
+0001 recmosh removed 
+0100 recmosh removed 
+0101 recmosh removed 
+~MapWavefunctionP 0x68ab58	0
+~MapWavefunctionP 0x68acd8	0
+~MapWavefunctionP 0x68ac58	0
+~MapWavefunctionP 0x68abd8	1
+	 n=0: 2
