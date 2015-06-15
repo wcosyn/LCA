@@ -11,6 +11,7 @@ MESSAGE(" -- [info] c ${CMAKE_C_COMPILER}")
 MESSAGE(" -- [info] Type ${CMAKE_BUILD_TYPE}")
 
 find_package(GSL REQUIRED)
+find_package(Doxygen)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -fopenmp")
 
@@ -22,4 +23,17 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 
 
 
+## Doxygen configuration
+# configure_file replaces variables referenced with @VAR@ with their values defined in CMAKE
+# custom target will make a doc target that we can use as
+# $> make doc
+##
+if(DOXYGEN_FOUND)
+    configure_file(${CMAKE_SOURCE_DIR}/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
+    add_custom_target( doc
+	    COMMAND "${DOXYGEN_EXECUTABLE}" "${CMAKE_BINARY_DIR}/Doxyfile"
+        SOURCES "${CMAKE_BINARY_DIR}/Doxyfile"
+        COMMENT " -- [info] Building DOXYGEN info" VERBATIM
+        )
+endif()
 
