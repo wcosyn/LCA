@@ -1,8 +1,19 @@
 // See header for more information about class and functions
 #include "pair.h"
 
-double Pair::hbarc = 0.197327; // MeV*fm
+//double Pair::hbarc = 0.197327; // MeV*fm
 
+Pair::Pair( RecMosh* mosh, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2 )
+	: n1( n1), l1( l1), two_j1( two_j1), two_mj1( two_mj1), two_t1( two_t1),
+	  n2( n2), l2( l2), two_j2( two_j2), two_mj2( two_mj2), two_t2( two_t2),
+	  mosh( mosh), coeflistmade( false)
+{
+  // Let the moshinsky braket know it is being used.
+	mosh->use();
+	norm = 1.;
+}
+/**
+ * REMOVABLE vvvvvvvvvvvvvvv
 Pair::Pair( RecMosh* mosh, int A, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2 )
 	: n1( n1), l1( l1), two_j1( two_j1), two_mj1( two_mj1), two_t1( two_t1),
 	  n2( n2), l2( l2), two_j2( two_j2), two_mj2( two_mj2), two_t2( two_t2),
@@ -11,7 +22,8 @@ Pair::Pair( RecMosh* mosh, int A, int n1, int l1, int two_j1, int two_mj1, int t
   // Let the moshinsky braket know it is being used.
 	mosh->use();
 	norm = 1.;
-}
+} * REMOVABLE ^^^^^^^^^^^^^
+*/
 
 
 Pair::~Pair()

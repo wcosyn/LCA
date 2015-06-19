@@ -174,7 +174,7 @@ void WSPair::expansion()
 			//{
 			//	if( t1 == t2 && n1==n2 && l1==l2 && j1==j2 && two_mj2 < two_mj1 ) continue; 
 
-			Pair* p= new Pair( mosh, A, ni, l1, j1, mj1, t1, nj, l2, j2, mj2, t2);
+			Pair* p= new Pair( mosh, ni, l1, j1, mj1, t1, nj, l2, j2, mj2, t2);
 			//cout << ni << l1 << j1 << mj1 << t1 << nj << l2 << j2 << mj2 << t2 << " " << p->getSum() << endl;
 			//if( n1==ni && n2==nj ) sum+= p->getSum()* vector1[ni]* vector2[nj];
 			//if( ni==nj ) sum+= p->getSum()* vector1[ni]* vector2[nj];

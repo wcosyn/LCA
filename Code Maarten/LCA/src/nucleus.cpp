@@ -488,7 +488,7 @@ void Nucleus::makepairs()
       Pair* pair;
 #pragma omp critical(recmosh)
       {
-          pair = new Pair( mosh, A, n1, l1, twoj1, two_mj1, t1, n2, l2, twoj2, two_mj2, t2 );
+          pair = new Pair( mosh, n1, l1, twoj1, two_mj1, t1, n2, l2, twoj2, two_mj2, t2 );
       }
 
 

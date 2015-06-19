@@ -81,7 +81,7 @@ Newcoef::Newcoef( int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, i
 			* gsl_sf_coupling_9j(2*l1, 1, two_j1, 2*l2, 1, two_j2, 2*Lambda, 2*S, 2*J);
 			double sixj = sqrt(2*Lambda+1) * sqrt(2*j+1) * gsl_sf_coupling_6j(2*j, 2*L, 2*J, 2*Lambda, 2*S, 2*l);
 			if( (j+Lambda+S+L)%2 ) sixj *= -1;
-			value += ninej*sixj*threej1*threej2*isospin*2*moshme;
+			value += ninej*sixj*threej1*threej2*isospin*2*moshme; // *2 from non zero [ 1 - (-1)^{L+S+T}] = 2
 		}
 	}
 	}

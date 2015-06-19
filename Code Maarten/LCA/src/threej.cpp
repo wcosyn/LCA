@@ -32,20 +32,13 @@ double threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, 
 
 void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, int two_m3, double* res )
 {
-
   *res= 0;
-
-  if (   triangle_selection_fails(two_j1, two_j2, two_j3)
-      || m_selection_fails(two_j1, two_j2, two_j3, two_m1, two_m2, two_m3)
-     ) 
-  {
+  if ( triangle_selection_fails(two_j1, two_j2, two_j3)
+      || m_selection_fails(two_j1, two_j2, two_j3, two_m1, two_m2, two_m3)) 
     return;
-  }
 
-
-
-  double prefactor= 1;
-  double phase= 1;
+  double prefactor= 1.;
+  double phase= 1.;
   if( (((two_j1+ two_j2+ two_j3)/2)%2) )
     phase= -1;
 
@@ -113,17 +106,6 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
       max-= 2;
     else if( max % 4 == 2 )
       max= 8-max;
-    
-//    min= gsl_stats_int_min_index( Regge_values, 1, 9 );
-//    max= gsl_stats_int_max_index( Regge_values, 1, 9 );
-//    for( int i= 0; i < 9; i++ )
-//    {
-//      if( !(i%3) ) cout << endl;
-//      cout << Regge_values[i] << " "  ;
-//    }
-//    cout << endl;
-//    cout << min << " " << max << endl;
-    
   }
 
   if( min > 2 )

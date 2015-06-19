@@ -13,14 +13,14 @@ MESSAGE(" -- [info] Type ${CMAKE_BUILD_TYPE}")
 find_package(GSL REQUIRED)
 find_package(Doxygen)
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -fopenmp")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused -O0 -std=c++11 -fopenmp")
 
 set (LIBS ${LIBS} ${GSL_LIBRARIES})
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
 message("-- [info] CXX FLAGS ARE ${CMAKE_CXX_FLAGS}")
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
-
+add_subdirectory(${CMAKE_SOURCE_DIR}/test)
 
 
 ## Doxygen configuration
@@ -31,7 +31,7 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 if(DOXYGEN_FOUND)
     configure_file(${CMAKE_SOURCE_DIR}/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
     add_custom_target( doc
-	    COMMAND "${DOXYGEN_EXECUTABLE}" "${CMAKE_BINARY_DIR}/Doxyfile"
+        COMMAND "${DOXYGEN_EXECUTABLE}" "${CMAKE_BINARY_DIR}/Doxyfile"
         SOURCES "${CMAKE_BINARY_DIR}/Doxyfile"
         COMMENT " -- [info] Building DOXYGEN info" VERBATIM
         )

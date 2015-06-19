@@ -1,0 +1,64 @@
+\documentclass[10pt]{article}
+
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{braket}
+\usepackage{todonotes}
+
+\begin{document}
+\section{Pair coupling}
+\subsection{pair.h}
+This class represents the state
+\begin{align}
+	\ket{ \alpha_1, \alpha_2}_{\textrm{nas}} \;\;\;, \ket{\alpha} \equiv \ket{n l j m_j t m_t}
+\end{align}
+The class calculates all the coefficients,
+\begin{align}
+	C_{\alpha_1 \alpha_2}^{A} = \braket{A \equiv \{ n l S j m_j, N L M_L T M_T\} | \alpha_1 \alpha_2}
+	\label{eq:coef}
+\end{align}
+The main method here is \texttt{Pair::makecoeflist()}. It loops over all possible values of $ A \equiv \{ S,T,n,l,N,M_L,j,m_j \}$. Where in the summation over $\{n,l,N,L\}$ the energy conservation $2n_1 + l_1 + 2n_2 + l_2 = 2n + l + 2N + L$ is taken into account to eliminate one of the summation loops, $L = 2n_1 + l_1 + 2n_2 + l_2 - 2n - l - 2N$. Note that $M_T$ is also fixed by $M_T = m_{t_1} + m_{t_2}$ and no summation over this is performed, as we want to keep the contribution from different pairs seperated.
+For each $A$ a new object \texttt{Newcoef} is generated and stored in the member \texttt{std::vector<NewCoef*> coeflist}.
+\subsection{newcoef.h}
+This class takes the parameters $n_1 l_1 j_1 m_{j_1} m_{t_1} n_2 l_2 j_2 m_{j_2} m_{t_2} N L M_L n l S j m_j T M_T$, and calculates the coefficient given in Eq. (\ref{eq:coef}). It takes also a pointer to a \texttt{RecMosh} object that holds the Moshinsky brakets. The only function in this class is to calculate $C_{\alpha_1 \alpha_2}^{A}$ using the formula,
+\begin{multline}
+	\sum_{J M_J} \sum_{\Lambda} 
+	[ 1 - (-1)^{L+S+T}] \braket{ t_1 m_{t_1} t_2 m_{t_2} | T M_T }
+	\braket{ j_1 m_{j_1} j_2 m_{j_2} | J M_J}
+	\braket{ j m_j L M_L | J M_J } \\
+	\braket{ n l N L; \Lambda | n_1 l_1 n_2 l_2 ; \Lambda}_{\textrm{SMB}}
+	\sqrt{2 \Lambda + 1} \sqrt{ 2j+1}
+	\left\{
+	\begin{array}{ccc}
+		j & L & J \\
+		\Lambda & S & l
+	\end{array}
+	\right\} \\
+	\sqrt{2j_1 + 1} \sqrt{2j_2 + 1} \sqrt{ 2S + 1} \sqrt{ 2 \Lambda + 1}
+	\left\{
+	\begin{array}{ccc}
+		l_1 & s_1 & j_1 \\
+		l_2 & s_2 & j_2 \\
+		\Lambda & S & J \\
+	\end{array}
+	\right\}
+\end{multline}
+It is easy to check that the result indeed depends on $\alpha_1, \alpha_2, A$. Note that it is always assumed that $s_i,t_i \equiv \frac{1}{2}$ as we are dealing with protons and neutrons.
+This class also defines a \texttt{``key''} to be able to index the coefficients, \texttt{key = ``nlSjm\_j.NLM\_L.TM\_T''}.
+
+\section{paircoef.h}
+This is a very thin class designed to do some bookkeeping. As outlined in Maartens thesis pg 156, different $\ket{\alpha_1 \alpha_2}$ combinations will sometimes map to the same ``rcm'' states $A = \ket{ nlSjm_j NLM_L TM_T}$. In matrix element calculations,
+\begin{align}
+	\braket{\alpha_1 \alpha_2 | \hat{\mathcal{O}} | \alpha_1 \alpha_2} = \sum_{AB} C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket {A | \hat{\mathcal{O}} | B }
+	\label{eq:rcm_nonzerodiag}
+\end{align}
+We want to calculate matrix elements as $\braket{ A | \hat{\mathcal{O}} | B}$ only once. $\ket{\alpha_1 \alpha_2}$ that map to the same $A,B$ states should lookup the earlier calculated values for $\braket{ A | \hat{\mathcal{O}} | B}$.
+In general the matrix element $\braket{ A | \hat{\mathcal{O}} | B }$ is not diagonal. 
+A \texttt{Paircoef} object has all the quantum numbers in a rcm state $A$. In addition it holds a value and a map \texttt{ std::map<Paircoef*, double>}. The map is used to link a rcm state $\ket{A}$ to all other rcm states $\ket{B}$ which yield a non zero contribution for $\braket{ A | \hat{\mathcal{O}} | B }$. The value for the transformation coefficients $C_{\alpha_1,\alpha_2}^{A,\dagger} C_{\alpha_1,\alpha_2}^{B}$ is stored in the second field of the map (\texttt{double}). So that the the summation over $B$ (Eq. \ref{eq:rcm_nonzerodiag}) is replaced by,
+\begin{align}
+	\braket{\alpha_1 \alpha_2 | \hat{\mathcal{O}} | \alpha_1 \alpha_2} = \sum_{A} \sum_{\texttt{Paircoef(A).links}}  \texttt{link.strength} \braket {A | \hat{\mathcal{O}} | B }
+\end{align}
+\todo[inline]{\texttt{Paircoef::add(double val)} adds \texttt{val} to private member \texttt{value} but as far as I can see this private member \texttt{value} is NEVER used!}
+\end{document}

@@ -22,7 +22,8 @@ public:
 	 * Constructor: creates a pair with given quantum numbers. 
 	 * two_t1 and two_t2, -1 or 1, determine if particle is n or p. 
 	 */
-	Pair( RecMosh* mosh, int A, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2 );
+	//Pair( RecMosh* mosh, int A, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2 ); // <--REMOVABLE
+	Pair( RecMosh* mosh, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2 );
 	~Pair();
 
 
@@ -72,14 +73,14 @@ public:
          */
 	void getCoeff( u_int i, Newcoef** coef, double* n );
 	void getCoeff( u_int i, Newcoef** coef);
-	static double hbarc; // fm GeV
+	//static double hbarc; // fm GeV
 
 private:
 	vector < Newcoef* > coeflist;
 	int n1, l1, two_j1, two_mj1, two_t1;
 	int n2, l2, two_j2, two_mj2, two_t2;
 	RecMosh* mosh;
-	int A;
+	//int A; <--REMOVABLE?
 
         // The Harmonic Oscillator parameter
 	double nu;
