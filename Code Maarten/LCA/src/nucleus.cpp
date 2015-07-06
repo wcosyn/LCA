@@ -1,17 +1,18 @@
 #include "nucleus.h"
+#include <cassert>
 
 
 Nucleus::Nucleus( char* inputdir, char* resultdir,int A, int Z)
   : Z(Z), A(A)
 {
-	this->inputdir= inputdir;
-	this->resultdir= resultdir;	
-	N = A-Z;	
+        this->inputdir= inputdir;
+        this->resultdir= resultdir;        
+        N = A-Z;        
 
         /*
          * Initialize Shells
          */
-	Shell::initializeShells();
+        Shell::initializeShells();
 
         /*
          * Create empty containers
@@ -23,42 +24,42 @@ Nucleus::Nucleus( char* inputdir, char* resultdir,int A, int Z)
         paircoefs= new map<string, Paircoef*>();
         tripletcoefs= new map<string, Tripletcoef*>();
 
-	pairsMade= false;
-	paircoefsMade= false;
+        pairsMade= false;
+        paircoefsMade= false;
         tripletsMade= false;
         
         number_of_pairs= 0;
         number_of_triplets= 0;
         number_of_paircoefs= 0;
         number_of_tripletcoefs= 0;
-	
+        
 }
 
 Nucleus::~Nucleus()
 {
-	for( u_int i= 0; i < pairs->size(); i++ )
-	{
-		delete (*pairs)[i];
-	}
+        for( u_int i= 0; i < pairs->size(); i++ )
+        {
+                delete (*pairs)[i];
+        }
         delete pairs;
-	for( u_int i= 0; i < triplets->size(); i++ )
-	{
-		delete triplets->at(i);
-	}
+        for( u_int i= 0; i < triplets->size(); i++ )
+        {
+                delete triplets->at(i);
+        }
         delete triplets;
         map< string, Paircoef*>::iterator it;
-	for( it= paircoefs->begin(); it != paircoefs->end(); it++ )
-	{
-		delete it->second;
-	}
+        for( it= paircoefs->begin(); it != paircoefs->end(); it++ )
+        {
+                delete it->second;
+        }
         delete paircoefs;
         map< string, Tripletcoef*>::iterator itt;
-	for( itt= tripletcoefs->begin(); itt != tripletcoefs->end(); itt++ )
-	{
-		delete itt->second;
-	}
+        for( itt= tripletcoefs->begin(); itt != tripletcoefs->end(); itt++ )
+        {
+                delete itt->second;
+        }
         delete tripletcoefs;
-	Shell::deleteShells();
+        Shell::deleteShells();
         cout << "Nucleus deleted" << endl;
 }
 
@@ -267,7 +268,7 @@ void Nucleus::maketriplets( int t3 )
                * Nu is de vraag, hoe zorgen we ervoor dat dit wel zou werken
                * en niet later opgelost zou worden.
                */
-              //			if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl; 
+              //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl; 
 
 
               // Two tests
@@ -457,7 +458,7 @@ void Nucleus::makepairs()
     {
       if( t1==t2 )
       { 
-        if( i2 < i1 ) continue;
+        if( i2 < i1 ) continue; // prevent double counting, only if t1==t2, e.g. pp or nn pairs
       }
       Shell* shell1= (*shells1)[i1];
       Shell* shell2= (*shells2)[i2];
@@ -493,13 +494,29 @@ void Nucleus::makepairs()
 
 
 
-          // Calculate normalization factor if shells are no fully occupied
+          /** Calculate normalization factor if shells are no fully occupied
+           * max1 - A1 is the number of "missing" particles in the valence shell
+           * The number of particles in the valence (open) shell is:
+           * (2j+1) - (max1 - A1) = A1 - max1 + q1
+           * If t1==t2 the two shell arrays should be identical. So we expect
+           * A1==A2 and max1==max2
+           * The correction factor for the number of pairs in an open shell is (n1,l1,j1)==(n2,l2,j2)
+           * (number of possible pairs)/(number of total pairs)
+           * \f[
+           *   \frac{ (A1-max1+q1)(A1-max1+q1-1) }{ q1(q1-1) }
+           * = \frac{ (A2-max2+q2)(A2-max2+q2-1) }{ q2(q2-1) }
+           * \f]
+           * To keep code symmetric, instead of multiplying the pair once with the above factor,
+           * we multiply it twice with the square root of the above formula.
+           */
           double factor1 = 1;
           double factor2 = 1;
           if( i1== shell1_max)
           {
+             if( t1==t2) { assert(n1==n2 && l1==l2 && twoj1==twoj2); } // testing <-- Camille //
              if( t1==t2 && n1==n2 && l1==l2 &&  twoj1==twoj2 )
              {
+             assert(A1==A2 && max1==max2); // testing <-- Camille //
              factor1 = sqrt((A1-max1+q1)*(A1-max1+q1-1.)/q1/(q1-1.));
              }
              else
@@ -524,7 +541,7 @@ void Nucleus::makepairs()
 
           double sum = pair->getSum();
           // Fermi test
-          //			if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl; 
+          //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl; 
           if( sum < 1e-4 || factor1*factor2 == 0 ) delete pair;
           else if( sum < 0.99 ) cerr << "CHECK " << __FILE__ << ":" << __LINE__ << endl;
           else
@@ -544,7 +561,7 @@ void Nucleus::makepairs()
     }
   }
   number_of_pairs = pairs->size();
-  cout << t1 << t2 << " pairs made." << endl;
+  cout << ((t1==1)?"p":"n") << ((t2==1)?"p":"n") << " pairs made." << endl;
   cout << "total pairs " << number_of_pairs << endl;
   pairsMade= true;
 }
@@ -563,27 +580,27 @@ void Nucleus::makepaircoefs()
   cout << "Make Pair Coefs ... " << endl;
   int max= get_number_of_pairs();
   // SUm over the pairs
-  for( int i= 0; i < max; i++ )
+  for( int i= 0; i < max; i++ ) // loop over \f$ \braket{ \alpha_1 \alpha_2 } \f$ pairs
   {
     Pair* pair= getPair(i);
     int maxc= pair->get_number_of_coeff();
-    for( int ci= 0; ci < maxc; ci++ )
+    for( int ci= 0; ci < maxc; ci++ ) // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
     {
       Newcoef* coefi;
       double normi;
-      pair->getCoeff( ci, &coefi, &normi );
+      pair->getCoeff( ci, &coefi, &normi ); // coefi now points to Pair::coeflist[i], normi is the norm (only \neq 1 for open shells, set by Pair::setfnorm())
 
-	double vali= normi*coefi->getCoef();
+        double vali= normi*coefi->getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
         string keyi= coefi->getkey();
-        map < string, Paircoef* >::iterator iti = paircoefs->find( keyi );
-        if( iti == paircoefs->end() )
+        map < string, Paircoef* >::iterator iti = paircoefs->find( keyi ); // is the key already in our map?
+        if( iti == paircoefs->end() ) // no
         {
           (*paircoefs)[keyi]= new Paircoef( coefi );
           iti = paircoefs->find(keyi);
         }
         Paircoef* pci= iti->second;
 
-        // Add value of the matrix element of a paircoef with itselfs
+        // Add value of the matrix element of a paircoef with itself, e.g. \f$ | C_{\alpha_1,\alpha_2}^{A} |^{2} \f$
         pci->add(vali*vali);
       
       // Add all the links of a Paircoef with the other Paircoefs generated
@@ -592,11 +609,11 @@ void Nucleus::makepaircoefs()
       // Hence the sum from ci+1.
       for( int cj= ci+1; cj < maxc; cj++ )
       {
-	Newcoef* coefj;
-	double normj;
-	pair->getCoeff( cj, &coefj, &normj );
+        Newcoef* coefj;
+        double normj;
+        pair->getCoeff( cj, &coefj, &normj );
 
-	double valj= normj*coefj->getCoef();
+        double valj= normj*coefj->getCoef();
         string keyj= coefj->getkey();
         map < string, Paircoef* >::iterator itj = paircoefs->find( keyj );
         if( itj == paircoefs->end() )
@@ -635,7 +652,7 @@ void Nucleus::maketripletcoefs()
       double normi;
       triplet->getCoeff( ci, &coefi, &normi );
 
-	double vali= normi*coefi->getvalue();
+        double vali= normi*coefi->getvalue();
         string keyi= coefi->getkey();
         map < string, Tripletcoef* >::iterator iti = tripletcoefs->find( keyi );
         if( iti == tripletcoefs->end() )
@@ -649,11 +666,11 @@ void Nucleus::maketripletcoefs()
       
       for( int cj= ci+1; cj < maxc; cj++ )
       {
-	Threebodycoef* coefj;
-	double normj;
-	triplet->getCoeff( cj, &coefj, &normj );
+        Threebodycoef* coefj;
+        double normj;
+        triplet->getCoeff( cj, &coefj, &normj );
 
-	double valj= normj*coefj->getvalue();
+        double valj= normj*coefj->getvalue();
         string keyj= coefj->getkey();
         map < string, Tripletcoef* >::iterator itj = tripletcoefs->find( keyj );
         if( itj == tripletcoefs->end() )
@@ -662,7 +679,7 @@ void Nucleus::maketripletcoefs()
           itj = tripletcoefs->find(keyj);
         }
         Tripletcoef* tcj= itj->second;
-
+        
         tci->add( tcj, vali*valj );
       }
     }
@@ -763,28 +780,28 @@ Tripletcoef* Nucleus::getTripletcoef( int i )
 double Nucleus::getlLPairs( int n, int l, int S, int L )
 {
   if( pairsMade == false ) makepairs();
-	double sum= 0;
-	vector< Pair*>::iterator it;
-	for( it= pairs->begin(); it!= pairs->end(); it++ )
-	{
-		double val= (*it)->getRelPair( n, l, S, L);
-		sum += val;
-	}
-	return sum;
+        double sum= 0;
+        vector< Pair*>::iterator it;
+        for( it= pairs->begin(); it!= pairs->end(); it++ )
+        {
+                double val= (*it)->getRelPair( n, l, S, L);
+                sum += val;
+        }
+        return sum;
 
 }
 
 double Nucleus::getlPairs( int n, int l, int S )
 {
   if( pairsMade == false ) makepairs();
-	double sum= 0;
-	vector< Pair*>::iterator it;
-	for( it= pairs->begin(); it!= pairs->end(); it++ )
-	{
-		double val= (*it)->getRelPair( n, l, S);
-		sum += val;
-	}
-	return sum;
+        double sum= 0;
+        vector< Pair*>::iterator it;
+        for( it= pairs->begin(); it!= pairs->end(); it++ )
+        {
+                double val= (*it)->getRelPair( n, l, S);
+                sum += val;
+        }
+        return sum;
 }
 
 void Nucleus::printPairsPerShell()

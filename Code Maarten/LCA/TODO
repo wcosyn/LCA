@@ -1,0 +1,7 @@
+
+1. Split things up according to functionality and build separate libraries:
+	- nucleus
+	- pairs
+	- ...
+2. Clean up 
+	- Nucleus::makepairs() (nucleus.cpp)

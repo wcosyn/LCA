@@ -8,6 +8,95 @@
 \usepackage{todonotes}
 
 \begin{document}
+\section{Momentum distributions}
+\section{Second quantization}
+This section will be somewhat over-elaborated. But it can serve as a recapitulation of second quantization.
+
+The one body momentum distribution operator is defined as,
+\begin{align}
+	\hat{n}(p) = \frac{1}{(2 \pi)^{3}} \int \textrm{d}^{2} \Omega_{\mathbf{p}} a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}}
+\end{align}
+It's action on a multi particle ground state $\ket{\Phi}$,
+\begin{align}
+	\braket{ \Phi | \hat{n}(p) | \Phi} = \frac{1}{(2 \pi)^{3}} \int \textrm{d}^{2} \Omega_{\mathbf{p}} \braket{ \Phi | a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi}
+\end{align}
+The creation and annihilation operators $a_{\mathbf{p}}^{\dagger}$,$a_{\mathbf{p}}$ have only meaning working on particles with definite momentum or the vacuum state $\ket{0}$.
+\begin{align}
+	\braket{ \Phi | a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi} &= \int \textrm{d}^{3} \mathbf{p}_{1} \ldots \textrm{d}^{3} \mathbf{p}_{A} \braket {\Phi | \mathbf{p}_1 \mathbf{p}_2 \ldots \mathbf{p}_{A}} \braket{ \mathbf{p}_{1} \mathbf{p}_{2} \ldots \mathbf{p}_{A} | a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi } \\
+	&= \int \textrm{d}^{A} \mathbf{p}_{1} \ldots \textrm{d}^{3} \mathbf{p}_{A} \braket {\Phi | \mathbf{p}_1 \mathbf{p}_2 \ldots \mathbf{p}_{A}} \braket{ 0 | a_{\mathbf{p}_{1}} a_{\mathbf{p}_{2}} \ldots a_{\mathbf{p}_{A}} a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi } 
+\end{align}
+Using the anticommutation relation $\{ a_{\mathbf{p}} ,a_{\mathbf{q}}^{\dagger} \} = \delta(\mathbf{p}-\mathbf{q})$, we get
+\begin{align}
+	\braket{0 | a_{\mathbf{p}_{1}} a_{\mathbf{p}_{2}} \ldots a_{\mathbf{p}_{A}} a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi} &=
+	\braket{0 | a_{\mathbf{p}_{1}} a_{\mathbf{p}_{2}} \ldots \delta(\mathbf{p}-\mathbf{p}_{A}) a_{\mathbf{p}} | \Phi} - \braket{0 | a_{\mathbf{p}_{1}} a_{\mathbf{p}_{2}} \ldots a_{\mathbf{p}_{A-1}} a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}_{A}} a_{\mathbf{p}} | \Phi} \\
+	&= \delta(\mathbf{p}-\mathbf{p}_{A}) \braket{\mathbf{p}_{1} \mathbf{p}_{2} \ldots \mathbf{p} | \Phi } - \delta(\mathbf{p}-\mathbf{p}_{A-1}) \braket{0 | a_{\mathbf{p}_1} \ldots a_{\mathbf{p}_{A-2}} a_{\mathbf{p}_{A}} a_{\mathbf{p}} | \Phi} \\
+	&+ \braket{0| a_{\mathbf{p}_1} \ldots a_{\mathbf{p}_{A-2}} a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}_{A-1}} a_{\mathbf{p}_{A}} a_{\mathbf{p}} | \Phi} \\
+ &= \delta(\mathbf{p}-\mathbf{p}_{A}) \braket{\mathbf{p}_{1} \mathbf{p}_{2} \ldots \mathbf{p}_{A} | \Phi } + \delta(\mathbf{p}-\mathbf{p}_{A-1}) \braket{\mathbf{p}_{1} \ldots \mathbf{p}_{A-2} \mathbf{p}_{A-1} \mathbf{p}_{A} | \Phi} \\
+	&+ \braket{0| a_{\mathbf{p}_1} \ldots a_{\mathbf{p}_{A-2}} a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}_{A-1}} a_{\mathbf{p}_{A}} a_{\mathbf{p}} | \Phi}
+	&= \ldots \\
+	&= \sum_{i=1}^{A} \delta(\mathbf{p} - \mathbf{p}_{i}) \braket{ \mathbf{p}_{1} \ldots \mathbf{p}_{A} | \Phi} + (-1)^{A} \underbrace{\braket{ 0 | a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}_1} \ldots a_{\mathbf{p}_{A}} a_{\mathbf{p}} | \Phi}}_{=0}
+\end{align}
+Hence,
+\begin{align}
+	\braket{ \Phi | a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi} &= \int \textrm{d}^{3} \mathbf{p}_{1} \ldots \textrm{d}^{3} \mathbf{p}_{A} \braket {\Phi | \mathbf{p}_1 \mathbf{p}_2 \ldots \mathbf{p}_{A}} \sum_{i=1}^{A} \delta(\mathbf{p} - \mathbf{p}_{i}) \braket{ \mathbf{p}_{1} \mathbf{p}_{2} \ldots \mathbf{p}_{A} | \Phi}
+\end{align}
+If $\ket{\Phi}$ is a slater determinant of orthonormal single particle wave functions $\ket{\phi_{\alpha_{i}}}$ we get,
+\begin{align}
+	\braket{ \Phi | a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi} &= \sum_{i=1}^{A} | \braket{ \mathbf{p} | \phi_{\alpha_{i}} } |^{2} = \sum_{i=1}^{A} \phi_{\alpha_i}^{\dagger}(\mathbf{p}) \phi_{\alpha_i}(\mathbf{p})
+\end{align}
+Note that we also could have derived this result by instead of inserting the unit $\prod_{i=1}^{A} \textrm{d}^{3} \mathbf{p}_{i} \ket{\mathbf{p}_{i}}\bra{\mathbf{p}_{i}}$ we expand $\ket{\Phi}$ in terms of single particle creation operators,
+\begin{align}
+	a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} \ket{\Phi} &= a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} \ket{ \alpha_1 \alpha_2 \ldots \alpha_A } = a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} a_{\alpha_1}^{\dagger} a_{\alpha_2}^{\dagger} \ldots a_{\alpha_A}^{\dagger} \ket{0}
+\end{align}
+The commutation relations between $a_{\mathbf{p}}$ and $a_{\alpha_i}$ are easily derived by expanding $a_{\alpha_i}$ in momentum creation operators,
+\begin{align}
+	a_{\alpha_i}^{\dagger} &= \int \textrm{d}^{3} \mathbf{k} \phi_{\alpha_i}(\mathbf{k}) a_{k}^{\dagger} \\
+	\Rightarrow a_{\mathbf{p}} a_{\alpha_i}^{\dagger} &= \int \textrm{d}^{3} \mathbf{k} \phi_{\alpha_i}(\mathbf{k}) a_{\mathbf{p}} a_{\mathbf{k}}^{\dagger} = \phi_{\alpha_i}(\mathbf{p}) - a_{\alpha_i}^{\dagger} a_{\mathbf{p}}
+\end{align}
+So,
+\begin{align}
+	a_{\mathbf{p}} \ket{\Phi} &= a_{\mathbf{p}} a_{\alpha_1}^{\dagger} a_{\alpha_2}^{\dagger} \ldots a_{\alpha_A}^{\dagger} \ket{0} = (\phi_{\alpha_1}(\mathbf{p}) - a_{\alpha_1}^{\dagger} a_{\mathbf{p}}) a_{\alpha_2}^{\dagger} \ldots a_{\alpha_A}^{\dagger} \ket{0} \\
+	&= \sum_{i=1}^{A} (-1)^{i-1} \phi_{\alpha_{i}}(\mathbf{p}) \ket{ \alpha_1 \ldots \alpha_{i-1} \alpha_{i+1} \ldots \alpha_A}
+\end{align}
+The conjugate gives,
+\begin{align}
+	\bra{\Phi} a_{\mathbf{p}}^{\dagger} &= \sum_{j=1}^{A} (-1)^{j-1} \bra{ \alpha_1 \ldots \alpha_{j-1} \alpha_{j+1} \ldots \alpha_A} \phi_{\alpha_j}^{\dagger}(\mathbf{p})
+\end{align}
+Hence,
+\begin{align}
+\braket{ \Phi | a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi} &= \sum_{i,j=1}^{A} (-1)^{i+j} \phi_{\alpha_j}^{\dagger}(\mathbf{p}) \phi_{\alpha_{i}}(\mathbf{p})  \underbrace{\braket{ \alpha_1 \ldots \alpha_{j-1} \alpha_{j+1} \ldots \alpha_A | \alpha_1 \ldots \alpha_{i-1} \alpha_{i+1} \ldots \alpha_A }}_{=\delta_{ij}} \\
+	&= \sum_{i} \phi_{\alpha_i}^{\dagger}(\mathbf{p}) \phi_{\alpha_{i}}(\mathbf{p})
+\end{align}
+Which is exactly the same result as before.
+
+
+
+So the one body momentum distribution is given by,
+\begin{align}
+	\braket{ \Phi | \hat{n}(p) | \Phi} &=  \sum_{i=1}^{A} \frac{1}{(2 \pi)^{3}} \int \textrm{d}^{2} \Omega_{\mathbf{p}}\phi_{\alpha_i}^{\dagger}(\mathbf{p}) \phi_{\alpha_i}(\mathbf{p})
+\end{align}
+Note that this distribution is normed to the number of particles $A$. To get the momentum distribution normed to unity we have to divide by A,
+\begin{align}
+	\braket{ \Phi | \hat{n}(p) | \Phi} &=  \frac{1}{A} \sum_{i=1}^{A} \frac{1}{(2 \pi)^{3}} \int \textrm{d}^{2} \Omega_{\mathbf{p}}\phi_{\alpha_i}^{\dagger}(\mathbf{p}) \phi_{\alpha_i}(\mathbf{p})
+\end{align}
+
+\section{Nucleus}
+\subsection{shell.h}
+This class contains the quantum number of a shell $nlj$. It has two (proton \& neutron) static arrays containing all the shells.
+\begin{verbatim}
+	shellsN = [ Shell(n1,l1,j1), Shell(n2,l2,j2), ... ]
+	shellsP = [ Shell(n1,l1,j1), Shell(n2,l2,j2), ... ]
+\end{verbatim}
+These two arrays are initialised and deleted by the static methods \texttt{Shell::initialiseShells}, \texttt{Shell::deleteShells}.
+
+\subsection{nucleus.h}
+First important method here is \texttt{Nucleus::makePairs}. Note that this relies on overloaded virtual functions to function. It iterates over the quantum numbers, $n_1 l_1 j_1 m_{j_1}, n_2 l_2 j_2 m_{j_2}$ and makes a pair for each of these combinations: \texttt{Pair::Pair(mosh,n1,l1,j1,mj1,t1,n2,l2,j2,mj2,t2)}. \texttt{mosh} is the return value of \texttt{RecMosh::createRecMosh(n1,l1,n2,l2,inputdir,outputdir)}, being a \texttt{RecMosh} object. The moshinsky brackets $\braket{n_1 l_1 n_2 l_2; \Lambda | n l N L ; \Lambda}$ can be accessed by calling \texttt{RecMosh::getCoefficient(n,l,N,L,Lambda)}.
+Open shells are taken care of by calculating a open shell correction factor and applying it to the pair via \texttt{Pair::setfnorm(factor)}.
+
+Once the pairs (\texttt{Pair::Pair}) are generated we can generate a 
+
+
+
 \section{Pair coupling}
 \subsection{pair.h}
 This class represents the state

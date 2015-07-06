@@ -13,6 +13,7 @@ using std::vector;
 using std::map;
 #include <string>
 using std::string; using std::stoi;
+#include <cassert> // testing <-- Camille
 
 
 /**
