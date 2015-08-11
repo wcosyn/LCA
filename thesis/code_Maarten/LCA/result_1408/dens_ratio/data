@@ -1,7 +1,0 @@
-#
-#  pp/pn ratio (R) in function of missing momentum P (GeV)
-#
-#  P    R     Pmin  Pmax    Rmin    Rmax
-0.50  0.044   0.4   0.6     0.023   0.082
-0.61 0.083    0.52  0.70    0.051   0.137
-0.75  0.124   0.67  0.83    0.072   0.220
