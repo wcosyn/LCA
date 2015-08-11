@@ -528,7 +528,7 @@ $\nuclide[208][]{Pb}$ & $56.86$ & $-0.34$ & $-0.16$ \\
 \begin{figure}
 \centering
 \includegraphics[scale=0.67]{./figuren/dist_powgauss.png}
-\caption{Blauwe curve: $n^{[1]}(k)k^2$ voor $\nuclide[12][6]{C}, \nuclide[27][13]{Al},\nuclide[40][18]{Ar},\nuclide[56][26]{Fe}, \nuclide[109][47]{Ag}, \nuclide[208][82]{Pb} $. Gestreepte rode curve: de functie \eqref{eq:powgauss} gefit aan de resultaten volgens de methode van de kleinste kwadraten. De gefitte parameters zijn $\mu$, $\sigma$,$N_norm$ en $\alpha$. De parameter $\chi^2$ (zie \eqref{eq:chisquared} met $P_{normal}(k)$ vervangen door $P_{PG}(k)$, gegeven door \eqref{eq:powgauss}.) is de goedheid van de fit. Hier is $n^{[1]}(k)$ \eqref{eq:ob_magnitude} berekend met HO  \'{e}\'{e}ndeeltjes golffuncties \eqref{eq:HO_mom_radwave} met $A$-afhankelijke parameter $\omega$ gegeven door \eqref{eq:omega}. De normalisatie is zodanig dat $\int dk\  n^{[1]}(k)k^2 =1$.}
+\caption{Blauwe curve: $n^{[1]}(k)k^2$ voor $\nuclide[12][6]{C}, \nuclide[27][13]{Al},\nuclide[40][18]{Ar},\nuclide[56][26]{Fe}, \nuclide[109][47]{Ag}, \nuclide[208][82]{Pb} $. Gestreepte rode curve: de functie \eqref{eq:powgauss} gefit aan de resultaten volgens de methode van de kleinste kwadraten. De gefitte parameters zijn $\mu$, $\sigma$,$N_{norm}$ en $\alpha$. De parameter $\chi^2$ (zie \eqref{eq:chisquared} met $P_{normal}(k)$ vervangen door $P_{PG}(k)$, gegeven door \eqref{eq:powgauss}.) is de goedheid van de fit. Hier is $n^{[1]}(k)$ \eqref{eq:ob_magnitude} berekend met HO  \'{e}\'{e}ndeeltjes golffuncties \eqref{eq:HO_mom_radwave} met $A$-afhankelijke parameter $\omega$ gegeven door \eqref{eq:omega}. De normalisatie is zodanig dat $\int dk\  n^{[1]}(k)k^2 =1$.}
 \label{fig:oneparticledistr_3}
 \end{figure}
 
@@ -689,7 +689,7 @@ waarbij $\psi$ de HO golffunctie \eqref{eq:splits_momentum} is. De golffunctie i
 
 \section{Resultaten}
 
-Allereerst bestuderen we de relatieve tweedeeltjes impulsdistributie die we krijgen door  \eqref{eq:2BMD_uitgewerkt} te integreren over de massacentrumimpuls $\vec{P}$ over alle directionele afhankelijkheid:
+Allereerst bestuderen we de relatieve tweedeeltjes impulsdistributie die we krijgen door  \eqref{eq:2BMD_uitgewerkt} te integreren over de massacentrumimpuls $\vec{P}$ en over alle directionele afhankelijkheid:
 \begin{align} \label{eq:rel_two}
 n^{[2]}(k_{12}) & = \int d\Omega_{k_{12}}\int d\vec{P}_{12}\ n^{[2]}(\vec{k}_{12},\vec{P}_{12}) \nonumber \\
 							& = \sum_{l} n_2^{l}(k_{12})
@@ -698,12 +698,10 @@ waarbij
 \begin{align*}
 n_2^{l}(k_{12}) = \frac{1}{A(A-1)} \sum_{\substack{\alpha \beta}} \sum_{\substack{nm_l \\ NLM_L}} \sum_{\substack{n^{\prime} }} \sum_{\substack{S M_S \\T M_T}} &  \left( C_{\alpha \beta}^{nlm_l NLM_L  S M_S T M_T} \right)^\dagger  C_{\alpha \beta}^{ n^{\prime} lm_l NLM_L  S M_S T M_T} \\ \ \times & K_{nl}(k_{12}) K_{n^{\prime} l}(k_{12}).
 \end{align*}
-$K_{nl}(k)$ is de radi\"{e}le HO golffunctie in de impulsruimte gedefinieerd in vergelijking \eqref{eq:HO_mom_radwave}.
-Resultaten worden getoond in Figuur \ref{fig:twoparticledistr_rel_log} waarbij we $n^{[2]}(k_{12})$ op een logschaal tonen omdat uit onderzoek waarbij kortedracht correlaties in rekening worden gebracht (\cite{maarten,wiringa2014nucleon}) blijkt dat correlaties zorgen voor een brede staart in de distributie vanaf $k_{12} \gtrsim 1.5\ fm^{-1}$ en een zichtbaar verschil toont zich alleen op een logaritmische schaal.  Resultaten uit gemiddeld veld berekeningen zijn dus relevant tot ongeveer $1.5\ fm^{-1}$. De distributie $n^{[2]}(k_{12})k_{12}^2dk_{12}$ geeft de kans om twee nucleonen te vinden met een onderling relatieve impuls in het interval $[ k_{12}, k_{12}+ d k_{12} ]$ en is afgebeeld in Figuur \ref{fig:twoparticledistr_rel} voor verschillende kernen. De bijdragen van relatieve impulsmoment $l$ worden getoond ter vergelijking met een model met correlaties zodat men kan zien welke $l$ het meest worden be\"{i}nvloed door deze correlaties. Dat interacties tussen nucleonen de bezettingen van de relatieve $l$ be\"{i}nvloeden is int\"{i}utief te begrijpen als men kijkt naar overlap van twee nucleonen in verschillende relatieve $l$ toestanden. In $l=0$ is de overlap het grootst en we verwachten dat de bezetting van deze toestand het meest zal veranderen bij het invoeren van correlaties. Uit de resultaten valt ook op dat twee nucleonen zich voornamelijk in een $l=1$ toestand bevinden.
-
-Afwijkingen van een normale distributie, gekarakteriseerd door kurtosis $\kappa$ en scheefheid $\mathcal{S}$ zijn duidelijk afhankelijk van de massa $A$ van de kern zoals weergegeven in Figuur \ref{fig:properties_rel}. Net zoals bij de \'{e}\'{e}ndeeltjes impulsdistributie groeit ook bij de tweedeeltjes impulsdistributies de absolute waarde van de kurtosis met toenemende $A$. Kurtosis is steeds negatief zodat de distributies kleinere staarten en een en bredere piek hebben ten opzichte van een normale distributie. 
+Hier is $K_{nl}(k)$ de radi\"{e}le HO golffunctie in de impulsruimte gedefinieerd in vergelijking \eqref{eq:HO_mom_radwave}.
+Resultaten worden getoond in Figuur \ref{fig:twoparticledistr_rel_log} waarbij we $n^{[2]}(k_{12})$ op een logaritmische schaal tonen omdat uit onderzoek waarbij kortedracht correlaties in rekening worden gebracht (\cite{maarten,wiringa2014nucleon}) blijkt dat correlaties zorgen voor een brede staart in de distributie vanaf $k_{12} \gtrsim 1.5\ fm^{-1}$ en een zichtbaar verschil toont zich alleen op een logaritmische schaal.  Resultaten uit gemiddeld veld berekeningen zijn dus relevant tot ongeveer $1.5\ fm^{-1}$. De distributie $n^{[2]}(k_{12})k_{12}^2dk_{12}$ geeft de kans om twee nucleonen te vinden met een onderling relatieve impuls in het interval $[ k_{12}, k_{12}+ d k_{12} ]$ en is afgebeeld in Figuur \ref{fig:twoparticledistr_rel} voor verschillende kernen. De bijdragen van relatieve impulsmoment $l$ worden getoond ter vergelijking met een model met correlaties zodat men kan zien welke $l$ het meest worden be\"{i}nvloed door deze correlaties. Dat interacties tussen nucleonen de bezettingen van de relatieve $l$ be\"{i}nvloeden is int\"{i}utief te begrijpen als men kijkt naar overlap van twee nucleonen in verschillende relatieve $l$ toestanden. In $l=0$ is de overlap het grootst en we verwachten dat de bezetting van deze toestand het meest zal veranderen bij het invoeren van correlaties. Uit de resultaten valt ook op dat twee nucleonen zich voornamelijk in een $l=1$ toestand bevinden. Afwijkingen van een normale distributie, gekarakteriseerd door kurtosis $\kappa$ en scheefheid $\mathcal{S}$ zijn duidelijk afhankelijk van de massa $A$ van de kern zoals weergegeven in Figuur \ref{fig:properties_rel}. Net zoals bij de \'{e}\'{e}ndeeltjes impulsdistributie groeit ook bij de tweedeeltjes impulsdistributies de absolute waarde van de kurtosis met toenemende $A$. Kurtosis is steeds negatief zodat de distributies kleinere staarten en een bredere piek hebben ten opzichte van een normale distributie. 
 De andere parameter die afwijking van de normale distributie karakteriseert, scheefheid, neemt af naarmate $A$ groter wordt en is steeds positief, de distributies zijn dus rechts scheef. 
-Ook valt op dat de spreiding rond het gemiddelde ruwweg onafhankelijk is van de beschouwde kern. We kunnen besluiten dat de relatieve tweedeetjesimpuls bij benadering normaal verdeeld is voor verschillenden kernen.
+Ook valt op dat de spreiding rond het gemiddelde ruwweg onafhankelijk is van de beschouwde kern. Daar de afwijkingen steeds klein zijn kunnen we besluiten dat de relatieve tweedeetjesimpuls bij benadering normaal verdeeld is voor de verschillende kernen.
 
 Vervolgens bestuderen we de impulsdistributie van het massacentrum van twee deeltjes gegeven door 
 \begin{align} \label{eq:cm_two}
@@ -714,9 +712,10 @@ waarbij
 \begin{align*} 
 n_2^{l}(P_{12}) = \frac{1}{A(A-1)} \sum_{\substack{\alpha \beta }} \sum_{\substack{nm_l \\ NLM_L}} \sum_{N^{\prime}} \sum_{\substack{S M_S \\T M_T}} &  \left( C_{\alpha \beta}^{nlm_l NLM_L  S M_S T M_T} \right)^\dagger  C_{\alpha \beta}^{ n lm_l N^{\prime}LM_L  S M_S T M_T} \\ \ \times & K_{NL}(P_{12}) K_{N^{\prime} L}(P_{12}). 
 \end{align*}
-$K_{NL}(P_{12})$ is de radi\"{e}le HO golffunctie in de impulsruimte gedefinieerd in vergelijking \eqref{eq:HO_mom_radwave}.
-Resultaten zijn afgebeeld in Figuur \ref{fig:twoparticledistr_cm}. $n^{[2]}(P_{12})P_{12}^2dP_{12}$ geeft de kans om twee nucleonen te vinden waarvan het massacentrum een impuls $P$ heeft in het interval $[ P_{12}, P_{12}+ dP_{12} ]$. De afwijkingen van een normale distributie vertonen dezelfde karakteristieken als bij de relatieve impulsdistributie. Contributies van relatieve orbitaal kwantumgetal $l$ zijn weergegeven ter vergelijking met een model met correlaties. Ook hier gelden dezelfde conclusies als bij de relatieve distributie in verband met de bijdragen van de verschillende $l$. De kurtosis van de berekende distributies is steeds negatief en de absolute waarde wordt steeds groter met toenemende massa $A$ van de kern. De scheefheid neemt af met de massa. De breedte van de massacentrum impulsdistributies is onafhankelijk van de massa van de kern. De scheefheid en kurtosis zijn steeds klein dus wordt de impuls van het tweedeeltjes massacentrum relatief goed beschreven door een normale verdeling.
-In Figuur \ref{fig:vergelijking} vergelijken we onze resultaten van de twee distributies, hierboven besproken, met overeenkomstige GV resultaten van M. Vanhalst \cite{maarten}. Onze resultaten stemmen overeen.
+Hier is $K_{NL}(P_{12})$ de radi\"{e}le HO golffunctie in de impulsruimte gedefinieerd in vergelijking \eqref{eq:HO_mom_radwave}.
+Resultaten zijn afgebeeld in Figuur \ref{fig:twoparticledistr_cm}. De kans om twee nucleonen te vinden waarvan het massacentrum een impuls heeft in het interval $[ P_{12}, P_{12}+ dP_{12} ]$ wordt gegeven door $n^{[2]}(P_{12})P_{12}^2dP_{12}$. De afwijkingen van een normale distributie vertonen dezelfde karakteristieken als bij de relatieve impulsdistributie. De kurtosis van de berekende distributies is steeds negatief en de absolute waarde wordt steeds groter met toenemende massa $A$ van de kern. De scheefheid neemt af met de massa. De breedte van de massacentrum impulsdistributies is onafhankelijk van de massa van de kern. De scheefheid en kurtosis zijn steeds klein dus wordt de impuls van het tweedeeltjes massacentrum relatief goed beschreven door een normale verdeling.
+Contributies van relatieve orbitaal kwantumgetal $l$ zijn weergegeven ter vergelijking met een model met correlaties. Ook hier gelden dezelfde conclusies als bij de relatieve distributie in verband met de bijdragen van de verschillende $l$, namelijk $l=0$ zal het meest be\"{i}vloed worden door correlaties tussen de nucleonen. 
+In Figuur \ref{fig:vergelijking} vergelijken we onze resultaten van de relatieve en massacentrum impulsdistributies, hierboven besproken, met overeenkomstige GV resultaten van M. Vanhalst \cite{maarten}. Onze resultaten stemmen overeen.
 
 Tenslotte bestuderen we de tweedeeltjes impulsdistributie in functie van de hoek $\theta_{kP}$ tussen $\vec{k}_{12}$ en  $\vec{P}_{12}$:
 \begin{align} \label{eq:angle_tb2}
@@ -727,12 +726,22 @@ Hierbij is er overgegaan naar een assenstelsel weergegeven in Figuur \ref{fig:as
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.85]{./figuren/assenstelsel1.pdf}
-\caption{We kunnen een transformatie doen naar dit co\"{o}rdinatensysteem zodat alle hoeken verdwijnen behalve de hoek tussen $\vec{k}_{12}$ en $\vec{P}_{12}$: de azumitale hoek $\varphi$ is voor beide vectoren nul en ook de poolhoek $\theta_{k_{12}}$ is nul.  }
+\caption{We kunnen een transformatie doen naar dit co\"{o}rdinatensysteem zodat alle hoeken verdwijnen behalve de hoek tussen $\vec{k}_{12}$ en $\vec{P}_{12}$: de azumitale hoek $\varphi$ is voor beide vectoren nul en ook de poolhoek van $\vec{k}_{12}$, genaamd $\theta_{k_{12}}$, is nul.  }
 \label{fig:assen}
 \end{figure}
 
-Resultaten worden getoond in Figuur \ref{fig:angle}. Voor alle kernen zijn deze maximaal bij $\theta_{kP} = 90^{\circ}$. Als $\vec{k}_{12}$ en $\vec{P}_{12}$ loodrecht staan op elkaar dan volgt uit hun  definities \eqref{eq:rcm_impusl} dat de groottes van de individuele impulsen van de deeltjes even groot zijn, $\abs{\vec{k}_1} = \abs{\vec{k}_2}$. $n^{[2]}(\theta_{kP})\sin{\theta_{kP}}d\theta_{kP}$ geeft de kans om twee nucleonen te vinden waarvan de relatieve impuls een hoek $\theta_{kP}$ vormt met de impuls van hun massacentrum. Daar $\sin{\theta_{kP}}$ ook piekt bij $\theta_{kP} = 90^{\circ}$ is deze distributie voor alle kernen maximaal bij een loodrechte configuratie van $\vec{k}_{12}$ en $\vec{P}_{12}$. Dus twee nucleonen bevinden zich met voorkeur in een toestand waarbij ze een even grote impuls hebben.
-Als we de eigenschappen van de hoekdistributies bekijken valt op dat de scheefheid steeds nul is, met andere woorden de distributies zijn steeds symmetrisch rond $\theta_{kP} = \pi/2$. Kurtosis en variantie vari\"{e}ren weinig van kern tot kern. De eerstgenoemde is duidelijk verschillend van nul en we kunnen nogmaals besluiten dat een normale distributie geen goede fit aan de resultaten zal geven.
+Resultaten worden getoond in Figuur \ref{fig:angle}. Voor alle kernen zijn deze maximaal bij $\theta_{kP} = \pi/2$. Als $\vec{k}_{12}$ en $\vec{P}_{12}$ loodrecht staan op elkaar dan volgt uit hun  definities \eqref{eq:rcm_impusl} dat de groottes van de individuele impulsen van de deeltjes even groot zijn ($|\vec{k}_1| = |\vec{k}_2|$). De kans om twee nucleonen te vinden waarvan de relatieve impuls een hoek $\theta_{kP}$ vormt met de impuls van hun massacentrum wordt gegeven door $n^{[2]}(\theta_{kP})\sin{\theta_{kP}}d\theta_{kP}$. Daar $\sin{\theta_{kP}}$ ook piekt bij $\theta_{kP} = 90^{\circ}$ is deze distributie voor alle kernen maximaal bij een loodrechte configuratie van $\vec{k}_{12}$ en $\vec{P}_{12}$. Dus twee nucleonen bevinden zich bij voorkeur in een toestand waarbij ze een even grote impuls hebben. Dit is niet alleen een gevolg van de factor $\sin{\theta_{kP}}$ afkomstig van de faseruimte, maar ook van de distributie $n^{[2]}(\theta_{kP})$ zelf.  We hebben ook een Monte-Carlosimulatie gedaan waarbij de grootte van twee \'{e}\'{e}ndeeltjes impulsen ($\vec{k}_1$ en $\vec{k}_2$) worden getrokken uit de berekende \'{e}\'{e}ndeeltjes impulsdistributies, getoond in Figuren  \ref{fig:oneparticledistr_2} en \ref{fig:oneparticledistr_3}. De hoeken zijn uit een sferisch symmetrische distributie getrokken. Uit deze twee impulsen berekenen we dan de relatieve impuls en de impuls van het massacentrum aan de hand van definities \eqref{eq:rcm_impusl}. De hoek tussen $\vec{k}_{12}$ en $\vec{P}_{12}$ bepalen we door
+\begin{equation}
+\cos{\theta_{kP}} = \frac{\vec{P}_{12} \cdot \vec{k}_{12}}{|\vec{P}_{12}| |\vec{k}_{12}|}.
+\end{equation}
+In Figuur \ref{fig:mc} is het resultaat van deze simulatie weergegeven voor koolstof. Het resultaat sluit aan bij de theoretische verdeling in Figuur \ref{fig:angle}.
+\begin{figure}
+\centering
+\includegraphics[scale=0.35]{./figuren/carbon.png}
+\caption{Links: \'{e}\'{e}ndeeltjes impuls wordt gegenereerd volgens de \'{e}\'{e}ndeeltjes impulsdistributie van $\nuclide[12][6]{C}$ berekend in Hoofstuk \ref{eendeeltjes} (Zie Figuren \ref{fig:oneparticledistr_2} en \ref{fig:oneparticledistr_3}, ook weergegeven als groene curve). Rechts wordt de verdeling van de hoek $\theta_{kP}$ getoond. De groene curve stelt de theoretische verdeling voor uit Figuur \ref{fig:angle}.}
+\label{fig:mc}
+\end{figure}
+Als we de eigenschappen van de hoekdistributies bekijken valt op dat de scheefheid steeds nul is, met andere woorden de distributies zijn steeds symmetrisch rond $\theta_{kP} = \pi/2$. De kurtosis en  de variantie vari\"{e}ren weinig van kern tot kern. De eerstgenoemde is negatief en groter in absolute waarde dan bij de vorige tweedeeltjes distributies.
 
 \begin{figure}[H]
 \centering
@@ -744,7 +753,7 @@ Als we de eigenschappen van de hoekdistributies bekijken valt op dat de scheefhe
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.65]{./figuren/multi_rel.png}
-\caption{Berekende $n^{[2]}(_{12})k_{12}^2$, $n^{[2]}(k_{12})$ met gegeven door uitdrukking \eqref{eq:rel_two}, voor $ \nuclide[12][6]{C}, \nuclide[27][13]{Al},\nuclide[40][18]{Ar},\nuclide[48][20]{Ca},\nuclide[56][26]{Fe},\nuclide[109][47]{Ag}$. De normalisatie is zodanig dat $\int dk_{12}\ k_{12}^2\ n^{[2]}(k_{12}) = 1$. De bijdragen van de tweedeeltjes relatieve impulsmomenten $l$ worden getoond. }
+\caption{Berekende $n^{[2]}(_{12})k_{12}^2$, waarbij $n^{[2]}(k_{12})$ gegeven door uitdrukking \eqref{eq:rel_two}, voor $ \nuclide[12][6]{C}, \nuclide[27][13]{Al},\nuclide[40][18]{Ar},\nuclide[48][20]{Ca},\nuclide[56][26]{Fe},\nuclide[109][47]{Ag}$. De normalisatie is zodanig dat $\int dk_{12}\ k_{12}^2\ n^{[2]}(k_{12}) = 1$. De bijdragen van de tweedeeltjes relatieve impulsmomenten $l$ worden getoond. }
 \label{fig:twoparticledistr_rel}
 \end{figure}
 
@@ -784,21 +793,21 @@ $\nuclide[108][]{Ag}$ & $64.658$ & $-0.364$ & $0.206$ \\
 \begin{figure}
 \centering
 \includegraphics[scale=0.45]{./figuren/properties_rel.png}
-\caption{De breedte $\sigma$, de kurtosis $\kappa$ en de scheefheid $\mathcal{S}$ van relatieve tweedeeltjes impulsdistributies van Figuur \ref{fig:twoparticledistr_rel}. Numerieke waarden staan in Tabel \ref{tab:properties_rel}. Daar de kurtosis steeds negatief is tonen we zijn absolute waarde.}
+\caption{De breedte $\sigma$, de kurtosis $\kappa$ en de scheefheid $\mathcal{S}$ van relatieve tweedeeltjes impulsdistributies van Figuur \ref{fig:twoparticledistr_rel}. Numerieke waarden staan in Tabel \ref{tab:properties_rel}. De kurtosis is steeds negatief en wordt in absolute waarde getoond.}
 \label{fig:properties_rel}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[scale=0.45]{./figuren/properties_cm.png}
-\caption{De breedte $\sigma$, de kurtosis $\kappa$ en de scheefheid $\mathcal{S}$ van massacentrum tweedeeltjes impulsdistributies van Figuur \ref{fig:twoparticledistr_cm_prob}. Numerieke waarden staan in Tabel \ref{tab:properties_cm}. Daar de kurtosis steeds negatief is tonen we zijn absolute waarde.}
+\caption{De breedte $\sigma$, de kurtosis $\kappa$ en de scheefheid $\mathcal{S}$ van massacentrum tweedeeltjes impulsdistributies van Figuur \ref{fig:twoparticledistr_cm_prob}. Numerieke waarden staan in Tabel \ref{tab:properties_cm}. De kurtosis is steeds negatief en wordt in absolute waarde getoond.}
 \label{fig:properties_cm}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[scale=0.45]{./figuren/properties_angle.png}
-\caption{De breedte $\sigma$ en de kurtosis $\kappa$ van de hoekdistributies tweedeeltjes impuls van Figuur \ref{fig:angle}. Scheefheid van deze distributie $\mathcal{S}$ is nul voor alle beschouwde kernen. Daar de kurtosis steeds negatief is tonen we zijn absolute waarde.}
+\caption{De breedte $\sigma$ en de kurtosis $\kappa$ van de hoekdistributies tweedeeltjes impuls van Figuur \ref{fig:angle}. Scheefheid van deze distributie $\mathcal{S}$ is nul voor alle beschouwde kernen. De kurtosis is steeds negatief en wordt in absolute waarde getoond.}
 \label{fig:properties_angle}
 \end{figure}
 

@@ -1,0 +1,580 @@
+ABGCBRODY-MOSHINSKY BRACKETS.  COMPUTATION OF BRODY-MOSHINSKY BRACKETS. ABGC0000
+1   LEJEUNE, A., JEUKENNE, J.P.                                         ABGC0000
+REF. IN COMP. PHYS. COMMUN. 2 (1971) 231                                ABGC0000
+//SYMB2122 JOB (2122D00117,2,30),LEJEUNE,MSGLEVEL=1,CLASS=B             ABGC0001
+//CONTI EXEC FORTGCLG,PARM.FORT=(BCD)                                   ABGC0002
+//FORT.SYSIN DD *                                                       ABGC0003
+C  THIS PROGRAM CALCULATES THE BRODY MOSHINSKY COEFFICIENTS BRNN=(NL,NG ABGC0004
+C  LG,LA/N1L1,N2L2,LA) AS DEFINED IN 'TABLES OF TRANSFORMATION BRACKETS ABGC0005
+C  FOR NUCLEAR SHELL MODEL CALCULATIONS' BY T.A.BRODY AND M.MOSHINSKY,  ABGC0006
+C  SECOND EDITION.                                                      ABGC0007
+C  IN THE RESULTS,THE INDICES ARE PRINTED IN THE SAME ORDER AS IN THE   ABGC0008
+C  ABOVE TABLES                                                         ABGC0009
+C     IF THE RELATION 2*N1+L1+2*N2=2*N+L+2*NG+LG OR IF THE TRIANGULAR   ABGC0010
+C     CONDITION ON L1,L2,L,LG IS NOT VERIFIED,THE B-M COEFFICIENT IS    ABGC0011
+C  SET EQUAL TO ZERO                                                    ABGC0012
+C                                                                       ABGC0013
+      IMPLICIT REAL*8(A-H,O-Z)                                          ABGC0014
+      COMMON/BLOC2/BRNN,N1,N2,L1,L2,LA,N,L,NG,LG                        ABGC0015
+  50  FORMAT(20I3)                                                      ABGC0016
+  51  FORMAT(1H0,'  N1=',I2,1X,'N2=',I2,1X,'L1=',I2,1X,'L2=',I2,1X,'LA='ABGC0017
+     1,I2,1X,'N=',I2,1X,'L=',I2,1X,'NG=',I2,1X,'LG=',I2,1X,'BRODY=',D15.ABGC0018
+     28)                                                                ABGC0019
+  52  FORMAT(1H1,15X,'COMPUTATION OF THE BRODY-MOSHINSKY COEFFICIENTS'//ABGC0020
+     113X,60(1H*)//)                                                    ABGC0021
+      PRINT 52                                                          ABGC0022
+      READ 50,IMAX                                                      ABGC0023
+      DO 102 IU=1,IMAX                                                  ABGC0024
+      READ 50,N1,N2,L1,L2,LA,N,L,NG,LG                                  ABGC0025
+      CALL  BRODY                                                       ABGC0026
+  24  PRINT 51,N1,N2,L1,L2,LA,N,L,NG,LG,BRNN                            ABGC0027
+  102 CONTINUE                                                          ABGC0028
+      CALL EXIT                                                         ABGC0029
+      END                                                               ABGC0030
+      SUBROUTINE BRODY                                                  ABGC0031
+C                                                                       ABGC0032
+C     SUBPROGRAM  BRODY                                                 ABGC0033
+C   FIRST STEP N2 GOES TO 0,N1 REMAINS INVARIANT                        ABGC0034
+C                                                                       ABGC0035
+      IMPLICIT REAL*8(A-H,O-Z)                                          ABGC0036
+      COMMON/BLOC2/BRNN,N1,N2,L1,L2,LA,N,L,NG,LG                        ABGC0037
+      DIMENSION IA(1000),IC(200),IA2(5),E(100)                          ABGC0038
+      SQRT(X)=DSQRT(X)                                                  ABGC0039
+      ABS(X)=DABS(X)                                                    ABGC0040
+      X1=1.5D0                                                          ABGC0041
+      CALL FACBIN                                                       ABGC0042
+      DO 55 I=1,50                                                      ABGC0043
+  55  E(I)=0                                                            ABGC0044
+      M1=2*N1+L1+2*N2+L2                                                ABGC0045
+      M2=2*N+L+2*NG+LG                                                  ABGC0046
+      IF(M1.NE.M2) GO TO 15                                             ABGC0047
+      M1=IABS(L-LG)                                                     ABGC0048
+      M2=L+LG                                                           ABGC0049
+      IF((LA.LT.M1).OR.(LA.GT.M2)) GO TO 15                             ABGC0050
+      M1=IABS(L1-L2)                                                    ABGC0051
+      M2=L1+L2                                                          ABGC0052
+      IF((LA.LT.M1).OR.(LA.GT.M2)) GO TO 15                             ABGC0053
+      KO=0                                                              ABGC0054
+      IA2(1)=N                                                          ABGC0055
+      IA2(2)=L                                                          ABGC0056
+      IA2(3)=NG                                                         ABGC0057
+      IA2(4)=LG                                                         ABGC0058
+      IA2(5)=0                                                          ABGC0059
+      IF(N2.NE.0) GO TO 23                                              ABGC0060
+      CALL BRN0(BRNN,IA2,LA,L1,L2,N1,0)                                 ABGC0061
+      GO TO 24                                                          ABGC0062
+C                                                                       ABGC0063
+C     CONSTRUCTION OF THE TWO MATRICES IA AND IC                        ABGC0064
+C                                                                       ABGC0065
+  23  CALL INDIC(N,L,NG,LG,MAX,MC,LA,L1,L2,N1,N2,2,IA,IC)               ABGC0066
+      MY=MAX                                                            ABGC0067
+      MMC=MC-2                                                          ABGC0068
+C                                                                       ABGC0069
+C     STARTING FROM THE FINAL VALUES OF THE MATRICES IA AND IC ,CORRES- ABGC0070
+C     PONDING TO N2=0,WE CONSTRUCT AGAIN THE B-M COEFFICIENTS           ABGC0071
+C                                                                       ABGC0072
+      DO 10 K1=2,MMC,2                                                  ABGC0073
+      K=MC-(K1-2)                                                       ABGC0074
+      MX=K                                                              ABGC0075
+      S=0                                                               ABGC0076
+      IX=IC(MX-1)                                                       ABGC0077
+      DO 11 I1=1,IX                                                     ABGC0078
+      I=IX-(I1-1)                                                       ABGC0079
+      DO 12 J=1,5                                                       ABGC0080
+  12  IA2(J)=IA(MY-5+J)                                                 ABGC0081
+      IF(IC(MX).NE.0) GO TO 13                                          ABGC0082
+      CALL BRN0(BRX ,IA2,LA,L1,L2,N1,0)                                 ABGC0083
+      GO TO 14                                                          ABGC0084
+  13  LK=K/2+KO-I1+1                                                    ABGC0085
+      BRX=E(LK)                                                         ABGC0086
+  14  CONTINUE                                                          ABGC0087
+C                                                                       ABGC0088
+C     COMPUTATION OF THE MATRIX ELEMENTS OF R SQUARE(SEE TABLE I OF B-M ABGC0089
+C     TABLE)                                                            ABGC0090
+C                                                                       ABGC0091
+      CALL FACT(CO,IA2,LA,2)                                            ABGC0092
+      X=BRX*CO/SQRT((IC(MX)+1)*(IC(MX)+L2+X1))                          ABGC0093
+      S=S+X                                                             ABGC0094
+      MY=MY-5                                                           ABGC0095
+  11  CONTINUE                                                          ABGC0096
+      IK=K/2                                                            ABGC0097
+      E(IK)=S                                                           ABGC0098
+      IF(IK.EQ.2) GO TO 18                                              ABGC0099
+      KO=KO-IC(K-1)+1                                                   ABGC0100
+      IF(IC(K).EQ.IC(K-2)) GO TO 10                                     ABGC0101
+      KO=0                                                              ABGC0102
+      KK=K-2                                                            ABGC0103
+      DO 16 K2=2,KK,2                                                   ABGC0104
+      K3=K-K2                                                           ABGC0105
+      IF(IC(K3).NE.IC(K3-2)) GO TO 17                                   ABGC0106
+      KO=KO+IC(K3-1)                                                    ABGC0107
+  16  CONTINUE                                                          ABGC0108
+  17  KO=KO+IC(K3-1)                                                    ABGC0109
+  10  CONTINUE                                                          ABGC0110
+  18  BRNN=E(2)                                                         ABGC0111
+  24  BRD=ABS(BRNN)                                                     ABGC0112
+      IF(BRD.LT.0.1D-10) BRNN=0.                                        ABGC0113
+      RETURN                                                            ABGC0114
+  15  BRNN=0                                                            ABGC0115
+      RETURN                                                            ABGC0116
+      END                                                               ABGC0117
+      SUBROUTINE BRN0(ABRN0,IU,LA,L1,L2,N1,N2)                          ABGC0118
+C                                                                       ABGC0119
+C     THE DIAGRAM OF THIS SUBROUTINE (N1) IS THE SAME AS THE PRECEEDING ABGC0120
+C     ONE (N2)                                                          ABGC0121
+C                                                                       ABGC0122
+      IMPLICIT REAL*8(A-H,O-Z)                                          ABGC0123
+      DIMENSION IA(1000),IC(200),IA2(5),IU(5),E(100)                    ABGC0124
+      DO 55 I=1,50                                                      ABGC0125
+  55  E(I)=0                                                            ABGC0126
+      X1=1.5D0                                                          ABGC0127
+      KO=0                                                              ABGC0128
+      DO 15 I=1,5                                                       ABGC0129
+  15  IA2(I)=IU(I)                                                      ABGC0130
+      N=IU(1)                                                           ABGC0131
+      L=IU(2)                                                           ABGC0132
+      NG=IU(3)                                                          ABGC0133
+      LG=IU(4)                                                          ABGC0134
+      IF(N1.NE.0) GO TO 23                                              ABGC0135
+      CALL BR00(ABRN0,IA2,LA,L1,L2)                                     ABGC0136
+      GO TO 24                                                          ABGC0137
+  23  CALL INDIC(N,L,NG,LG,MAX,MC,LA,L1,L2,N1,N2,1,IA,IC)               ABGC0138
+      MY=MAX                                                            ABGC0139
+      MMC=MC-2                                                          ABGC0140
+      DO 10 K1=2,MMC,2                                                  ABGC0141
+      K=MC-(K1-2)                                                       ABGC0142
+      MX=K                                                              ABGC0143
+      S=0                                                               ABGC0144
+      IX=IC(MX-1)                                                       ABGC0145
+      DO 11 I1=1,IX                                                     ABGC0146
+      I=IX-(I1-1)                                                       ABGC0147
+      DO 12 J=1,5                                                       ABGC0148
+  12  IA2(J)=IA(MY-5+J)                                                 ABGC0149
+      IF(IC(MX).NE.0) GO TO 13                                          ABGC0150
+      CALL BR00(BRX  ,IA2,LA,L1,L2)                                     ABGC0151
+      GO TO 14                                                          ABGC0152
+  13  LK=K/2+KO-I1+1                                                    ABGC0153
+      BRX=E(LK)                                                         ABGC0154
+  14  CONTINUE                                                          ABGC0155
+      CALL FACT(CO,IA2,LA,1)                                            ABGC0156
+      X=BRX*CO/DSQRT((IC(MX)+1)*(IC(MX)+L1+X1))                         ABGC0157
+      S=S+X                                                             ABGC0158
+      MY=MY-5                                                           ABGC0159
+  11  CONTINUE                                                          ABGC0160
+      IK=K/2                                                            ABGC0161
+      E(IK)=S                                                           ABGC0162
+      IF(IK.EQ.2) GO TO 18                                              ABGC0163
+      KO=KO-IC(K-1)+1                                                   ABGC0164
+      IF(IC(K).EQ.IC(K-2)) GO TO 10                                     ABGC0165
+      KO=0                                                              ABGC0166
+      KK=K-2                                                            ABGC0167
+      DO 16 K2=2,KK,2                                                   ABGC0168
+      K3=K-K2                                                           ABGC0169
+      IF(IC(K3).NE.IC(K3-2)) GO TO 17                                   ABGC0170
+      KO=KO+IC(K3-1)                                                    ABGC0171
+  16  CONTINUE                                                          ABGC0172
+  17  KO=KO+IC(K3-1)                                                    ABGC0173
+  10  CONTINUE                                                          ABGC0174
+  18  ABRN0=E(2)                                                        ABGC0175
+  24  RETURN                                                            ABGC0176
+      END                                                               ABGC0177
+      SUBROUTINE INDIC(N,L,NG,LG,MAX,MC,LA,L1,L2,N1,N2,IH,IA,IC)        ABGC0178
+C                                                                       ABGC0179
+C     IN THE MATRIX IA WE RANGE THE INDICES IN SERIES OF 5,RESPECTIVELY ABGC0180
+C     N,L,NG,LG AND THE NUMBER OF THE CORRESPONDING LINE IN TABLE I     ABGC0181
+C     (EXCEPT IN THE FIRST ENTRY BLOC  WHERE IA(5)=0 )                  ABGC0182
+C  MAX IS THE MAXIMUM VALUE OF THE MATRIX IA (ALWAYS A MULTIPLE OF 5)   ABGC0183
+C     IN THE MATRIX IC,THE ODD ELEMENTS REPRESENT THE NUMBER OF B-M COEFABGC0184
+C     GENERATED AT THE STEP N1 OR N2 INDICATED BY THE FOLLOWING EVEN ELEABGC0185
+C     -MENT                                                             ABGC0186
+C     MC:MAXIMUM VALUE OF THE MATRIX IC(ALWAYS MULTIPLE OF 2)           ABGC0187
+C                                                                       ABGC0188
+      DIMENSION IA(1000),IC(200),IA1(5),IB(5,6)                         ABGC0189
+      DO 22 I=1,400                                                     ABGC0190
+  22  IA(I)=0                                                           ABGC0191
+      DO 27 I=1,100                                                     ABGC0192
+  27  IC(I)=0                                                           ABGC0193
+      IA(1)=N                                                           ABGC0194
+      IA(2)=L                                                           ABGC0195
+      IA(3)=NG                                                          ABGC0196
+      IA(4)=LG                                                          ABGC0197
+      IA(5)=0                                                           ABGC0198
+      IF(IH.EQ.2) GO TO 25                                              ABGC0199
+      NC=N1                                                             ABGC0200
+      GO TO 26                                                          ABGC0201
+  25  NC=N2                                                             ABGC0202
+  26  MAX=5                                                             ABGC0203
+      MC=2                                                              ABGC0204
+      IC(1)=1                                                           ABGC0205
+      IC(2)=NC                                                          ABGC0206
+      NBR=0                                                             ABGC0207
+      I2=1                                                              ABGC0208
+      GO TO 10                                                          ABGC0209
+  12  I1=MC                                                             ABGC0210
+  15  I=I1-2                                                            ABGC0211
+      IF(IC(I).NE.IC(I1)) GO TO 14                                      ABGC0212
+      I1=I                                                              ABGC0213
+      GO TO 15                                                          ABGC0214
+  14  I2=I+1                                                            ABGC0215
+  10  IX=IC(I2)                                                         ABGC0216
+      DO 16 I4=1,IX                                                     ABGC0217
+      DO 17 I5=1,5                                                      ABGC0218
+  17  IA1(I5)=IA(NBR+I5+(I4-1)*5)                                       ABGC0219
+      IF(IH.EQ.2) GO TO 23                                              ABGC0220
+      MH=NC-1                                                           ABGC0221
+      MK=N2                                                             ABGC0222
+      GO TO 24                                                          ABGC0223
+  23  MH=N1                                                             ABGC0224
+      MK=NC-1                                                           ABGC0225
+  24  CALL ISRIN(IA1,IB,K,LA,L1,L2,MH,MK)                               ABGC0226
+      DO 18 I6=1,K                                                      ABGC0227
+      DO 19 I7=1,5                                                      ABGC0228
+  19  IA(MAX+I7)=IB(I7,I6)                                              ABGC0229
+  18  MAX=MAX+5                                                         ABGC0230
+      IC(MC+1)=K                                                        ABGC0231
+      IC(MC+2)=NC-1                                                     ABGC0232
+  16  MC=MC+2                                                           ABGC0233
+      NBR=NBR+IX*5                                                      ABGC0234
+      I2=I2+2                                                           ABGC0235
+      IF(IC(I2+1).NE.IC(I2-1)) GO TO 20                                 ABGC0236
+      GO TO 10                                                          ABGC0237
+  20  NC=NC-1                                                           ABGC0238
+      IF(NC.EQ.0) GO TO 21                                              ABGC0239
+      GO TO 12                                                          ABGC0240
+  21  RETURN                                                            ABGC0241
+      END                                                               ABGC0242
+      SUBROUTINE ISRIN(IA1,IB,K,LA,L1,L2,N1,N2)                         ABGC0243
+      DIMENSION IA1(5),IB(5,6),ID(5,6)                                  ABGC0244
+C                                                                       ABGC0245
+C     EVALUATION OF N,L,NG,LG PRIMED ON THE BASIS OF TABLE I            ABGC0246
+C                                                                       ABGC0247
+      DO 13 J=1,6                                                       ABGC0248
+      DO 13 I=1,5                                                       ABGC0249
+      ID(I,J)=0                                                         ABGC0250
+  13  IB(I,J)=0                                                         ABGC0251
+      N=IA1(1)                                                          ABGC0252
+      L=IA1(2)                                                          ABGC0253
+      NG=IA1(3)                                                         ABGC0254
+      LG=IA1(4)                                                         ABGC0255
+      ID(1,1)=N-1                                                       ABGC0256
+      ID(2,1)=L                                                         ABGC0257
+      ID(3,1)=NG                                                        ABGC0258
+      ID(4,1)=LG                                                        ABGC0259
+      ID(5,1)=1                                                         ABGC0260
+      ID(1,2)=N                                                         ABGC0261
+      ID(2,2)=L                                                         ABGC0262
+      ID(3,2)=NG-1                                                      ABGC0263
+      ID(4,2)=LG                                                        ABGC0264
+      ID(5,2)=2                                                         ABGC0265
+      ID(1,3)=N-1                                                       ABGC0266
+      ID(2,3)=L+1                                                       ABGC0267
+      ID(3,3)=NG-1                                                      ABGC0268
+      ID(4,3)=LG+1                                                      ABGC0269
+      ID(5,3)=3                                                         ABGC0270
+      ID(1,4)=N-1                                                       ABGC0271
+      ID(2,4)=L+1                                                       ABGC0272
+      ID(3,4)=NG                                                        ABGC0273
+      ID(4,4)=LG-1                                                      ABGC0274
+      ID(5,4)=4                                                         ABGC0275
+      ID(1,5)=N                                                         ABGC0276
+      ID(2,5)=L-1                                                       ABGC0277
+      ID(3,5)=NG-1                                                      ABGC0278
+      ID(4,5)=LG+1                                                      ABGC0279
+      ID(5,5)=5                                                         ABGC0280
+      ID(1,6)=N                                                         ABGC0281
+      ID(2,6)=L-1                                                       ABGC0282
+      ID(3,6)=NG                                                        ABGC0283
+      ID(4,6)=LG-1                                                      ABGC0284
+      ID(5,6)=6                                                         ABGC0285
+      K=0                                                               ABGC0286
+      DO 10 J=1,6                                                       ABGC0287
+C                                                                       ABGC0288
+C     SELECTION OF THE NON NEGATIVE INDICES TO CONSTRUCT THE MATRIX IA  ABGC0289
+C                                                                       ABGC0290
+      DO 11 I=1,4                                                       ABGC0291
+      IX=ID(I,J)                                                        ABGC0292
+      IF(IX.LT.0) GO TO 10                                              ABGC0293
+  11  CONTINUE                                                          ABGC0294
+C                                                                       ABGC0295
+C     SECOND RESTRICTION DUE TO THE TRIANGULAR INEQUALITY WITH LA       ABGC0296
+C                                                                       ABGC0297
+      IK=IABS(ID(2,J)-ID(4,J))                                          ABGC0298
+      IL=ID(2,J)+ID(4,J)                                                ABGC0299
+      IF((LA.LT.IK).OR.(LA.GT.IL)) GO TO 10                             ABGC0300
+      M1=2*(ID(1,J)+ID(3,J))+ID(2,J)+ID(4,J)                            ABGC0301
+      M2=2*(N1+N2)+L1+L2                                                ABGC0302
+      IF(M1.NE.M2) GO TO 10                                             ABGC0303
+      K=K+1                                                             ABGC0304
+      DO 12 I=1,5                                                       ABGC0305
+  12  IB(I,K)=ID(I,J)                                                   ABGC0306
+  10  CONTINUE                                                          ABGC0307
+      RETURN                                                            ABGC0308
+      END                                                               ABGC0309
+      SUBROUTINE FACT(CO,IA2,LA,IL)                                     ABGC0310
+C                                                                       ABGC0311
+C     EVALUATION OF THE MATRIX OF R SQUARE                              ABGC0312
+C                                                                       ABGC0313
+      IMPLICIT REAL*8(A-H,O-Z)                                          ABGC0314
+      DIMENSION IA2(5)                                                  ABGC0315
+      COMMON/BLNJR/ RAC,JA,JB,JC,JD,JE,JF                               ABGC0316
+      SQRT(X)=DSQRT(X)                                                  ABGC0317
+      COS(X)=DCOS(X)                                                    ABGC0318
+      X1=1.5D0                                                          ABGC0319
+      NP=IA2(1)                                                         ABGC0320
+      LP=IA2(2)                                                         ABGC0321
+      NGP=IA2(3)                                                        ABGC0322
+      LGP=IA2(4)                                                        ABGC0323
+      II=IA2(5)                                                         ABGC0324
+      X=LA+LP+LGP                                                       ABGC0325
+      X=COS(3.14159D0*X)                                                ABGC0326
+C                                                                       ABGC0327
+C     SELECTION OF THE CORRESPONDING LINE IN TABLE I                    ABGC0328
+C                                                                       ABGC0329
+      GO TO (11,12,13,14,15,16),II                                      ABGC0330
+  11  CO=(NP+1)*(NP+X1 +LP)                                             ABGC0331
+      CO=0.5D0*SQRT(CO)                                                 ABGC0332
+      RETURN                                                            ABGC0333
+  12  CO=(NGP+1)*(NGP+X1 +LGP)                                          ABGC0334
+      CO=0.5D0*SQRT(CO)                                                 ABGC0335
+      RETURN                                                            ABGC0336
+  13  CO=(NP+1)*(NGP+1)*LP*LGP                                          ABGC0337
+      JA=2*(LP-1)                                                       ABGC0338
+      JC=2*(LGP-1)                                                      ABGC0339
+      GO TO 30                                                          ABGC0340
+  14  CO=(NP+1)*(NGP+LGP+X1 )*LP*(LGP+1)                                ABGC0341
+      JA=2*(LP-1)                                                       ABGC0342
+      JC=2*(LGP+1)                                                      ABGC0343
+      GO TO 30                                                          ABGC0344
+  15  CO=(NP+LP+X1 )*(NGP+1)*(LP+1)*LGP                                 ABGC0345
+      JA=2*(LP+1)                                                       ABGC0346
+      JC=2*(LGP-1)                                                      ABGC0347
+      GO TO 30                                                          ABGC0348
+  16  CO=(NP+LP+X1 )*(NGP+LGP+X1 )*(LP+1)*(LGP+1)                       ABGC0349
+      JA=2*(LP+1)                                                       ABGC0350
+      JC=2*(LGP+1)                                                      ABGC0351
+  30  JB=2*LP                                                           ABGC0352
+      JD=2*LGP                                                          ABGC0353
+      JE=2                                                              ABGC0354
+      JF=2*LA                                                           ABGC0355
+      CO=SQRT(CO)                                                       ABGC0356
+      CALL RACAH                                                        ABGC0357
+C                                                                       ABGC0358
+C     CHOICE OF THE SIGN DUE TO N1 OR N2                                ABGC0359
+C                                                                       ABGC0360
+      IF(IL.EQ.2) GO TO 31                                              ABGC0361
+      CO=CO*X*RAC                                                       ABGC0362
+      RETURN                                                            ABGC0363
+  31  CO=-CO*X*RAC                                                      ABGC0364
+      RETURN                                                            ABGC0365
+      END                                                               ABGC0366
+      SUBROUTINE BR00(ABR00,IA2,LA,L1,L2)                               ABGC0367
+C                                                                       ABGC0368
+C     EVALUATION OF THE B-M COEFFICIENT FOR N1=0,N2=0                   ABGC0369
+C                                                                       ABGC0370
+      IMPLICIT REAL*8(A-H,O-Z)                                          ABGC0371
+      DIMENSION IA2(5)                                                  ABGC0372
+      COMMON/BLOC1/FL(130)/BLNJR/RAC,JA,JB,JC,JD,JE,JF                  ABGC0373
+      EXP(X)=DEXP(X)                                                    ABGC0374
+      FLOAT(I)=DFLOAT(I)                                                ABGC0375
+      COS(X)=DCOS(X)                                                    ABGC0376
+      SQRT(X)=DSQRT(X)                                                  ABGC0377
+      MAX1(X,Y)=DMAX1(X,Y)                                              ABGC0378
+      MIN1(X,Y)=DMIN1(X,Y)                                              ABGC0379
+      N=IA2(1)                                                          ABGC0380
+      L=IA2(2)                                                          ABGC0381
+      NG=IA2(3)                                                         ABGC0382
+      LG=IA2(4)                                                         ABGC0383
+      X=FL(L1+1)+FL(L2+1)-(FL(2*L1+1)+FL(2*L2+1))                       ABGC0384
+      M1=2*(N+L+1)                                                      ABGC0385
+      M2=N+L+1                                                          ABGC0386
+      X=X+FL(M2)-FL(N+1)-FL(M1)                                         ABGC0387
+      M2=2*(NG+LG+1)                                                    ABGC0388
+      M1=NG+LG+1                                                        ABGC0389
+      X=X+FL(M1)-FL(NG+1)-FL(M2)                                        ABGC0390
+      X=0.5D0*X                                                         ABGC0391
+      X=EXP(X)                                                          ABGC0392
+      M=L+LG                                                            ABGC0393
+      W=(FLOAT((2*L+1)*(2*LG+1)))/(2.0D0**M)                            ABGC0394
+      X=X*SQRT(W)                                                       ABGC0395
+      W=N+L+LG -LA                                                      ABGC0396
+      X=X*COS(3.14159D0*W)                                              ABGC0397
+      A1MX=L+LG                                                         ABGC0398
+      A1MI=IABS(L-LG)                                                   ABGC0399
+      A2MX=L+L1                                                         ABGC0400
+      A2MI=IABS(L-L1)                                                   ABGC0401
+      A3MX=LG+L2                                                        ABGC0402
+      A3MI=IABS(LG-L2)                                                  ABGC0403
+      A4MX=L2+L1                                                        ABGC0404
+      A4MI=IABS(L2-L1)                                                  ABGC0405
+      K1=MAX1(A1MI,A4MI)                                                ABGC0406
+      K2=MIN1(A1MX,A4MX)                                                ABGC0407
+      IF((LA.LT.K1).OR.(LA.GT.K2))  GO TO 160                           ABGC0408
+      K1=MAX1(A2MI,A3MI) +1                                             ABGC0409
+      K2=MIN1(A2MX,A3MX)+1                                              ABGC0410
+      R=0.                                                              ABGC0411
+      DO 154 JI=K1,K2                                                   ABGC0412
+       LX=JI-1                                                          ABGC0413
+      JA=2*L                                                            ABGC0414
+      JB=2*LG                                                           ABGC0415
+      JC=2*L1                                                           ABGC0416
+      JD=2*L2                                                           ABGC0417
+      JE=2*LA                                                           ABGC0418
+      JF=2*LX                                                           ABGC0419
+      CALL RACAH                                                        ABGC0420
+      CALL COEF(L1,L,L2,LG,LX,A)                                        ABGC0421
+  154 R=R+A*RAC*(2*LX+1)                                                ABGC0422
+      ABR00=X*R                                                         ABGC0423
+      GO TO 161                                                         ABGC0424
+  160 ABR00=0                                                           ABGC0425
+ 161  RETURN                                                            ABGC0426
+      END                                                               ABGC0427
+      SUBROUTINE COEF(L1,L,L2,LG,LX,A)                                  ABGC0428
+      IMPLICIT REAL*8(A-H,O-Z)                                          ABGC0429
+      COMMON /BLOC1/FL(130)                                             ABGC0430
+      COS(X)=DCOS(X)                                                    ABGC0431
+      EXP(X)=DEXP(X)                                                    ABGC0432
+      M1=L1+L+LX+2                                                      ABGC0433
+      M2=L1+L-LX+1                                                      ABGC0434
+      M3=L1+LX-L+1                                                      ABGC0435
+      M4=L+LX-L1+1                                                      ABGC0436
+      M5=L2+LG+LX+2                                                     ABGC0437
+      M6=L2+LG+1-LX                                                     ABGC0438
+      M7=L2+LX-LG+1                                                     ABGC0439
+      M8=LG+LX-L2+1                                                     ABGC0440
+      X=FL(M1)+FL(M2)+FL(M3)-FL(M4)                                     ABGC0441
+      X=X+FL(M5)+FL(M6)+FL(M7)-FL(M8)                                   ABGC0442
+      X=0.5D0*X                                                         ABGC0443
+      X=EXP(X)                                                          ABGC0444
+      Y=0                                                               ABGC0445
+      AL=L-L1                                                           ABGC0446
+      W=COS(3.14159D0*AL)                                               ABGC0447
+      IF(W) 201,202,202                                                 ABGC0448
+  201 IQ=-1                                                             ABGC0449
+      GO TO 203                                                         ABGC0450
+  202 IQ=-2                                                             ABGC0451
+  203 IQ=IQ+2                                                           ABGC0452
+      W=L+IQ-L1                                                         ABGC0453
+      IF(W) 203,207,207                                                 ABGC0454
+  207 W=LG+IQ-L2                                                        ABGC0455
+      IF(W) 203,208,208                                                 ABGC0456
+  208 W=IQ-LX                                                           ABGC0457
+      IF(W) 203,209,209                                                 ABGC0458
+  209 W=L+L1-IQ                                                         ABGC0459
+      IF(W) 204,205,205                                                 ABGC0460
+  205 W=LG+L2-IQ                                                        ABGC0461
+      IF(W) 204,206,206                                                 ABGC0462
+  206 CONTINUE                                                          ABGC0463
+      M1=L+IQ-L1+1                                                      ABGC0464
+      M2=(L+IQ-L1)/2+1                                                  ABGC0465
+      M3=(L+L1-IQ)/2+1                                                  ABGC0466
+      M4=IQ-LX+1                                                        ABGC0467
+      M5=IQ+LX+2                                                        ABGC0468
+      M6=LG+IQ-L2+1                                                     ABGC0469
+      M7=(LG+IQ-L2)/2+1                                                 ABGC0470
+      M8=(LG+L2-IQ)/2+1                                                 ABGC0471
+      Z=FL(M1)-FL(M2)-FL(M3)                                            ABGC0472
+      Z=Z-FL(M4)-FL(M5)                                                 ABGC0473
+      Z=Z+FL(M6)-FL(M7)-FL(M8)                                          ABGC0474
+      Z=EXP(Z)                                                          ABGC0475
+      W=(L+IQ-L1)/2                                                     ABGC0476
+      Z=Z*COS(3.14159D0*W)                                              ABGC0477
+      Y=Y+Z                                                             ABGC0478
+      GO TO 203                                                         ABGC0479
+  204 A=X*Y                                                             ABGC0480
+      RETURN                                                            ABGC0481
+      END                                                               ABGC0482
+      SUBROUTINE FACBIN                                                 ABGC0483
+      IMPLICIT REAL*8(A-H,O-Z)                                          ABGC0484
+      COMMON/BLOC1/FL(130)                                              ABGC0485
+      ALOG(X)=DLOG(X)                                                   ABGC0486
+C     FL(K) IS THE LOG OF K-1 FACTORIAL                                 ABGC0487
+C     WE ALLOW K TO GET AS LARGE AS 130                                 ABGC0488
+      FL(1)=0.0D0                                                       ABGC0489
+      FL(2)=0.0D0                                                       ABGC0490
+      ADD=1.0D0                                                         ABGC0491
+      DO 100 J=3,130                                                    ABGC0492
+      ADD=ADD+1.0D0                                                     ABGC0493
+      ADDLOG=ALOG(ADD)                                                  ABGC0494
+      FL(J)=FL(J-1)+ADDLOG                                              ABGC0495
+  100 CONTINUE                                                          ABGC0496
+      RETURN                                                            ABGC0497
+      END                                                               ABGC0498
+//GO.SYSIN DD *                                                         ABGC0499
+ 76                                                                     ABGC0500
+  0  0  5  6  6  1  3  0  6                                             ABGC0501
+  0  0  6  6  7  1  3  1  5                                             ABGC0502
+  0  0  0  0  0  0  0  0  0                                             ABGC0503
+  0  0  6  6  0  0  0  0  6                                             ABGC0504
+  0  0  1  5  4  0  5  0  1                                             ABGC0505
+  0  0  3  4  5  0  6  0  1                                             ABGC0506
+  0  0  3  5  2  0  4  0  4                                             ABGC0507
+  0  0  5  5 10  0 10  0  0                                             ABGC0508
+  0  0  6  6 12  0 12  0  0                                             ABGC0509
+  1  0  1  1  1  0  1  1  1                                             ABGC0510
+  1  0  1  6  5  2  4  0  1                                             ABGC0511
+  1  0  2  6  5  2  4  0  2                                             ABGC0512
+  1  0  2  6  5  0  5  2  1                                             ABGC0513
+  1  0  2  4  3  1  4  0  2                                             ABGC0514
+  1  0  2  4  5  0  1  1  5                                             ABGC0515
+  2  0  1  6  5  0  5  1  4                                             ABGC0516
+  2  0  1  4  3  0  0  3  3                                             ABGC0517
+  2  0  2  4  5  2  1  0  5                                             ABGC0518
+  3  0  0  6  6  1  8  0  2                                             ABGC0519
+  3  0  0  0  0  0  0  3  0                                             ABGC0520
+  3  0  0  3  3  3  0  0  3                                             ABGC0521
+  0  1  1  3  2  0  0  2  2                                             ABGC0522
+  0  1  2  4  2  0  3  1  3                                             ABGC0523
+  0  1  4  4  8  0  6  0  4                                             ABGC0524
+  0  2  1  2  3  0  0  2  3                                             ABGC0525
+  0  2  2  2  4  0  5  0  3                                             ABGC0526
+  0  3  0  0  0  1  1  1  1                                             ABGC0527
+  1  1  1  1  2  0  3  1  1                                             ABGC0528
+  1  1  1  4  5  1  1  1  4                                             ABGC0529
+  1  1  4  4  8  2  8  0  0                                             ABGC0530
+  2  1  0  2  2  0  0  3  2                                             ABGC0531
+  2  1  2  3  4  0  1  3  4                                             ABGC0532
+  1  2  1  1  2  1  2  0  4                                             ABGC0533
+  1  2  2  2  2  1  4  0  4                                             ABGC0534
+  2  2  0  0  0  0  0  4  0                                             ABGC0535
+  2  2  1  1  0  1  1  3  1                                             ABGC0536
+  2  1  1  3  2  1  4  1  2                                             ABGC0537
+  1  1  3  4  7  1  6  0  3                                             ABGC0538
+  1  1  4  4  0  0  0  6  0                                             ABGC0539
+  2  2  2  2  0  3  0  3  0                                             ABGC0540
+  3  1  0  3  3  0  2  3  3                                             ABGC0541
+  3  3  0  0  0  1  4  1  4                                             ABGC0542
+  3  3  0  0  0  0  0  6  0                                             ABGC0543
+  3  3  0  0  0  6  0  0  0                                             ABGC0544
+  3  2  0  1  1  0  5  0  6                                             ABGC0545
+  3  2  0  2  2  0  1  4  3                                             ABGC0546
+  3  2  0  2  2  3  3  0  3                                             ABGC0547
+  3  2  0  2  2  1  4  1  4                                             ABGC0548
+  3  2  0  2  2  2  2  2  2                                             ABGC0549
+  3  1  0  4  4  1  7  0  3                                             ABGC0550
+  3  1  0  4  4  3  2  1  2                                             ABGC0551
+  3  1  0  3  3  2  2  0  5                                             ABGC0552
+  3  1  0  4  4  1  6  1  2                                             ABGC0553
+  3  1  0  2  2  1  2  2  2                                             ABGC0554
+  3  1  0  3  3  0  0  4  3                                             ABGC0555
+  3  1  0  3  3  0  5  0  6                                             ABGC0556
+  3  1  0  3  3  2  1  2  2                                             ABGC0557
+  3  1  0  2  2  2  4  0  2                                             ABGC0558
+  2  3  0  0  0  3  1  1  1                                             ABGC0559
+  2  2  2  2  4  3  1  1  3                                             ABGC0560
+  2  2  2  2  4  2  6  0  2                                             ABGC0561
+  2  2  2  2  2  2  0  3  2                                             ABGC0562
+  2  2  2  2  2  3  2  1  2                                             ABGC0563
+  2  2  2  2  3  3  3  1  1                                             ABGC0564
+  3  3  0  0  0  0  0  6  0                                             ABGC0565
+  3  3  0  0  0  4  2  0  2                                             ABGC0566
+  3  3  0  0  0  3  2  1  2                                             ABGC0567
+  3  3  0  0  0  5  1  0  1                                             ABGC0568
+  3  3  0  0  0  1  1  4  1                                             ABGC0569
+  3  3  0  0  0  2  2  2  2                                             ABGC0570
+  3  3  0  0  0  6  0  0  0                                             ABGC0571
+  5  0  3  1  4  3  2  2  2                                             ABGC0572
+  8  0  2  5  5  4  2  4  5                                             ABGC0573
+  5  6  1  3  1  3  5  5  5                                             ABGC0574
+  0  8  5  3  6  5  4  2  6                                             ABGC0575
+  7  6  1  1  1  3  5  6  5                                             ABGC0576
+                                                                        ABGC****

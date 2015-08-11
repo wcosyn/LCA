@@ -81,7 +81,7 @@ def norm(a, n, l):
 def prob(k):
      n = 0 
      l = 1 
-     return  (Rad_wavefunc(k, v_mom(M_average,2), n, l)*norm(v_mom(M_average,2), n, l)*k)**2
+     return 0.5*((Rad_wavefunc(k, v_mom(M_average,2), n, l)*norm(v_mom(M_average,2), n, l)*k)**2 + (Rad_wavefunc(k, v_mom(M_average,2), n, 0)*norm(v_mom(M_average,2), n, 0)*k)**2)
 
 
 
@@ -90,7 +90,7 @@ def prob(k):
 ################
 
 #number of draws from distribution
-size = 600000
+size = 2000000
 
 
 #theta and phi: draw from uniform distribution on a sphere
@@ -134,22 +134,43 @@ theta_KP = np.arccos(np.sum(vecK*vecP,axis=0)/(K*P))
 ###################
 
 
-fig = pl.figure()
-ax = fig.add_subplot(111)
+fig = pl.figure(figsize=(16,8))
 
-data, edges = np.histogram(theta_KP,normed=True,bins=np.linspace(0,np.pi,32))
+ax2 = fig.add_subplot(121)
+
+
+ax2.set_xlabel(r"$|\vec{k}_1|\ [fm^{-1}]$")
+ax2.set_ylabel(r"$n^{[1]}(|\vec{k}_1|)|\vec{k}_1|^2\ [fm] $")
+ax2.set_xlim((0,3))
+ax2.set_ylim((0,1.5))
+ax2.text(2.3,1.2,"C")
+
+ax2.hist(k1,normed=True,bins=32)
+ax2.plot(xr,prob(xr),color='green',lw=3)
+
+ax = fig.add_subplot(122)
+
+
+data, edges = np.histogram(theta_KP,normed=True,bins=np.linspace(0.0,np.pi,32))
 av = []
 for i in xrange(0,len(edges)-1):
      av.append((edges[i] + edges[i+1])/2.)
 
 data = data/np.sin(av) 
 
-ax.bar(av,data,np.pi/32)
+data_th = np.loadtxt("C_angle.txt",unpack=False)
+
+ax.bar(av-((edges[1]-edges[0])/2),data,edges[1]-edges[0])
+ax.plot(data_th[:,0],data_th[:,1],color='green',lw=3)
+ax.text(2.5,0.55,"C")
 
 #ax.legend(frameon=False,ncol=3,handlelength=1.2,labelspacing=0.2,handletextpad=0.1,columnspacing=0.0)
 ax.set_xlabel(r"$\theta_{kP}$")
 ax.set_ylabel(r"$n^{[2]}(\theta_{kP})$")
 ax.set_xlim((0,np.pi))
+ax.set_ylim((0,0.7))
+
+
 
 pl.savefig("carbon",dpi=None,facecolor='w', edgecolor='w',orientation='portrait',papertype=None,transparent=False,bbox_inches='tight',pad_inches=0.1,frameon=None)
 #pl.show()
