@@ -1,0 +1,490 @@
+create bessel 
+create exp 
+create tensor 
+create min_central 
+done
+norm_ob operator made
+11 pairs made.
+total pairs 91
+-1-1 pairs made.
+total pairs 182
+-11 pairs made.
+total pairs 378
+norm	1	0.380205	1.38021	37.2655
+ob density operator made
+selected normalisation mf	4.30538
+selected normalisation corr	4.56479
+start initialization
+initialization done ... 
+0 done 
+0.1 done 
+0.2 done 
+0.3 done 
+0.4 done 
+0.5 done 
+0.6 done 
+0.7 done 
+0.8 done 
+0.9 done 
+1 done 
+1.1 done 
+1.2 done 
+1.3 done 
+1.4 done 
+1.5 done 
+1.6 done 
+1.7 done 
+1.8 done 
+1.9 done 
+2 done 
+2.1 done 
+2.2 done 
+2.3 done 
+2.4 done 
+2.5 done 
+2.6 done 
+2.7 done 
+2.8 done 
+2.9 done 
+3 done 
+3.1 done 
+3.2 done 
+3.3 done 
+3.4 done 
+3.5 done 
+3.6 done 
+3.7 done 
+3.8 done 
+3.9 done 
+4 done 
+4.1 done 
+4.2 done 
+4.3 done 
+4.4 done 
+4.5 done 
+4.6 done 
+4.7 done 
+4.8 done 
+4.9 done 
+5 done 
+5.1 done 
+5.2 done 
+5.3 done 
+5.4 done 
+5.5 done 
+5.6 done 
+5.7 done 
+5.8 done 
+5.9 done 
+written to file ./result_1402/dens_ob3/Al//dens_ob3.00.110.Al.0
+mf integral is 4.29035
+cor integral is 4.55281
+tot integral is 8.84316
+mf	4.30538	4.29035	0.996509
+corr	4.56479	4.55281	0.997375
+~MapWavefunctionP 0x664d18	0
+~MapWavefunctionP 0x664d98	0
+~MapWavefunctionP 0x664e18	0
+~MapWavefunctionP 0x664e98	0
+~MapRecMosh 9
+0000 recmosh removed 
+0001 recmosh removed 
+0002 recmosh removed 
+0100 recmosh removed 
+0101 recmosh removed 
+0102 recmosh removed 
+0200 recmosh removed 
+0201 recmosh removed 
+0202 recmosh removed 
+create bessel 
+create exp 
+create tensor 
+create min_central 
+done
+norm_ob operator made
+11 pairs made.
+total pairs 91
+-1-1 pairs made.
+total pairs 182
+-11 pairs made.
+total pairs 378
+norm	1	0.380205	1.38021	37.2655
+ob density operator made
+selected normalisation mf	8.36693
+selected normalisation corr	2.02713
+start initialization
+initialization done ... 
+0 done 
+0.1 done 
+0.2 done 
+0.3 done 
+0.4 done 
+0.5 done 
+0.6 done 
+0.7 done 
+0.8 done 
+0.9 done 
+1 done 
+1.1 done 
+1.2 done 
+1.3 done 
+1.4 done 
+1.5 done 
+1.6 done 
+1.7 done 
+1.8 done 
+1.9 done 
+2 done 
+2.1 done 
+2.2 done 
+2.3 done 
+2.4 done 
+2.5 done 
+2.6 done 
+2.7 done 
+2.8 done 
+2.9 done 
+3 done 
+3.1 done 
+3.2 done 
+3.3 done 
+3.4 done 
+3.5 done 
+3.6 done 
+3.7 done 
+3.8 done 
+3.9 done 
+4 done 
+4.1 done 
+4.2 done 
+4.3 done 
+4.4 done 
+4.5 done 
+4.6 done 
+4.7 done 
+4.8 done 
+4.9 done 
+5 done 
+5.1 done 
+5.2 done 
+5.3 done 
+5.4 done 
+5.5 done 
+5.6 done 
+5.7 done 
+5.8 done 
+5.9 done 
+written to file ./result_1402/dens_ob3/Al//dens_ob3.00.110.Al.1
+mf integral is 8.33131
+cor integral is 2.02355
+tot integral is 10.3549
+mf	8.36693	8.33131	0.995743
+corr	2.02713	2.02355	0.998235
+~MapWavefunctionP 0x664d18	0
+~MapWavefunctionP 0x664d98	0
+~MapWavefunctionP 0x664e18	0
+~MapWavefunctionP 0x664e98	0
+~MapRecMosh 9
+0000 recmosh removed 
+0001 recmosh removed 
+0002 recmosh removed 
+0100 recmosh removed 
+0101 recmosh removed 
+0102 recmosh removed 
+0200 recmosh removed 
+0201 recmosh removed 
+0202 recmosh removed 
+create bessel 
+create exp 
+create tensor 
+create min_central 
+done
+norm_ob operator made
+11 pairs made.
+total pairs 91
+-1-1 pairs made.
+total pairs 182
+-11 pairs made.
+total pairs 378
+norm	1	0.380205	1.38021	37.2655
+ob density operator made
+selected normalisation mf	3.81075
+selected normalisation corr	0.609346
+start initialization
+initialization done ... 
+0 done 
+0.1 done 
+0.2 done 
+0.3 done 
+0.4 done 
+0.5 done 
+0.6 done 
+0.7 done 
+0.8 done 
+0.9 done 
+1 done 
+1.1 done 
+1.2 done 
+1.3 done 
+1.4 done 
+1.5 done 
+1.6 done 
+1.7 done 
+1.8 done 
+1.9 done 
+2 done 
+2.1 done 
+2.2 done 
+2.3 done 
+2.4 done 
+2.5 done 
+2.6 done 
+2.7 done 
+2.8 done 
+2.9 done 
+3 done 
+3.1 done 
+3.2 done 
+3.3 done 
+3.4 done 
+3.5 done 
+3.6 done 
+3.7 done 
+3.8 done 
+3.9 done 
+4 done 
+4.1 done 
+4.2 done 
+4.3 done 
+4.4 done 
+4.5 done 
+4.6 done 
+4.7 done 
+4.8 done 
+4.9 done 
+5 done 
+5.1 done 
+5.2 done 
+5.3 done 
+5.4 done 
+5.5 done 
+5.6 done 
+5.7 done 
+5.8 done 
+5.9 done 
+written to file ./result_1402/dens_ob3/Al//dens_ob3.00.110.Al.2
+mf integral is 3.78831
+cor integral is 0.60707
+tot integral is 4.39538
+mf	3.81075	3.78831	0.99411
+corr	0.609346	0.60707	0.996266
+~MapWavefunctionP 0x664d18	0
+~MapWavefunctionP 0x664d98	0
+~MapWavefunctionP 0x664e18	0
+~MapWavefunctionP 0x664e98	0
+~MapRecMosh 9
+0000 recmosh removed 
+0001 recmosh removed 
+0002 recmosh removed 
+0100 recmosh removed 
+0101 recmosh removed 
+0102 recmosh removed 
+0200 recmosh removed 
+0201 recmosh removed 
+0202 recmosh removed 
+create bessel 
+create exp 
+create tensor 
+create min_central 
+done
+norm_ob operator made
+11 pairs made.
+total pairs 91
+-1-1 pairs made.
+total pairs 182
+-11 pairs made.
+total pairs 378
+norm	1	0.380205	1.38021	37.2655
+ob density operator made
+selected normalisation mf	2.72395
+selected normalisation corr	0.237419
+start initialization
+initialization done ... 
+0 done 
+0.1 done 
+0.2 done 
+0.3 done 
+0.4 done 
+0.5 done 
+0.6 done 
+0.7 done 
+0.8 done 
+0.9 done 
+1 done 
+1.1 done 
+1.2 done 
+1.3 done 
+1.4 done 
+1.5 done 
+1.6 done 
+1.7 done 
+1.8 done 
+1.9 done 
+2 done 
+2.1 done 
+2.2 done 
+2.3 done 
+2.4 done 
+2.5 done 
+2.6 done 
+2.7 done 
+2.8 done 
+2.9 done 
+3 done 
+3.1 done 
+3.2 done 
+3.3 done 
+3.4 done 
+3.5 done 
+3.6 done 
+3.7 done 
+3.8 done 
+3.9 done 
+4 done 
+4.1 done 
+4.2 done 
+4.3 done 
+4.4 done 
+4.5 done 
+4.6 done 
+4.7 done 
+4.8 done 
+4.9 done 
+5 done 
+5.1 done 
+5.2 done 
+5.3 done 
+5.4 done 
+5.5 done 
+5.6 done 
+5.7 done 
+5.8 done 
+5.9 done 
+written to file ./result_1402/dens_ob3/Al//dens_ob3.00.110.Al.3
+mf integral is 2.70143
+cor integral is 0.236874
+tot integral is 2.93831
+mf	2.72395	2.70143	0.991733
+corr	0.237419	0.236874	0.997704
+~MapWavefunctionP 0x664d18	0
+~MapWavefunctionP 0x664d98	0
+~MapWavefunctionP 0x664e18	0
+~MapWavefunctionP 0x664e98	0
+~MapRecMosh 9
+0000 recmosh removed 
+0001 recmosh removed 
+0002 recmosh removed 
+0100 recmosh removed 
+0101 recmosh removed 
+0102 recmosh removed 
+0200 recmosh removed 
+0201 recmosh removed 
+0202 recmosh removed 
+create bessel 
+create exp 
+create tensor 
+create min_central 
+done
+norm_ob operator made
+11 pairs made.
+total pairs 91
+-1-1 pairs made.
+total pairs 182
+-11 pairs made.
+total pairs 378
+norm	1	0.380205	1.38021	37.2655
+ob density operator made
+selected normalisation mf	0.355298
+selected normalisation corr	-0.000994808
+start initialization
+initialization done ... 
+0 done 
+0.1 done 
+0.2 done 
+0.3 done 
+0.4 done 
+0.5 done 
+0.6 done 
+0.7 done 
+0.8 done 
+0.9 done 
+1 done 
+1.1 done 
+1.2 done 
+1.3 done 
+1.4 done 
+1.5 done 
+1.6 done 
+1.7 done 
+1.8 done 
+1.9 done 
+2 done 
+2.1 done 
+2.2 done 
+2.3 done 
+2.4 done 
+2.5 done 
+2.6 done 
+2.7 done 
+2.8 done 
+2.9 done 
+3 done 
+3.1 done 
+3.2 done 
+3.3 done 
+3.4 done 
+3.5 done 
+3.6 done 
+3.7 done 
+3.8 done 
+3.9 done 
+4 done 
+4.1 done 
+4.2 done 
+4.3 done 
+4.4 done 
+4.5 done 
+4.6 done 
+4.7 done 
+4.8 done 
+4.9 done 
+5 done 
+5.1 done 
+5.2 done 
+5.3 done 
+5.4 done 
+5.5 done 
+5.6 done 
+5.7 done 
+5.8 done 
+5.9 done 
+written to file ./result_1402/dens_ob3/Al//dens_ob3.00.110.Al.4
+mf integral is 0.351794
+cor integral is -0.00108562
+tot integral is 0.350709
+mf	0.355298	0.351794	0.990139
+corr	-0.000994808	-0.00108562	1.09129
+~MapWavefunctionP 0x664d18	0
+~MapWavefunctionP 0x664d98	0
+~MapWavefunctionP 0x664e18	0
+~MapWavefunctionP 0x664e98	0
+~MapRecMosh 9
+0000 recmosh removed 
+0001 recmosh removed 
+0002 recmosh removed 
+0100 recmosh removed 
+0101 recmosh removed 
+0102 recmosh removed 
+0200 recmosh removed 
+0201 recmosh removed 
+0202 recmosh removed 

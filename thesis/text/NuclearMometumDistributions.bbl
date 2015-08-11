@@ -1,0 +1,122 @@
+\begin{thebibliography}{10}
+
+\bibitem{anderson2012first}
+C~Anderson, M~Antonello, B~Baller, T~Bolton, C~Bromberg, F~Cavanna, E~Church,
+  D~Edmunds, A~Ereditato, S~Farooq, et~al.
+\newblock First measurements of inclusive muon neutrino charged current
+  differential cross sections on argon.
+\newblock {\em Physical Review Letters}, 108(16):161802, 2012.
+
+\bibitem{ankowski2014}
+A~Ankowski, R~Beminiwattha, O~Benhar, DG~Crabb, DB~Day, F~Garibaldi, G~Garvey,
+  D~Gaskell, C~Giusti, O~Hansen, et~al.
+\newblock Measurement of the spectral function of $^{40}$ar through the $(e,
+  e^{\prime} p) $ reaction.
+\newblock {\em arXiv preprint arXiv:1406.4080}, 2014.
+
+\bibitem{PhysRev.120.254}
+George~A. Baker, Ian~E. McCarthy, and Charles~E. Porter.
+\newblock Application of the phase space quasi-probability distribution to the
+  nuclear shell model.
+\newblock {\em Phys. Rev.}, 120:254--264, Oct 1960.
+
+\bibitem{brody1967tables}
+Thomas~A Brody and Marco Moshinsky.
+\newblock {\em Tables of transformation brackets for nuclear shell-model
+  calculations}.
+\newblock Gordon and Breach, 1967.
+
+\bibitem{dimitri}
+Willem~Hendrik Dickhoff and Dimitri Van~Neck.
+\newblock {\em Many-body theory exposed!: propagator description of quantum
+  mechanics in many-body systems}.
+\newblock World Scientific, 2008.
+
+\bibitem{Griffiths}
+R.J. Griffiths and R.M. Eisberg.
+\newblock The mechanism of the direct interaction process at intermediate
+  energies.
+\newblock {\em Nuclear Physics}, 12(3):225 -- 236, 1959.
+
+\bibitem{jensen}
+Otto Haxel, J.~Hans~D. Jensen, and Hans~E. Suess.
+\newblock On the "magic numbers" in nuclear structure.
+\newblock {\em Phys. Rev.}, 75:1766--1766, Jun 1949.
+
+\bibitem{henley}
+Ernest~M Henley and Alejandro Garcia.
+\newblock {\em Subatomic Physics}, volume~35.
+\newblock World Scientific, 2007.
+
+\bibitem{kobayashi}
+T~Kobayashi, K~Ozeki, K~Watanabe, Y~Matsuda, Y~Seki, T~Shinohara, T~Miki,
+  Y~Naoi, H~Otsu, S~Ishimoto, et~al.
+\newblock (p, 2p) reactions on 9--16 c at 250 mev/a.
+\newblock {\em Nuclear Physics A}, 805(1):431c--438c, 2008.
+
+\bibitem{symmetry_shape}
+Eugene Marshalek, Lucy~Wu Person, and Raymond~K. Sheline.
+\newblock Systematics of deformations of atomic nuclei.
+\newblock {\em Rev. Mod. Phys.}, 35:108--116, Jan 1963.
+
+\bibitem{mayer}
+Maria~G. Mayer.
+\newblock On closed shells in nuclei.
+\newblock {\em Phys. Rev.}, 74:235--239, Aug 1948.
+
+\bibitem{moshinsky1959transformation}
+Marcos Moshinsky.
+\newblock Transformation brackets for harmonic oscillator functions.
+\newblock {\em Nuclear Physics}, 13(1):104--116, 1959.
+
+\bibitem{niyazov2004two}
+RA~Niyazov, LB~Weinstein, G~Adams, P~Ambrozewicz, E~Anciant, M~Anghinolfi,
+  B~Asavapibhop, G~Asryan, G~Audit, T~Auger, et~al.
+\newblock Two-nucleon momentum distributions measured in $^{3}\text{He} (e,
+  e^\prime p p) n$.
+\newblock {\em Physical review letters}, 92(5):052303, 2004.
+
+\bibitem{povh2008particles}
+Bogdan Povh, Martin Lavelle, Klaus Rith, Christoph Scholz, and Frank Zetsche.
+\newblock {\em Particles and nuclei: an introduction to the physical concepts}.
+\newblock Springer Science \& Business Media, 2008.
+
+\bibitem{rutherford}
+Ernest Rutherford.
+\newblock Nuclear constitution of atoms.
+\newblock {\em Proceedings of the Royal Society of London. Series A, Containing
+  Papers of a Mathematical and Physical Character}, pages 374--400, 1920.
+
+\bibitem{ryckebusch2015stylized}
+Jan Ryckebusch, Maarten Vanhalst, and Wim Cosyn.
+\newblock Stylized features of single-nucleon momentum distributions.
+\newblock {\em Journal of Physics G: Nuclear and Particle Physics},
+  42(5):055104, 2015.
+
+\bibitem{ursescu2005symbolic}
+D~Ursescu, M~Tomaselli, T~Kuehl, and S~Fritzsche.
+\newblock Symbolic algorithms for the computation of moshinsky brackets and
+  nuclear matrix elements.
+\newblock {\em Computer physics communications}, 173(3):140--161, 2005.
+
+\bibitem{maarten}
+Maarten Vanhalst.
+\newblock {\em Quantifying short-range correlations in nuclei}.
+\newblock PhD thesis, Universiteit Gent, 2014.
+
+\bibitem{PhysRevC.86.044619}
+Maarten Vanhalst, Jan Ryckebusch, and Wim Cosyn.
+\newblock Quantifying short-range correlations in nuclei.
+\newblock {\em Phys. Rev. C}, 86:044619, Oct 2012.
+
+\bibitem{wigner1932quantum}
+Eugene Wigner.
+\newblock On the quantum correction for thermodynamic equilibrium.
+\newblock {\em Physical Review}, 40(5):749, 1932.
+
+\bibitem{wiringa2014nucleon}
+Robert~B Wiringa, Rocco Schiavilla, Steven~C Pieper, and J~Carlson.
+\newblock Nucleon and nucleon-pair momentum distributions in $a≤ 12$ nuclei.
+\newblock {\em Physical Review C}, 89(2):024305, 2014.
+
+\end{thebibliography}

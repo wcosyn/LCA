@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2014)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: NuclearMometumDistributions.aux
+The style file: plain.bst
+Database file #1: bibfile.bib
+You've used 21 entries,
+            2118 wiz_defined-function locations,
+            634 strings with 7669 characters,
+and the built_in function-call counts, 7764 in all, are:
+= -- 724
+> -- 483
+< -- 2
++ -- 192
+- -- 170
+* -- 630
+:= -- 1358
+add.period$ -- 63
+call.type$ -- 21
+change.case$ -- 139
+chr.to.int$ -- 0
+cite$ -- 21
+duplicate$ -- 241
+empty$ -- 522
+format.name$ -- 170
+if$ -- 1539
+int.to.chr$ -- 0
+int.to.str$ -- 21
+missing$ -- 24
+newline$ -- 108
+num.names$ -- 42
+pop$ -- 130
+preamble$ -- 1
+purify$ -- 123
+quote$ -- 0
+skip$ -- 162
+stack$ -- 0
+substring$ -- 451
+swap$ -- 31
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 76
+warning$ -- 0
+while$ -- 66
+width$ -- 23
+write$ -- 229
