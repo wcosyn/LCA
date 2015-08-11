@@ -1,7 +1,0 @@
-latex ./OBMDdiagram.tex
-mpost ./dianpa
-mpost ./dianpb
-mpost ./dianpc
-mpost ./dianpd
-latex ./OBMDdiagram.tex
-dvipdf ./OBMDdiagram
