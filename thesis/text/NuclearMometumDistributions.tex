@@ -178,7 +178,7 @@ Ten slotte worden de Wignerdistributies \cite{wigner1932quantum} gerelateerd aan
 \chapter{Het onafhankelijke-deeltjes model}
 \section{Verantwoording} \label{verantwoording}
 
-Dat een ODM een goede benadering is voor een atomaire kern is niet evident. De nucleonen in de kern interageren namelijk met elkaar via de NN kracht die afstotend is op korte afstand en attractief op lange afstand. Na\"{i}ef zou men dus verwachten dat een systeem van nucleonen zich gedraagt als een vloeistof van harde sferen die tegen elkaar stuiteren en een zwakke interactie op middellange afstand ondervinden. Omdat een kern echter uit fermionen bestaat geldt het uitsluitingsprincipe van Pauli dat zegt dat twee identieke fermionen niet dezelfde toestand kunnen bezetten. Hierdoor wordt het botsen van nucleonen onderdrukt, er zijn namelijk geen vrije orbitalen bij lage energie beschikbaar waar de nucleonen na interactie in terecht kunnen komen, met uitzondering van de nucleonen in de hoogst bezette toestanden die naar een leeg orbitaal kunnen verstrooien. Ter illustratie van een model waarbij botsingen verwaarloosd worden beschouwen we eerst een NN potentiaal van de vorm
+Dat een ODM een goede benadering is voor een atomaire kern is niet evident. De nucleonen in de kern interageren namelijk met elkaar via de NN kracht die sterk afstotend is op korte afstand en attractief op lange afstand. Na\"{i}ef zou men dus verwachten dat een systeem van nucleonen zich gedraagt als een vloeistof van harde sferen die tegen elkaar stuiteren en een zwakke aantrekkende interactie op middellange afstand ondervinden. Omdat een kern echter uit fermionen bestaat geldt het uitsluitingsprincipe van Pauli dat zegt dat twee identieke fermionen niet dezelfde toestand kunnen bezetten. Hierdoor wordt het botsen van nucleonen onderdrukt, er zijn namelijk geen vrije orbitalen bij lage energie beschikbaar waar de nucleonen na interactie in terecht kunnen komen, met uitzondering van de nucleonen in de hoogst bezette toestanden die naar een leeg orbitaal kunnen verstrooien. Ter illustratie van een model waarbij botsingen verwaarloosd worden beschouwen we eerst een NN potentiaal van de vorm
 \begin{equation}
 V(\vec{r}_1, \vec{r}_2) = V_0 \  f(\vec{r}_1 - \vec{r}_2).
 \end{equation}
@@ -187,10 +187,10 @@ Hierbij is $V_0$ de centrale diepte van de potentiaalput en de functie $f$ is va
 \centering 
 \includegraphics[scale=0.55]{./figuren/saturation}
 \includegraphics[scale=0.45]{./figuren/binding_energy.png}
-\caption{Links: Beschouwen een kern met vier nucleonen, $A = 4$. Als elk nucleon met alle andere nucleonen in de kern interageert dan zijn er $4(4-1)/2$ interacties en is de bindingsenergie ($B$) proportioneel met $A(A-1)$. Voor zware kernen zou dan bij benadering gelden dat $B \propto A^2$. Rechts: Bindingsenergie per nucleon ($B/A$) als functie van $A$ \cite{henley}. Het is duidelijk dat een nucleon slechts interageert met een beperkt aantal andere nucleonen in de kern, m.a.w het aantal interacties per nucleon satureert. Vooral bij zwaardere kernen valt dit op.}
+\caption{Links: Beschouwen een kern met vier nucleonen, $A = 4$. Als elk nucleon met alle andere nucleonen in de kern interageert dan zijn er $4(4-1)/2$ interacties en is de bindingsenergie ($B$) proportioneel met $A(A-1)$. Voor zware kernen zou dan bij benadering gelden dat $B \propto A^2$. Rechts: Bindingsenergie per nucleon ($B/A$) als functie van $A$ (uit \cite{henley}). Het is duidelijk dat een nucleon slechts interageert met een beperkt aantal andere nucleonen in de kern, m.a.w het aantal interacties per nucleon satureert. Vooral bij zwaardere kernen valt dit op.}
 \label{fig:bindings_energie}
 \end{figure}
-Men kan nu een schatting maken van de centrale potentiaal gevoeld door nucleon 1 door uit te middelen over alle nucleonen interagerend met dit nucleon, gekend als een gemiddeld-veld benadering (GV):
+We kunnen nu een schatting maken van de centrale potentiaal gevoeld door nucleon 1 door uit te middelen over alle nucleonen interagerend met dit nucleon, gekend als een gemiddeld-veld benadering (GV):
 \begin{equation}
 V(\vec{r}_1)  = V_0 \int d\vec{r}_2 \ f(\vec{r}_1 - \vec{r}_2) \ \rho (\vec{r}_2).
 \end{equation}
@@ -216,7 +216,7 @@ waarbij $M_N$ de nucleonmassa voorstelt en $V_0$ een parameter die we zodanig ki
 \begin{equation} \label{eq:omega}
 \hbar\omega (MeV) = \frac{45}{A^{1/3}}-\frac{25}{A^{2/3}},
 \end{equation}
-waarbij $A$ het aantal nucleonen is in de kern. Figuur \ref{fig:hows} laat zien dat dit een relatief goede benadering is. Daar het gemiddeld veld interagerend met een nucleon wordt bepaald door de $A-1$ andere nucleonen moet de breedte van de externe potentiaal afhankelijk zijn van $A$. Daar de straal van kernen vergroot met aantal nucleonen verwacht men dat de oscillator potentiaal steeds breder wordt als $A$ groter wordt. Dat deze potentiaal naar oneindig gaat voor een steeds groter wordende straal is niet fysisch want nucleonen worden verondersteld de kern te kunnen verlaten als ze voldoende energie hebben. Daar we alleen de grondtoestand van kernen beschouwen speelt deze niet-fysische factor hier geen rol.
+waarbij $A$ het aantal nucleonen is in de kern. Figuur \ref{fig:hows} laat zien dat dit een relatief goede benadering is. Daar het gemiddeld veld interagerend met een nucleon wordt bepaald door de $A-1$ andere nucleonen moet de breedte van de externe potentiaal afhankelijk zijn van $A$. Daar de straal van kernen vergroot met toenemende hoeveelheid nucleonen verwacht men dat de oscillator potentiaal steeds breder wordt als $A$ groter wordt. Dat deze potentiaal naar oneindig gaat voor een steeds groter wordende straal is niet fysisch want nucleonen worden verondersteld de kern te kunnen verlaten als ze voldoende energie hebben. Daar we alleen de grondtoestand van kernen beschouwen speelt deze niet-fysische factor hier geen rol.
 
 \begin{figure}
 \centering
@@ -238,13 +238,13 @@ De nieuwe Hamiltionaan is een som van \'{e}\'{e}ndeeltjes Hamiltonianen die een 
 \begin{equation} \label{eq:HO}
 \left( -\frac{\hbar^2}{2M_N} \nabla^2 + \frac{1}{2} M_N \omega^2 r^2 \right) \psi_{nlm}(\vec{r}) = E_{nl}\ \psi_{nlm}(\vec{r}).
 \end{equation}
-De kern-afhankelijke $\omega$ wordt vastgelegd door \eqref{eq:omega}. Eigenfuncties hebben een radi\"{e}el kwantumgetal $n$ en een impulsmoment $l$ met projectie $m$.
-Oplossingen van bovenstaande differentiaalvergelijking kunnen als gevolg van de sferische symmetrie van de HO potentiaal worden opgesplitst in een radi\"{e}el en een hoekafhankelijk deel:
+De kern-afhankelijke $\omega$ wordt vastgelegd door \eqref{eq:omega}. Eigenfuncties hebben een radieel kwantumgetal $n$ en een impulsmoment $l$ met projectie $m$.
+Oplossingen van bovenstaande differentiaalvergelijking kunnen als gevolg van de sferische symmetrie van de HO potentiaal worden opgesplitst in een radieel en een hoekafhankelijk deel:
 \begin{equation} \label{eq:solution_ho}
 \psi_{nlm}(\vec{r}) \equiv \braket{\vec{r}|nlm} = R_{nl}(r)Y_{lm}(\Omega),
 \end{equation}
 waar $Y_{lm}(\Omega)$ de sferische harmonieken voorstellen. Het radi\"{e}le deel van de golffunctie in functie van de gegeneraliseerde Laguerre-polynomen $L^\alpha_n(r)$ wordt gegeven door
-\begin{equation}
+\begin{equation} \label{eq:R}
  R_{nl}(r) = \left[ \frac{2n!}{\Gamma(n+l+\frac{3}{2})}\nu^{l+\frac{3}{2}} \right]^{\frac{1}{2}} r^l e^{-\frac{\nu r^2}{2}} L^{l+\frac{1}{2}}_n(\nu r^2),
 \end{equation}
 waarbij
@@ -257,7 +257,7 @@ De energie eigenwaarden zijn onafhankelijk van kwantumgetal $m$ als gevolg van d
 E_{nl} = \hbar \omega \left(2n+ l + \frac{3}{2} \right).
 \end{equation} 
 Een handige notatie wijst letters toe aan de verschillende $l$-waarden. Zo wordt de toestand met $n = 0$ en $l = 1$ geschreven als $0p$. De $l$-waarden 0, 1, 2, 3, 4, 5, 6 worden respectievelijk genoteerd als $s,p,d,f,g,h$.
-Uit formule \eqref{eq:energie_HO} blijkt de HO potentiaal een ontaarding te hebben die dus bijgevolg een vrijheid laat bij het opvullen van de orbitalen. Een realistischer potentiaal, zoals een Woods-Saxon potentiaal, heeft deze vrijheid niet en elk niveau $nl$ heeft een verschillende energie. Om dit probleem te illustreren kijken we naar de $1s$ en $0d$ toestanden in een HO. De energie gegeven door vergelijking \eqref{eq:energie_HO} is voor beide toestanden dezelfde, namelijk $E = \frac{7}{2} \hbar\omega$ en het is dus onduidelijk welke toestand er eerst bezet wordt. Om deze ontaarding te vermijden gebruiken we de opvulling van een Woods-Saxon potentiaal. Hoe gebeurt de opvulling dan?  Figuur \ref{fig:ho_waves} geeft aan dat toestanden van de harmonische oscillator met een hoog impulsmoment $l$ zich met grotere waarschijnlijkheid verder van het centrum van de kern begeven dan toestanden met kleinere $l$. De WS potentiaal is dieper dan de HO potentiaal op grote afstand van het centrum en minder diep op kleine afstand (Figuur \ref{fig:hows}). Dus toestanden met grote $l$ voelen een diepere potentiaal en schuiven dus naar lagere energie\"{e}n. 
+Uit formule \eqref{eq:energie_HO} blijkt de HO potentiaal een ontaarding te hebben die dus bijgevolg een vrijheid laat bij het opvullen van de orbitalen. Een realistischer potentiaal, zoals een WS potentiaal, heeft deze vrijheid niet en elk niveau $nl$ heeft een verschillende energie. Om dit probleem te illustreren kijken we naar de $1s$ en $0d$ toestanden in een HO. De energie gegeven door vergelijking \eqref{eq:energie_HO}, is voor beide toestanden dezelfde, namelijk $E = \frac{7}{2} \hbar\omega$. Het is dus onduidelijk welke toestand eerst bezet wordt. Om deze ontaarding te vermijden gebruiken we de opvulling van een WS potentiaal. Hoe gebeurt de opvulling dan?  Figuur \ref{fig:ho_waves} geeft aan dat toestanden van de HO met een hoog impulsmoment $l$ zich met grotere waarschijnlijkheid verder van het centrum van de kern begeven dan toestanden met kleinere $l$. De WS potentiaal is dieper dan de HO potentiaal op grote afstand van het centrum en minder diep op kleine afstand (Figuur \ref{fig:hows}). Dus toestanden met grote $l$ voelen een diepere potentiaal en schuiven dus naar lagere energie\"{e}n. 
 Zoals reeds vermeld in de inleiding is de verklaring van de magische getallen \'{e}\'{e}n van de grootste successen van het schillenmodel. Een ODM zoals hierboven is opgesteld kan deze magische getallen echter nog niet verklaren. Een  spin-baan potentiaal, een gemiddeld veld afkomstig van de individuele spin-baan interacties in de NN potentiaal, gegeven door
 \begin{equation}
 V_{ls} = C_{ls}\  \vec{l} \cdot \vec{\sigma} =  \frac{ C_{l\sigma}}{2} \left( j^2 - l^2 - \sigma^2 \right),
@@ -269,7 +269,7 @@ zorgt voor gedeeltelijke opheffing van de ontaarding van de energieniveaus.
 \caption{Links: invloed van een spin-baan interactie op de eigentoestanden $1s$ en $0d$ van de Hamiltoniaan met een Woods-Saxon potentiaal. Rechts: volgorde waarin we toestanden bezetten in de harmonische oscillator potentiaal.}
 \label{fig:spin_orbit}
 \end{figure}
-Energietoestanden worden dan afhankelijk van het totaal impulsmoment, $\vec{j} = \vec{l} + \vec{\sigma}$ waarbij $\vec{l}$, $\vec{\sigma}$ respectievelijk het orbitaal en spin impulsmoment zijn. Daar de kern alleen fermionen bevat is $\abs{\vec{\sigma}} = \frac{1}{2}$. Spin-baan koppeling zorgt dan voor een verschuiving in energie waarbij toestanden met $j = l + 1/2$ een lagere energie krijgen tegenover de toestand zonder spin-baan koppeling en toestanden met $j = \abs{l - 1/2}$ steeds een hogere energie (Figuur \ref{fig:spin_orbit}). Deze extra term in de Hamiltoniaan zorgt er echter voor dat de oplossingen van de Schr\"{o}dingervergelijking geen analytische uitdrukking meer hebben. Om deze spin-baan koppeling enigszins te verwerken in ons model gebeurt de opvulling van de toestanden in de volgorde vastgelegd door een model die deze wel bevat. Omdat toestanden nog steeds een goed gedefinieerd kwantumgetal $l$ hebben kunnen we de opvulling gebruiken van een Woods-Saxon potentiaal met spin-baan koppeling waarbij het kwantumgetal $j$ slechts wordt gebruikt als een label van de toestanden. Dan gebeurt de opvulling zoals in Figuur \ref{fig:spin_orbit}. Het zijn echter de golffuncties van de harmonische oscillator \eqref{eq:solution_ho} die gebruikt worden. We kunnen dus concluderen dat door de spin-baan koppeling het aantal nucleonen in de hoogst gevulde orbitalen zal wijzigen en er soms orbitalen worden bezet die zonder spin-baan niet bezet zouden zijn. Een volledig schema van de opvulling in een WS potentiaal wordt getoond in Figuur \ref{fig:WS_opvulling}.
+Energietoestanden worden dan afhankelijk van het totaal impulsmoment, $\vec{j} = \vec{l} + \vec{\sigma}$ waarbij $\vec{l}$, $\vec{\sigma}$ respectievelijk het orbitaal en spin impulsmoment zijn. Daar de kern alleen fermionen bevat is $\abs{\vec{\sigma}} = \frac{1}{2}$. Spin-baan koppeling zorgt dan voor een verschuiving in energie waarbij toestanden met $j = l + 1/2$ een lagere energie krijgen tegenover de toestand zonder spin-baan koppeling en toestanden met $j = \abs{l - 1/2}$ steeds een hogere energie (Figuur \ref{fig:spin_orbit}). Deze extra term in de Hamiltoniaan zorgt er echter voor dat de oplossingen van de Schr\"{o}dingervergelijking geen analytische uitdrukking meer hebben. Om deze spin-baan koppeling enigszins te verwerken in ons model gebeurt de opvulling van de toestanden in de volgorde vastgelegd door een model die deze wel bevat. Omdat toestanden nog steeds een goed gedefinieerd kwantumgetal $l$ hebben kunnen we de opvulling gebruiken van een WS potentiaal met spin-baan koppeling waarbij het kwantumgetal $j$ slechts wordt gebruikt als een label van de toestanden. Dan gebeurt de opvulling zoals in Figuur \ref{fig:spin_orbit}. Het zijn echter de golffuncties van de HO \eqref{eq:solution_ho} die gebruikt worden. We kunnen dus besluiten dat door de spin-baan koppeling het aantal nucleonen in de hoogst gevulde orbitalen zal wijzigen en er soms orbitalen worden bezet die zonder spin-baan niet bezet zouden zijn. Een volledig schema van de opvulling in een WS potentiaal wordt getoond in Figuur \ref{fig:WS_opvulling}.
 
 \begin{figure}[H]
 \centering
@@ -280,8 +280,8 @@ Energietoestanden worden dan afhankelijk van het totaal impulsmoment, $\vec{j} =
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.43]{./figuren/waves.png}
-\caption{De probabiliteitsdistributie $R^2(r)r^2$ voor twee ontaarde toestanden in de harmonische oscillator  ($E = \frac{7}{2} \hbar \omega$). De beschouwde kern is argon ($A= 40$).}
+\includegraphics[scale=0.40]{./figuren/waves.png}
+\caption{De kans om een deeltje te vinden op een afstand $r$ van het centrum van de kern (hier argon, $A= 40$) in een ODM gegeven door $R^2(r)r^2$, met $R(r)$ de radi\"{e}le HO golffunctie \eqref{eq:R}. We tonen deze distributie voor twee ontaarde toestanden in de harmonische oscillator  ($E = \frac{7}{2} \hbar \omega$).}
 \label{fig:ho_waves}
 \end{figure}
 
@@ -292,8 +292,8 @@ Energietoestanden worden dan afhankelijk van het totaal impulsmoment, $\vec{j} =
 \chapter{E\'{e}ndeeltjes impulsdistributie} \label{eendeeltjes}
 \section{Algemene kenmerken}
 
-Nucleonen opsluiten in een kleine ruimte - klein in de zin dat het onzekerheidsbeginsel van Heisenberg ($\Delta x \Delta p \geq \hbar/2$) merkbaar is - zorgt ervoor dat deze nucleonen een zekere kinetische energie krijgen, die dus geassocieerd is met de lokalisatie van de nucleonen. We verwachten dus dat een nucleon een zekere impuls bezit die verdeeld is volgens een bepaalde impulsdistributie. Impulsdistributies spelen een belangrijke rol in verstrooiingsexperimenten aan kernen als de uitgewisselde impuls voldoende hoog is. Daar de dimensies van een nucleon van de orde $\approx$ 0.8 fm zijn, verstrooit het inkomend deeltje aan een enkel nucleon in de kern als de uitgewisselde impuls van $0.2$ GeV of hoger. Dit fenomeen heet quasi-elastische verstrooiing. Via quasi-elastische verstrooiingsexperimenten waarbij het verstrooide nucleonen de kern verlaat kan men de initi\"{e}le impuls bepalen van het verstrooide nucleon via behoud van energie en impuls, dus ook de \'{e}\'{e}ndeeltjes  impulsdistributie \cite{kobayashi}. In deze thesis berekenen we de impulsverdelingen van nucleonen op basis van een ODM.
-Algemeen wordt de kans om een deeltje te vinden met een momentum in het interval $[k,k+dk]$ gegeven door $n^{[1]}(k) k^2dk$ met
+Nucleonen opsluiten in een kleine ruimte - klein in de zin dat het onzekerheidsbeginsel van Heisenberg ($\Delta x \Delta p \geq \hbar/2$) merkbaar is - zorgt ervoor dat deze nucleonen een zekere kinetische energie krijgen, die dus geassocieerd is met de lokalisatie van de nucleonen. We verwachten dus dat een nucleon een zekere impuls heeft die verdeeld is volgens een bepaalde impulsdistributie. Impulsdistributies spelen een belangrijke rol in verstrooiingsexperimenten aan kernen als de uitgewisselde impuls voldoende hoog is. Daar de dimensies van een nucleon van de orde $\approx$ 0.8 fm zijn, verstrooit het inkomend deeltje aan een enkel nucleon in de kern als de uitgewisselde impuls van de orde $0.2$ GeV of hoger is. Dit fenomeen heet quasi-elastische verstrooiing. Via quasi-elastische verstrooiingsexperimenten waarbij het verstrooide nucleonen de kern verlaat kan men de initi\"{e}le impuls bepalen van het verstrooide nucleon via behoud van energie en impuls, dus ook de \'{e}\'{e}ndeeltjes  impulsdistributie \cite{kobayashi}. In deze thesis berekenen we de impulsverdelingen van nucleonen op basis van een ODM.
+Algemeen wordt de kans om een deeltje te vinden met een impuls in het interval $[k,k+dk]$ gegeven door $n^{[1]}(k) k^2dk$ met
 
 \begin{equation} \label{eq:one_patricle_distr}
 	n^{[1]}(k)=\int d\Omega_k\ n^{[1]}(\vec{k}),
@@ -326,7 +326,7 @@ Als $\braket{\Psi_A|\Psi_A}=1$, heeft men dat
 Dit is niets anders dan de totale kans om $A$ nucleonen te vinden in de kern. Het diagonaalelement $\rho_1(\vec{r},\vec{r}) \equiv \rho(\vec{r}) $ is dan de dichtheid van de nucleonen op positie $\vec{r}$.
 
 In het tweedekwantisatie formalisme (voor conventies zie Appendix \ref{sec:tweede_kwant}) kan men de  \'{e}\'{e}ndeeltjes impulsdistributie schrijven als
-\begin{equation}
+\begin{equation} \label{eq:operator_n1}
 n^{[1]}(\vec{k})= \frac{1}{A}\bra{\Psi_A} \psi^\dagger(\vec{k}) \psi(\vec{k})\ket{\Psi_A}.
 \end{equation}
 De operator die hier ge\"{e}valueerd wordt is een teloperator het aantal nucleonen met impuls $\vec{k}$ geeft en wordt voorgesteld in Figuur \ref{fig:feyn}. Het bewijs voor deze uitdrukking wordt gegeven in Appendix \ref{operator}.   
@@ -349,8 +349,8 @@ Hier annihileert $\psi^\dagger(\vec{r}_1) \psi(\vec{r}_1^{\ \prime})$  een nucle
 
 
 
-\subsubsection{E\'{e}ndeeltjes impulsdistributie in een harmonische oscillator potentiaal}
-Een ODM veronderstelt dat een nucleon beweegt in het gemiddelde veld van alle andere nucleonen. Omdat er geen interacties zijn tussen de deeltjes, en dus ook geen correlaties, is de totale golffunctie slechts een product van \'{e}\'{e}ndeeltjesgolffuncties van de nucleonen. Aangezien nucleonen fermionen zijn, en dus voldoen aan het uitsluitingsprincipe van Pauli, moet de totale golffunctie antisymmetrisch zijn onder elke permutatie van twee nucleonen. De golffunctie krijgt dan de gedaante van een Slaterdeterminant van de \'{e}\'{e}ndeeltjesgolffuncties:
+\subsubsection{E\'{e}ndeeltjes impulsdistributie in een sferische harmonische oscillator potentiaal}
+Een ODM veronderstelt dat een nucleon beweegt in het gemiddelde veld van alle andere nucleonen. Omdat er geen interacties zijn tussen de deeltjes, en dus ook geen correlaties, is de totale golffunctie slechts een product van \'{e}\'{e}ndeeltjes golffuncties van de nucleonen. Aangezien nucleonen fermionen zijn, en dus voldoen aan het uitsluitingsprincipe van Pauli, moet de totale golffunctie antisymmetrisch zijn onder elke permutatie van twee nucleonen. De golffunctie krijgt dan de gedaante van een Slaterdeterminant van de \'{e}\'{e}ndeeltjes golffuncties:
 \begin{equation} \label{eq:slater}
 \Psi_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)= \frac{1}{\sqrt{A!}} \sum^A_{\substack{i_1 i_2 \ldots i_A}} 
 													  \varepsilon_{i_1 i_2 \ldots i_A} \phi_{i_1}(\vec{r}_1)
@@ -358,7 +358,7 @@ Een ODM veronderstelt dat een nucleon beweegt in het gemiddelde veld van alle an
 													         \phi_{i_A}(\vec{r}_A).
 \end{equation}
 
-Hierbij is $\varepsilon_{i_1 i_2 \ldots i_A}$ de totaal antisymmetrische Levi-Civita tensor en de sommaties over de indices $i_1,\ldots ,i_A$  gaan over alle bezette \'{e}\'{e}ndeeltjestoestanden in de grondtoestand van de kern. De \'{e}\'{e}ndeeltjesgolffuncties voldoen aan de orthonormaliteitsregel:
+Hierbij is $\varepsilon_{i_1 i_2 \ldots i_A}$ de totaal antisymmetrische Levi-Civita tensor en de sommaties over de indices $i_1,\ldots ,i_A$  gaan over alle bezette \'{e}\'{e}ndeeltjes toestanden in de grondtoestand van de kern. De \'{e}\'{e}ndeeltjes golffuncties voldoen aan de orthonormaliteitsregel:
 \begin{equation} \label{eq:orthogonality}
 \int d\vec{r}_i\  \phi^*_l(\vec{r}_i)\phi_m(\vec{r}_i) = \delta_{lm}.
 \end{equation}
@@ -396,15 +396,15 @@ Hierbij is
 \nu^{\prime} \equiv \frac{\hbar}{M_N \omega}.
 \end{equation}
 
-Nucleonen zijn fermionen, deeltjes met spin $ \frac{\vec{1}}{2}$. De spin van een deeltje heeft een bepaalde projectie langs een gekozen as, we kiezen hier de verticale z-as. Dan kan de projectie naar boven of naar onder zijn en wordt aangegeven door het kwantumgetal $\sigma$ (respectievelijk $\sigma =1/2$ of $-1/2$). Om een onderscheid te maken tussen protonen en neutronen maken we gebruik van het isospin kwantumgetal $\tau$. Beiden hebben isospin $\vec{I}= 1/2$ maar protonen krijgen projectie $\tau = + 1/2$ en neutronen $\tau = - 1/2$. De totale golffunctie in de impulsruimte van een deeltje in een sferische HO potentiaal wordt dan gegeven door
+Nucleonen zijn fermionen met spin $ \frac{\vec{1}}{2}$. De spin van een deeltje heeft een bepaalde projectie langs een gekozen as, we kiezen hier de verticale z-as. Dan kan de projectie naar boven of naar onder zijn en wordt aangegeven door het kwantumgetal $\sigma$ (respectievelijk $\sigma =1/2$ of $-1/2$). Om een onderscheid te maken tussen protonen en neutronen maken we gebruik van het isospin kwantumgetal $\tau$. Beiden hebben isospin $\vec{I}= \frac{\vec{1}}{2}$ maar protonen krijgen projectie $\tau = + 1/2$ en neutronen $\tau = - 1/2$. De totale golffunctie in de impulsruimte van een deeltje in een sferische HO potentiaal wordt dan gegeven door
 \begin{equation}
 \phi_\alpha (\vec{k}) = \psi_{n_\alpha l_\alpha m_\alpha}(\vec{k}) \chi_{\sigma_\alpha}  \xi_{\tau_\alpha}
 \end{equation}
-waarbij $\psi_{n_\alpha l_\alpha m_\alpha}(\vec{k})$ de HO golffunctie in de impulsruimte is, gegeven door \eqref{eq:splits_momentum}. Hier zijn $\chi_{\frac{1}{2}\sigma_\alpha} $ zijn spinspinoren gedefinieerd als
+waarbij $\psi_{n_\alpha l_\alpha m_\alpha}(\vec{k})$ de HO golffunctie in de impulsruimte is, gegeven door \eqref{eq:splits_momentum}. Hier zijn $\chi_{\sigma_\alpha} $ zijn spinspinoren gedefinieerd als
 \begin{equation}
 \chi_{+1/2} = \begin{pmatrix} 1\\ 0 \end{pmatrix}, \qquad \chi_{-1/2} = \begin{pmatrix} 0\\ 1 \end{pmatrix}.
 \end{equation}
-Analoge definities gelden voor isospinspinoren $\xi_{\tau_\alpha}$ .
+Analoge definities gelden voor isospin spinoren $\xi_{\tau_\alpha}$ .
 Integratie over alle hoekafhankelijkheid $\Omega_k$ leidt tot een distributie van de grootte van de impuls:
 \begin{align} \label{eq:ob_magnitude}
 n^{[1]}(k) &  =  \frac{1}{A} \int d\Omega_k \sum_{\tau nlm\sigma}\ \psi^*_{n l m}(\vec{k})\psi_{n l m}(\vec{k}) \ \chi^*_{\sigma} \chi_{\sigma}\ \xi^*_{\tau}  \xi_{\tau} \nonumber\\
@@ -417,14 +417,14 @@ n^{[1]}(k) = n_n^{[1]}(k) + n_p^{[1]}(k).
 
 \section{Resultaten}
 
-De berekende \'{e}\'{e}ndeeltjes impulsdistributies $n^{[1]}(k)$ voor verschillende kernen worden getoond in Figuur \ref{fig:oneparticledistr}. Omdat de impulsdistributie in een ODM een som is van de individuele impulsdistributies van elke bezette \'{e}\'{e}ndeeltjestoestand \eqref{eq:ob_mf} zijn ook deze individuele bijdragen tot de totale distributie weergegeven. Uit de resultaten valt op dat de distributies nooit nul worden, dit is volgt uit de eigenschap van de HO golffuncties. De HO potentiaal in de impulsruimte wordt steeds groter voor grotere wordende impuls., maar blijft steeds eindig. Als gevolg hebben de golffuncties steeds een eindige probabiliteit voor $k$ gaande naar oneindig.  Aan de hand van de berekende distributies kan de gemiddelde kinetische energie van nucleonen in een bepaalde kern bepaald worden:
+De berekende \'{e}\'{e}ndeeltjes impulsdistributies $n^{[1]}(k)$ voor verschillende kernen worden getoond in Figuur \ref{fig:oneparticledistr}. Omdat de impulsdistributie in een ODM een som is van de individuele impulsdistributies van elke bezette \'{e}\'{e}ndeeltjestoestand \eqref{eq:ob_mf} zijn ook deze individuele bijdragen tot de totale distributie weergegeven. Uit de resultaten valt op dat de distributies nooit nul worden. De HO potentiaal in de impulsruimte wordt steeds groter voor grotere wordende impuls., maar blijft steeds eindig. Bijgevolg hebben de golffuncties steeds een eindige probabiliteit voor $k$ gaande naar oneindig.  Aan de hand van de berekende distributies kan de gemiddelde kinetische energie van nucleonen in een bepaalde kern bepaald worden:
 \begin{equation}\label{eq:kin}
 \mean{T_N} = \frac{\hbar^2}{2M_N} \frac{ \int dk\ n_N^{[1]}(k)\ k^4}{\int dk\ n_N^{[1]}(k)\ k^2},
 \end{equation}
 waarbij de index staat voor protonen ($p$) of neutronen ($n$) en we aannemen dat protonen en neutronen dezelfde massa hebben ($M_p = M_n$).
-Resultaten voor de gemiddelde kinetische energie \eqref{eq:kin} vindt men in Tabel \ref{tab:kineticenergy}. Vergelijking van de distributies met de waarden berekend in een model met correlaties \cite{maarten} blijkt dat een ODM de waarden goed reproduceert bij lage impuls ($k \lesssim 2.0\ fm^{-1}$) maar naarmate men naar grotere impuls gaat zorgen correlaties voor een brede staart in de distributie. De kinetische energie is gerelateerd aan het vierde moment van de impulsdistributie en daarom dus sterk afhankelijk van de staart van de distributie. Correlaties tussen de nucleonen zorgen dus voor een enorme toename in gemiddelde kinetische energie. Voor een beschrijving met correcties op het GV als gevolg van correlaties verwijzen we naar \cite{ryckebusch2015stylized}.
-De waarden in Tabel \ref{tab:kineticenergy} kunnen we verklaren aan de hand van twee effecten die elkaar tegenwerken. Een eerste effect is de invloed van de grootte van de kern, hoe groter de kern des te groter de ruimte waarin een nucleon kan bewegen. Volgens het onzekerheidsbeginsel van Heisenberg volgt dan dat de gemiddelde impuls, en dus ook de kinetische energie lager zal zijn voor nucleonen in een grotere kern. Isotopen van Calcium, $\nuclide[40][]{Ca}$ en $\nuclide[48][]{Ca}$ bezitten bij definitie hetzelfde aantal protonen en in de grondtoestand bezetten deze protonen dus dezelfde toestanden in beide kernen. In $\nuclide[48][]{Ca}$ voelen de protonen echter een bredere potentiaal en ligt hun gemiddelde kinetische energie dus lager dan in $\nuclide[40][]{Ca}$. Een tweede trend in de resultaten is een toename van de gemiddelde kinetische energie als een nieuw energieniveau bezet wordt. Als men bijvoorbeeld naar de gemiddelde kinetische energie van protonen kijkt bij $\nuclide[48][]{Ca}$ en $\nuclide[56][]{Fe}$ dan is deze groter voor de laatstgenoemde. In de grondtoestand van $\nuclide[48][]{Ca}$ zijn te protontoestanden opgevuld tot en met energie $E = 7/2\ \hbar \omega_{A = 48}$ en in $\nuclide[56][]{Fe}$ zijn er nog 6 protonen die een hogere energietoestand bezetten ( $E = 9/2\ \hbar \omega_{A = 56}$) en dus voor een verhoogde gemiddelde kinetische energie zorgen. 
-Aangezien we de massa van een neutron en proton als gelijk aannemen is het verschil in kinetische energie van de protonen en neutronen in eenzelfde kern te wijten aan een verschil in aantal bezette toestanden. Naarmate kernen een groter massagetal $A$ hebben verwachten we steeds meer neutronen in verhouding met het aantal protonen (afnemende protonfractie $x_p = Z/A$ ) want voor zwaardere kernen wordt de Coulombafstoting steeds belangrijker. Als het hoogst gevulde energieniveau van de neutronen in een kern een hogere energie heeft dan het hoogst gevulde niveau van de protonen dan is er inderdaad een verschil in kinetische energie.  
+Resultaten voor de gemiddelde kinetische energie \eqref{eq:kin} vindt men in Tabel \ref{tab:kineticenergy}. Een vergelijking van de distributies met de waarden berekend in een model met correlaties \cite{maarten} blijkt dat een ODM de waarden goed reproduceert bij lage impuls ($k \lesssim 2.0\ fm^{-1}$) maar naarmate men naar grotere impuls gaat zorgen correlaties voor een brede staart in de distributie. De kinetische energie is gerelateerd aan het vierde moment van de impulsdistributie en daarom dus sterk afhankelijk van de staart van de distributie. Correlaties tussen de nucleonen zorgen dus voor een enorme toename in gemiddelde kinetische energie. Voor een beschrijving met correcties op het GV als gevolg van correlaties verwijzen we naar \cite{ryckebusch2015stylized}.
+De waarden in Tabel \ref{tab:kineticenergy} kunnen we verklaren aan de hand van twee effecten die elkaar tegenwerken. Een eerste effect is de invloed van de grootte van de kern, hoe groter de kern des te groter de ruimte waarin een nucleon kan bewegen. Volgens het onzekerheidsbeginsel van Heisenberg volgt dan dat de gemiddelde impuls, en dus ook de kinetische energie lager zal zijn voor nucleonen in een grotere kern. Isotopen van Calcium, $\nuclide[40][]{Ca}$ en $\nuclide[48][]{Ca}$ bezitten bij definitie hetzelfde aantal protonen en in de grondtoestand bezetten deze protonen dus dezelfde toestanden in beide kernen. In $\nuclide[48][]{Ca}$ voelen de protonen echter een bredere potentiaal en ligt hun gemiddelde kinetische energie dus lager dan in $\nuclide[40][]{Ca}$. Een tweede trend in de resultaten is de toename van de gemiddelde kinetische energie als een nieuw energieniveau bezet wordt. Als men bijvoorbeeld naar de gemiddelde kinetische energie van protonen kijkt bij $\nuclide[48][]{Ca}$ en $\nuclide[56][]{Fe}$ dan is deze groter voor de laatstgenoemde. In de grondtoestand van $\nuclide[48][]{Ca}$ zijn te protontoestanden opgevuld tot en met energie $E = 7/2\ \hbar \omega_{A = 48}$ en in $\nuclide[56][]{Fe}$ zijn er nog 6 protonen die een hogere energietoestand bezetten ( $E = 9/2\ \hbar \omega_{A = 56}$) en dus voor een verhoogde gemiddelde kinetische energie zorgen. 
+Aangezien we de massa van een neutron en proton als gelijk aannemen is het verschil in gemiddelde kinetische energie van de protonen en neutronen in eenzelfde kern te wijten aan een verschil in aantal bezette toestanden. Naarmate kernen een groter massagetal $A$ hebben verwachten we steeds meer neutronen in verhouding met het aantal protonen (afnemende protonfractie $x_p = Z/A$ ) want voor zwaardere kernen wordt de Coulomb-afstoting steeds belangrijker. Als het hoogst gevulde energieniveau van de neutronen in een kern een hogere energie heeft dan het hoogst gevulde niveau van de protonen dan is er inderdaad een verschil in gemiddelde kinetische energie.  
 
 In Figuur \ref{fig:oneparticledistr_2} wordt de kans om een $A$ nucleonen te vinden met impuls $k$ getoond in functie van de impuls, deze kans wordt gegeven door $n^{[1]}(k)k^2dk$. 
 Het gemiddelde $\mu$ van een van een probabiliteitsdistributie $P(x)$ is gedefinieerd als
@@ -446,15 +446,15 @@ worden gekarakteriseerd door scheefheid
 \end{equation}
 en kurtosis
 \begin{equation} \label{eq:kurtosis}
-\kappa  = \frac{\mu_4}{\sigma^4} - 3
+\kappa  = \frac{\mu_4}{\sigma^4} - 3,
 \end{equation}
-die beiden nul zijn voor een normale distributie. De waarden in Tabel \ref{tab:properties}, weergegeven in Figuur \ref{fig:properties} geven aan dat de distributies bij benadering Gaussisch zijn, kurtosis en scheefheid zijn klein. De absolute waarde van de kurtosis groeit naarmate $A$ groter wordt. Een negatieve kurtosis duidt erop dat de distributies minder gepiekt zijn en kleinere staarten hebben dan een Gaussische distributie. Lichte kernen hebben een linkse scheefheid ($\mathcal{S} > 0$) en scheefheid wordt kleiner naarmate we naar zwaardere kernen gaan. De zwaarste kernen hebben rechtse scheefheid ($\mathcal{S} < 0$) in de distributie wat erop duidt dat er meer nucleonen te vinden zijn met een kleiner dan gemiddelde impuls en dat de grootste afwijkingen van de gemiddelde impuls te vinden zijn rechts van het gemiddelde, bij de grootste impulsen. Daar kurtosis en scheefheid beperkt blijven in grootte kunnen we besluiten dat impulsverdeling van nucleonen in een kern bij benadering wordt beschreven een door Gaussische verdeling. Figuur \ref{fig:oneparticledistr_2} geeft naast de berekende impulsdistributie ook een fit van een Gaussische distributie \eqref{eq:gaussian} aan de theoretische curve weer. De parameters $\mu$ en $\sigma$ worden gefit volgens de methode van de kleinste kwadraten.
+die beiden nul zijn voor een normale distributie. De waarden in Tabel \ref{tab:properties}, weergegeven in Figuur \ref{fig:properties}, geven aan dat de distributies bij benadering Gaussisch zijn, kurtosis en scheefheid zijn klein. De absolute waarde van de kurtosis groeit naarmate $A$ groter wordt. Een negatieve kurtosis duidt erop dat de distributies minder gepiekt zijn en kleinere staarten hebben dan een Gaussische distributie. Lichte kernen hebben een rechtse scheefheid ($\mathcal{S} > 0$) en scheefheid wordt kleiner naarmate we naar zwaardere kernen gaan. De zwaarste kernen hebben linkse scheefheid ($\mathcal{S} < 0$) in de distributie wat erop duidt dat er meer nucleonen te vinden zijn met een groter dan gemiddelde impuls en dat de grootste afwijkingen van de gemiddelde impuls te vinden zijn links van het gemiddelde, bij de kleinste impulsen. Daar kurtosis en scheefheid beperkt blijven in grootte kunnen we besluiten dat impulsverdeling van nucleonen in een kern bij benadering wordt beschreven een door Gaussische verdeling. Figuur \ref{fig:oneparticledistr_2} geeft naast de berekende impulsdistributie ook een fit van een Gaussische distributie \eqref{eq:gaussian} aan de theoretische curve weer. De parameters $\mu$ en $\sigma$ worden gefit volgens de methode van de kleinste kwadraten.
 Weergegeven in de figuur is ook $\chi^2$:
 \begin{equation} \label{eq:chisquared}
 \chi^2 = \sum_k (n^{[1]}(k)k^2 - P_{normal}(k))^2,
 \end{equation}
-die de goedheid van de fit weergeeft. De sommatie gaat over $k \in  [0,2]  fm^{-1}$ met een stap van $0.01\ fm^{-1}$. Hoe kleiner $\chi^2$, hoe beter de normale verdeling de theoretische curve benadert. 
-De normale verdeling, gedefinieerd in \eqref{eq:gaussian}, heeft de eigenschap dat ze waarden kan aannemen voor een negatief argument. De beschouwde variabele is hier de grootte van de impuls $k$ die slechts gedefinieerd is in het interval $[ 0, + \infty]$. Een Maxwell-Boltzmannverdeling zou een goed alternatief zijn aangezien het een sferisch equivalent is van de normale distributie:
+die de goedheid van de fit weergeeft. De sommatie gaat over $k \in  [0,2]$ fm$^{-1}$ met een stap van $0.01$ fm$^{-1}$. Hoe kleiner $\chi^2$, hoe beter de normale verdeling de theoretische curve benadert. 
+De normale verdeling, gedefinieerd in \eqref{eq:gaussian}, heeft de eigenschap dat ze waarden kan aannemen voor een negatief argument. De beschouwde variabele is hier de grootte van de impuls $k$ die slechts gedefinieerd is in het interval $[ 0, + \infty [$. Een Maxwell-Boltzmann (MB) verdeling zou een goed alternatief zijn aangezien het een sferisch equivalent is van de normale distributie:
 \begin{equation}
 P_{MB}(k) \propto k^2 \exp{-\frac{k^2}{2a^2}}
 \end{equation} 
@@ -462,12 +462,12 @@ met
 \begin{equation}
 a= \sqrt{\frac{\pi}{8}}\mu.
 \end{equation}
-In \cite{PhysRevC.86.044619} is reeds besloten dat een redelijke fit geeft voor lichte kernen en een slechte fit voor de zwaardere kernen in een GV-model met WS potentiaal. Hetzelfde verhaal geldt voor impulsdistributies in een HO potentiaal. De voornaamste reden voor de slechte fit is de negatieve kurtosis (kleinere staarten ten opzichte van normale verdeling) van de berekende impulsdistributies. Een Maxwell-Boltzmannverdeling heeft namelijk een zware staart aan de hoge-impulskant.
+In \cite{PhysRevC.86.044619} is reeds besloten dat de MB verdeling een redelijke fit geeft voor lichte kernen en een slechte fit voor de zwaardere kernen in een GV-model met WS potentiaal. Hetzelfde verhaal geldt voor impulsdistributies in een HO potentiaal. De voornaamste reden voor de slechte fit is de negatieve kurtosis (kleinere staarten ten opzichte van normale verdeling) van de berekende impulsdistributies. Een MB verdeling heeft namelijk een zware staart aan de hoge-impulskant.
 Uit de conclusies over de twee bovenstaande fits lijkt het interessant om de functie
 \begin{equation} \label{eq:powgauss}
 P_{PG}(k) = N_{norm} \times k^\alpha \exp{-\frac{(k-\mu)^2}{2\sigma^2}}
 \end{equation} 
-te beschouwen waarbij $N_{norm}$, $\alpha$, $\mu$ en $\sigma$ gefit worden volgens de methode van de kleinste kwadraten. Aangezien er geen analytische uitdrukking is voor de integraal $\int dk P_{PG}(k)$ fitten we dus ook een normalisatiefactor $N_{norm}$. We controleren ook of de gefitte curve correct genormaliseerd is op 1. In Figuur \ref{fig:oneparticledistr_3} ziet men dat deze functie een heel goede fit geeft aan onze theoretische curve voor lichte kernen, $\chi^2$ is verwaarloosbaar. Echter, voor zware kernen is de fit van dezelfde kwaliteit als de fit met een normale verdeling. Voor lichte kernen valt op dat de macht van $k$ ($\alpha$ in uitdrukking \eqref{eq:powgauss}) relatief dicht bij 2 ligt, en dus bij benadering kan beschreven worden door een Maxwell-Boltzmannverdeling. Voor zwaardere kernen is de match $\alpha$ veel kleiner en een Maxwell-Boltzmannverdeling zal een slechte fit geven. Dit is ook de conclusie in \cite{PhysRevC.86.044619}.
+te beschouwen waarbij $N_{norm}$, $\alpha$, $\mu$ en $\sigma$ gefit worden volgens de methode van de kleinste kwadraten. Aangezien er geen analytische uitdrukking is voor de integraal $\int dk\ P_{PG}(k)$ fitten we dus ook een normalisatiefactor $N_{norm}$. We controleren steeds of de gefitte curve correct genormaliseerd is op 1. In Figuur \ref{fig:oneparticledistr_3} ziet men dat deze functie een heel goede fit geeft aan onze theoretische curve voor lichte kernen (lichter dan $\nuclide[27][]{Al}$), $\chi^2$ is verwaarloosbaar. Echter, voor zware kernen is de fit van dezelfde kwaliteit als de fit met een normale verdeling. Voor lichte kernen valt op dat de macht van $k$ ($\alpha$ in uitdrukking \eqref{eq:powgauss}) relatief dicht bij 2 ligt, en dus bij benadering kan beschreven worden door een MB verdeling. In $\nuclide[4][2]{He}$ alleen de grondtoestand van de sferische HO bezet. In deze toestand is de impuls exact (in ODM met HO potentiaal) verdeeld volgens een MB verdeling. Voor zwaardere ($A \gtrsim 27$) kernen is $\alpha$ veel kleiner en een MB verdeling zal een slechte fit geven. Dit is ook de conclusie in \cite{PhysRevC.86.044619}.
 Tenslotte merken we op dat de variantie vrijwel onafhankelijk is van de beschouwde kern. 
 
 \begin{table}[H]
@@ -563,14 +563,14 @@ de tweedeeltjes impulsdistributie. Hier is
 \rho_2(\vec{r}_1,\vec{r}_2, \vec{r}_1^{\ \prime},\vec{r}_2^{\ \prime}) = \int \{d\vec{r}_{3-A}\} \Psi^*_A(\vec{r}_1,\vec{r}_2,\vec{r}_3, ... ,\vec{r}_A)\Psi_A(\vec{r}_1^{\ \prime},\vec{r}_2^{\ \prime},\vec{r}_3, ... ,\vec{r}_A)
 \end{equation}
 
-de tweedeeltjes niet-diagonale dichtheidsmatrix (TNDM). Aangezien interacties tussen twee  nucleonen alleen functie zijn van de relatieve vector tussen deze twee nucleonen en de positie van hun massacentrum er niet toe doet wegens translationele invariantie van fysische wetmatigheden is het interessant de TNDM te bestuderen in functie van relatieve ($\vec{r}$) en massacentrumco\"{o}rdinaten ($\vec{R}$) (Figuur \ref{fig:coordinates}). We defini\"{e}ren deze co\"{o}rdinaten als
+de tweedeeltjes niet-diagonale dichtheidsmatrix (TNDM). Aangezien interacties tussen twee  nucleonen alleen functie zijn van de relatieve vector tussen deze twee nucleonen en de positie van hun massacentrum er niet toe doet wegens translationele invariantie van fysische wetmatigheden, is het interessant de TNDM te bestuderen in functie van relatieve ($\vec{r}$) en massacentrumco\"{o}rdinaten ($\vec{R}$) (Figuur \ref{fig:coordinates}). We defini\"{e}ren deze co\"{o}rdinaten als
 
 
 \begin{equation} \label{eq:rcm_def}
 \vec{r}= \frac{1}{\sqrt{2}} \left(\vec{r}_1 - \vec{r}_2\right)  \qquad \vec{R}= \frac{1}{\sqrt{2}} \left(\vec{r}_1 + \vec{r}_2\right).
 \end{equation}
 
-De impulsco\"{o}rdinatendan transformeren dan als volgt,
+De impulsco\"{o}rdinatendan transformeren dan als volgt:
 \begin{equation} \label{eq:rcm_impusl}
 \vec{k}_{12}= \frac{1}{\sqrt{2}} \left(\vec{k}_1 - \vec{k}_2\right) \qquad \vec{P}_{12}= \frac{1}{\sqrt{2}} \left(\vec{k}_1 + \vec{k}_2\right).
 \end{equation}
@@ -618,7 +618,7 @@ De diagonaaloperator $\psi^\dagger(\vec{r}_1) \psi^\dagger(\vec{r}_2)\psi(\vec{r
 \section{Het onafhankelijke-deeltjes model}
 
 
-In een onafhankelijk deeltjes model waarbij de totale golffunctie van de kern een Slaterdeterminant is van \'{e}\'{e}ndeeltjesgolffuncties (\ref{eq:slater}) van bezette toestanden, wordt de TNDM (\ref{eq:twobodydensity}), rekening houdend met de orthogonaliteitsrelatie (\ref{eq:orthogonality}):
+In een ODM waarbij de totale golffunctie van de kern een Slaterdeterminant is van \'{e}\'{e}ndeeltjes golffuncties (\ref{eq:slater}) van bezette toestanden, wordt de TNDM (\ref{eq:twobodydensity}), rekening houdend met de orthogonaliteitsrelatie (\ref{eq:orthogonality}):
 
 \begin{align}
 \rho_2(\vec{r}_1,\vec{r}_2;\vec{r}^{\ \prime}_1,\vec{r}^{\ \prime}_2) 
@@ -638,7 +638,7 @@ Uit  \eqref{eq:1pmd} volgt dat de TNDM in een onafhankelijke-deeltjes model kan 
 Bijgevolg neemt de tweedeeltjes impulsdistributie \eqref{eq:twobodydist} in een onafhankelijk deeltjes model de volgende vereenvoudigde vorm aan:
 
 \begin{align} \label{eq:two-body}
-n^{[2]}(\vec{k}_1,\vec{k}_2) =\equiv \frac{1}{A(A-1)}\sum_{\substack{\alpha \beta}} \Braket{\alpha \beta | \vec{k}_1 \vec{k}_2}_{nas} \Braket{\vec{k}_1 \vec{k}_2 | \alpha \beta}_{nas}
+n^{[2]}(\vec{k}_1,\vec{k}_2) \equiv \frac{1}{A(A-1)}\sum_{\substack{\alpha \beta}} \Braket{\alpha \beta | \vec{k}_1 \vec{k}_2}_{nas} \Braket{\vec{k}_1 \vec{k}_2 | \alpha \beta}_{nas}
 \end{align}
 met
 \begin{equation} \label{eq:nas_twobody}
@@ -647,9 +647,9 @@ met
 een totaal antisymmetrische en genormaliseerde tweedeeltjestoestand.
 De sommaties in \eqref{eq:two-body} gaan over alle bezette \'{e}\'{e}ndeeltjestoestanden van de beschouwde kern.
 
-\subsubsection{Tweedeeltjes impulsdistributies in relatieve massacentrumco\"{o}rdinaten}
+\subsubsection{Tweedeeltjes impulsdistributies in relatieve en massacentrumco\"{o}rdinaten}
 
-De tweedeeltjes interacties $V_{ij}$ in  de volledige A-deeltjes Hamiltoniaan \eqref{eq:full_ham} zijn alleen afhankelijk van de relatieve posities van nucleonen en niet van hun positie ten opzichte van een vast punt in de ruimte. Bijgevolg wordt deze Hamiltoniaan liefst gescheiden in relatieve- en massacentrumco\"{o}rdinaten van twee deeltjes. Tweedeeltjes impulsdistributies worden dan voornamelijk bestudeerd in functie van een relatieve impuls van twee deeltjes $\vec{k}_{12}$ en de impuls van hun massacentrum $\vec{P}_{12}$. Daar we de vergelijking willen maken met distributies waarbij correlaties tussen de nucleonen in rekening worden gebracht, doen ook wij een transformatie van individuele co\"{o}rdinaten naar deze nieuwe gedefinieerd in \eqref{eq:rcm_def}. Een handige eigenschap van HO golffuncties is de orthogonale transformatie van een tweedeeltjes golffunctie naar relatieve en massacentrumco\"{o}rdinaten 
+De tweedeeltjes interacties $V_{ij}$ in de A-deeltjes Hamiltoniaan \eqref{eq:full_ham} zijn alleen afhankelijk van de relatieve posities van nucleonen en niet van hun positie ten opzichte van een vast punt in de ruimte. Bijgevolg wordt deze Hamiltoniaan liefst gescheiden in relatieve en massacentrumco\"{o}rdinaten van twee deeltjes. Tweedeeltjes impulsdistributies worden dan voornamelijk bestudeerd in functie van een relatieve impuls van twee deeltjes $\vec{k}_{12}$ en de impuls van hun massacentrum $\vec{P}_{12}$. Daar we de vergelijking willen maken met distributies waarbij correlaties tussen de nucleonen in rekening worden gebracht, doen ook wij een transformatie van individuele co\"{o}rdinaten naar deze nieuwe gedefinieerd in \eqref{eq:rcm_def}. Een handige eigenschap van HO golffuncties is de orthogonale transformatie van een tweedeeltjes golffunctie naar relatieve en massacentrumco\"{o}rdinaten 
 \begin{equation}
 \Braket{\vec{r}_1|n_1 l_1 m_1}\braket{\vec{r}_2 | n_2 l_2 m_2} \rightarrow \braket{\vec{r}| n l m}\braket{\vec{R} | NLM}.
 \end{equation}
@@ -676,14 +676,14 @@ Een HO tweedeeltjes golffunctie met totaal impulsmoment $\Lambda$  en projectie 
 \begin{align} \label{eq:moshinsky_trans}
 \Ket{n_1l_1n_2l_2;\Lambda M_\Lambda} = \sum_{nl, N\Lambda} \Ket{nlNL;\Lambda M_\Lambda} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB}.
 \end{align}
-De transformatico\"{e}ffici\"{e}nten $\Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}$ zijn gekend als de Moshinsky-co\"{e}ffici\"{e}nten en zijn onafhankelijk van $M_\Lambda$. De energie van een deeltje ($E$), neem nu bijvoorbeeld een zeker deeltje "1",  in een HO potentiaal is $\hbar\omega  (2n_1+l_1+ \frac{3}{2})$. Daar de totale energie van twee deeltjes dezelfde moet zijn in verschillende co\"{o}rdinaatsystemen moet er gelden dat
+De transformatico\"{e}ffici\"{e}nten $\Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB}$ zijn gekend als de Moshinsky-co\"{e}ffici\"{e}nten en zijn onafhankelijk van $M_\Lambda$. De energie van een deeltje ($E$), neem nu bijvoorbeeld een zeker deeltje "1",  in een HO potentiaal is $\hbar\omega  (2n_1+l_1+ \frac{3}{2})$. Daar de totale energie van twee deeltjes dezelfde moet zijn in verschillende co\"{o}rdinaatsystemen moet er gelden dat
 \begin{equation}
 2n_1 + l_1 + 2n_2 + l_2 = 2n + l + 2N + L.
 \end{equation}
-De Moshinskyco\"{e}ffici\"{e}nten zijn nul als deze gelijkheid niet is voldaan. Een recursieve methode voor de berekening van deze co\"{e}ffici\"{e}nten kan gevonden worden in Appendix \ref{sec:recursif_mosh}.
+De Moshinsky-co\"{e}ffici\"{e}nten zijn nul als deze gelijkheid niet is voldaan. Een recursieve methode voor de berekening van deze co\"{e}ffici\"{e}nten kan gevonden worden in Appendix \ref{sec:recursif_mosh}.
 
 
-\subsubsection{Tweedeeltjes impulsdistributie voor harmonische oscillator potentiaal}
+\subsubsection{Tweedeeltjes impulsdistributie voor sferische harmonische oscillator potentiaal}
 Daar we de tweedeeltjes impulsdistributie \eqref{eq:two-body} willen bestuderen in functie van relatieve impuls en massacentrumimpuls moeten de geantisymmetriseerde toestanden \eqref{eq:nas_twobody} geschreven worden in functie van $\vec{k}_{12}$ en $\vec{P}_{12}$. De ontwikkeling van \eqref{eq:nas_twobody} in toestanden die functie zijn van $\vec{k}_{12}$ en $\vec{P}_{12}$  kan men vinden in Appendix \ref{sec:antisym}:
 \begin{equation}
 \Braket{\vec{k}_1 \vec{k}_2 | \alpha \beta}_{nas} = \sum_{\substack{nlm_l \\ NLM_L}} \sum_{S M_S}   \sum_{T M_T}  C_{\alpha \beta}^{ nlm_l NLM_L  S M_S T M_T} \Ket{ nlm_l(\vec{k}_{12})  NLM_L(\vec{P}_{12}) S M_S  T M_T}.
@@ -708,7 +708,7 @@ waarbij
 n_2^{l}(k_{12}) = \frac{1}{A(A-1)} \sum_{\substack{\alpha \beta}} \sum_{\substack{nm_l \\ NLM_L}} \sum_{\substack{n^{\prime} }} \sum_{\substack{S M_S \\T M_T}} &  \left( C_{\alpha \beta}^{nlm_l NLM_L  S M_S T M_T} \right)^\dagger  C_{\alpha \beta}^{ n^{\prime} lm_l NLM_L  S M_S T M_T} \\ \ \times & K_{nl}(k_{12}) K_{n^{\prime} l}(k_{12}).
 \end{align*}
 Hier is $K_{nl}(k)$ de radi\"{e}le HO golffunctie in de impulsruimte gedefinieerd in vergelijking \eqref{eq:HO_mom_radwave}.
-Resultaten worden getoond in Figuur \ref{fig:twoparticledistr_rel_log} waarbij we $n^{[2]}(k_{12})$ op een logaritmische schaal tonen omdat uit onderzoek waarbij kortedracht correlaties in rekening worden gebracht (\cite{maarten,wiringa2014nucleon}), blijkt dat correlaties zorgen voor een brede staart in de distributie vanaf $k_{12} \gtrsim 1.5\ fm^{-1}$. Een zichtbaar verschil toont zich alleen op een logaritmische schaal.  Resultaten uit GV berekeningen zijn dus relevant tot ongeveer $1.5\ fm^{-1}$. De distributie $n^{[2]}(k_{12})k_{12}^2dk_{12}$ geeft de kans om twee nucleonen te vinden met een onderling relatieve impuls in het interval $[ k_{12}, k_{12}+ d k_{12} ]$ en is afgebeeld in Figuur \ref{fig:twoparticledistr_rel} voor verschillende kernen. De bijdragen van relatieve impulsmoment $l$ worden getoond ter vergelijking met een model met correlaties zodat men kan zien welke $l$ het meest worden be\"{i}nvloed door deze correlaties. Dat interacties tussen nucleonen de bezettingen van de relatieve $l$ be\"{i}nvloeden is int\"{i}utief te begrijpen als men kijkt naar overlap van twee nucleonen in verschillende relatieve $l$ toestanden. Bij $l=0$ is de overlap het grootst en we verwachten dat de bezetting van deze toestand het meest zal veranderen bij het invoeren van correlaties. Uit de resultaten valt ook op dat twee nucleonen zich voornamelijk in een $l=1$ toestand bevinden. Afwijkingen van een normale distributie, gekarakteriseerd door kurtosis $\kappa$ en scheefheid $\mathcal{S}$ zijn duidelijk afhankelijk van de massa $A$ van de kern zoals weergegeven in Figuur \ref{fig:properties_rel}. Net zoals bij de \'{e}\'{e}ndeeltjes impulsdistributie groeit ook bij de tweedeeltjes impulsdistributies de absolute waarde van de kurtosis met toenemende $A$. Kurtosis is steeds negatief zodat de distributies kleinere staarten en een bredere piek hebben ten opzichte van een normale distributie. 
+Resultaten worden getoond in Figuur \ref{fig:twoparticledistr_rel_log} waarbij we $n^{[2]}(k_{12})$ op een logaritmische schaal tonen omdat uit onderzoek waarbij kortedracht correlaties in rekening worden gebracht (\cite{maarten,wiringa2014nucleon}), blijkt dat correlaties zorgen voor een brede staart in de distributie vanaf $k_{12} \gtrsim 1.5$ fm$^{-1}$. Een zichtbaar verschil toont zich alleen op een logaritmische schaal.  Resultaten uit GV berekeningen zijn dus relevant tot ongeveer $1.5$ fm$^{-1}$. De distributie $n^{[2]}(k_{12})k_{12}^2dk_{12}$ geeft de kans om twee nucleonen te vinden met een onderling relatieve impuls in het interval $[ k_{12}, k_{12}+ d k_{12} ]$ en is afgebeeld in Figuur \ref{fig:twoparticledistr_rel} voor verschillende kernen. De bijdragen van relatieve impulsmoment $l$ worden getoond ter vergelijking met een model met correlaties zodat we kunnen zien welke $l$ het meest worden be\"{i}nvloed door deze correlaties. Dat interacties tussen nucleonen de bezettingen van de relatieve $l$ be\"{i}nvloeden is int\"{i}utief te begrijpen als men kijkt naar overlap van twee nucleonen in verschillende relatieve $l$ toestanden. Bij $l=0$ is de overlap het grootst en we verwachten dat de bezetting van deze toestand het meest zal veranderen bij het invoeren van correlaties. Uit de resultaten valt ook op dat twee nucleonen zich voornamelijk in een $l=1$ toestand bevinden. Afwijkingen van een normale distributie, gekarakteriseerd door kurtosis $\kappa$ en scheefheid $\mathcal{S}$ zijn duidelijk afhankelijk van de massa $A$ van de kern zoals weergegeven in Figuur \ref{fig:properties_rel}. Net zoals bij de \'{e}\'{e}ndeeltjes impulsdistributie groeit ook bij de relatieve tweedeeltjes impulsdistributies de absolute waarde van de kurtosis met toenemende $A$. Kurtosis is steeds negatief zodat de distributies kleinere staarten en een bredere piek hebben ten opzichte van een normale distributie. 
 De andere parameter die afwijking van de normale distributie karakteriseert, scheefheid, neemt af naarmate $A$ groter wordt en is steeds positief, de distributies zijn dus rechts scheef. 
 Ook valt op dat de spreiding rond het gemiddelde ruwweg onafhankelijk is van de massa van de kern. Daar de afwijkingen steeds klein zijn kunnen we besluiten dat de relatieve tweedeetjesimpuls bij benadering normaal verdeeld is voor de verschillende kernen.
 
@@ -723,34 +723,8 @@ n_2^{l}(P_{12}) = \frac{1}{A(A-1)} \sum_{\substack{\alpha \beta }} \sum_{\substa
 \end{align*}
 Hier is $K_{NL}(P_{12})$ de radi\"{e}le HO golffunctie in de impulsruimte gedefinieerd in vergelijking \eqref{eq:HO_mom_radwave}.
 Resultaten zijn afgebeeld in Figuur \ref{fig:twoparticledistr_cm}. De kans om twee nucleonen te vinden waarvan het massacentrum een impuls heeft in het interval $[ P_{12}, P_{12}+ dP_{12} ]$ wordt gegeven door $n^{[2]}(P_{12})P_{12}^2dP_{12}$. De afwijkingen van een normale distributie vertonen dezelfde karakteristieken als bij de relatieve impulsdistributie. De kurtosis van de berekende distributies is steeds negatief en de absolute waarde wordt steeds groter met toenemende massa $A$ van de kern. De scheefheid neemt af met de massa. De breedte van de massacentrum impulsdistributies is onafhankelijk van de massa van de kern. De scheefheid en kurtosis zijn steeds klein dus wordt de impuls van het tweedeeltjes massacentrum relatief goed beschreven door een normale verdeling.
-Contributies van relatieve orbitaal kwantumgetal $l$ zijn weergegeven ter vergelijking met een model met correlaties. Ook hier gelden dezelfde conclusies als bij de relatieve distributie in verband met de bijdragen van de verschillende $l$, namelijk $l=0$ zal het meest be\"{i}vloed worden door correlaties tussen de nucleonen. 
+Contributies van  de relatieve impulsmomenten $l$ zijn weergegeven ter vergelijking met een model met correlaties. Ook hier gelden dezelfde conclusies als bij de relatieve distributie, namelijk $l=0$ zal het meest be\"{i}vloed worden door correlaties tussen de nucleonen. 
 In Figuur \ref{fig:vergelijking} vergelijken we onze resultaten van de relatieve en massacentrum impulsdistributies met overeenkomstige GV resultaten van M. Vanhalst \cite{maarten}. Onze resultaten stemmen overeen.
-
-Tenslotte bestuderen we de tweedeeltjes impulsdistributie in functie van de hoek $\theta_{kP}$ tussen $\vec{k}_{12}$ en  $\vec{P}_{12}$:
-\begin{align} \label{eq:angle_tb2}
-n^{[2]}(\theta_{kP}) & = 8\pi^2 \int dP_{12} \int dk_{12}\  P_{12}^2\ k_{12}^2\ n^{[2]}(\vec{k}_{12},\vec{P}_{12}) \nonumber \\
-& =   \frac{8\pi^2}{A(A-1)} \sum_{\substack{\alpha \beta }} \sum_{\substack{nlm_l \\ NLM_L}} \sum_{\substack{m_l^{\prime} \\\ M_L^{\prime} }} \sum_{\substack{S M_S \\T M_T}}  \left( C_{\alpha \beta}^{nlm_l NLM_L  S M_S T M_T} \right)^\dagger  C_{\alpha \beta}^{ n lm_l^{\prime} NLM_L^{\prime}  S M_S T M_T} \nonumber \\ & \times  \ Y^*_{l m_l}(0,0) Y_{l m_l^{\prime}}(0,0) Y^*_{L M_L}(\theta_{kP},0)  Y_{L M_L^{\prime}}(\theta_{kP},0). 
-\end{align}
-Hierbij is overgegaan naar een assenstelsel weergegeven in Figuur \ref{fig:assen}.
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.85]{./figuren/assenstelsel1.pdf}
-\caption{We kunnen een transformatie doen naar dit co\"{o}rdinatensysteem zodat alle hoeken verdwijnen behalve de hoek tussen $\vec{k}_{12}$ en $\vec{P}_{12}$: de azumitale hoek $\varphi$ is voor beide vectoren nul en ook de poolhoek van $\vec{k}_{12}$, genaamd $\theta_{k_{12}}$, is nul.  }
-\label{fig:assen}
-\end{figure}
-
-Resultaten worden getoond in Figuur \ref{fig:angle}. Voor alle kernen zijn deze maximaal bij $\theta_{kP} = \pi/2$. Als $\vec{k}_{12}$ en $\vec{P}_{12}$ loodrecht staan op elkaar dan volgt uit hun  definities \eqref{eq:rcm_impusl} dat de groottes van de individuele impulsen van de deeltjes even groot zijn ($|\vec{k}_1| = |\vec{k}_2|$). De kans om twee nucleonen te vinden waarvan de relatieve impuls een hoek $\theta_{kP}$ vormt met de impuls van hun massacentrum wordt gegeven door $n^{[2]}(\theta_{kP})\sin{\theta_{kP}}d\theta_{kP}$. Daar $\sin{\theta_{kP}}$ ook piekt bij $\theta_{kP} = \pi/2$ is deze distributie voor alle kernen maximaal bij een loodrechte configuratie van $\vec{k}_{12}$ en $\vec{P}_{12}$. Dus twee nucleonen bevinden zich bij voorkeur in een toestand waarbij ze een even grote impuls hebben. Dit is niet alleen het gevolg van de factor $\sin{\theta_{kP}}$ afkomstig van de faseruimte, maar ook van de distributie $n^{[2]}(\theta_{kP})$ zelf.  We hebben ook een Monte-Carlosimulatie gedaan met $10^6$ evenementen. Bij elk evenement genereren we twee \'{e}\'{e}ndeeltjes impulsen waarbij de grootte van deze impulsen ($|\vec{k}_1|$ en $|\vec{k}_2|$) worden getrokken uit de berekende \'{e}\'{e}ndeeltjes impulsdistributies, getoond in Figuren \ref{fig:oneparticledistr_2} en \ref{fig:oneparticledistr_3}. De hoeken van deze \'{e}\'{e}ndeeltjes impulsen zijn gegenereerd uit een uniforme verdeling op een eenheidssfeer. Uit deze twee impulsen berekenen we dan de relatieve impuls en de impuls van het massacentrum aan de hand van definities \eqref{eq:rcm_impusl}. De hoek tussen $\vec{k}_{12}$ en $\vec{P}_{12}$ bepalen we via
-\begin{equation} \label{eq:thetakp}
-\cos{\theta_{kP}} = \frac{\vec{P}_{12} \cdot \vec{k}_{12}}{|\vec{P}_{12}| |\vec{k}_{12}|}.
-\end{equation}
-In Figuur \ref{fig:mc} is het resultaat van deze simulatie weergegeven voor koolstof. Het resultaat sluit aan bij de theoretische verdeling uit Figuur \ref{fig:angle}.
-\begin{figure}
-\centering
-\includegraphics[scale=0.35]{./figuren/carbon.png}
-\caption{De resultaten van een Monte-Carlosimulatie met $10^6$ evenementen. Links: \'{e}\'{e}ndeeltjes impuls gegenereerd volgens de \'{e}\'{e}ndeeltjes impulsdistributie van $\nuclide[12][6]{C}$ berekend in Hoofstuk \ref{eendeeltjes} (Zie Figuren \ref{fig:oneparticledistr_2} en \ref{fig:oneparticledistr_3}, hier weergegeven met een groene curve). Rechts: de verdeling van de hoek $\theta_{kP}$ tussen $\vec{k}_{12}$ en $\vec{P}_{12}$ , gegeven door uitdrukking \eqref{eq:thetakp}. De groene curve stelt de theoretische verdeling voor uit Figuur \ref{fig:angle}.}
-\label{fig:mc}
-\end{figure}
-Als we de eigenschappen van de hoekdistributies bekijken valt op dat de scheefheid steeds nul is, met andere woorden de distributies zijn steeds symmetrisch rond $\theta_{kP} = \pi/2$. De kurtosis en  de variantie vari\"{e}ren weinig van kern tot kern. De eerstgenoemde is steeds negatief en groter in absolute waarde dan bij de vorige tweedeeltjes impulsdistributies.
 
 \begin{figure}[H]
 \centering
@@ -780,8 +754,6 @@ Als we de eigenschappen van de hoekdistributies bekijken valt op dat de scheefhe
 \caption{$n^{[2]}(P_{12})P_{12}^2$, met $n^{[2]}(P_{12})$ gegeven door uitdrukking \eqref{eq:cm_two}, voor $ \nuclide[12][6]{C}, \nuclide[27][13]{Al},\nuclide[40][18]{Ar},\nuclide[48][20]{Ca},\nuclide[56][26]{Fe},\nuclide[109][47]{Ag}$. De normalisatie is zodanig dat $\int dP_{12}\ P_{12}^2\ n^{[2]}(P_{12}) = 1$. De bijdragen van de tweedeeltjes relatieve impulsmomenten $l$ worden getoond.}
 \label{fig:twoparticledistr_cm_prob}
 \end{figure}
-
-
 \begin{table}
 \centering
 \begin{tabular}{c| ccc}
@@ -798,28 +770,35 @@ $\nuclide[108][]{Ag}$ & $64.658$ & $-0.364$ & $0.206$ \\
 \caption{De breedte $\sigma$, de kurtosis $\kappa$ en de scheefheid $\mathcal{S}$ van relatieve tweedeeltjes impulsdistributies van Figuur \ref{fig:twoparticledistr_rel}.}
 \label{tab:properties_rel}
 \end{table}
-
-\begin{figure}
+\begin{figure} 
 \centering
 \includegraphics[scale=0.45]{./figuren/properties_rel.png}
 \caption{De breedte $\sigma$, de kurtosis $\kappa$ en de scheefheid $\mathcal{S}$ van relatieve tweedeeltjes impulsdistributies van Figuur \ref{fig:twoparticledistr_rel}. Numerieke waarden staan in Tabel \ref{tab:properties_rel}. De kurtosis is steeds negatief en wordt in absolute waarde getoond.}
 \label{fig:properties_rel}
 \end{figure}
-
 \begin{figure}
 \centering
 \includegraphics[scale=0.45]{./figuren/properties_cm.png}
 \caption{De breedte $\sigma$, de kurtosis $\kappa$ en de scheefheid $\mathcal{S}$ van massacentrum tweedeeltjes impulsdistributies van Figuur \ref{fig:twoparticledistr_cm_prob}. Numerieke waarden staan in Tabel \ref{tab:properties_cm}. De kurtosis is steeds negatief en wordt in absolute waarde getoond.}
 \label{fig:properties_cm}
 \end{figure}
-
 \begin{figure}
 \centering
-\includegraphics[scale=0.45]{./figuren/properties_angle.png}
-\caption{De breedte $\sigma$ en de kurtosis $\kappa$ van de hoekdistributies tweedeeltjes impuls van Figuur \ref{fig:angle}. Scheefheid van deze distributie $\mathcal{S}$ is nul voor alle beschouwde kernen. De kurtosis is steeds negatief en wordt in absolute waarde getoond.}
-\label{fig:properties_angle}
+\begin{subfigure}{0.46\textwidth}
+\includegraphics[width=\textwidth]{./figuren/C_tb_rel.pdf}
+\end{subfigure}
+\begin{subfigure}{0.46\textwidth}
+\includegraphics[width=\textwidth]{./figuren/C_tb_cm.pdf}
+\end{subfigure}
+\begin{subfigure}{0.46\textwidth}
+\includegraphics[width=\textwidth]{./figuren/Fe_tb_rel.png}
+\end{subfigure}
+\begin{subfigure}{0.46\textwidth}
+\includegraphics[width=\textwidth]{./figuren/Fe_tb_cm.pdf}
+\end{subfigure}
+\caption{Vergelijking van resultaten voor $n^{[2]}(k_{12})$ (links) en $n^{[2]}(P_{12})$ (rechts) met resultaten uit \cite{maarten}. De gestreepte curve is het resultaat bekomen door \cite{maarten} en de blauwe curve ons resultaat. }
+\label{fig:vergelijking}
 \end{figure}
-
 \begin{table}
 \centering
 \begin{tabular}{c| ccc}
@@ -836,6 +815,25 @@ $\nuclide[108][]{Ag}$ &$64.962$&	$-0.369$&	$0.192$ \\
 \caption{De breedte $\sigma$, de kurtosis $\kappa$ en de scheefheid $\mathcal{S}$ van massacentrum tweedeeltjes impulsdistributies van Figuur \ref{fig:twoparticledistr_cm_prob}.}
 \label{tab:properties_cm}
 \end{table}
+Tenslotte bestuderen we de tweedeeltjes impulsdistributie in functie van de hoek $\theta_{kP}$ tussen $\vec{k}_{12}$ en  $\vec{P}_{12}$:
+\begin{align} \label{eq:angle_tb2}
+n^{[2]}(\theta_{kP}) & = 8\pi^2 \int dP_{12} \int dk_{12}\  P_{12}^2\ k_{12}^2\ n^{[2]}(\vec{k}_{12},\vec{P}_{12}) \nonumber \\
+& =   \frac{8\pi^2}{A(A-1)} \sum_{\substack{\alpha \beta }} \sum_{\substack{nlm_l \\ NLM_L}} \sum_{\substack{m_l^{\prime} \\\ M_L^{\prime} }} \sum_{\substack{S M_S \\T M_T}}  \left( C_{\alpha \beta}^{nlm_l NLM_L  S M_S T M_T} \right)^\dagger  C_{\alpha \beta}^{ n lm_l^{\prime} NLM_L^{\prime}  S M_S T M_T} \nonumber \\ & \times  \ Y^*_{l m_l}(0,0) Y_{l m_l^{\prime}}(0,0) Y^*_{L M_L}(\theta_{kP},0)  Y_{L M_L^{\prime}}(\theta_{kP},0). 
+\end{align}
+Hierbij is overgegaan naar een assenstelsel weergegeven in Figuur \ref{fig:assen}.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.85]{./figuren/assenstelsel1.pdf}
+\caption{We kunnen een transformatie doen naar dit co\"{o}rdinatensysteem zodat alle hoeken verdwijnen behalve de hoek tussen $\vec{k}_{12}$ en $\vec{P}_{12}$: de azumitale hoek $\varphi$ is voor beide vectoren nul en ook de poolhoek van $\vec{k}_{12}$, genaamd $\theta_{k_{12}}$, is nul.  }
+\label{fig:assen}
+\end{figure}
+
+Resultaten worden getoond in Figuur \ref{fig:angle}. Voor alle kernen zijn deze maximaal bij $\theta_{kP} = \pi/2$. Als $\vec{k}_{12}$ en $\vec{P}_{12}$ loodrecht op elkaar staan dan volgt uit hun  definities \eqref{eq:rcm_impusl} dat de groottes van de individuele impulsen van de deeltjes even groot zijn ($|\vec{k}_1| = |\vec{k}_2|$). De kans om twee nucleonen te vinden waarvan de relatieve impuls een hoek $\theta_{kP}$ vormt met de impuls van hun massacentrum wordt gegeven door $n^{[2]}(\theta_{kP})\sin{\theta_{kP}}d\theta_{kP}$. Daar $\sin{\theta_{kP}}$ ook piekt bij $\theta_{kP} = \pi/2$ is deze distributie voor alle kernen maximaal bij een loodrechte configuratie van $\vec{k}_{12}$ en $\vec{P}_{12}$. Dus twee nucleonen bevinden zich bij voorkeur in een toestand waarbij ze een even grote impuls hebben. Dit is niet alleen het gevolg van de factor $\sin{\theta_{kP}}$ afkomstig van de faseruimte, maar ook van de distributie $n^{[2]}(\theta_{kP})$ zelf.  We hebben ook een Monte-Carlosimulatie gedaan met $10^6$ evenementen. Bij elk evenement genereren we twee \'{e}\'{e}ndeeltjes impulsen waarbij de grootte van deze impulsen ($|\vec{k}_1|$ en $|\vec{k}_2|$) worden getrokken uit de berekende \'{e}\'{e}ndeeltjes impulsdistributies, getoond in Figuren \ref{fig:oneparticledistr_2} en \ref{fig:oneparticledistr_3}. De hoeken van deze \'{e}\'{e}ndeeltjes impulsen zijn gegenereerd uit een uniforme verdeling op een eenheidssfeer. Uit de gegenereerde $\vec{k}_1$ en $\vec{k}_2$ berekenen we dan de relatieve impuls en de impuls van het massacentrum aan de hand van definities \eqref{eq:rcm_impusl}. De hoek tussen $\vec{k}_{12}$ en $\vec{P}_{12}$ bepalen we via
+\begin{equation} \label{eq:thetakp}
+\cos{\theta_{kP}} = \frac{\vec{P}_{12} \cdot \vec{k}_{12}}{|\vec{P}_{12}| |\vec{k}_{12}|}.
+\end{equation}
+In Figuur \ref{fig:mc} is het resultaat van deze simulatie weergegeven voor koolstof. Het resultaat sluit aan bij de theoretische verdeling uit Figuur \ref{fig:angle}.
+Als we de eigenschappen van de hoekdistributies bekijken valt op dat de scheefheid steeds nul is, met andere woorden de distributies zijn steeds symmetrisch rond $\theta_{kP} = \pi/2$. De kurtosis en  de variantie vari\"{e}ren weinig van kern tot kern. De eerstgenoemde is steeds negatief en groter in absolute waarde dan bij de vorige tweedeeltjes impulsdistributies.
 
 \begin{figure}
 \centering
@@ -843,32 +841,26 @@ $\nuclide[108][]{Ag}$ &$64.962$&	$-0.369$&	$0.192$ \\
 \caption{Hoekdistributies $n^{[2]}(\theta_{kP})$ en $n^{[2]}(\theta_{kP})\sin{\theta_{kP}}$ van tweedeeltjes impuls waarbij $n^{[2]}(\theta_{kP})$ gegeven door uitdrukking \eqref{eq:angle_tb2}. De normalisatie is zodanig dat $\int d\theta_{kP}\ n^{[2]}(\theta_{kP})\sin{\theta_{kP}} = 1$.}
 \label{fig:angle}
 \end{figure}
+\begin{figure}
+\centering
+\includegraphics[scale=0.45]{./figuren/properties_angle.png}
+\caption{De breedte $\sigma$ en de kurtosis $\kappa$ van de hoekdistributies tweedeeltjes impuls van Figuur \ref{fig:angle}. Scheefheid van deze distributie $\mathcal{S}$ is nul voor alle beschouwde kernen. De kurtosis is steeds negatief en wordt in absolute waarde getoond.}
+\label{fig:properties_angle}
+\end{figure}
 
 \begin{figure}
 \centering
-\begin{subfigure}{0.49\textwidth}
-\includegraphics[width=\textwidth]{./figuren/C_tb_rel.pdf}
-\end{subfigure}
-\begin{subfigure}{0.49\textwidth}
-\includegraphics[width=\textwidth]{./figuren/C_tb_cm.pdf}
-\end{subfigure}
-\begin{subfigure}{0.49\textwidth}
-\includegraphics[width=\textwidth]{./figuren/Fe_tb_rel.png}
-\end{subfigure}
-\begin{subfigure}{0.49\textwidth}
-\includegraphics[width=\textwidth]{./figuren/Fe_tb_cm.pdf}
-\end{subfigure}
-\caption{Vergelijking van resultaten voor $n^{[2]}(k_{12})$ (links) en $n^{[2]}(P_{12})$ (rechts) met resultaten uit \cite{maarten}. De gestreepte curve is het resultaat bekomen door \cite{maarten} en de blauwe curve ons resultaat. }
-\label{fig:vergelijking}
+\includegraphics[scale=0.35]{./figuren/carbon.png}
+\caption{De resultaten van een Monte-Carlosimulatie met $10^6$ evenementen. Links: \'{e}\'{e}ndeeltjes impuls gegenereerd volgens de \'{e}\'{e}ndeeltjes impulsdistributie van $\nuclide[12][6]{C}$, berekend in Hoofstuk \ref{eendeeltjes} (Zie Figuren \ref{fig:oneparticledistr_2} en \ref{fig:oneparticledistr_3}, hier weergegeven met een groene curve). Rechts: de verdeling van de hoek $\theta_{kP}$ tussen $\vec{k}_{12}$ en $\vec{P}_{12}$ , gegeven door uitdrukking \eqref{eq:thetakp}. De groene curve stelt de theoretische verdeling voor uit Figuur \ref{fig:angle}.}
+\label{fig:mc}
 \end{figure}
-
 
 
 \chapter{Wignerdistributie} \label{hfdstk:wigner}
 \section{Algemene kenmerken}
 Een klassiek deeltje wordt in de faseruimte ($(\vec{r},\vec{k})$-ruimte) voorgesteld door een punt, het heeft op elk tijdstip een welbepaalde impuls en positie. Een netto inwerkende kracht zorgt ervoor dat het deeltje een traject beschrijft in de faseruimte. Voor een ensemble van klassieke deeltjes kan de kans op het vinden van een deeltje in een bepaald punt van de faseruimte beschreven worden door een probabiliteitsdistributie $P(\vec{r},\vec{k})$. Een probabiliteit is steeds niet-negatief dus kan $P$ is een positief-definiete functie.  De gemiddelde waarde van een observabele $O(\vec{r},\vec{k})$ wordt berekend aan de hand van
 \begin{equation} \label{eq:average_obs}
-O_{av} = \int d\vec{r} \int d\vec{k}\ P(\vec{r},\vec{k})\ O(\vec{r},\vec{k})
+O_{gem} = \int d\vec{r} \int d\vec{k}\ P(\vec{r},\vec{k})\ O(\vec{r},\vec{k})
 \end{equation}
 waarbij de integratie gaat over de volledige faseruimte.
 In een kwantumsysteem worden de positie en impuls operatoren, respectievelijk $\hat{\vec{r}}$ en $\hat{\vec{k}}$,  die voldoen aan het onzekerheidsbeginsel van Heisenberg: 
@@ -880,13 +872,12 @@ waarbij  $\Delta O = \sqrt{\braket{\hat{O}^2}-\braket{\hat{O}}^2}$. $\braket{\ha
 [\hat{\vec{r}}, \hat{\vec{k}} ] = i,
 \end{equation}
 met $i$ de imaginaire eenheid.
-Daar een punt in de faseruimte een welbepaalde positie en impuls heeft, faalt de beschrijving van een kwantumsysteem met een klassieke probabiliteitsdistributie $P(\vec{r},\vec{k})$. Deze zou het onzekerheidsbeginsel \eqref{eq:heisenberg} schenden. In een klassiek systeem zijn observabelen getallen, geen operatoren, en commuteren bijgevolg altijd. Een voorstelling van een kwantumsysteem in de faseruimte wordt gegeven door een quasiprobabiliteitsdistributie. Een voorbeeld hiervan is de Wignerdistributie. Dit kwantummechanische analogon van de klassieke probabiliteitsdistributie verliest echter de fysische interpretatie als probabiliteit en wordt dus beschouwd als een zuiver mathematisch hulpmiddel voor de berekening van verwachtingswaarden. In tegenstelling tot een klassieke probabiliteitsdistributie kan een quasidistributie negatieve waarden aannemen die worden gelinkt aan kwantumeffecten. Men kan bewijzen dat deze gebieden met negatieve quasidistributie steeds klein zijn en verdwijnen in de klassieke limiet $\hbar \rightarrow 0$. De Wignerdistributie laat dus toe een vergelijking te maken met een analoog klassiek systeem en vertelt waar in de faseruimte kwantumeffecten een rol spelen.
-Wignerdistributies hebben een relevantie bij verstrooiingsexperimenten aan gebonden nucleonen in de kern. Er zijn experimenten die impulsdistributies meten in regionen die kleiner zijn dan het volledige nucleaire volume. Bij verstrooiing aan een gebonden nucleon in een kern observeert men de \'{e}\'{e}ndeeltjes impulsdistributies van een nucleon in een beperkt volume \cite{Griffiths}.
+Omdat een punt in de faseruimte een welbepaalde positie en impuls heeft, faalt de beschrijving van een kwantumsysteem met een klassieke probabiliteitsdistributie $P(\vec{r},\vec{k})$. Deze zou het onzekerheidsbeginsel \eqref{eq:heisenberg} schenden. In een klassiek systeem zijn observabelen getallen, geen operatoren, en deze commuteren bijgevolg altijd. Een voorstelling van een kwantumsysteem in de faseruimte wordt gegeven door een quasiprobabiliteitsdistributie (QPD). Een voorbeeld van een dergelijke distributie is de Wignerdistributie. Dit kwantummechanische analogon van de klassieke probabiliteitsdistributie verliest echter de fysische interpretatie als probabiliteit en wordt dus beschouwd als een zuiver mathematisch hulpmiddel voor de berekening van verwachtingswaarden. In tegenstelling tot een klassieke probabiliteitsdistributie kan een QPD negatieve waarden aannemen die worden gelinkt aan kwantumeffecten. Men kan bewijzen dat deze gebieden met negatieve quasiprobabiliteit steeds klein zijn en verdwijnen in de klassieke limiet $\hbar \rightarrow 0$. De Wignerdistributie laat dus toe een vergelijking te maken met een analoog klassiek systeem en vertelt waar in de faseruimte kwantumeffecten een rol spelen. QPD's worden gebruikt in uiteenlopende apsecten van de fysica: kwantumoptica \cite{banaszek1996direct,freyberger1993photon}, atoom- en molecuulfysica \cite{dahl1982wigner} en vastestoffysica \cite{bordone1999quantum}. 
 De Wignerdistributie van een HO toestand gekarakteriseerd door een set kwantumgetallen $j = \{n,l,m\}$ defini\"{e}ren we als
 \begin{equation} \label{eq:wigner_definitie}
 W_{j}(\vec{r},\vec{k}) = \frac{1}{(2\pi)^3} \int d\vec{r}^{\ \prime} \ \phi_{j}^*\left(\vec{r}-\frac{\vec{r}^{\ \prime}}{2}\right) \phi_{j}\left(\vec{r}+\frac{\vec{r}^{\ \prime}}{2}\right)\  e^{-i\vec{k}\cdot \vec{r}^{\ \prime}} 
 \end{equation} 
-in overeenkomst met de definitie van E. Wigner die deze functie introduceerde \cite{wigner1932quantum}.
+in overeenkomst met de definitie van E. Wigner, die deze functie introduceerde \cite{wigner1932quantum}.
 De bijhorende marginale distributies
 \begin{equation}
 \int d\vec{r}\ W_{j}(\vec{r},\vec{k}) =  \abs{\phi_{j}(\vec{k})}^2
@@ -907,11 +898,11 @@ De Weyltransfromatie zet een operator, die normaliter inwerkt op een golffunctie
 \begin{equation} \label{eq:trace}
 Tr[\hat{O}_1 \hat{O}_2] = \int d\vec{r} \int d\vec{k}\  \widetilde{O}_1(\vec{r},\vec{k}) \widetilde{O}_2(\vec{r},\vec{k}).
 \end{equation}
-Daar de dichtheidsoperator de gedaante
+Daar de dichtheidsoperator in een ODM de gedaante
 \begin{equation} \label{eq:dens_operator}
 \hat{\rho} = \sum_j \ket{j} \bra{j}
 \end{equation}
-heeft, volgt dat
+heeft, waarbij de som gaat over de bezette \'{e}\'{e}ndeeltjes toestanden, volgt dat
 \begin{equation}
 Tr[\hat{\rho}\hat{O}] =  \sum_j Tr[\ket{j} \bra{j} \hat{O}] = \sum_j Tr[\bra{j} \hat{O} \ket{j} ] = \braket{\hat{O}}.
 \end{equation}
@@ -923,7 +914,7 @@ waarbij
 \begin{align*}
  W(\vec{r},\vec{k}) \equiv \widetilde{\rho}(\vec{r}).
 \end{align*}
-De totale Wignerdistributie van het systeem is dus de Weylgetransformeerde van de dichtheidsoperator. Merk op dat uitdrukking dat gemiddelde waarden van observabelen in een klassiek systeem op dezelfde manier berekend worden (zie vergelijking \eqref{eq:average_obs}).
+De totale Wignerdistributie van het systeem is dus de Weylgetransformeerde van de dichtheidsoperator. Merk op dat gemiddelde waarden van observabelen in een klassiek systeem op dezelfde manier berekend worden (zie vergelijking \eqref{eq:average_obs}).
 De relatie met de \'{e}\'{e}ndeeltjes impulsdistributie
 \begin{equation} \label{eq:ob_function2}
 n^{[1]}(\vec{k})=\frac{1}{(2\pi)^3}\int d\vec{r}_1 \int d\vec{r}_1^{\ \prime}\  e^{i\vec{k}\cdot (\vec{r}_1-\vec{r}^{\ \prime}_1)}\rho_1(\vec{r}_1,\vec{r}_1^{\ \prime})
@@ -952,8 +943,9 @@ K^{2}_{nl}(k) =   \int_0^\infty dr\ r^2\ W_{nl}(r,k)
 \end{equation}
 en
 \begin{equation} \label{eq:voorwaarde_2}
-n^{[1]}(k) =  \int_0^\infty dr\ r^2\  W(\vec{r},\vec{k}).
+n^{[1]}(k) =  \int_0^\infty dr\ r^2\  W(r,k).
 \end{equation}
+Eventuele negatieve gebieden van de Wignerdistributie overleven kunnen deze integratie niet overleven want $n^{[1]}(k)$ is positief-definiet. 
 \section{Resultaten}
 
 
@@ -964,9 +956,9 @@ Resultaten zijn te vinden in Figuren \ref{fig:wigner_plots} en \ref{fig:wigner_p
 \end{equation}
 Bijgevolg wordt $W(r,k)r^2 k^2$ gedefinieerd als quasiprobabiliteit.
 
-Een eerste opvallende eigenschap is dat alle berekende distributies oscillatorisch gedrag vertonen. Daar de totale Wignerdistributie in een ODM de som is van de Wignerdistributies van de bezette \'{e}\'{e}ndeeltjestoestanden tonen we deze individuele bijdragen in Figuur \ref{fig:wigner_iron} voor een ijzerkern. Uit deze distributies valt dan op dat het aantal nodes toeneemt met de energie van de toestand, bepaald door $N=2n+l$. Het is zelfs zo dat het aantal nodes gelijk is aan $N$, een eigenschap die volgt uit de golffuncties van de respectievelijke toestanden, die dezelfde eigenschap hebben. We merken echter op dat voor $n=1$ twee nodes samenkomen en een negatief gebied vormen.
-De Wignerdistributies, op deze van grondtoestand na, hebben negatieve waarden. Kwantumeffecten spelen dus een rol n een kern.
-Tenslotte merken we op dat het maximum van $W(r,k)r^2 k^2$ opschuift naar grotere $r$ naarmate we naar zwaardere kernen kijken. In $k$ is er geen duidelijke verschuiving. Dit volgt uit de bijdragen van de individuele \'{e}\'{e}ndeeltjestoestanden die dezelfde eigenschap vertonen.
+Een eerste opvallende eigenschap is dat alle berekende quasidistributies oscillatorisch gedrag vertonen. Daar de totale Wignerdistributie in een ODM de som is van de Wignerdistributies van de bezette \'{e}\'{e}ndeeltjestoestanden tonen we deze individuele bijdragen in Figuur \ref{fig:wigner_iron} voor een ijzerkern. Uit deze distributies valt dan op dat het aantal nodes toeneemt met de energie van de toestand, bepaald door $N=2n+l$. Het is zelfs zo dat het aantal nodes gelijk is aan $N$, een eigenschap die volgt uit de golffuncties van de respectievelijke toestanden, die dezelfde eigenschap hebben. We merken echter op dat voor $n=1$ twee nodes samenkomen en een negatief gebied vormen.
+De Wignerdistributies, op deze van grondtoestand na, hebben negatieve waarden. Kwantumeffecten spelen dus een rol in een kern.
+Tenslotte merken we op dat het maximum van $W(r,k)r^2 k^2$ opschuift naar grotere $r$ naarmate we naar zwaardere kernen kijken. In $k$ is er geen duidelijke verschuiving. 
 Ter controle tonen we nog aan dat de berekende Wignerdistributies de correcte marginale distributies hebben (Figuur \ref{fig:test_ob}). We eisen namelijk dat de integratie van de  Wignerdistributie van een kern over alle $r$-afhankelijkheid gelijk is aan de \'{e}\'{e}ndeeltjes impulsdistributie van deze kern. Deze voorwaarde is geformuleerd in uitdrukking \eqref{eq:voorwaarde_2}.
 \begin{figure}
 \centering
@@ -1070,7 +1062,7 @@ Ter controle tonen we nog aan dat de berekende Wignerdistributies de correcte ma
  \begin{subfigure}[b]{0.49\textwidth} 
  	\includegraphics[width=\textwidth]{./figuren/Fe_ob_test.pdf}  
  \end{subfigure} 
- \caption{De volle blauwe curve is de \'{e}\'{e}ndeeltjes impulsdistributie berekend in Hoofdstuk \ref{eendeeltjes}(vergelijking \eqref{eq:ob_magnitude}). De gestreepte curve stelt $\int dr\ W(r,k)r^2$ voor met $W(r,k)$ gegeven door uitdrukking \eqref{eq:wigner_magnitude}. We zien dat voorwaarde \eqref{eq:voorwaarde_2} is voldaan. }
+ \caption{De volle blauwe curve is de \'{e}\'{e}ndeeltjes impulsdistributie berekend in Hoofdstuk \ref{eendeeltjes}(vergelijking \eqref{eq:ob_magnitude}). De gestreepte curve stelt $\int dr\ W(r,k)r^2$ voor met $W(r,k)$ gegeven door uitdrukking \eqref{eq:wigner_magnitude}. We zien dat voorwaarde \eqref{eq:voorwaarde_2} is voldaan voor $\nuclide[12][6]{C}$ (links) en $\nuclide[56][26]{Fe}$ (rechts).}
    \label{fig:test_ob}
 \end{figure}
 
@@ -1078,7 +1070,7 @@ Ter controle tonen we nog aan dat de berekende Wignerdistributies de correcte ma
 In dit hoofdstuk worden de besluiten uit bovenstaande onderzoeken gegeven en afsluitend bespreken we nog enkele mogelijkheden voor verder onderzoek.
 
 \section{Conclusie}
-In een ODM is de \'{e}\'{e}ndeeltjes impulsdistributie een som van individuele bijdragen van de bezette orbitalen in een kern. Deze distributies vertonen niet-Gaussische kenmerken zoals een zekere scheefheid en kurtosis. Echter, deze afwijkingen zijn klein genoeg om te zeggen dat de \'{e}\'{e}ndeeltjes impuls in een ODM goed beschreven wordt door een normale verdeling. Een normale verdeling heeft steeds een eindige probabiliteit heeft voor een negatieve grootte van de impuls. Echter de grootte van de impuls moet steeds positief zijn. We kunnen de distributies beter beschrijven met een functie $P(k) \propto k^\alpha P_{normal}(k)$ die steeds nul is bij $k=0$. De parameter $\alpha$ wordt gefit aan de theoretische curve. Voor massagetal $A \rightarrow0$ komen we steeds dichter bij $\alpha = 2$, een Maxwell-Boltzmannverdeling. Voor zwaardere kernen wordt $\alpha$ heel klein. De gemiddelde kinetische energie van een neutron en een proton in een kern, berekend aan de hand van de respectievelijke \'{e}\'{e}ndeeltjes impulsdistributies, ligt onder de waarde gegeven door een Fermi-model ($\braket{T}= 21\ MeV$). Ook modellen met correlaties tussen de nucleonen geven een hogere waarde omdat correlaties een brede staart bij hoge impuls introduceren ($k \gtrsim 2 fm^{-1}$) en de gemiddelde kinetische energie afhankelijk is van het vierde moment van de impulsdistributie.
+In een ODM is de \'{e}\'{e}ndeeltjes impulsdistributie een som van individuele bijdragen van de bezette orbitalen in een kern. Deze distributies vertonen niet-Gaussische kenmerken zoals een zekere scheefheid en kurtosis. Echter, deze afwijkingen zijn klein genoeg om te zeggen dat de \'{e}\'{e}ndeeltjes impuls in een ODM goed beschreven wordt door een normale verdeling. Een normale verdeling heeft steeds een eindige probabiliteit heeft voor een negatieve grootte van de impuls. Echter de grootte van de impuls moet steeds positief zijn. We kunnen de distributies beter beschrijven met een functie $P(k) \propto k^\alpha P_{normal}(k)$ die steeds nul is bij $k=0$ als $\alpha > 0$. De parameter $\alpha$ wordt gefit aan de theoretische curve. Voor een kleiner wordend massagetal $A$ komen we steeds dichter bij $\alpha = 2$, een Maxwell-Boltzmannverdeling. Deze beschrijft, in een ODM met HO golffuncties, exact de impulsdistributie voor $\nuclide[4][]{He}$. Voor zwaardere kernen wordt $\alpha$ heel klein. De gemiddelde kinetische energie van een neutron en een proton in een kern, berekend aan de hand van de respectievelijke \'{e}\'{e}ndeeltjes impulsdistributies, ligt onder de waarde gegeven door een Fermi-model ($\braket{T}= 21\ MeV$). Ook modellen met correlaties tussen de nucleonen geven een hogere waarde omdat correlaties een brede staart bij hoge impuls introduceren ($k \gtrsim 2 fm^{-1}$) en de gemiddelde kinetische energie afhankelijk is van het vierde moment van de impulsdistributie.
  
  
 Als we naar de impuls van twee nucleonen kijken in een ODM kunnen we onderscheid maken tussen relatieve impuls die de twee nucleonen hebben ten opzichte van elkaar en de impuls van hun massacentrum. Zowel de verdeling van de relatieve impuls als de impuls van hun massacentrum is bij benadering Gaussisch. Uit vergelijking met resultaten berekend in een model met correlaties blijkt dat vooral $l=0$ wordt be\"{i}nvloed door correlaties, die in de totale distributies voor een brede staart zorgen bij hoge impulsen. GV-berekeningen zijn hier relevant voor $k_{12}, P_{12} \lesssim 1.5 fm^{-1}$.
@@ -1093,7 +1085,7 @@ Deze distributies vertonen oscillatorisch gedrag en het maximum van de quasiprob
 Eerst en vooral zou men andere golffuncties kunnen gebruiken, bijvoorbeeld eigenfuncties van de Schr\"{o}dingervergelijking met een WS potentiaal. Deze kunnen dan ontwikkeld worden in een basis van HO eigenfuncties zodat we nog steeds de handige eigenschappen van deze laatste kunnen gebruiken. Echter kwalitatief verwacht men een analoge uitkomst.
 Een ODM is een relatief goede benadering voor een kern maar het heeft beperkingen. Correlaties blijken essenti\"{e}el om de experimenteel gemeten impulsdistributies te verklaren voor grote impuls. Er is echter reeds veel onderzoek gebeurd rond de invloed van deze correlaties, bijvoorbeeld in \cite{maarten,ryckebusch2015stylized,wiringa2014nucleon}.
 Interessant zijn de tweedeeltjes Wignerdistributies die een beeld geven van de faseruimte van de relatieve beweging van twee nucleonen in een kern alsook de faseruimte van hun massacentrum.
-Tenslotte lijkt het ook interessant om een transformatie naar commuterende variabelen toe te passen op de Wignerdistributie, een pseudo-positie en een pseudo-impuls die bijvoorbeeld normaal verdeeld zijn, respectievelijk, rond de echte positie en impuls. Zo kan men de Wignerdistributie transformeren naar een positief definiete functie die bijgevolg een probabiliteit voorstelt \cite{PhysRev.120.254}. 
+Tenslotte lijkt het ook interessant om een transformatie naar commuterende variabelen toe te passen op de Wignerdistributie, een pseudo-positie en een pseudo-impuls die bijvoorbeeld normaal verdeeld zijn, respectievelijk, rond de echte positie en impuls. Zo kan men de Wignerdistributie transformeren naar een positief definiete-functie die bijgevolg een probabiliteit voorstelt \cite{lee1995theory}. 
 
 
 \newpage
@@ -1199,13 +1191,13 @@ Bij de laatste stap maakten we gebruik van de definitie van creatie-en annihilat
 & = \int d\vec{r} \braket{\vec{k}| \vec{r}}  \psi(\vec{r}).
 \end{align}
 
-\chapter{Moshinsky-brakets}
+\chapter{Moshinsky-co\"{e}ffici\"{e}nten}
 \section{Recursieve berekening} \label{sec:recursif_mosh}
 Een tweedeeltjes golffunctie in een HO met totaal impulsmoment $\Lambda$  en projectie $M_\Lambda$ heeft een orthogonale transformatie van individuele co\"{o}rdinaten naar relatieve en massacentrumco\"{o}rdinaten, namelijk de Moshinsky-transformatie \cite{moshinsky1959transformation}:
 \begin{align}
 \Ket{n_1l_1n_2l_2;\Lambda M_\Lambda} = \sum_{nl, N\Lambda} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB} \ \Ket{nlNL;\Lambda M_\Lambda} .
 \end{align}
-De transformatieco\"{e}ffici\"{e}nten zijn gekend als de Moshinsky-brakets en kunnen berekend worden volgens de recursieformule \cite{ursescu2005symbolic}:
+De transformatieco\"{e}ffici\"{e}nten zijn gekend als de Moshinsky-co\"{e}ffici\"{e}nten en kunnen berekend worden volgens de recursieformule \cite{ursescu2005symbolic}:
 \begin{multline}\label{recursion}
 \Braket{nlNL;\Lambda | n_1+1l_1n_2l_2;\Lambda}_{MB} = \left[(n_1 +1)(n_1 + l_1 + 3/2) \right]^{-1/2} \\  \times \sum_{n^\prime l^\prime N^\prime L^\prime}   \Braket{nlNL;\Lambda | -r^2_1|n^\prime l^\prime N^\prime L^\prime;\Lambda}\Braket{n^\prime l^\prime N^\prime L^\prime;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB}.
 \end{multline}
@@ -1258,7 +1250,7 @@ De restricties voor de sommatie over $x$ in \eqref{eq:start_mosh} worden gegeven
 Deze relaties volgen uit de symmetrie-eigenschappen van het Wigner 6j-symbool. `
 
 \section{Eigenschappen}
-Moshinsky-brakets hebben de volgende orthogonaliteitsrelaties:
+Moshinsky-co\"{e}ffici\"{e}nten  hebben de volgende orthogonaliteitsrelaties:
 \begin{align}
 \sum_{nlNL} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB} \Braket{nlNL;\Lambda | n^\prime_1l^\prime_1n^\prime_2 l^\prime_2;\Lambda}_{MB} = \delta_{n_1n^\prime_1} \delta_{l_1l^\prime_1}\delta_{n_2n^\prime_2}\delta_{l_2l^\prime_2}, \\
 \sum_{n_1l_1n_2l_2} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB} \Braket{n^\prime l^\prime N^\prime L^\prime;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB} = \delta_{n n^\prime} \delta_{l l^\prime}\delta_{N N^\prime}\delta_{L L^\prime} .
@@ -1321,7 +1313,7 @@ krijgt men:
 \begin{equation}
 \psi_{nlm_l}(\vec{k}) \rightarrow \psi_{nlm_l}(-\vec{k})  = (-1)^l \psi_{nlm_l}(\vec{k}).
 \end{equation}
-Als men de kwantumgetallen $n_\alpha l_\alpha  m_\alpha$ en $n_\beta l_\beta m_\beta$ omwisselt dan kan men gebruik makende van de symmetrie relaties van de Clebsch-Gordan en de Moshinsky-brakets
+Als men de kwantumgetallen $n_\alpha l_\alpha  m_\alpha$ en $n_\beta l_\beta m_\beta$ omwisselt dan kan men gebruik makende van de symmetrie relaties van de Clebsch-Gordan en de Moshinsky-co\"{e}ffici\"{e}nten 
 \begin{equation} \label{eq:CG_symmetry}
 \Braket{l_\alpha  m_\alpha  l_\beta m_\beta | \Lambda M_\Lambda }\rightarrow \Braket{ l_\beta m_\beta l_\alpha  m_\alpha  | \Lambda M_\Lambda } = (-1)^{l_\alpha + l_\beta - \Lambda} \Braket{l_\alpha  m_\alpha  l_\beta m_\beta | \Lambda M_\Lambda },
 \end{equation}
@@ -1423,7 +1415,7 @@ W_{nl-m}(r,k) = W_{nlm}(r,k).
 \label{fig:overzicht}
 \end{sidewaysfigure}
 
-Wegens de relatief makkelijke leesbaarheid en eenvoudige implementatie werden, op enkele na,  alle programma's in Python\footnote{www.python.org} geschreven. Python-code wordt niet gecompileerd en is bijgevolg relatief traag. Omdat de snelheid soms een probleem was hebben we enkele functies, voornamelijk diegene die we het meest aanroepen, ge\"{i}mplementeerd in c-code en vervolgens ge\"{i}mporteerd in onze Python-code. Zo is de radi\"{e}le HO golffunctie geschreven in c-code. Een overzicht van de code vindt men in in Figuur \ref{fig:overzicht}. Links bevinden zich de hoofdprogramma's die voor onze uiteindelijke data zorgen. Deze maken elk op zich gebruik maken van \textit{obStates.py} die voor een gegeven totaal aantal nucleonen aan de hand van de opvulling beschreven in Figuren \ref{fig:WS_opvulling} en \ref{fig:spin_orbit} bepaalt hoeveel nucleonen zich in elke toestand $nl$ bevinden. Dan berekent $onebody.py$ de \'{e}\'{e}ndeeltjes impulsdistributie aan de hand van formule \eqref{eq:ob_magnitude} waarbij de radi\"{e}le HO golffuncties uit de c-code $hoWave.c$ wordt opgeroepen. Dit laatste geldt trouwens ook voor de andere hoofdprogramma's. Transformatieco\"{e}fficienten \eqref{eq:coef} worden in elk van de tweedeeltjes Python-code berekend op basis van Moshinsky-brakets en Clebsch-Gordanco\"{e}fficienten ingelezen uit bestanden door $readFiles.py$. De reden om deze eerst weg te schrijven naar bestanden is de lange rekentijd voor sommige van deze co\"{e}fficienten. $brakets.py$ rekent Moshinskybrakets uit aan de hand van de recursieve methode beschreven in \ref{sec:recursif_mosh}. Tenslotte is er nog $wigner.py$ die uitdrukking \eqref{eq:final_wigner2} uitrekent. De buitenste integratie (over $\theta$) doen we eerst aangezien deze afhankelijkheid slechts in de twee functies ($J_0$ en $cosinus$) bevindt. Deze integratie gebeurt numeriek gebruik makende van GNU scientific Library\footnote{www.gnu.ord/software/gsl/.}. Integraties over $r^{\prime}$ en $\theta^{\prime}$ gebeuren in Python met behulp van de $quad$-procedure\footnote{http://docs.scipy.org/doc/scipy-0.15.1/reference/generated/scipy.integrate.quad.html}. De vermelde integralen zijn steeds \'{e}\'{e}ndimensionaal en van de gedaante 
+Wegens de relatief makkelijke leesbaarheid en eenvoudige implementatie werden, op enkele na,  alle programma's in Python\footnote{www.python.org} geschreven. Python-code wordt niet gecompileerd en is bijgevolg relatief traag. Omdat de snelheid soms een probleem was hebben we enkele functies, voornamelijk diegene die we het meest aanroepen, ge\"{i}mplementeerd in c-code en vervolgens ge\"{i}mporteerd in onze Python-code. Zo is de radi\"{e}le HO golffunctie geschreven in c-code. Een overzicht van de code vindt men in in Figuur \ref{fig:overzicht}. Links bevinden zich de hoofdprogramma's die voor onze uiteindelijke data zorgen. Deze maken elk op zich gebruik maken van \textit{obStates.py} die voor een gegeven totaal aantal nucleonen aan de hand van de opvulling beschreven in Figuren \ref{fig:WS_opvulling} en \ref{fig:spin_orbit} bepaalt hoeveel nucleonen zich in elke toestand $nl$ bevinden. Dan berekent $onebody.py$ de \'{e}\'{e}ndeeltjes impulsdistributie aan de hand van formule \eqref{eq:ob_magnitude} waarbij de radi\"{e}le HO golffuncties uit de c-code $hoWave.c$ wordt opgeroepen. Dit laatste geldt trouwens ook voor de andere hoofdprogramma's. Transformatieco\"{e}fficienten \eqref{eq:coef} worden in elk van de tweedeeltjes Python-code berekend op basis van Moshinsky- en Clebsch-Gordanco\"{e}fficienten ingelezen uit bestanden door $readFiles.py$. De reden om deze eerst weg te schrijven naar bestanden is de lange rekentijd voor sommige van deze co\"{e}fficienten. $brakets.py$ rekent Moshinsky-co\"{e}ffici\"{e}nten uit aan de hand van de recursieve methode beschreven in \ref{sec:recursif_mosh}. Tenslotte is er nog $wigner.py$ die uitdrukking \eqref{eq:final_wigner2} uitrekent. De buitenste integratie (over $\theta$) doen we eerst aangezien deze afhankelijkheid slechts in de twee functies ($J_0$ en $cosinus$) bevindt. Deze integratie gebeurt numeriek gebruik makende van GNU scientific Library\footnote{www.gnu.ord/software/gsl/.}. Integraties over $r^{\prime}$ en $\theta^{\prime}$ gebeuren in Python met behulp van de $quad$-procedure\footnote{http://docs.scipy.org/doc/scipy-0.15.1/reference/generated/scipy.integrate.quad.html}. De vermelde integralen zijn steeds \'{e}\'{e}ndimensionaal en van de gedaante 
 \begin{equation}
 I = \int^b_a dx\ f(x)
 \end{equation}
@@ -1447,7 +1439,9 @@ HO harmonische oscillator \\
 WS Woods-Saxon \\
 ODM onafhankelijke-deeltjes model \\
 ENDM \'{e}\'{e}ndeeltjes niet-diagonale dichtheidsmatrix \\
+MB Maxwell-Boltzmann \\
 TNDM tweedeeltjes niet-diagonale dichtheidsmatrix \\
+QPD quasiprobabiliteitsdistributie \\
 
 
 
