@@ -234,7 +234,7 @@ waarbij $\hat{V}_{ij}, \hat{W}_{ijk}$ respectievelijk tweedeeltjes en driedeeltj
 \begin{equation} \label{eq:full_ham2}
 \hat{H} = \sum_i^A \left(\hat{T}_i + \hat{V}^{HO} \right).
 \end{equation}
-De nieuwe Hamiltionaan is een som van \'{e}\'{e}ndeeltjes Hamiltonianen die een interactie met een extern veld bevatten voorgesteld door $ \hat{V}^{HO}$. Een GV benadering zorgt dus voor een reductie tot een probleem van \'{e}\'{e}n deeltje:
+De nieuwe Hamiltoniaan is een som van \'{e}\'{e}ndeeltjes Hamiltonianen die een interactie met een extern veld bevatten voorgesteld door $ \hat{V}^{HO}$. Een GV benadering zorgt dus voor een reductie tot een probleem van \'{e}\'{e}n deeltje:
 \begin{equation} \label{eq:HO}
 \left( -\frac{\hbar^2}{2M_N} \nabla^2 + \frac{1}{2} M_N \omega^2 r^2 \right) \psi_{nlm}(\vec{r}) = E_{nl}\ \psi_{nlm}(\vec{r}).
 \end{equation}
@@ -570,7 +570,7 @@ de tweedeeltjes niet-diagonale dichtheidsmatrix (TNDM). Aangezien interacties tu
 \vec{r}= \frac{1}{\sqrt{2}} \left(\vec{r}_1 - \vec{r}_2\right)  \qquad \vec{R}= \frac{1}{\sqrt{2}} \left(\vec{r}_1 + \vec{r}_2\right).
 \end{equation}
 
-De impulsco\"{o}rdinatendan transformeren dan als volgt:
+De impulsco\"{o}rdinaten transformeren dan als volgt:
 \begin{equation} \label{eq:rcm_impusl}
 \vec{k}_{12}= \frac{1}{\sqrt{2}} \left(\vec{k}_1 - \vec{k}_2\right) \qquad \vec{P}_{12}= \frac{1}{\sqrt{2}} \left(\vec{k}_1 + \vec{k}_2\right).
 \end{equation}
@@ -644,8 +644,8 @@ met
 \begin{equation} \label{eq:nas_twobody}
 \Braket{\vec{k}_1 \vec{k}_2 | \alpha \beta}_{nas} = \frac{1}{\sqrt{2}}  \left[ \phi_{\alpha}(\vec{k}_1)\phi_{\beta}(\vec{k}_2) - \phi_{\beta}(\vec{k}_1)\phi_{\alpha}(\vec{k}_2) \right] 
 \end{equation}
-een totaal antisymmetrische en genormaliseerde tweedeeltjestoestand.
-De sommaties in \eqref{eq:two-body} gaan over alle bezette \'{e}\'{e}ndeeltjestoestanden van de beschouwde kern.
+een totaal antisymmetrische en genormaliseerde tweedeeltjes toestand.
+De sommaties in \eqref{eq:two-body} gaan over alle bezette \'{e}\'{e}ndeeltjes toestanden van de beschouwde kern.
 
 \subsubsection{Tweedeeltjes impulsdistributies in relatieve en massacentrumco\"{o}rdinaten}
 
@@ -674,9 +674,9 @@ En ook in het nieuwe co\"{o}rdinatensysteem kunnen we de impulsmomenten koppelen
 \end{align}
 Een HO tweedeeltjes golffunctie met totaal impulsmoment $\Lambda$  en projectie $M_\Lambda$ heeft een orthogonale transformatie van individuele co\"{o}rdinaten naar relatieve en massacentrumco\"{o}rdinaten, namelijk de Moshinsky-transformatie \cite{moshinsky1959transformation}:
 \begin{align} \label{eq:moshinsky_trans}
-\Ket{n_1l_1n_2l_2;\Lambda M_\Lambda} = \sum_{nl, N\Lambda} \Ket{nlNL;\Lambda M_\Lambda} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB}.
+\Ket{n_1l_1n_2l_2;\Lambda M_\Lambda} = \sum_{nl, N\Lambda} \Ket{nlNL;\Lambda M_\Lambda} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{M}.
 \end{align}
-De transformatico\"{e}ffici\"{e}nten $\Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB}$ zijn gekend als de Moshinsky-co\"{e}ffici\"{e}nten en zijn onafhankelijk van $M_\Lambda$. De energie van een deeltje ($E$), neem nu bijvoorbeeld een zeker deeltje "1",  in een HO potentiaal is $\hbar\omega  (2n_1+l_1+ \frac{3}{2})$. Daar de totale energie van twee deeltjes dezelfde moet zijn in verschillende co\"{o}rdinaatsystemen moet er gelden dat
+De transformatico\"{e}ffici\"{e}nten $\Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{M}$ zijn gekend als de Moshinsky-co\"{e}ffici\"{e}nten en zijn onafhankelijk van $M_\Lambda$. De energie van een deeltje ($E$), neem nu bijvoorbeeld een zeker deeltje "1",  in een HO potentiaal is $\hbar\omega  (2n_1+l_1+ \frac{3}{2})$. Daar de totale energie van twee deeltjes dezelfde moet zijn in verschillende co\"{o}rdinaatsystemen moet er gelden dat
 \begin{equation}
 2n_1 + l_1 + 2n_2 + l_2 = 2n + l + 2N + L.
 \end{equation}
@@ -708,7 +708,7 @@ waarbij
 n_2^{l}(k_{12}) = \frac{1}{A(A-1)} \sum_{\substack{\alpha \beta}} \sum_{\substack{nm_l \\ NLM_L}} \sum_{\substack{n^{\prime} }} \sum_{\substack{S M_S \\T M_T}} &  \left( C_{\alpha \beta}^{nlm_l NLM_L  S M_S T M_T} \right)^\dagger  C_{\alpha \beta}^{ n^{\prime} lm_l NLM_L  S M_S T M_T} \\ \ \times & K_{nl}(k_{12}) K_{n^{\prime} l}(k_{12}).
 \end{align*}
 Hier is $K_{nl}(k)$ de radi\"{e}le HO golffunctie in de impulsruimte gedefinieerd in vergelijking \eqref{eq:HO_mom_radwave}.
-Resultaten worden getoond in Figuur \ref{fig:twoparticledistr_rel_log} waarbij we $n^{[2]}(k_{12})$ op een logaritmische schaal tonen omdat uit onderzoek waarbij kortedracht correlaties in rekening worden gebracht (\cite{maarten,wiringa2014nucleon}), blijkt dat correlaties zorgen voor een brede staart in de distributie vanaf $k_{12} \gtrsim 1.5$ fm$^{-1}$. Een zichtbaar verschil toont zich alleen op een logaritmische schaal.  Resultaten uit GV berekeningen zijn dus relevant tot ongeveer $1.5$ fm$^{-1}$. De distributie $n^{[2]}(k_{12})k_{12}^2dk_{12}$ geeft de kans om twee nucleonen te vinden met een onderling relatieve impuls in het interval $[ k_{12}, k_{12}+ d k_{12} ]$ en is afgebeeld in Figuur \ref{fig:twoparticledistr_rel} voor verschillende kernen. De bijdragen van relatieve impulsmoment $l$ worden getoond ter vergelijking met een model met correlaties zodat we kunnen zien welke $l$ het meest worden be\"{i}nvloed door deze correlaties. Dat interacties tussen nucleonen de bezettingen van de relatieve $l$ be\"{i}nvloeden is int\"{i}utief te begrijpen als men kijkt naar overlap van twee nucleonen in verschillende relatieve $l$ toestanden. Bij $l=0$ is de overlap het grootst en we verwachten dat de bezetting van deze toestand het meest zal veranderen bij het invoeren van correlaties. Uit de resultaten valt ook op dat twee nucleonen zich voornamelijk in een $l=1$ toestand bevinden. Afwijkingen van een normale distributie, gekarakteriseerd door kurtosis $\kappa$ en scheefheid $\mathcal{S}$ zijn duidelijk afhankelijk van de massa $A$ van de kern zoals weergegeven in Figuur \ref{fig:properties_rel}. Net zoals bij de \'{e}\'{e}ndeeltjes impulsdistributie groeit ook bij de relatieve tweedeeltjes impulsdistributies de absolute waarde van de kurtosis met toenemende $A$. Kurtosis is steeds negatief zodat de distributies kleinere staarten en een bredere piek hebben ten opzichte van een normale distributie. 
+Resultaten worden getoond in Figuur \ref{fig:twoparticledistr_rel_log} waarbij we $n^{[2]}(k_{12})$ op een logaritmische schaal tonen omdat uit onderzoek waarbij kortedracht correlaties in rekening worden gebracht (\cite{maarten,wiringa2014nucleon}), blijkt dat correlaties zorgen voor een brede staart in de distributie vanaf $k_{12} \gtrsim 1.5$ fm$^{-1}$. Een zichtbaar verschil toont zich alleen op een logaritmische schaal.  Resultaten uit GV berekeningen zijn dus relevant tot ongeveer $1.5$ fm$^{-1}$. De distributie $n^{[2]}(k_{12})k_{12}^2dk_{12}$ geeft de kans om twee nucleonen te vinden met een onderling relatieve impuls in het interval $[ k_{12}, k_{12}+ d k_{12} ]$ en is afgebeeld in Figuur \ref{fig:twoparticledistr_rel} voor verschillende kernen. De bijdragen van relatieve impulsmoment $l$ worden getoond ter vergelijking met een model met correlaties zodat we kunnen zien welke $l$ het meest worden be\"{i}nvloed door deze correlaties. Dat interacties tussen nucleonen de bezettingen van de relatieve $l$ be\"{i}nvloeden is intu\"{i}tief te begrijpen als men kijkt naar overlap van twee nucleonen in verschillende relatieve $l$ toestanden. Bij $l=0$ is de overlap het grootst en we verwachten dat de bezetting van deze toestand het meest zal veranderen bij het invoeren van correlaties. Uit de resultaten valt ook op dat twee nucleonen zich voornamelijk in een $l=1$ toestand bevinden. Afwijkingen van een normale distributie, gekarakteriseerd door kurtosis $\kappa$ en scheefheid $\mathcal{S}$ zijn duidelijk afhankelijk van de massa $A$ van de kern zoals weergegeven in Figuur \ref{fig:properties_rel}. Net zoals bij de \'{e}\'{e}ndeeltjes impulsdistributie groeit ook bij de relatieve tweedeeltjes impulsdistributies de absolute waarde van de kurtosis met toenemende $A$. Kurtosis is steeds negatief zodat de distributies kleinere staarten en een bredere piek hebben ten opzichte van een normale distributie. 
 De andere parameter die afwijking van de normale distributie karakteriseert, scheefheid, neemt af naarmate $A$ groter wordt en is steeds positief, de distributies zijn dus rechts scheef. 
 Ook valt op dat de spreiding rond het gemiddelde ruwweg onafhankelijk is van de massa van de kern. Daar de afwijkingen steeds klein zijn kunnen we besluiten dat de relatieve tweedeetjesimpuls bij benadering normaal verdeeld is voor de verschillende kernen.
 
@@ -872,7 +872,7 @@ waarbij  $\Delta O = \sqrt{\braket{\hat{O}^2}-\braket{\hat{O}}^2}$. $\braket{\ha
 [\hat{\vec{r}}, \hat{\vec{k}} ] = i,
 \end{equation}
 met $i$ de imaginaire eenheid.
-Omdat een punt in de faseruimte een welbepaalde positie en impuls heeft, faalt de beschrijving van een kwantumsysteem met een klassieke probabiliteitsdistributie $P(\vec{r},\vec{k})$. Deze zou het onzekerheidsbeginsel \eqref{eq:heisenberg} schenden. In een klassiek systeem zijn observabelen getallen, geen operatoren, en deze commuteren bijgevolg altijd. Een voorstelling van een kwantumsysteem in de faseruimte wordt gegeven door een quasiprobabiliteitsdistributie (QPD). Een voorbeeld van een dergelijke distributie is de Wignerdistributie. Dit kwantummechanische analogon van de klassieke probabiliteitsdistributie verliest echter de fysische interpretatie als probabiliteit en wordt dus beschouwd als een zuiver mathematisch hulpmiddel voor de berekening van verwachtingswaarden. In tegenstelling tot een klassieke probabiliteitsdistributie kan een QPD negatieve waarden aannemen die worden gelinkt aan kwantumeffecten. Men kan bewijzen dat deze gebieden met negatieve quasiprobabiliteit steeds klein zijn en verdwijnen in de klassieke limiet $\hbar \rightarrow 0$. De Wignerdistributie laat dus toe een vergelijking te maken met een analoog klassiek systeem en vertelt waar in de faseruimte kwantumeffecten een rol spelen. QPD's worden gebruikt in uiteenlopende apsecten van de fysica: kwantumoptica \cite{banaszek1996direct,freyberger1993photon}, atoom- en molecuulfysica \cite{dahl1982wigner} en vastestoffysica \cite{bordone1999quantum}. 
+Omdat een punt in de faseruimte een welbepaalde positie en impuls heeft, faalt de beschrijving van een kwantumsysteem met een klassieke probabiliteitsdistributie $P(\vec{r},\vec{k})$. Deze zou het onzekerheidsbeginsel \eqref{eq:heisenberg} schenden. In een klassiek systeem zijn observabelen getallen, geen operatoren, en deze commuteren bijgevolg altijd. Een voorstelling van een kwantumsysteem in de faseruimte wordt gegeven door een quasiprobabiliteitsdistributie (QPD). Een voorbeeld van een dergelijke distributie is de Wignerdistributie. Dit kwantummechanische analogon van de klassieke probabiliteitsdistributie verliest echter de fysische interpretatie als probabiliteit en wordt dus beschouwd als een zuiver mathematisch hulpmiddel voor de berekening van verwachtingswaarden. In tegenstelling tot een klassieke probabiliteitsdistributie kan een QPD negatieve waarden aannemen die worden gelinkt aan kwantumeffecten. Men kan bewijzen dat deze gebieden met negatieve quasiprobabiliteit steeds klein zijn en verdwijnen in de klassieke limiet $\hbar \rightarrow 0$. De Wignerdistributie laat dus toe een vergelijking te maken met een analoog klassiek systeem en vertelt waar in de faseruimte kwantumeffecten een rol spelen. QPD's worden gebruikt in uiteenlopende aspecten van de fysica: kwantumoptica \cite{banaszek1996direct,freyberger1993photon}, atoom- en molecuulfysica \cite{dahl1982wigner} en vastestoffysica \cite{bordone1999quantum}. 
 De Wignerdistributie van een HO toestand gekarakteriseerd door een set kwantumgetallen $j = \{n,l,m\}$ defini\"{e}ren we als
 \begin{equation} \label{eq:wigner_definitie}
 W_{j}(\vec{r},\vec{k}) = \frac{1}{(2\pi)^3} \int d\vec{r}^{\ \prime} \ \phi_{j}^*\left(\vec{r}-\frac{\vec{r}^{\ \prime}}{2}\right) \phi_{j}\left(\vec{r}+\frac{\vec{r}^{\ \prime}}{2}\right)\  e^{-i\vec{k}\cdot \vec{r}^{\ \prime}} 
@@ -894,7 +894,7 @@ De Wignerdistributie is een voorbeeld van een Weyltransformatie van een operator
 \begin{equation}
 \widetilde{O}(\vec{r},\vec{k}) = \int d\vec{r}^{\ \prime}\  \Braket{\vec{r} + \frac{\vec{r}^{\ \prime}}{2} | \hat{O}|  \vec{r} -\frac{\vec{r}^{\ \prime}}{2}} e^{-i \vec{k} \cdot \vec{r}^{\ \prime}}. 
 \end{equation}
-De Weyltransfromatie zet een operator, die normaliter inwerkt op een golffunctie, om naar een functie van $\vec{r}$ en $\vec{k}$.  Men kan bewijzen dat de integraal over de volledige faseruimte van het product van twee getransformeerde operatoren gelijk is aan het spoor van het product van deze operatoren,
+De Weyltransformatie zet een operator, die normaliter inwerkt op een golffunctie, om naar een functie van $\vec{r}$ en $\vec{k}$.  Men kan bewijzen dat de integraal over de volledige faseruimte van het product van twee getransformeerde operatoren gelijk is aan het spoor van het product van deze operatoren,
 \begin{equation} \label{eq:trace}
 Tr[\hat{O}_1 \hat{O}_2] = \int d\vec{r} \int d\vec{k}\  \widetilde{O}_1(\vec{r},\vec{k}) \widetilde{O}_2(\vec{r},\vec{k}).
 \end{equation}
@@ -937,7 +937,7 @@ met
 \begin{equation} \label{eq:wigner_level}
 W_{nl}(r,k) = \int d\Omega_r \int d\Omega_k\ \frac{1}{2l+1} \sum_{m= -l}^{l}W_{nlm}(\vec{r},\vec{k}).
 \end{equation}
-De sommatie gaat dan over ale bezette \'{e}\'{e}ndeeltjestoestanden $nl$ van de kern. Aangezien voor een bepaalde $l$ de verschillende $m  = -l, \ldots, l$ energetisch ontaard zijn in ons model nemen we een gemiddelde over deze toestanden zodat
+De sommatie gaat dan over alle bezette \'{e}\'{e}ndeeltjestoestanden $nl$ van de kern. Aangezien voor een bepaalde $l$ de verschillende $m  = -l, \ldots, l$ energetisch ontaard zijn in ons model nemen we een gemiddelde over deze toestanden zodat
 \begin{equation}
 K^{2}_{nl}(k) =   \int_0^\infty dr\ r^2\ W_{nl}(r,k)
 \end{equation}
@@ -956,7 +956,7 @@ Resultaten zijn te vinden in Figuren \ref{fig:wigner_plots} en \ref{fig:wigner_p
 \end{equation}
 Bijgevolg wordt $W(r,k)r^2 k^2$ gedefinieerd als quasiprobabiliteit.
 
-Een eerste opvallende eigenschap is dat alle berekende quasidistributies oscillatorisch gedrag vertonen. Daar de totale Wignerdistributie in een ODM de som is van de Wignerdistributies van de bezette \'{e}\'{e}ndeeltjestoestanden tonen we deze individuele bijdragen in Figuur \ref{fig:wigner_iron} voor een ijzerkern. Uit deze distributies valt dan op dat het aantal nodes toeneemt met de energie van de toestand, bepaald door $N=2n+l$. Het is zelfs zo dat het aantal nodes gelijk is aan $N$, een eigenschap die volgt uit de golffuncties van de respectievelijke toestanden, die dezelfde eigenschap hebben. We merken echter op dat voor $n=1$ twee nodes samenkomen en een negatief gebied vormen.
+Een eerste opvallende eigenschap is dat alle berekende QDP's oscillatorisch gedrag vertonen. Daar de totale Wignerdistributie in een ODM de som is van de Wignerdistributies van de bezette \'{e}\'{e}ndeeltjestoestanden tonen we deze individuele bijdragen in Figuur \ref{fig:wigner_iron} voor een ijzerkern. Uit deze distributies valt dan op dat het aantal nodes toeneemt met de energie van de toestand, bepaald door $N=2n+l$. Het is zelfs zo dat het aantal nodes gelijk is aan $N$, een eigenschap die volgt uit de golffuncties van de respectievelijke toestanden, die dezelfde eigenschap hebben. We merken echter op dat voor $n=1$ twee nodes samenkomen en een negatief gebied vormen.
 De Wignerdistributies, op deze van grondtoestand na, hebben negatieve waarden. Kwantumeffecten spelen dus een rol in een kern.
 Tenslotte merken we op dat het maximum van $W(r,k)r^2 k^2$ opschuift naar grotere $r$ naarmate we naar zwaardere kernen kijken. In $k$ is er geen duidelijke verschuiving. 
 Ter controle tonen we nog aan dat de berekende Wignerdistributies de correcte marginale distributies hebben (Figuur \ref{fig:test_ob}). We eisen namelijk dat de integratie van de  Wignerdistributie van een kern over alle $r$-afhankelijkheid gelijk is aan de \'{e}\'{e}ndeeltjes impulsdistributie van deze kern. Deze voorwaarde is geformuleerd in uitdrukking \eqref{eq:voorwaarde_2}.
@@ -1100,7 +1100,7 @@ We schrijven de toestandsvector van een kern in tweede kwantisatie als
 \ket{n_1, n_2, n_3 , \ldots}
 \end{equation}
 waarbij $n_\alpha$ is het aantal deeltjes in het \'{e}\'{e}ndeeltjes orbitaal $u_\alpha$.
-Creatie- en annihilatie-operatoren worden respectievelijk gedefinierd als  $c^\dagger_\alpha$ en  $c_\alpha$. De creatie-operator $c^\dagger_\alpha$ voegt \'{e}\'{e}n deeltje toe aan een \'{e}\'{e}ndeeltjes orbitaal $u_\alpha$  en $c_\alpha$ verwijdert \'{e}\'{e}n deeltje uit dit orbitaal:
+Creatie- en annihilatie-operatoren worden respectievelijk gedefinieerd als  $c^\dagger_\alpha$ en  $c_\alpha$. De creatie-operator $c^\dagger_\alpha$ voegt \'{e}\'{e}n deeltje toe aan een \'{e}\'{e}ndeeltjes orbitaal $u_\alpha$  en $c_\alpha$ verwijdert \'{e}\'{e}n deeltje uit dit orbitaal:
 \begin{align}
 c^\dagger_\alpha\ket{n_1, n_2, \ldots, n_i, \ldots} & = \left(\mathds{1} \otimes \mathds{1} \otimes \cdots \otimes c^\dagger_\alpha \otimes  \cdots \otimes \mathds{1} \right) \ket{n_1} \otimes \ket{n_2} \otimes \cdots \otimes \ket{n_\alpha} \otimes \cdots \\
 & = (-1)^{s_\alpha}\ket{n_1} \otimes \ket{n_2} \otimes \cdots \otimes c^\dagger_\alpha \ket{n_\alpha} \otimes \cdots \\
@@ -1119,7 +1119,7 @@ Relaties voor de annihilatie-operatoren volgen uit dezelfde principes:
 \begin{equation}
 c_\alpha \ket{n_1, n_2, \ldots, n_\alpha, \ldots} = \delta_{1n_\alpha}(-1)^{s_\alpha}\ket{n_1, \ldots, n_{\alpha-1},  n_\alpha-1,  n_{\alpha+1}, \ldots }.
 \end{equation}
-De teloper teloperator  wordt gedefinieerd als
+De teloperator  wordt gedefinieerd als
 \begin{equation}
 \hat{N} = \sum_\alpha c^\dagger_\alpha c_\alpha
 \end{equation}
@@ -1127,7 +1127,7 @@ en heeft eigenwaarden N $\in \mathds{N}$  en eigenfuncties zijn golffuncties met
 \begin{equation}
 \ket{n_1, n_2, n_3 , \ldots} = (c^\dagger_1)^{n_1} (c^\dagger_2)^{n_2} \cdots \ket{0}.
 \end{equation}
-Voor fermionen zijn deze toestanden op \'{e}\'{e}n genormeerd en de $n_i$'s zijn 0 of 1. We kiezen een speciefieke volgorde van de \'{e}\'{e}ndeeltjestoestanden ${u_\alpha}$ en houden deze vast.
+Voor fermionen zijn deze toestanden op \'{e}\'{e}n genormeerd en de $n_i$'s zijn 0 of 1. We kiezen een specifieke volgorde van de \'{e}\'{e}ndeeltjestoestanden ${u_\alpha}$ en houden deze vast.
 
 Een deeltje cre\"{e}ren op een plaats $\vec{r}$ wordt gebeurt door de operator
 \begin{align}
@@ -1144,7 +1144,7 @@ Men kan bovenstaande definitie controleren door een deeltje te cre\"{e}ren in to
  & = \int d\vec{r}\ u_\alpha(\vec{r}) \sum_\beta c^\dagger_\beta  u^*_\beta(\vec{r}) \ket{0} \\
  & = c^\dagger_\alpha \ket{0}.
 \end{align}
-Bij de laatste stap maakten we gebruik van de orthonormaliteit van de \'{e}\'{e}ndeeltjesorbitalen:
+Bij de laatste stap maakten we gebruik van de orthonormaliteit van de \'{e}\'{e}ndeeltjes orbitalen:
 \begin{equation}
 \int d\vec{r}\ u_\alpha(\vec{r}) u^*_\beta(\vec{r}) = \delta_{\alpha \beta}.
 \end{equation}
@@ -1195,11 +1195,11 @@ Bij de laatste stap maakten we gebruik van de definitie van creatie-en annihilat
 \section{Recursieve berekening} \label{sec:recursif_mosh}
 Een tweedeeltjes golffunctie in een HO met totaal impulsmoment $\Lambda$  en projectie $M_\Lambda$ heeft een orthogonale transformatie van individuele co\"{o}rdinaten naar relatieve en massacentrumco\"{o}rdinaten, namelijk de Moshinsky-transformatie \cite{moshinsky1959transformation}:
 \begin{align}
-\Ket{n_1l_1n_2l_2;\Lambda M_\Lambda} = \sum_{nl, N\Lambda} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB} \ \Ket{nlNL;\Lambda M_\Lambda} .
+\Ket{n_1l_1n_2l_2;\Lambda M_\Lambda} = \sum_{nl, N\Lambda} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MC} \ \Ket{nlNL;\Lambda M_\Lambda} .
 \end{align}
 De transformatieco\"{e}ffici\"{e}nten zijn gekend als de Moshinsky-co\"{e}ffici\"{e}nten en kunnen berekend worden volgens de recursieformule \cite{ursescu2005symbolic}:
 \begin{multline}\label{recursion}
-\Braket{nlNL;\Lambda | n_1+1l_1n_2l_2;\Lambda}_{MB} = \left[(n_1 +1)(n_1 + l_1 + 3/2) \right]^{-1/2} \\  \times \sum_{n^\prime l^\prime N^\prime L^\prime}   \Braket{nlNL;\Lambda | -r^2_1|n^\prime l^\prime N^\prime L^\prime;\Lambda}\Braket{n^\prime l^\prime N^\prime L^\prime;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB}.
+\Braket{nlNL;\Lambda | n_1+1l_1n_2l_2;\Lambda}_{MC} = \left[(n_1 +1)(n_1 + l_1 + 3/2) \right]^{-1/2} \\  \times \sum_{n^\prime l^\prime N^\prime L^\prime}   \Braket{nlNL;\Lambda | -r^2_1|n^\prime l^\prime N^\prime L^\prime;\Lambda}\Braket{n^\prime l^\prime N^\prime L^\prime;\Lambda | n_1l_1n_2l_2;\Lambda}_{MC}.
 \end{multline}
 Wegens behoud van energie moet steeds gelden dat $2(n_1+1) + l_1 + 2n_2 + l_2 = 2n + l + 2N + L$. Indien dit niet het geval is, is de Moshisnky-braket nul. De matrix-elementen in relatie \eqref{recursion} zijn verschillend van nul voor slechts zes tweedeeltjestoestanden $\ket{n^\prime l^\prime N^\prime L^\prime;\Lambda}$ en zijn te vinden in Tabel \ref{tab:matrixelements}. Een analoge recursierelatie 
 waarbij de index $n_2$ wordt verhoogd krijgen we door in de eerste factor de index te veranderen ($1 \rightarrow 2$) en de laatste vier matrix-elementen, nu van $-r^2_2$, in Tabel \ref{tab:matrixelements} krijgen een minteken.
@@ -1222,9 +1222,9 @@ waarbij de index $n_2$ wordt verhoogd krijgen we door in de eerste factor de ind
   \label{tab:matrixelements}
 \end{sidewaystable}
 \restoregeometry
-Dus kan men $\Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB}$ berekenen startend van \cite{ursescu2005symbolic}:
+Dus kan men $\Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MC}$ berekenen startend van \cite{ursescu2005symbolic}:
 \begin{multline} \label{eq:start_mosh}
-\Braket{nlNL;\Lambda | 0 l_10 l_2;\Lambda}_{MB} \\ = \left[ \frac{l_1! l_2!}{(2l_1)!(2l_2)!} \frac{(2l+1)(2L+1)}{2^{l+L}} \frac{(n+l)!}{n!(2n+2l+1)!} \frac{(N+L)!}{n!(2N+2L+1)!}  \right]^{1/2} \\
+\Braket{nlNL;\Lambda | 0 l_10 l_2;\Lambda}_{MC} \\ = \left[ \frac{l_1! l_2!}{(2l_1)!(2l_2)!} \frac{(2l+1)(2L+1)}{2^{l+L}} \frac{(n+l)!}{n!(2n+2l+1)!} \frac{(N+L)!}{n!(2N+2L+1)!}  \right]^{1/2} \\
 \times (-1)^{n+l+L-\Lambda} \sum_x (2x+1) A(l_1 l, l_2 L,x) W(lLl_1 l_2;\Lambda x).
 \end{multline}
 Hierbij is 
@@ -1252,15 +1252,15 @@ Deze relaties volgen uit de symmetrie-eigenschappen van het Wigner 6j-symbool. `
 \section{Eigenschappen}
 Moshinsky-co\"{e}ffici\"{e}nten  hebben de volgende orthogonaliteitsrelaties:
 \begin{align}
-\sum_{nlNL} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB} \Braket{nlNL;\Lambda | n^\prime_1l^\prime_1n^\prime_2 l^\prime_2;\Lambda}_{MB} = \delta_{n_1n^\prime_1} \delta_{l_1l^\prime_1}\delta_{n_2n^\prime_2}\delta_{l_2l^\prime_2}, \\
-\sum_{n_1l_1n_2l_2} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB} \Braket{n^\prime l^\prime N^\prime L^\prime;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB} = \delta_{n n^\prime} \delta_{l l^\prime}\delta_{N N^\prime}\delta_{L L^\prime} .
+\sum_{nlNL} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MC} \Braket{nlNL;\Lambda | n^\prime_1l^\prime_1n^\prime_2 l^\prime_2;\Lambda}_{MC} = \delta_{n_1n^\prime_1} \delta_{l_1l^\prime_1}\delta_{n_2n^\prime_2}\delta_{l_2l^\prime_2}, \\
+\sum_{n_1l_1n_2l_2} \Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MC} \Braket{n^\prime l^\prime N^\prime L^\prime;\Lambda | n_1l_1n_2l_2;\Lambda}_{MC} = \delta_{n n^\prime} \delta_{l l^\prime}\delta_{N N^\prime}\delta_{L L^\prime} .
 \end{align}
 De volgende symmetrierelaties gelden:
 \begin{align*}
-\Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB} &= (-1)^{L-\Lambda} \Braket{nlNL;\Lambda | n_2l_2n_1l_1;\Lambda}_{MB} \\
-& = (-1)^{l_1-\Lambda} \Braket{NLnl;\Lambda | n_1l_1n_2l_2;\Lambda}_{MB} \\
-& = (-1)^{l_1+l} \Braket{NLnl;\Lambda | n_2l_2n_1l_1;\Lambda}_{MB} \\
-& = (-1)^{l_2+L} \Braket{n_1l_1n_2l_2;\Lambda | NLnl;\Lambda}_{MB}.
+\Braket{nlNL;\Lambda | n_1l_1n_2l_2;\Lambda}_{MC} &= (-1)^{L-\Lambda} \Braket{nlNL;\Lambda | n_2l_2n_1l_1;\Lambda}_{MC} \\
+& = (-1)^{l_1-\Lambda} \Braket{NLnl;\Lambda | n_1l_1n_2l_2;\Lambda}_{MC} \\
+& = (-1)^{l_1+l} \Braket{NLnl;\Lambda | n_2l_2n_1l_1;\Lambda}_{MC} \\
+& = (-1)^{l_2+L} \Braket{n_1l_1n_2l_2;\Lambda | NLnl;\Lambda}_{MC}.
 \end{align*}
 
 Het bewijs van bovenstaande relaties kan men vinden in \cite{brody1967tables}.
@@ -1296,12 +1296,12 @@ Hierbij werd gebruik gemaakt van de notatie:
 \end{equation*}
 Nu kan men de Moshinsky-transformatie toepassen:
 \begin{align*}
-\left[ \psi_{n_\alpha l_\alpha}(\vec{k}_1) \psi_{n_\beta l_\beta}(\vec{k}_2) \right]_{\Lambda M_\Lambda} & = \sum_{\substack{nl}} \sum_{\substack{NL}} \left[ \psi_{nl}(\vec{k})\psi_{NL}(\vec{P}) \right]_{\Lambda M_\Lambda} \Braket{nlNL;\Lambda | n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB} \\
-& = \sum_{\substack{nlm_l}} \sum_{\substack{NLM_L}} \Braket{lm_l L M_L|\Lambda M_\Lambda} \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB} \\ &  \phantom{{aaaaa}=3} \times \psi_{nlm_l}(\vec{k}) \psi_{NLM_L}(\vec{P}).
+\left[ \psi_{n_\alpha l_\alpha}(\vec{k}_1) \psi_{n_\beta l_\beta}(\vec{k}_2) \right]_{\Lambda M_\Lambda} & = \sum_{\substack{nl}} \sum_{\substack{NL}} \left[ \psi_{nl}(\vec{k})\psi_{NL}(\vec{P}) \right]_{\Lambda M_\Lambda} \Braket{nlNL;\Lambda | n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MC} \\
+& = \sum_{\substack{nlm_l}} \sum_{\substack{NLM_L}} \Braket{lm_l L M_L|\Lambda M_\Lambda} \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MC} \\ &  \phantom{{aaaaa}=3} \times \psi_{nlm_l}(\vec{k}) \psi_{NLM_L}(\vec{P}).
 \end{align*}
 Dus wordt \eqref{eq:wave_two}:
 \begin{align}
-\psi_{n_\alpha l_\alpha  m_\alpha}(\vec{k}_1)\psi_{n_\beta l_\beta m_\beta}(\vec{k}_2) &  =   \sum_{\substack{nlm_l \\ NLM_L}}\sum_{\Lambda M_\Lambda} \Braket{l_\alpha  m_\alpha  l_\beta m_\beta | \Lambda M_\Lambda} \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB}  \nonumber \\ & \phantom{{aaaaa}=3} \times \Braket{lm_l L M_L|\Lambda M_\Lambda}  \psi_{nlm_l}(\vec{k}) \psi_{NLM_L}(\vec{P}). 
+\psi_{n_\alpha l_\alpha  m_\alpha}(\vec{k}_1)\psi_{n_\beta l_\beta m_\beta}(\vec{k}_2) &  =   \sum_{\substack{nlm_l \\ NLM_L}}\sum_{\Lambda M_\Lambda} \Braket{l_\alpha  m_\alpha  l_\beta m_\beta | \Lambda M_\Lambda} \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MC}  \nonumber \\ & \phantom{{aaaaa}=3} \times \Braket{lm_l L M_L|\Lambda M_\Lambda}  \psi_{nlm_l}(\vec{k}) \psi_{NLM_L}(\vec{P}). 
 \end{align}
 Om een uitdrukking te vinden voor de antisymmetrische toestand \eqref{eq:antisymmetric}
 kan men in de eerste term ofwel de co\"{o}rdinaten $\vec{k}_1$ en $\vec{k}_2$ omwisselen ofwel de kwantumgetallen $n_\alpha l_\alpha  m_\alpha$ en $n_\beta l_\beta m_\beta$.
@@ -1318,7 +1318,7 @@ Als men de kwantumgetallen $n_\alpha l_\alpha  m_\alpha$ en $n_\beta l_\beta m_\
 \Braket{l_\alpha  m_\alpha  l_\beta m_\beta | \Lambda M_\Lambda }\rightarrow \Braket{ l_\beta m_\beta l_\alpha  m_\alpha  | \Lambda M_\Lambda } = (-1)^{l_\alpha + l_\beta - \Lambda} \Braket{l_\alpha  m_\alpha  l_\beta m_\beta | \Lambda M_\Lambda },
 \end{equation}
 \begin{equation*}
-\Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB} \rightarrow  \Braket{nlNL;\Lambda |  n_\beta l_\beta  n_\alpha l_\alpha;\Lambda}_{MB}  = (-1)^{L-\Lambda} \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB} .
+\Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MC} \rightarrow  \Braket{nlNL;\Lambda |  n_\beta l_\beta  n_\alpha l_\alpha;\Lambda}_{MC}  = (-1)^{L-\Lambda} \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MC} .
 \end{equation*}
 Gebruik makende van de relatie $2n_\alpha + l_\alpha +2n_\beta + l_\beta = 2n + l + 2N + L$ krijgt men een factor $(-1)^l$. Dit is zoals verwacht dezelfde factor als bekomen door het verwisselen van $\vec{k}_1$ en $\vec{k}_2$.
 Het spin en isospin deel van de golffunctie kunnen we als volgt behandelen:
@@ -1331,7 +1331,7 @@ Een pariteitsoperatie levert, rekening houdend met \eqref{eq:CG_symmetry}:
 \end{align}
 Er is een analoge uitdrukking voor het isospin gedeelte. Combinatie van bovenstaande resultaten geeft de volgende transformatieco\"{e}fficient in \eqref{eq:transfo}:
 \begin{align*} \label{eq:coef}
- C_{\alpha \beta}^{ nlm_l NLM_L  S M_S T M_T} = & \frac{1}{\sqrt{2}} \left[ 1-(-1)^{l+S+T} \right] \Braket{ \frac{1}{2}  \sigma_\alpha  \frac{1}{2} \sigma_\beta | S M_S }  \Braket{\frac{1}{2}  \tau_\alpha  \frac{1}{2} \tau_\beta | T M_T } \nonumber \\ & \times \sum_{\Lambda M_\Lambda} \Braket{ l_\alpha m_\alpha l_\beta m_\beta | \Lambda M_\Lambda }  \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MB}  \Braket{lm_l L M_L|\Lambda M_\Lambda}.
+ C_{\alpha \beta}^{ nlm_l NLM_L  S M_S T M_T} = & \frac{1}{\sqrt{2}} \left[ 1-(-1)^{l+S+T} \right] \Braket{ \frac{1}{2}  \sigma_\alpha  \frac{1}{2} \sigma_\beta | S M_S }  \Braket{\frac{1}{2}  \tau_\alpha  \frac{1}{2} \tau_\beta | T M_T } \nonumber \\ & \times \sum_{\Lambda M_\Lambda} \Braket{ l_\alpha m_\alpha l_\beta m_\beta | \Lambda M_\Lambda }  \Braket{nlNL;\Lambda |  n_\alpha l_\alpha n_\beta l_\beta;\Lambda}_{MC}  \Braket{lm_l L M_L|\Lambda M_\Lambda}.
 \end{align*}
 
 \chapter{Wignerdistributie in sferische co\"{o}rdinaten}
@@ -1373,7 +1373,7 @@ waarbij $R_{nl}$ de radi\"{e}le harmonische oscillator golffunctie en $Y_{lm}$ d
 \begin{equation}
 Y_{lm}(\theta,\varphi) = (-1)^m \sqrt{\frac{(2l+1)}{4\pi}\frac{(l-m)!}{(l+m)!}}\  P_{lm}(\cos \theta) \ e^{im\varphi}.
 \end{equation}
-Hier zijn $P_{lm}$ de geassocieerde Legendrepolynomen. Deze zijn altijd re\"{e}el als hun argument re\"{e}el is.
+Hier zijn $P_{lm}$ de geassocieerde Legendre-polynomen. Deze zijn altijd re\"{e}el als hun argument re\"{e}el is.
 Aangezien de $\varphi_\pm$-component van $\vec{r}_\pm$ op een constante term na onafhankelijk is van het onderschrift geldt dat
 \begin{equation}
 Y^*_{lm}(\theta_-,\varphi_-)  Y_{lm}(\theta_+,\varphi_+) = (-1)^m \frac{(2l+1)}{4\pi}\frac{(l-m)!}{(l+m)!}  P_{lm}(\cos \theta_+)  P_{lm}(\cos \theta_-) \equiv f(\theta_-,\theta_+).
@@ -1397,7 +1397,7 @@ Integratie over alle hoekafhankelijkheden geeft:
 \begin{equation} \label{eq:final_wigner2}
  W_{nlm}(r,k) = 8 \pi^2 \int^\pi_0 d\theta \ \sin \theta \ W_{nlm}(\vec{r},\vec{k})
 \end{equation}
-UIt de symmetrierelaties van de geassocieerde Legendrepolynomen 
+UIt de symmetrierelaties van de geassocieerde Legendre-polynomen 
 \begin{equation}
 P_{l-m}(x) = (-1)^m \frac{(l-m)!}{(l+m)!}  P_{lm}(x)
 \end{equation}
