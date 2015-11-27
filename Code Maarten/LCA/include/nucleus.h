@@ -180,39 +180,30 @@ private:
         /**
          * Get index of highest occupied shell "shell_max" in
          * the vector <Shell*> from getShells1() and getShells2() defined above
-         * and get number of nucleons "max" in the nucleus is this should would 
-         * have been fully occupied
+         * and get number of nucleons "max" in the nucleus if this shell would 
+         * be closed (fully occupied).
          *
          * @see Shell
          */
         void get_shell_max( int A, int* shell_max, int* max );
-        /// container for all Pairs
-	vector< Pair*>* pairs; 
-        /// container for all Triplets
-	vector< Triplet*>* triplets; 
-        /// container for all Paircoefs
-        map< string, Paircoef*>* paircoefs;
-        /// container for all Tripletscoefs
-        map< string, Tripletcoef*>* tripletcoefs;
-
-        /// Path to input directory
-	char* inputdir;
-        /// Path to result/output directory
-	char* resultdir;
-        /// Total number of pairs in container pairs
-	int number_of_pairs;
-        /// Total number of triplets in container triplets
-	int number_of_triplets;
-        /// Total number of paircoefs in container paircoefs
-	int number_of_paircoefs;
-        /// Total number of tripletcoefs in container tripletcoefs
-	int number_of_tripletcoefs;
+        
+        vector< Pair*>* pairs;               ///< container for all Pairs
+        vector< Triplet*>* triplets;         ///< container for all Triplets
+        map< string, Paircoef*>* paircoefs;  ///< container for all Paircoefs
+        map< string, Tripletcoef*>* tripletcoefs; ///< container for all Tripletscoefs
+        
+        char* inputdir;         ///< Path to input directory
+        char* resultdir;        ///< Path to result/output directory
+        int number_of_pairs;    ///< Total number of pairs in container pairs
+        int number_of_triplets; ///< Total number of triplets in container triplets
+        int number_of_paircoefs;///< Total number of paircoefs in container paircoefs
+        int number_of_tripletcoefs; ///< Total number of tripletcoefs in container tripletcoefs
 
 protected:
         /**
          * \brief Make all pair combinations and save in pairs.
          */
-	virtual void makepairs( );
+        virtual void makepairs( );
         /**
          * \brief Make all triplet combinations and save in triplets
          */
@@ -220,21 +211,14 @@ protected:
         /**
          * \brief Make all triplet combinations with third nucleon isospin t3 and save in triplets.
          */
-        virtual void maketriplets( int t3 );
-        /// Number of protons
-	int Z;
-        /// Number of nucleons
-	int A;
-        /// Number of neutrons
-	int N;
-        /// true is list of pairs are made and saved
-	bool pairsMade;
-        /// true is list of paircoefs are made and saved
-	bool paircoefsMade;
-        /// true is list of triplets are made and saved
-	bool tripletsMade;
-        /// true is list of tripletcoefs are made and saved
-	bool tripletcoefsMade;
+        virtual void maketriplets( int t3 ); 
+        int Z; ///< Number of protons
+        int A; ///< Number of nucleons
+        int N; ///< Number of neutrons
+        bool pairsMade;     ///< true is list of pairs are made and saved
+        bool paircoefsMade; ///< true is list of paircoefs are made and saved
+        bool tripletsMade;  ///< true is list of triplets are made and saved
+        bool tripletcoefsMade; ///< true is list of tripletcoefs are made and saved
 
 };
 

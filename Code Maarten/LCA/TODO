@@ -5,3 +5,4 @@
 	- ...
 2. Clean up 
 	- Nucleus::makepairs() (nucleus.cpp)
+    - Nucleus::get_shell_max(...) (nucleus.cpp)

@@ -466,12 +466,12 @@ void Nucleus::makepairs()
       int n1= (shell1)->getN();
       int l1= (shell1)->getL();
       int twoj1= (shell1)->getTwo_j();
-      int q1 = twoj1+ 1;
+      int q1 = twoj1 + 1;
 
       int n2= (shell2)->getN();
       int l2= (shell2)->getL();
       int twoj2= (shell2)->getTwo_j();
-      int q2 = twoj2+ 1;
+      int q2 = twoj2 + 1;
 
       RecMosh* mosh;
       // create mosh brackets for pair caclulations
