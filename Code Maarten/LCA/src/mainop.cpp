@@ -24,7 +24,7 @@ char* output;
 // expansion parameter !!!!!
 int q;
 
-// The nucleus 
+// The nucleus
 int A;
 int Z;
 string name;
@@ -47,7 +47,7 @@ void obmd( Nucleus* nucleus, int t, int nA, int lA, int nB, int lB, bool central
 void tbmd_rel( Nucleus* nucleus, int nA, int lA, int nB, int lB, int S, int T, bool central, bool tensor, bool isospin, double norm );
 
 /*
- * Calculate the two-dimensional two-body momentum distribution 
+ * Calculate the two-dimensional two-body momentum distribution
  *    - bool central, tensor, isospin: selects if corresponding correlation function is included or not.
  *    - double norm: renormalization factor \mathcal{N}^{[2]} which can be calculated with class norm_tb or function calculate_tb_norm.
  */
@@ -82,166 +82,161 @@ Nucleusall* all_norm;
 
 int main( int argc, char* argv[] )
 {
-  gsl_set_error_handler_off();
-  cout << "argc " << argc << endl;
+    gsl_set_error_handler_off();
+    cout << "argc " << argc << endl;
 
-  // Set some parameters
-  q= 12;
-  input= argv[1];
-  output= argv[2];
-  A= atoi( argv[3] );
-  Z= atoi( argv[4] );
-  name= string(argv[5]);
-  WavefunctionP::mapwfp.setA( A );
-  WavefunctionP::mapwfp.setpstep( 0.05 );
-  WavefunctionP::mapwfcentralp.setA( A );
-  WavefunctionP::mapwfcentralp.setpstep( 0.05 );
-  WavefunctionP::mapwftensorp.setA( A );
-  WavefunctionP::mapwftensorp.setpstep( 0.05 );
-  WavefunctionP::mapwfspinisospinp.setA( A );
-  WavefunctionP::mapwfspinisospinp.setpstep( 0.05 );
+    // Set some parameters
+    q= 12;
+    input= argv[1];
+    output= argv[2];
+    A= atoi( argv[3] );
+    Z= atoi( argv[4] );
+    name= string(argv[5]);
+    WavefunctionP::mapwfp.setA( A );
+    WavefunctionP::mapwfp.setpstep( 0.05 );
+    WavefunctionP::mapwfcentralp.setA( A );
+    WavefunctionP::mapwfcentralp.setpstep( 0.05 );
+    WavefunctionP::mapwftensorp.setA( A );
+    WavefunctionP::mapwftensorp.setpstep( 0.05 );
+    WavefunctionP::mapwfspinisospinp.setA( A );
+    WavefunctionP::mapwfspinisospinp.setpstep( 0.05 );
 
-  all_norm= new Nucleusall( input, output , A, Z );
+    all_norm= new Nucleusall( input, output , A, Z );
 
-  // Classes of respectively all pp, nn and pn pairs
-  NucleusPP* pp= new NucleusPP( argv[1], argv[2], A, Z);
-  NucleusNN* nn= new NucleusNN( argv[1], argv[2], A, Z);
-  NucleusNP* pn= new NucleusNP( argv[1], argv[2], A, Z);
-  // Class with all pp, nn and pn pairs
-  Nucleusall* all = all_norm;
+    // Classes of respectively all pp, nn and pn pairs
+    NucleusPP* pp= new NucleusPP( argv[1], argv[2], A, Z);
+    NucleusNN* nn= new NucleusNN( argv[1], argv[2], A, Z);
+    NucleusNP* pn= new NucleusNP( argv[1], argv[2], A, Z);
+    // Class with all pp, nn and pn pairs
+    Nucleusall* all = all_norm;
 
-  // renormalization norm, to be calculated later
-  double norm= 1; 
-  // Correlation function bools
-  bool central= true;
-  bool tensor= true;
-  bool spinisospin= true;
+    // renormalization norm, to be calculated later
+    double norm= 1;
+    // Correlation function bools
+    bool central= true;
+    bool tensor= true;
+    bool spinisospin= true;
 
 
-  /*
-   * One-body momentum distributions
-   * INPUTDIR OUTPUTDIR A Z Name nA lA nB lB t pp/nn/pn/all
-   */
-  if( argc == 12 )
-  {
-    int nA= atoi(argv[6]);
-    int lA= atoi(argv[7]);
-    int nB= atoi(argv[8]);
-    int lB= atoi(argv[9]);
+    /*
+     * One-body momentum distributions
+     * INPUTDIR OUTPUTDIR A Z Name nA lA nB lB t pp/nn/pn/all
+     */
+    if( argc == 12 ) {
+        int nA= atoi(argv[6]);
+        int lA= atoi(argv[7]);
+        int nB= atoi(argv[8]);
+        int lB= atoi(argv[9]);
 
-    // Calculate norm,
-    norm= calculate_ob_norm( A, Z, central, tensor, spinisospin );
+        // Calculate norm,
+        norm= calculate_ob_norm( A, Z, central, tensor, spinisospin );
 
-    // argv[10]: isospin: -1 for n, 1 for p, 0 for both
-    if( strcmp(argv[11] ,"pp") == 0)
-      obmd( pp, atoi(argv[10]), nA, lA, nB, lB, central, tensor, spinisospin, norm );
-    else if( strcmp(argv[11] ,"nn") == 0)
-      obmd( nn, atoi(argv[10]), nA, lA, nB, lB, central, tensor, spinisospin, norm );
-    else if( strcmp(argv[11] ,"pn") == 0)
-      obmd( pn, atoi(argv[10]), nA, lA, nB, lB, central, tensor, spinisospin, norm );
-    else 
-      obmd( all, atoi(argv[10]), nA, lA, nB, lB, central, tensor, spinisospin, norm );
-  }
-  /*
-   * Two-body momentum distributions
-   * INPUTDIR OUTPUTDIR A Z Name nA lA nB lB  pp/nn/pn/all S T
-   */
-  else if ( argc == 13 )
-  {
-    norm= calculate_tb_norm( A, Z );
+        // argv[10]: isospin: -1 for n, 1 for p, 0 for both
+        if( strcmp(argv[11] ,"pp") == 0)
+            obmd( pp, atoi(argv[10]), nA, lA, nB, lB, central, tensor, spinisospin, norm );
+        else if( strcmp(argv[11] ,"nn") == 0)
+            obmd( nn, atoi(argv[10]), nA, lA, nB, lB, central, tensor, spinisospin, norm );
+        else if( strcmp(argv[11] ,"pn") == 0)
+            obmd( pn, atoi(argv[10]), nA, lA, nB, lB, central, tensor, spinisospin, norm );
+        else
+            obmd( all, atoi(argv[10]), nA, lA, nB, lB, central, tensor, spinisospin, norm );
+    }
+    /*
+     * Two-body momentum distributions
+     * INPUTDIR OUTPUTDIR A Z Name nA lA nB lB  pp/nn/pn/all S T
+     */
+    else if ( argc == 13 ) {
+        norm= calculate_tb_norm( A, Z );
 //   norm = 1;
-    int nA= atoi(argv[6]) , lA= atoi(argv[7]) , nB= atoi(argv[8]) , lB= atoi(argv[9]) ;
-    int S= atoi(argv[11]), T= atoi(argv[12]);
+        int nA= atoi(argv[6]) , lA= atoi(argv[7]) , nB= atoi(argv[8]) , lB= atoi(argv[9]) ;
+        int S= atoi(argv[11]), T= atoi(argv[12]);
 
-  if( strcmp(argv[10] ,"pp") == 0)
-    tbmd_rel( pp, nA, lA, nB, lB, S, T, central, tensor, spinisospin, norm );
-  else if( strcmp(argv[10] ,"nn") == 0)
-    tbmd_rel( nn, nA, lA, nB, lB, S, T, central, tensor, spinisospin, norm );
-  else if( strcmp(argv[10] ,"pn") == 0)
-    tbmd_rel( pn, nA, lA, nB, lB, S, T, central, tensor, spinisospin, norm );
-  else 
-    tbmd_rel( all, nA, lA, nB, lB, S, T, central, tensor, spinisospin, norm );
+        if( strcmp(argv[10] ,"pp") == 0)
+            tbmd_rel( pp, nA, lA, nB, lB, S, T, central, tensor, spinisospin, norm );
+        else if( strcmp(argv[10] ,"nn") == 0)
+            tbmd_rel( nn, nA, lA, nB, lB, S, T, central, tensor, spinisospin, norm );
+        else if( strcmp(argv[10] ,"pn") == 0)
+            tbmd_rel( pn, nA, lA, nB, lB, S, T, central, tensor, spinisospin, norm );
+        else
+            tbmd_rel( all, nA, lA, nB, lB, S, T, central, tensor, spinisospin, norm );
 
-  }
-  else if( argc == 7 )
-  {
-    norm= calculate_tb_norm_2b( A, Z );
+    } else if( argc == 7 ) {
+        norm= calculate_tb_norm_2b( A, Z );
 //  norm= 1;
 
-  if( strcmp(argv[6] ,"pp") == 0)
-    tbmd_td( pp, central, tensor, spinisospin, norm );
-  else if( strcmp(argv[6] ,"nn") == 0)
-    tbmd_td( nn, central, tensor, spinisospin, norm );
-  else if( strcmp(argv[6] ,"pn") == 0)
-    tbmd_td( pn, central, tensor, spinisospin, norm );
-  else 
-    tbmd_td( all, central, tensor, spinisospin, norm );
-  }
-  else if( argc == 6 )
-  {
+        if( strcmp(argv[6] ,"pp") == 0)
+            tbmd_td( pp, central, tensor, spinisospin, norm );
+        else if( strcmp(argv[6] ,"nn") == 0)
+            tbmd_td( nn, central, tensor, spinisospin, norm );
+        else if( strcmp(argv[6] ,"pn") == 0)
+            tbmd_td( pn, central, tensor, spinisospin, norm );
+        else
+            tbmd_td( all, central, tensor, spinisospin, norm );
+    } else if( argc == 6 ) {
 
 //    calculate_ob_norm( A, Z);
-    rms_radius();
+        rms_radius();
 //    print_pairs(pp);
 //    print_pairs(pn);
 //    print_pairs(nn);
 //    print_pairs(all);
-  }
-  else
-  {
-    cout << "ARGs ... " << endl;
-    return 0;
-  }
-  delete pp; delete nn; delete pn; delete all;
+    } else {
+        cout << "ARGs ... " << endl;
+        return 0;
+    }
+    delete pp;
+    delete nn;
+    delete pn;
+    delete all;
 }
 
 void tbmd_td( Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm )
 {
-  density_td* td= new density_td( nucleus, central, tensor, isospin, norm);
-  td->write( output, name.c_str());
+    density_td* td= new density_td( nucleus, central, tensor, isospin, norm);
+    td->write( output, name.c_str());
 
 }
 
 /*
- * First calculates the expected norm of the selected nucleons, 
+ * First calculates the expected norm of the selected nucleons,
  * so this can be compared to the integral of the resulted two-body mom distribution.
  */
 void tbmd_rel( Nucleus* nucleus, int nA, int lA, int nB, int lB, int S, int T, bool central, bool tensor, bool isospin, double norm )
 {
-  norm_tb::norm_tb_params ntp = {nA, lA, nB, lB, S, T};
+    norm_tb::norm_tb_params ntp = {nA, lA, nB, lB, S, T};
 //  norm_tb::norm_tb_params ntp = {-1, -1, -1, -1};
-  norm_tb* nt = new norm_tb( nucleus, central, tensor, isospin );
-  double norm_mf_sel = nt->sum_me( &ntp )/norm*A*(A-1)*0.5;
-  double norm_2b_sel = nt->sum_me_corr_coefs( &ntp )/norm*A*(A-1)*0.5;
-  double norm_3b_sel = nt->sum_me_3b_corr_coefs( &ntp )/norm*A*(A-1)*0.5;
+    norm_tb* nt = new norm_tb( nucleus, central, tensor, isospin );
+    double norm_mf_sel = nt->sum_me( &ntp )/norm*A*(A-1)*0.5;
+    double norm_2b_sel = nt->sum_me_corr_coefs( &ntp )/norm*A*(A-1)*0.5;
+    double norm_3b_sel = nt->sum_me_3b_corr_coefs( &ntp )/norm*A*(A-1)*0.5;
 //  double norm_3b_sel2 = nt->sum_me_3b_corr( &ntp )/norm*A*(A-1)*0.5;
 
-  /*
-  cout << "--------------------------------------------------" << endl;
-  cout << norm_3b_sel << "\t" << norm_3b_sel2 << endl;
-  cout << "--------------------------------------------------" << endl;
-  */
+    /*
+    cout << "--------------------------------------------------" << endl;
+    cout << norm_3b_sel << "\t" << norm_3b_sel2 << endl;
+    cout << "--------------------------------------------------" << endl;
+    */
 
-  cout << "selected normalisation mf\t" << norm_mf_sel << "\t" << norm_mf_sel*norm << endl;
-  cout << "selected normalisation 2b corr\t" << norm_2b_sel << endl;
-  cout << "selected normalisation 3b corr\t" << norm_3b_sel << endl;
-  cout << "total \t" << norm_mf_sel+ norm_2b_sel+ norm_3b_sel << endl;
+    cout << "selected normalisation mf\t" << norm_mf_sel << "\t" << norm_mf_sel*norm << endl;
+    cout << "selected normalisation 2b corr\t" << norm_2b_sel << endl;
+    cout << "selected normalisation 3b corr\t" << norm_3b_sel << endl;
+    cout << "total \t" << norm_mf_sel+ norm_2b_sel+ norm_3b_sel << endl;
 
-  delete nt;
+    delete nt;
 //  return;
-    
-  double intmf, int2b, int3b;
-  density_rel* rel;
 
-  rel= new density_rel( nucleus, central, tensor, isospin, norm, 7);
-  rel->write( output, name.c_str(), nA, lA, nB, lB, S, T, &intmf, &int2b, &int3b );
+    double intmf, int2b, int3b;
+    density_rel* rel;
 
-  cout << "xx\tnorm\t\tintegral\tintegral/norm" << endl;
-  cout << "mf\t" << norm_mf_sel << "\t\t" << intmf << "\t" << intmf/norm_mf_sel << endl;
-  cout << "2b\t" << norm_2b_sel << "\t" << int2b << "\t" << int2b/norm_2b_sel << endl;
-  cout << "3b\t" << norm_3b_sel << "\t" << int3b << "\t" << int3b/norm_3b_sel << endl;
+    rel= new density_rel( nucleus, central, tensor, isospin, norm, 7);
+    rel->write( output, name.c_str(), nA, lA, nB, lB, S, T, &intmf, &int2b, &int3b );
 
-  delete rel;
+    cout << "xx\tnorm\t\tintegral\tintegral/norm" << endl;
+    cout << "mf\t" << norm_mf_sel << "\t\t" << intmf << "\t" << intmf/norm_mf_sel << endl;
+    cout << "2b\t" << norm_2b_sel << "\t" << int2b << "\t" << int2b/norm_2b_sel << endl;
+    cout << "3b\t" << norm_3b_sel << "\t" << int3b << "\t" << int3b/norm_3b_sel << endl;
+
+    delete rel;
 
 }
 
@@ -251,124 +246,124 @@ void tbmd_rel( Nucleus* nucleus, int nA, int lA, int nB, int lB, int S, int T, b
  */
 void obmd( Nucleus* nucleus, int t, int nA, int lA, int nB, int lB, bool central, bool tensor, bool isospin, double norm )
 {
-  double norm_mf_sel, norm_corr_sel, intmf, intcorr;
+    double norm_mf_sel, norm_corr_sel, intmf, intcorr;
 
-  norm_ob* no = new norm_ob( nucleus, central, tensor, isospin );
-  norm_ob::norm_ob_params nob= {nA, lA, nB, lB, t};
-  norm_mf_sel = no->sum_me_coefs( &nob )/norm*A;
-  norm_corr_sel = no->sum_me_corr( &nob )/norm*A;
+    norm_ob* no = new norm_ob( nucleus, central, tensor, isospin );
+    norm_ob::norm_ob_params nob= {nA, lA, nB, lB, t};
+    norm_mf_sel = no->sum_me_coefs( &nob )/norm*A;
+    norm_corr_sel = no->sum_me_corr( &nob )/norm*A;
 
-  cout << "selected normalisation mf\t" << norm_mf_sel << endl;
-  cout << "selected normalisation corr\t" << norm_corr_sel << endl;
+    cout << "selected normalisation mf\t" << norm_mf_sel << endl;
+    cout << "selected normalisation corr\t" << norm_corr_sel << endl;
 
-  density_ob3* ob;
-  ob= new density_ob3( nucleus, central, tensor, isospin, norm, q  );
-  ob->write( output, name.c_str(), nA, lA, nB, lB, t, &intmf, &intcorr);
+    density_ob3* ob;
+    ob= new density_ob3( nucleus, central, tensor, isospin, norm, q  );
+    ob->write( output, name.c_str(), nA, lA, nB, lB, t, &intmf, &intcorr);
 
-  // Compare integral and expected integral by norm_ob class
-  cout << "mf\t" << norm_mf_sel << "\t" << intmf << "\t" << intmf/norm_mf_sel << endl;
-  cout << "corr\t" << norm_corr_sel << "\t" << intcorr << "\t" << intcorr/norm_corr_sel << endl;
+    // Compare integral and expected integral by norm_ob class
+    cout << "mf\t" << norm_mf_sel << "\t" << intmf << "\t" << intmf/norm_mf_sel << endl;
+    cout << "corr\t" << norm_corr_sel << "\t" << intcorr << "\t" << intcorr/norm_corr_sel << endl;
 
-  delete no;
-  delete ob;
+    delete no;
+    delete ob;
 }
 
 
 void rms_radius()
 {
-  norm_ob* no = new norm_ob( all_norm, true, true, true );
-  norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
-  double norm_mf= no->sum_me_pairs( &nob );
-  double norm_corr= no->sum_me_corr( &nob );
-  cout << "norm\t"  << norm_mf << "\t" << norm_corr << "\t" << (norm_mf+ norm_corr) << "\t" << A*(norm_mf+ norm_corr) << endl;
-  double norm= norm_mf+ norm_corr;
-  delete no;
+    norm_ob* no = new norm_ob( all_norm, true, true, true );
+    norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
+    double norm_mf= no->sum_me_pairs( &nob );
+    double norm_corr= no->sum_me_corr( &nob );
+    cout << "norm\t"  << norm_mf << "\t" << norm_corr << "\t" << (norm_mf+ norm_corr) << "\t" << A*(norm_mf+ norm_corr) << endl;
+    double norm= norm_mf+ norm_corr;
+    delete no;
 
-  rms_ob* rms_all= new rms_ob( all_norm, true, true, true);
-  double ra = rms_all->sum_me_pairs( NULL );
-  double rca = rms_all->sum_me_corr_pairs( NULL );
-  double rIPM= sqrt(ra);
-  double rLCA= sqrt( (ra+rca)/norm );
-  cout << "RMS";
-  cout << "\t" << ra  << " " << rca << endl;
-  cout << "MF " << rIPM;
-  cout << "\t CORR " << rLCA;
-  cout << endl;
-  cout << "ratio " << rLCA / rIPM << endl;
-  delete rms_all;
+    rms_ob* rms_all= new rms_ob( all_norm, true, true, true);
+    double ra = rms_all->sum_me_pairs( NULL );
+    double rca = rms_all->sum_me_corr_pairs( NULL );
+    double rIPM= sqrt(ra);
+    double rLCA= sqrt( (ra+rca)/norm );
+    cout << "RMS";
+    cout << "\t" << ra  << " " << rca << endl;
+    cout << "MF " << rIPM;
+    cout << "\t CORR " << rLCA;
+    cout << endl;
+    cout << "ratio " << rLCA / rIPM << endl;
+    delete rms_all;
 }
 
 void print_pairs( Nucleus* nucleus )
 {
-  nucleus->printPairs();
+    nucleus->printPairs();
 }
-  
+
 double calculate_tb_norm( int A, int Z )
 {
-  norm_tb* nt = new norm_tb( all_norm, true, true, false );
-  norm_tb::norm_tb_params ntp = {-1, -1, -1, -1, -1, -1};
-  double norm_mf=  nt->sum_me( &ntp );
-  double norm_tb= nt->sum_me_corr_coefs( &ntp );
-  double norm_tb_3b= nt->sum_me_3b_corr_coefs( &ntp );
+    norm_tb* nt = new norm_tb( all_norm, true, true, false );
+    norm_tb::norm_tb_params ntp = {-1, -1, -1, -1, -1, -1};
+    double norm_mf=  nt->sum_me( &ntp );
+    double norm_tb= nt->sum_me_corr_coefs( &ntp );
+    double norm_tb_3b= nt->sum_me_3b_corr_coefs( &ntp );
 
-  cout << "norm mf\t\t" << norm_mf*A*(A-1)/2.;
-  cout << "\nnorm 2b\t\t" << norm_tb*A*(A-1)/2.;
-  cout << "\nnorm 3b\t\t" << norm_tb_3b*A*(A-1)/2. << endl;
+    cout << "norm mf\t\t" << norm_mf*A*(A-1)/2.;
+    cout << "\nnorm 2b\t\t" << norm_tb*A*(A-1)/2.;
+    cout << "\nnorm 3b\t\t" << norm_tb_3b*A*(A-1)/2. << endl;
 
-  double norm= norm_mf+ norm_tb+ norm_tb_3b;
-  cout << "norm \t\t " << norm << endl;
+    double norm= norm_mf+ norm_tb+ norm_tb_3b;
+    cout << "norm \t\t " << norm << endl;
 
 
-  delete nt;
+    delete nt;
 
-  // Compares two-body norm with one-body norm (For relation see dissertation
-  norm_ob* no = new norm_ob( all_norm, true, true, false );
-  norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
-  double norm_ob= no->sum_me_corr( &nob );
-  cout << "norm tb 2b \t\t= norm ob/(A-1):\t" << norm_tb << " = " << norm_ob/(A-1) << endl;
-  cout << "norm tb 2b*2*(A-2) \t= norm tb 3b:\t\t" << 2*norm_tb*(A-2) << " = " << norm_tb_3b << endl;
-  delete no;
+    // Compares two-body norm with one-body norm (For relation see dissertation
+    norm_ob* no = new norm_ob( all_norm, true, true, false );
+    norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
+    double norm_ob= no->sum_me_corr( &nob );
+    cout << "norm tb 2b \t\t= norm ob/(A-1):\t" << norm_tb << " = " << norm_ob/(A-1) << endl;
+    cout << "norm tb 2b*2*(A-2) \t= norm tb 3b:\t\t" << 2*norm_tb*(A-2) << " = " << norm_tb_3b << endl;
+    delete no;
 
-  return norm;
+    return norm;
 }
 
 double calculate_tb_norm_2b( int A, int Z )
 {
-  norm_tb* nt = new norm_tb( all_norm, true, true, false );
-  norm_tb::norm_tb_params ntp = {-1, -1, -1, -1, -1, -1};
-  double norm_mf=  nt->sum_me( &ntp );
-  double norm_tb= nt->sum_me_corr_coefs( &ntp );
+    norm_tb* nt = new norm_tb( all_norm, true, true, false );
+    norm_tb::norm_tb_params ntp = {-1, -1, -1, -1, -1, -1};
+    double norm_mf=  nt->sum_me( &ntp );
+    double norm_tb= nt->sum_me_corr_coefs( &ntp );
 
-  cout << "norm mf\t\t" << norm_mf*A*(A-1)/2.;
-  cout << "\nnorm 2b\t\t" << norm_tb*A*(A-1)/2.;
-  cout << endl;
+    cout << "norm mf\t\t" << norm_mf*A*(A-1)/2.;
+    cout << "\nnorm 2b\t\t" << norm_tb*A*(A-1)/2.;
+    cout << endl;
 
-  double norm= norm_mf+ norm_tb;
-  cout << "norm \t\t " << norm << endl;
+    double norm= norm_mf+ norm_tb;
+    cout << "norm \t\t " << norm << endl;
 
 
-  delete nt;
+    delete nt;
 
-  // Compares two-body norm with one-body norm (For relation see dissertation
-  norm_ob* no = new norm_ob( all_norm, true, true, false );
-  norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
-  double norm_ob= no->sum_me_corr( &nob );
-  cout << "norm tb 2b \t\t= norm ob/(A-1):\t" << norm_tb << " = " << norm_ob/(A-1) << endl;
-  delete no;
+    // Compares two-body norm with one-body norm (For relation see dissertation
+    norm_ob* no = new norm_ob( all_norm, true, true, false );
+    norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
+    double norm_ob= no->sum_me_corr( &nob );
+    cout << "norm tb 2b \t\t= norm ob/(A-1):\t" << norm_tb << " = " << norm_ob/(A-1) << endl;
+    delete no;
 
-  return norm;
+    return norm;
 }
 
 double calculate_ob_norm( int A, int Z, bool central, bool tensor, bool spinisospin )
 {
-  norm_ob* no = new norm_ob( all_norm, central, tensor, spinisospin );
-  norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
-  double norm_mf= no->sum_me_pairs( &nob );
-  double norm_corr= no->sum_me_corr( &nob );
-  cout << "norm\t"  << norm_mf << "\t" << norm_corr << "\t" << (norm_mf+ norm_corr) << "\t" << A*(norm_mf+ norm_corr) << endl;
-  double norm= norm_mf+ norm_corr;
-  delete no;
-  return norm;
+    norm_ob* no = new norm_ob( all_norm, central, tensor, spinisospin );
+    norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
+    double norm_mf= no->sum_me_pairs( &nob );
+    double norm_corr= no->sum_me_corr( &nob );
+    cout << "norm\t"  << norm_mf << "\t" << norm_corr << "\t" << (norm_mf+ norm_corr) << "\t" << A*(norm_mf+ norm_corr) << endl;
+    double norm= norm_mf+ norm_corr;
+    delete no;
+    return norm;
 }
 
 /****************
@@ -414,7 +409,7 @@ void test_3j()
     norm_ob* no = new norm_ob( all, true, true, false );
 
     // norm_ob argument nob
-    
+
     int nob= -2;
     double norm_mf_n= no->sum_me( &nob );
     double norm_corr_n= no->sum_me_corr( &nob );
@@ -431,12 +426,12 @@ void test_3j()
     cout << "norm\t"  << norm_mf << "\t" << norm_corr << "\t" << (norm_mf+ norm_corr) << "\t" << A*(norm_mf+ norm_corr) << endl;
     double norm= (norm_mf+ norm_corr);
     delete no;
-    
+
     cout << "norm_n\t"  << norm_mf_n << "\t" << norm_corr_n << "\t" << norm_n << "\t" << A*(norm_mf_n+ norm_corr_n)/norm << endl;
     cout << "norm_p\t"  << norm_mf_p << "\t" << norm_corr_p << "\t" << norm_p<< "\t" << A*(norm_mf_p+ norm_corr_p)/norm << endl;
-    
+
     // For checks only
-    
+
 //    density_ob3* ob= new density_ob3( all, true, true, false, norm, 9  );
 
     kinenergy_ob* kine= new kinenergy_ob( all, true, true, false, norm );
@@ -462,7 +457,7 @@ void test_3j()
 
     }
     delete kine;
-    
+
 
   }
 
@@ -662,7 +657,7 @@ void test_3j()
 
 
 ***********************************************
-  // Calculate one body momentum distributions 
+  // Calculate one body momentum distributions
   // And check with norm
   if( true && strcmp( argv[7], "all") == 0)
   {
@@ -796,7 +791,7 @@ void test_3j()
       vector< Shell* >::iterator it2start= shells->begin();
       int total2= 0;
       for( it2 = it2start; it2!= shells->end(); it2++)
-      {	
+      {
         if( total2 >= max(Z,A-Z)) break;
         int n2= (*it2)->getN();
         int l2= (*it2)->getL();
@@ -916,7 +911,7 @@ void test_3j()
 ***********************************************
 
   // Calculate rms
-  
+
   if( false)
   {
   norm_ob* norm_all= new norm_ob( all, true, true, true);
@@ -949,7 +944,7 @@ void test_3j()
   costh= sqrt(2)/2.;
   suffix= name+ string( ".45" );
   ang->write( argv[2], suffix.c_str(), costh);
-  
+
   }
 
   delete pp; delete nn; delete pn; delete all;

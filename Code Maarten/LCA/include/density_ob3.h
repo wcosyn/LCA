@@ -16,11 +16,11 @@ using std::max;
  */
 class density_ob3 : public operator_virtual_ob
 {
-  public:
-    /** 
+public:
+    /**
      * \brief Constructor.
      *
-     * @param nucleus  
+     * @param nucleus
      * @param central turn on/off the central correlations.
      * @param tensor turn on/off the tensor correlations .
      * @param isospin turn on/off the spin-isospin correlations .
@@ -61,9 +61,11 @@ class density_ob3 : public operator_virtual_ob
     virtual double get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, double val= 1);
 
 
-    int get_qmax(){ return qmax; };
+    int get_qmax() {
+        return qmax;
+    };
 
-  private:
+private:
     /**
      * \brief Maximum value for sum over multipoles.
      *
@@ -71,43 +73,60 @@ class density_ob3 : public operator_virtual_ob
      */
     int qmax;
 
-  protected:
+protected:
     /**
      * @struct dens_ob_params
      * \brief Structure used by the density_ob3 class.
      *
-     * @var dens_ob_params::p 
+     * @var dens_ob_params::p
      * \brief nucleon momentum.
-     * @var dens_ob_params::nA 
+     * @var dens_ob_params::nA
      * \brief Selects pairs with certain qn. -1 if you want all.
-     * @var dens_ob_params::lA 
+     * @var dens_ob_params::lA
      * \brief Selects pairs with certain qn. -1 if you want all.
-     * @var dens_ob_params::nB 
+     * @var dens_ob_params::nB
      * \brief Selects pairs with certain qn. -1 if you want all.
-     * @var dens_ob_params::lB 
+     * @var dens_ob_params::lB
      * \brief Selects pairs with certain qn. -1 if you want all.
-     * @var dens_ob_params::i0 
+     * @var dens_ob_params::i0
      * \brief integral for uncorrelated system.
-     * @var dens_ob_params::ic 
+     * @var dens_ob_params::ic
      * \brief integral for system with one pair correlated by central correlation.
-     * @var dens_ob_params::it 
+     * @var dens_ob_params::it
      * \brief integral for system with one pair correlated by tensor correlation.
-     * @var dens_ob_params::is 
+     * @var dens_ob_params::is
      * \brief integral for system with one pair correlated by spin-isospin correlation.
-     * @var dens_ob_params::icc 
+     * @var dens_ob_params::icc
      * \brief integral for system with both pairs correlated by central correlation.
-     * @var dens_ob_params::itt 
+     * @var dens_ob_params::itt
      * \brief integral for system with both pairs correlated by tensor correlation.
-     * @var dens_ob_params::iss 
+     * @var dens_ob_params::iss
      * \brief integral for system with both pairs correlated by spin-isospin correlation.
-     * @var dens_ob_params::ict 
+     * @var dens_ob_params::ict
      * \brief integral for system with one pair correlated by central, and one by tensor correlations.
-     * @var dens_ob_params::ics 
+     * @var dens_ob_params::ics
      * \brief integral for system with one pair correlated by central, and one by spin-isospin correlations.
      * @var dens_ob_params::ist
      * \brief integral for system with one pair correlated by tensor, and one by spin-isospin correlations.
      */
-    struct dens_ob_params{ double p; int nA; int lA; int nB; int lB; int t; density_ob_integrand3* i0; density_ob_integrand3* ic; density_ob_integrand3* it; density_ob_integrand3* is; density_ob_integrand3* icc; density_ob_integrand3* ict; density_ob_integrand3* itt; density_ob_integrand3* iss; density_ob_integrand3* ics; density_ob_integrand3* ist;};
+    struct dens_ob_params {
+        double p;
+        int nA;
+        int lA;
+        int nB;
+        int lB;
+        int t;
+        density_ob_integrand3* i0;
+        density_ob_integrand3* ic;
+        density_ob_integrand3* it;
+        density_ob_integrand3* is;
+        density_ob_integrand3* icc;
+        density_ob_integrand3* ict;
+        density_ob_integrand3* itt;
+        density_ob_integrand3* iss;
+        density_ob_integrand3* ics;
+        density_ob_integrand3* ist;
+    };
 
 };
 

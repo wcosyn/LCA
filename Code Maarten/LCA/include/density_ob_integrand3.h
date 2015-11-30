@@ -7,7 +7,8 @@
 #include <map>
 using std::map;
 #include <string>
-using std::string; using std::stoi;
+using std::string;
+using std::stoi;
 
 
 /**
@@ -22,7 +23,7 @@ using std::string; using std::stoi;
  */
 class density_ob_integrand3
 {
-  public:
+public:
     /**
      * \brief Constructor.
      *
@@ -54,18 +55,18 @@ class density_ob_integrand3
      *
      * The density_ob_integrand_cf depends on momentum k and a correlation function.
      * Another instance of density_ob_integrand_cf is needed for every k.
-     * Advantage is that every density_ob_integrand_cf can be reused for different 
+     * Advantage is that every density_ob_integrand_cf can be reused for different
      * correlation function combinations.
      * Remember: the density_ob_integrand_cf are functions of one-nucleon
-     * momentum k and cm momentum P.  
+     * momentum k and cm momentum P.
      * \params doic1 object of density_ob_integrand_cf for left pair
      * \params doic2 object of density_ob_integrand_cf for right pair
      * \return sum of all the integrals
      */
     double get( density_ob_integrand_cf* doic1, density_ob_integrand_cf* doic2 );
 
-  private:
-    /// Mass number 
+private:
+    /// Mass number
     int A;
     /// HO parameter
     double nu;
@@ -83,14 +84,34 @@ class density_ob_integrand3
      * @struct params_int2
      * \brief Parameters for the integral in calculate().
      */
-    struct params_int2 { int nA; int lA; int la; int nB; int lB; int l; int k; uint index; double nu;  density_ob_integrand_cf* doic1; density_ob_integrand_cf* doic2;};
+    struct params_int2 {
+        int nA;
+        int lA;
+        int la;
+        int nB;
+        int lB;
+        int l;
+        int k;
+        uint index;
+        double nu;
+        density_ob_integrand_cf* doic1;
+        density_ob_integrand_cf* doic2;
+    };
 
     /**
-     * @struct doi3_struct 
+     * @struct doi3_struct
      * \brief Structure which contains all information of an integral.
      */
-    struct doi3_struct{ int n1; int l1; int k1; int n2; int l2; int k2; int k;
-      vector< double >* pow_values; };
+    struct doi3_struct {
+        int n1;
+        int l1;
+        int k1;
+        int n2;
+        int l2;
+        int k2;
+        int k;
+        vector< double >* pow_values;
+    };
 
     ///Container of the integrals.
     map< string, doi3_struct > mapintegrals;

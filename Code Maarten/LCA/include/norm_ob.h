@@ -8,15 +8,15 @@ using std::min;
 /**
  * \brief calculates the one-nucleon norm
  *
- * See appendix D2 of my thesis for information about the formulas. 
+ * See appendix D2 of my thesis for information about the formulas.
  */
 class norm_ob : public operator_virtual_ob
 {
-  public:
-    /** 
+public:
+    /**
      * \brief Constructor.
      *
-     * @param nucleus  
+     * @param nucleus
      * @param central turn on/off the central correlations.
      * @param tensor turn on/off the tensor correlations .
      * @param isospin turn on/off the spin-isospin correlations .
@@ -26,7 +26,7 @@ class norm_ob : public operator_virtual_ob
     /**
      * \brief Destructor
      */
-    virtual ~norm_ob(){};
+    virtual ~norm_ob() {};
 
     virtual double get_me( Pair* pair, void* params);
     virtual double get_me_corr_left( Pair* pair, void* params);
@@ -53,7 +53,13 @@ class norm_ob : public operator_virtual_ob
      * @var norm_ob_params::t
      * \brief select proton (+1), neutron (-1), both (0)
      */
-    struct norm_ob_params{ int nA; int lA; int nB; int lB; int t; };
+    struct norm_ob_params {
+        int nA;
+        int lA;
+        int nB;
+        int lB;
+        int t;
+    };
 
 };
 

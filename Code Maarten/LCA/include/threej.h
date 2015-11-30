@@ -4,9 +4,11 @@
 #include <gsl/gsl_statistics_int.h>
 #include <gsl/gsl_math.h>
 #include <vector>
-using std::vector; 
+using std::vector;
 #include <iostream>
-using std::cout; using std::endl; using std::cerr;
+using std::cout;
+using std::endl;
+using std::cerr;
 #include <cmath>
 using std::fabs;
 #include <utility> // for swap method
@@ -23,14 +25,14 @@ using std::fabs;
  */
 class threej
 {
-  public: 
+public:
     threej( int lmax );
     ~threej();
     void get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, int two_m3, double* res );
     double get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, int two_m3 );
     static threej threejs;
 
-  private:
+private:
     int lmax;
     vector< double >* vector_threej;
     vector< bool >* bool_threej;
@@ -38,7 +40,7 @@ class threej
     int cmax;
     int triangle_selection_fails(int two_ja, int two_jb, int two_jc);
     int m_selection_fails(int two_ja, int two_jb, int two_jc,
-        int two_ma, int two_mb, int two_mc);
+                          int two_ma, int two_mb, int two_mc);
 };
 
 #endif

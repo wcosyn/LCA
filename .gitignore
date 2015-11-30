@@ -12,3 +12,7 @@
 # ignore compiled python modules
 #
 *.pyc
+
+# ignore .orig files from indentation
+# using astyle
+*.orig

@@ -20,12 +20,12 @@ using std::min;
  */
 class kinenergy_ob : public operator_virtual_ob
 {
-  public:
+public:
     kinenergy_ob(Nucleus* nucleus, bool central= true, bool tensor=true, bool isospin=true, double norm= 1);
-    virtual ~kinenergy_ob(){};
+    virtual ~kinenergy_ob() {};
     /*
      * The parameters is an integer.
-     * int E >=0: select in the correlated part, the pairs subjected 
+     * int E >=0: select in the correlated part, the pairs subjected
      * by the correlated operator with qn 2n+l=E.
      * in get_me_corr_left is this only the left pair (qn n1l1)
      * in get_me_corr_right is this only the right pair (qn n2l2) in

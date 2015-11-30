@@ -3,64 +3,60 @@
 
 
 Nucleus::Nucleus( char* inputdir, char* resultdir,int A, int Z)
-  : Z(Z), A(A)
+    : Z(Z), A(A)
 {
-        this->inputdir= inputdir;
-        this->resultdir= resultdir;        
-        N = A-Z;        
+    this->inputdir= inputdir;
+    this->resultdir= resultdir;
+    N = A-Z;
 
-        /*
-         * Initialize Shells
-         */
-        Shell::initializeShells();
+    /*
+     * Initialize Shells
+     */
+    Shell::initializeShells();
 
-        /*
-         * Create empty containers
-         */
-        pairs= new vector<Pair*>();
-        pairs->reserve(256);
-        triplets= new vector<Triplet*>();
-        triplets->reserve(256);
-        paircoefs= new map<string, Paircoef*>();
-        tripletcoefs= new map<string, Tripletcoef*>();
+    /*
+     * Create empty containers
+     */
+    pairs= new vector<Pair*>();
+    pairs->reserve(256);
+    triplets= new vector<Triplet*>();
+    triplets->reserve(256);
+    paircoefs= new map<string, Paircoef*>();
+    tripletcoefs= new map<string, Tripletcoef*>();
 
-        pairsMade= false;
-        paircoefsMade= false;
-        tripletsMade= false;
-        
-        number_of_pairs= 0;
-        number_of_triplets= 0;
-        number_of_paircoefs= 0;
-        number_of_tripletcoefs= 0;
-        
+    pairsMade= false;
+    paircoefsMade= false;
+    tripletsMade= false;
+
+    number_of_pairs= 0;
+    number_of_triplets= 0;
+    number_of_paircoefs= 0;
+    number_of_tripletcoefs= 0;
+
 }
 
 Nucleus::~Nucleus()
 {
-        for( u_int i= 0; i < pairs->size(); i++ )
-        {
-                delete (*pairs)[i];
-        }
-        delete pairs;
-        for( u_int i= 0; i < triplets->size(); i++ )
-        {
-                delete triplets->at(i);
-        }
-        delete triplets;
-        map< string, Paircoef*>::iterator it;
-        for( it= paircoefs->begin(); it != paircoefs->end(); it++ )
-        {
-                delete it->second;
-        }
-        delete paircoefs;
-        map< string, Tripletcoef*>::iterator itt;
-        for( itt= tripletcoefs->begin(); itt != tripletcoefs->end(); itt++ )
-        {
-                delete itt->second;
-        }
-        delete tripletcoefs;
-        Shell::deleteShells();
-        cout << "Nucleus deleted" << endl;
+    for( u_int i= 0; i < pairs->size(); i++ ) {
+        delete (*pairs)[i];
+    }
+    delete pairs;
+    for( u_int i= 0; i < triplets->size(); i++ ) {
+        delete triplets->at(i);
+    }
+    delete triplets;
+    map< string, Paircoef*>::iterator it;
+    for( it= paircoefs->begin(); it != paircoefs->end(); it++ ) {
+        delete it->second;
+    }
+    delete paircoefs;
+    map< string, Tripletcoef*>::iterator itt;
+    for( itt= tripletcoefs->begin(); itt != tripletcoefs->end(); itt++ ) {
+        delete itt->second;
+    }
+    delete tripletcoefs;
+    Shell::deleteShells();
+    cout << "Nucleus deleted" << endl;
 }
 
 /**
@@ -70,21 +66,18 @@ Nucleus::~Nucleus()
  */
 void Nucleus::maketriplets()
 {
-  if( tripletsMade== true) return;
+    if( tripletsMade== true) return;
 
-  cout << "MAKE TRIPLETS " << endl;
-  int t1 = getT1();
-  int t2 = getT2();
-  if( t1 == t2 )
-  {
-    Nucleus::maketriplets( t1 );
-  }
-  else
-  {
-    Nucleus::maketriplets( t1 );
-    tripletsMade= false;
-    Nucleus::maketriplets( t2 );
-  }
+    cout << "MAKE TRIPLETS " << endl;
+    int t1 = getT1();
+    int t2 = getT2();
+    if( t1 == t2 ) {
+        Nucleus::maketriplets( t1 );
+    } else {
+        Nucleus::maketriplets( t1 );
+        tripletsMade= false;
+        Nucleus::maketriplets( t2 );
+    }
 }
 
 /**
@@ -100,331 +93,243 @@ void Nucleus::maketriplets()
  */
 void Nucleus::maketriplets( int t3 )
 {
-  if( tripletsMade== true) return;
-  vector< Shell* >* shells3;
-  int A3;
-  if( t3 == 1 )
-  {
-    shells3 = &Shell::shellsP;
-    A3= Z;
-  }
-  else if( t3 == -1 )
-  {
-    shells3 = &Shell::shellsN;
-    A3= N;
-  }
-  else 
-  {
-    cerr << "error " << __FILE__ << __LINE__ << endl;
-    exit(-1);
-  }
-  int t1 = getT1();
-  int t2 = getT2();
-  int A1 = getA1();
-  int A2 = getA2();
-
-
-  vector< Shell* >* shells1= getShells1();
-  vector< Shell* >* shells2= getShells2();
-  int shell1_max, shell2_max, shell3_max;
-  int max1, max2, max3;
-  // Get the highest occupied shell index shelli_max
-  // and the number of particles is this shell should be fully occupied: maxi
-  // The latest is necessary to calculate the normalization factor for not
-  // fully occupied shells
-  get_shell_max(A1, &shell1_max, &max1 );
-  get_shell_max(A2, &shell2_max, &max2 );
-  get_shell_max(A3, &shell3_max, &max3 );
-  double totalsum= 0;
-
-#pragma omp parallel for collapse(3)
-  for( int i1= 0; i1 <= shell1_max; i1++ )
-  {
-    for( int i2= 0; i2 <= shell2_max; i2++ )
-    {
-      for( int i3= 0; i3 <= shell3_max; i3++ )
-      {
-        // See condition at top of function about alpha_1 < alpha_2 if
-        // t1 == t2 
-        if( t1==t2 )
-        { 
-          if( i2 < i1 ) continue;
-        }
-        if( t1==t3 )
-        { 
-          if( i3 < i1 ) continue;
-        }
-        if( t2==t3 )
-        { 
-          if( i3 < i2 ) continue;
-        }
-        Shell* shell1= (*shells1)[i1];
-        Shell* shell2= (*shells2)[i2];
-        Shell* shell3= (*shells3)[i3];
-
-        int n1= (shell1)->getN();
-        int l1= (shell1)->getL();
-        int twoj1= (shell1)->getTwo_j();
-        int q1 = twoj1+ 1;
-
-        int n2= (shell2)->getN();
-        int l2= (shell2)->getL();
-        int twoj2= (shell2)->getTwo_j();
-        int q2 = twoj2+ 1;
-
-        int n3= (shell3)->getN();
-        int l3= (shell3)->getL();
-        int twoj3= (shell3)->getTwo_j();
-        int q3 = twoj3+ 1;
-
-        for( int two_mj1 = -twoj1; two_mj1 < twoj1+1; two_mj1+=2 )
-        {
-          for( int two_mj2 = -twoj2; two_mj2 < twoj2+1; two_mj2+=2 )
-          {
-            if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 <= two_mj1 ) continue; 
-            for( int two_mj3 = -twoj3; two_mj3 < twoj3+1; two_mj3+=2 )
-            {
-              if( t1 == t3 && n1==n3 && l1==l3 && twoj1==twoj3 && two_mj3 <= two_mj1 ) continue; 
-              if( t2 == t3 && n2==n3 && l2==l3 && twoj2==twoj3 && two_mj3 <= two_mj2 ) continue; 
-              Triplet* triplet1 = new Triplet( inputdir, resultdir, n1, l1, twoj1, two_mj1, t1, n2, l2, twoj2, two_mj2, t2, n3, l3, twoj3, two_mj3, t3 );
-
-              // Calculation of the according normalization factor for not fully
-              // occupied shells
-              double factor1 = 1;
-              double factor2 = 1;
-              double factor3 = 1;
-              if( i1== shell1_max )
-              {
-                if( t1==t2 && n1==n2 && l1==l2 &&  twoj1==twoj2 )
-                {
-                  if( t1==t3 && n1==n3 && l1==l3 &&  twoj1==twoj3 )
-                  {
-                    factor1 = pow((A1-max1+q1)*(A1-max1+q1-1.)*(A1-max1+q1-2.)/q1/(q1-1.)/(q1-2), 0.3333);
-                  }
-                  else
-                  {
-                    factor1 = sqrt((A1-max1+q1)*(A1-max1+q1-1.)/q1/(q1-1.));
-                  }
-                }
-                else if( t1==t3 && n1==n3 && l1==l3 &&  twoj1==twoj3 )
-                {
-                  factor1 = sqrt((A1-max1+q1)*(A1-max1+q1-1.)/q1/(q1-1.));
-                }
-                else
-                {
-                  factor1 = double(A1 - max1+q1 ) / q1;
-                }
-              }
-              if( i2== shell2_max )
-              {
-                if( t1==t2 && n1==n2 && l1==l2 &&  twoj1==twoj2 )
-                {
-                  if( t2==t3 && n2==n3 && l2==l3 &&  twoj2==twoj3 )
-                  {
-                    factor2 = pow((A2-max2+q2)*(A2-max2+q2-1.)*(A2-max2+q2-2.)/q2/(q2-1.)/(q2-2.), 0.3333);
-                  }
-                  else
-                  {
-                    factor2 = sqrt((A2-max2+q2)*(A2-max2+q2-1.)/q2/(q2-1.));
-                  }
-                }
-                else if( t2==t3 && n2==n3 && l2==l3 &&  twoj2==twoj3 )
-                {
-                  factor2 = sqrt((A2-max2+q2)*(A2-max2+q2-1.)/q2/(q2-1.));
-                }
-                else
-                {
-                  factor2 = double(A2 - max2+q2 ) / q2;
-                }
-              }
-              if( i3== shell3_max )
-              {
-                if( t1==t3 && n1==n3 && l1==l3 &&  twoj1==twoj3 )
-                {
-                  if( t2==t3 && n2==n3 && l2==l3 &&  twoj2==twoj3 )
-                  {
-                    factor3 = pow((A3-max3+q3)*(A3-max3+q3-1.)*(A3-max3+q3-2.)/q3/(q3-1.)/(q3-2), 0.3333);
-                  }
-                  else
-                  {
-                    factor3 = sqrt((A3-max3+q3)*(A3-max3+q3-1.)/q3/(q3-1.));
-                  }
-                }
-                else if( t2==t3 && n2==n3 && l2==l3 &&  twoj2==twoj3 )
-                {
-                  factor3 = sqrt((A3-max3+q3)*(A3-max3+q3-1.)/q3/(q3-1.));
-                }
-                else
-                {
-                  factor3 = double(A3 - max3+q3 ) / q3;
-                }
-              }
-              double sum = triplet1->getSum();
-              triplet1->setfnorm( factor1*factor2*factor3 );
-
-
-              /* De fermi test werkt hier niet. Wel voor (12) maar niet met de derde erbij.
-               * dit lost zichzefk wel op later
-               * Nu is de vraag, hoe zorgen we ervoor dat dit wel zou werken
-               * en niet later opgelost zou worden.
-               */
-              //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl; 
-
-
-              // Two tests
-              // Remove triplets that are zero (so they are not anti-symmetric,
-              // And give error if sum != 0
-              // Both should never happen in current version of the code
-              if( factor1*factor2*factor3*sum < 1e-6 )
-              {
-                delete triplet1;
-              }
-              else if( sum < 0.99 )
-              {
-                totalsum+= sum*factor1*factor2*factor3;
-                cerr << "CHECK " << __FILE__ << ":" << __LINE__ << " " << sum << endl;
-                triplets->push_back( triplet1);
-              }
-              // If test succesfull, add to list
-              else
-              {
-                totalsum+= sum*factor1*factor2*factor3;
-#pragma omp critical(triplets_push_back)
-                {
-                  triplets->push_back( triplet1);
-                }
-              }
-            }
-          }
-        }
-      }
+    if( tripletsMade== true) return;
+    vector< Shell* >* shells3;
+    int A3;
+    if( t3 == 1 ) {
+        shells3 = &Shell::shellsP;
+        A3= Z;
+    } else if( t3 == -1 ) {
+        shells3 = &Shell::shellsN;
+        A3= N;
+    } else {
+        cerr << "error " << __FILE__ << __LINE__ << endl;
+        exit(-1);
     }
-  }
-  number_of_triplets = triplets->size();
-  cout << t1 << t2 << t3 << " triplets made." << endl;
-  cout << "sum " << totalsum << endl;
-  cout << "total triplets " << number_of_triplets << endl;
-  tripletsMade= true;
+    int t1 = getT1();
+    int t2 = getT2();
+    int A1 = getA1();
+    int A2 = getA2();
+
+
+    vector< Shell* >* shells1= getShells1();
+    vector< Shell* >* shells2= getShells2();
+    int shell1_max, shell2_max, shell3_max;
+    int max1, max2, max3;
+    // Get the highest occupied shell index shelli_max
+    // and the number of particles is this shell should be fully occupied: maxi
+    // The latest is necessary to calculate the normalization factor for not
+    // fully occupied shells
+    get_shell_max(A1, &shell1_max, &max1 );
+    get_shell_max(A2, &shell2_max, &max2 );
+    get_shell_max(A3, &shell3_max, &max3 );
+    double totalsum= 0;
+
+    #pragma omp parallel for collapse(3)
+    for( int i1= 0; i1 <= shell1_max; i1++ ) {
+        for( int i2= 0; i2 <= shell2_max; i2++ ) {
+            for( int i3= 0; i3 <= shell3_max; i3++ ) {
+                // See condition at top of function about alpha_1 < alpha_2 if
+                // t1 == t2
+                if( t1==t2 ) {
+                    if( i2 < i1 ) continue;
+                }
+                if( t1==t3 ) {
+                    if( i3 < i1 ) continue;
+                }
+                if( t2==t3 ) {
+                    if( i3 < i2 ) continue;
+                }
+                Shell* shell1= (*shells1)[i1];
+                Shell* shell2= (*shells2)[i2];
+                Shell* shell3= (*shells3)[i3];
+
+                int n1= (shell1)->getN();
+                int l1= (shell1)->getL();
+                int twoj1= (shell1)->getTwo_j();
+                int q1 = twoj1+ 1;
+
+                int n2= (shell2)->getN();
+                int l2= (shell2)->getL();
+                int twoj2= (shell2)->getTwo_j();
+                int q2 = twoj2+ 1;
+
+                int n3= (shell3)->getN();
+                int l3= (shell3)->getL();
+                int twoj3= (shell3)->getTwo_j();
+                int q3 = twoj3+ 1;
+
+                for( int two_mj1 = -twoj1; two_mj1 < twoj1+1; two_mj1+=2 ) {
+                    for( int two_mj2 = -twoj2; two_mj2 < twoj2+1; two_mj2+=2 ) {
+                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 <= two_mj1 ) continue;
+                        for( int two_mj3 = -twoj3; two_mj3 < twoj3+1; two_mj3+=2 ) {
+                            if( t1 == t3 && n1==n3 && l1==l3 && twoj1==twoj3 && two_mj3 <= two_mj1 ) continue;
+                            if( t2 == t3 && n2==n3 && l2==l3 && twoj2==twoj3 && two_mj3 <= two_mj2 ) continue;
+                            Triplet* triplet1 = new Triplet( inputdir, resultdir, n1, l1, twoj1, two_mj1, t1, n2, l2, twoj2, two_mj2, t2, n3, l3, twoj3, two_mj3, t3 );
+
+                            // Calculation of the according normalization factor for not fully
+                            // occupied shells
+                            double factor1 = 1;
+                            double factor2 = 1;
+                            double factor3 = 1;
+                            if( i1== shell1_max ) {
+                                if( t1==t2 && n1==n2 && l1==l2 &&  twoj1==twoj2 ) {
+                                    if( t1==t3 && n1==n3 && l1==l3 &&  twoj1==twoj3 ) {
+                                        factor1 = pow((A1-max1+q1)*(A1-max1+q1-1.)*(A1-max1+q1-2.)/q1/(q1-1.)/(q1-2), 0.3333);
+                                    } else {
+                                        factor1 = sqrt((A1-max1+q1)*(A1-max1+q1-1.)/q1/(q1-1.));
+                                    }
+                                } else if( t1==t3 && n1==n3 && l1==l3 &&  twoj1==twoj3 ) {
+                                    factor1 = sqrt((A1-max1+q1)*(A1-max1+q1-1.)/q1/(q1-1.));
+                                } else {
+                                    factor1 = double(A1 - max1+q1 ) / q1;
+                                }
+                            }
+                            if( i2== shell2_max ) {
+                                if( t1==t2 && n1==n2 && l1==l2 &&  twoj1==twoj2 ) {
+                                    if( t2==t3 && n2==n3 && l2==l3 &&  twoj2==twoj3 ) {
+                                        factor2 = pow((A2-max2+q2)*(A2-max2+q2-1.)*(A2-max2+q2-2.)/q2/(q2-1.)/(q2-2.), 0.3333);
+                                    } else {
+                                        factor2 = sqrt((A2-max2+q2)*(A2-max2+q2-1.)/q2/(q2-1.));
+                                    }
+                                } else if( t2==t3 && n2==n3 && l2==l3 &&  twoj2==twoj3 ) {
+                                    factor2 = sqrt((A2-max2+q2)*(A2-max2+q2-1.)/q2/(q2-1.));
+                                } else {
+                                    factor2 = double(A2 - max2+q2 ) / q2;
+                                }
+                            }
+                            if( i3== shell3_max ) {
+                                if( t1==t3 && n1==n3 && l1==l3 &&  twoj1==twoj3 ) {
+                                    if( t2==t3 && n2==n3 && l2==l3 &&  twoj2==twoj3 ) {
+                                        factor3 = pow((A3-max3+q3)*(A3-max3+q3-1.)*(A3-max3+q3-2.)/q3/(q3-1.)/(q3-2), 0.3333);
+                                    } else {
+                                        factor3 = sqrt((A3-max3+q3)*(A3-max3+q3-1.)/q3/(q3-1.));
+                                    }
+                                } else if( t2==t3 && n2==n3 && l2==l3 &&  twoj2==twoj3 ) {
+                                    factor3 = sqrt((A3-max3+q3)*(A3-max3+q3-1.)/q3/(q3-1.));
+                                } else {
+                                    factor3 = double(A3 - max3+q3 ) / q3;
+                                }
+                            }
+                            double sum = triplet1->getSum();
+                            triplet1->setfnorm( factor1*factor2*factor3 );
+
+
+                            /* De fermi test werkt hier niet. Wel voor (12) maar niet met de derde erbij.
+                             * dit lost zichzefk wel op later
+                             * Nu is de vraag, hoe zorgen we ervoor dat dit wel zou werken
+                             * en niet later opgelost zou worden.
+                             */
+                            //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl;
+
+
+                            // Two tests
+                            // Remove triplets that are zero (so they are not anti-symmetric,
+                            // And give error if sum != 0
+                            // Both should never happen in current version of the code
+                            if( factor1*factor2*factor3*sum < 1e-6 ) {
+                                delete triplet1;
+                            } else if( sum < 0.99 ) {
+                                totalsum+= sum*factor1*factor2*factor3;
+                                cerr << "CHECK " << __FILE__ << ":" << __LINE__ << " " << sum << endl;
+                                triplets->push_back( triplet1);
+                            }
+                            // If test succesfull, add to list
+                            else {
+                                totalsum+= sum*factor1*factor2*factor3;
+                                #pragma omp critical(triplets_push_back)
+                                {
+                                    triplets->push_back( triplet1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    number_of_triplets = triplets->size();
+    cout << t1 << t2 << t3 << " triplets made." << endl;
+    cout << "sum " << totalsum << endl;
+    cout << "total triplets " << number_of_triplets << endl;
+    tripletsMade= true;
 }
 
 
 // Also see shell.h
 void Nucleus::get_shell_max( int A, int* shell_max, int* max )
 {
-  if( A <= 2 )
-  {
-    *shell_max= 0;
-    *max= 2;
-  }
-  else if( A <= 6 )
-  {
-    *shell_max= 1;
-    *max= 6;
-  }
-  else if( A <= 8 )
-  {
-    *shell_max= 2;
-    *max= 8;
-  }
-  else if( A <= 14 )
-  {
-    *shell_max= 3;
-    *max= 14;
-  }
-  else if( A <= 16 )
-  {
-    *shell_max= 4;
-    *max= 16;
-  }
-  else if( A <= 20)
-  {
-    *shell_max= 5;
-    *max= 20;
-  }
-  else if( A <= 28 )
-  {
-    *shell_max= 6;
-    *max= 28;
-  }
-  else if( A <= 32 )
-  {
-    *shell_max= 7;
-    *max= 32;
-  }
-  else if( A <= 38 )
-  {
-    *shell_max= 8;
-    *max= 38;
-  }
-  else if( A <= 40 )
-  {
-    *shell_max= 9;
-    *max= 40;
-  }
-  else if( A <= 50 )
-  {
-    *shell_max= 10;
-    *max= 50;
-  }
-  else if( A <= 58 )
-  {
-    *shell_max= 11;
-    *max= 58;
-  }
-  else if( A <= 64 )
-  {
-    *shell_max= 12;
-    *max= 64;
-  }
-  else if( A <= 68 )
-  {
-    *shell_max= 13;
-    *max= 68;
-  }
-  else if( A <= 70 )
-  {
-    *shell_max= 14;
-    *max= 70;
-  }
-  else if( A <= 82 )
-  {
-    *shell_max= 15;
-    *max= 82;
-  }
-  else if( A <= 92 )
-  {
-    *shell_max= 16;
-    *max= 92;
-  }
-  else if( A <= 100 )
-  {
-    *shell_max= 17;
-    *max= 100;
-  }
-  else if( A <= 106 )
-  {
-    *shell_max= 18;
-    *max= 106;
-  }
-  else if( A <= 110 )
-  {
-    *shell_max= 19;
-    *max= 110;
-  }
-  else if( A <= 112 )
-  {
-    *shell_max= 20;
-    *max= 112;
-  }
-  else if( A <= 126 )
-  {
-    *shell_max= 21;
-    *max= 126;
-  }
+    if( A <= 2 ) {
+        *shell_max= 0;
+        *max= 2;
+    } else if( A <= 6 ) {
+        *shell_max= 1;
+        *max= 6;
+    } else if( A <= 8 ) {
+        *shell_max= 2;
+        *max= 8;
+    } else if( A <= 14 ) {
+        *shell_max= 3;
+        *max= 14;
+    } else if( A <= 16 ) {
+        *shell_max= 4;
+        *max= 16;
+    } else if( A <= 20) {
+        *shell_max= 5;
+        *max= 20;
+    } else if( A <= 28 ) {
+        *shell_max= 6;
+        *max= 28;
+    } else if( A <= 32 ) {
+        *shell_max= 7;
+        *max= 32;
+    } else if( A <= 38 ) {
+        *shell_max= 8;
+        *max= 38;
+    } else if( A <= 40 ) {
+        *shell_max= 9;
+        *max= 40;
+    } else if( A <= 50 ) {
+        *shell_max= 10;
+        *max= 50;
+    } else if( A <= 58 ) {
+        *shell_max= 11;
+        *max= 58;
+    } else if( A <= 64 ) {
+        *shell_max= 12;
+        *max= 64;
+    } else if( A <= 68 ) {
+        *shell_max= 13;
+        *max= 68;
+    } else if( A <= 70 ) {
+        *shell_max= 14;
+        *max= 70;
+    } else if( A <= 82 ) {
+        *shell_max= 15;
+        *max= 82;
+    } else if( A <= 92 ) {
+        *shell_max= 16;
+        *max= 92;
+    } else if( A <= 100 ) {
+        *shell_max= 17;
+        *max= 100;
+    } else if( A <= 106 ) {
+        *shell_max= 18;
+        *max= 106;
+    } else if( A <= 110 ) {
+        *shell_max= 19;
+        *max= 110;
+    } else if( A <= 112 ) {
+        *shell_max= 20;
+        *max= 112;
+    } else if( A <= 126 ) {
+        *shell_max= 21;
+        *max= 126;
+    }
 }
 
 
-/** 
+/**
  * Note: This will calculate the all normalised anti-sym pairs \f$ |t1t2>_nas
  * \f$ For the sum over all combinations, it is assumed \f$ \alpha_1 < \alpha_2
  * \f$ where \f$ \alpha = nljm_j \f$ If a single nucleon shell is not fully
@@ -435,201 +340,184 @@ void Nucleus::get_shell_max( int A, int* shell_max, int* max )
  */
 void Nucleus::makepairs()
 {
-  if( pairsMade== true) return;
+    if( pairsMade== true) return;
 
-  int t1 = getT1();
-  int t2 = getT2();
-  int A1 = getA1();
-  int A2 = getA2();
+    int t1 = getT1();
+    int t2 = getT2();
+    int A1 = getA1();
+    int A2 = getA2();
 
-  int shell1_max= 0, shell2_max= 0;
-  int max1= 0, max2= 0;
-  get_shell_max(A1, &shell1_max, &max1 );
-  get_shell_max(A2, &shell2_max, &max2 );
+    int shell1_max= 0, shell2_max= 0;
+    int max1= 0, max2= 0;
+    get_shell_max(A1, &shell1_max, &max1 );
+    get_shell_max(A2, &shell2_max, &max2 );
 
 
-  vector< Shell* >* shells1= getShells1();
-  vector< Shell* >* shells2= getShells2();
+    vector< Shell* >* shells1= getShells1();
+    vector< Shell* >* shells2= getShells2();
 
-#pragma omp parallel for collapse(2)
-  for( int i1= 0; i1 <= shell1_max; i1++ )
-  {
-    for( int i2= 0; i2 <= shell2_max; i2++ )
-    {
-      if( t1==t2 )
-      { 
-        if( i2 < i1 ) continue; // prevent double counting, only if t1==t2, e.g. pp or nn pairs
-      }
-      Shell* shell1= (*shells1)[i1];
-      Shell* shell2= (*shells2)[i2];
+    #pragma omp parallel for collapse(2)
+    for( int i1= 0; i1 <= shell1_max; i1++ ) {
+        for( int i2= 0; i2 <= shell2_max; i2++ ) {
+            if( t1==t2 ) {
+                if( i2 < i1 ) continue; // prevent double counting, only if t1==t2, e.g. pp or nn pairs
+            }
+            Shell* shell1= (*shells1)[i1];
+            Shell* shell2= (*shells2)[i2];
 
-      int n1= (shell1)->getN();
-      int l1= (shell1)->getL();
-      int twoj1= (shell1)->getTwo_j();
-      int q1 = twoj1 + 1;
+            int n1= (shell1)->getN();
+            int l1= (shell1)->getL();
+            int twoj1= (shell1)->getTwo_j();
+            int q1 = twoj1 + 1;
 
-      int n2= (shell2)->getN();
-      int l2= (shell2)->getL();
-      int twoj2= (shell2)->getTwo_j();
-      int q2 = twoj2 + 1;
+            int n2= (shell2)->getN();
+            int l2= (shell2)->getL();
+            int twoj2= (shell2)->getTwo_j();
+            int q2 = twoj2 + 1;
 
-      RecMosh* mosh;
-      // create mosh brackets for pair caclulations
-#pragma omp critical(recmosh)
-      {
-      mosh = RecMosh::createRecMosh( n1, l1, n2, l2, inputdir, resultdir  );
-      }
+            RecMosh* mosh;
+            // create mosh brackets for pair caclulations
+            #pragma omp critical(recmosh)
+            {
+                mosh = RecMosh::createRecMosh( n1, l1, n2, l2, inputdir, resultdir  );
+            }
 
-      for( int two_mj1 = -twoj1; two_mj1 < twoj1+1; two_mj1+=2 )
-      {
-        for( int two_mj2 = -twoj2; two_mj2 < twoj2+1; two_mj2+=2 )
-        {
-          if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 <= two_mj1 ) continue; 
-          // make pair with combination of it1 and it2; 
-      Pair* pair;
-#pragma omp critical(recmosh)
-      {
-          pair = new Pair( mosh, n1, l1, twoj1, two_mj1, t1, n2, l2, twoj2, two_mj2, t2 );
-      }
+            for( int two_mj1 = -twoj1; two_mj1 < twoj1+1; two_mj1+=2 ) {
+                for( int two_mj2 = -twoj2; two_mj2 < twoj2+1; two_mj2+=2 ) {
+                    if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 <= two_mj1 ) continue;
+                    // make pair with combination of it1 and it2;
+                    Pair* pair;
+                    #pragma omp critical(recmosh)
+                    {
+                        pair = new Pair( mosh, n1, l1, twoj1, two_mj1, t1, n2, l2, twoj2, two_mj2, t2 );
+                    }
 
 
 
-          /** Calculate normalization factor if shells are no fully occupied
-           * max1 - A1 is the number of "missing" particles in the valence shell
-           * The number of particles in the valence (open) shell is:
-           * (2j+1) - (max1 - A1) = A1 - max1 + q1
-           * If t1==t2 the two shell arrays should be identical. So we expect
-           * A1==A2 and max1==max2
-           * The correction factor for the number of pairs in an open shell is (n1,l1,j1)==(n2,l2,j2)
-           * (number of possible pairs)/(number of total pairs)
-           * \f[
-           *   \frac{ (A1-max1+q1)(A1-max1+q1-1) }{ q1(q1-1) }
-           * = \frac{ (A2-max2+q2)(A2-max2+q2-1) }{ q2(q2-1) }
-           * \f]
-           * To keep code symmetric, instead of multiplying the pair once with the above factor,
-           * we multiply it twice with the square root of the above formula.
-           */
-          double factor1 = 1;
-          double factor2 = 1;
-          if( i1== shell1_max)
-          {
-             if( t1==t2) { assert(n1==n2 && l1==l2 && twoj1==twoj2); } // testing <-- Camille //
-             if( t1==t2 && n1==n2 && l1==l2 &&  twoj1==twoj2 )
-             {
-             assert(A1==A2 && max1==max2); // testing <-- Camille //
-             factor1 = sqrt((A1-max1+q1)*(A1-max1+q1-1.)/q1/(q1-1.));
-             }
-             else
-             {
-             factor1 = double(A1 - max1+q1 ) / q1;
-             }
-          }
-          if( i2== shell2_max)
-          {
-             if( t1==t2 && n1==n2 && l1==l2 &&  twoj1==twoj2 )
-             {
-             factor2 = sqrt((A2-max2+q2)*(A2-max2+q2-1.)/q2/(q2-1.));
-             }
-             else
-             {
-             factor2 = double(A2 - max2+q2 ) / q2;
-             }
-          }
+                    /** Calculate normalization factor if shells are no fully occupied
+                     * max1 - A1 is the number of "missing" particles in the valence shell
+                     * The number of particles in the valence (open) shell is:
+                     * (2j+1) - (max1 - A1) = A1 - max1 + q1
+                     * If t1==t2 the two shell arrays should be identical. So we expect
+                     * A1==A2 and max1==max2
+                     * The correction factor for the number of pairs in an open shell is (n1,l1,j1)==(n2,l2,j2)
+                     * (number of possible pairs)/(number of total pairs)
+                     * \f[
+                     *   \frac{ (A1-max1+q1)(A1-max1+q1-1) }{ q1(q1-1) }
+                     * = \frac{ (A2-max2+q2)(A2-max2+q2-1) }{ q2(q2-1) }
+                     * \f]
+                     * To keep code symmetric, instead of multiplying the pair once with the above factor,
+                     * we multiply it twice with the square root of the above formula.
+                     */
+                    double factor1 = 1;
+                    double factor2 = 1;
+                    if( i1== shell1_max) {
+                        if( t1==t2) {
+                            assert(n1==n2 && l1==l2 && twoj1==twoj2);    // testing <-- Camille //
+                        }
+                        if( t1==t2 && n1==n2 && l1==l2 &&  twoj1==twoj2 ) {
+                            assert(A1==A2 && max1==max2); // testing <-- Camille //
+                            factor1 = sqrt((A1-max1+q1)*(A1-max1+q1-1.)/q1/(q1-1.));
+                        } else {
+                            factor1 = double(A1 - max1+q1 ) / q1;
+                        }
+                    }
+                    if( i2== shell2_max) {
+                        if( t1==t2 && n1==n2 && l1==l2 &&  twoj1==twoj2 ) {
+                            factor2 = sqrt((A2-max2+q2)*(A2-max2+q2-1.)/q2/(q2-1.));
+                        } else {
+                            factor2 = double(A2 - max2+q2 ) / q2;
+                        }
+                    }
 
-          pair->setfnorm( factor1*factor2 );
+                    pair->setfnorm( factor1*factor2 );
 //          pair->setfnorm( 1 );
 
-          double sum = pair->getSum();
-          // Fermi test
-          //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl; 
-          if( sum < 1e-4 || factor1*factor2 == 0 ) delete pair;
-          else if( sum < 0.99 ) cerr << "CHECK " << __FILE__ << ":" << __LINE__ << endl;
-          else
-          {
-#pragma omp critical(pairs_push_back)
-            {
-            pairs->push_back( pair);
+                    double sum = pair->getSum();
+                    // Fermi test
+                    //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl;
+                    if( sum < 1e-4 || factor1*factor2 == 0 ) delete pair;
+                    else if( sum < 0.99 ) cerr << "CHECK " << __FILE__ << ":" << __LINE__ << endl;
+                    else {
+                        #pragma omp critical(pairs_push_back)
+                        {
+                            pairs->push_back( pair);
+                        }
+                    }
+                }
             }
-          }
-        }
-      }
 
-#pragma omp critical(recmosh)
-      {
-      mosh->remove();
-      }
+            #pragma omp critical(recmosh)
+            {
+                mosh->remove();
+            }
+        }
     }
-  }
-  number_of_pairs = pairs->size();
-  cout << ((t1==1)?"p":"n") << ((t2==1)?"p":"n") << " pairs made." << endl;
-  cout << "total pairs " << number_of_pairs << endl;
-  pairsMade= true;
+    number_of_pairs = pairs->size();
+    cout << ((t1==1)?"p":"n") << ((t2==1)?"p":"n") << " pairs made." << endl;
+    cout << "total pairs " << number_of_pairs << endl;
+    pairsMade= true;
 }
 
 
 /*
  * Make from the list of Pairs, a list of Pair coefs
- * There isn't any overlap between Pairs because the me have 
+ * There isn't any overlap between Pairs because the me have
  * \sum_{\alpha<\beta} nas<\alpha\beta| O |\alpha\beta>_nas
  * Between Paircoefs there is overlap possible of they originate
  * from the same Pair.
  */
 void Nucleus::makepaircoefs()
 {
-  if( pairsMade == false ) makepairs();
-  cout << "Make Pair Coefs ... " << endl;
-  int max= get_number_of_pairs();
-  // SUm over the pairs
-  for( int i= 0; i < max; i++ ) // loop over \f$ \braket{ \alpha_1 \alpha_2 } \f$ pairs
-  {
-    Pair* pair= getPair(i);
-    int maxc= pair->get_number_of_coeff();
-    for( int ci= 0; ci < maxc; ci++ ) // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
-    {
-      Newcoef* coefi;
-      double normi;
-      pair->getCoeff( ci, &coefi, &normi ); // coefi now points to Pair::coeflist[i], normi is the norm (only \neq 1 for open shells, set by Pair::setfnorm())
+    if( pairsMade == false ) makepairs();
+    cout << "Make Pair Coefs ... " << endl;
+    int max= get_number_of_pairs();
+    // SUm over the pairs
+    for( int i= 0; i < max; i++ ) { // loop over \f$ \braket{ \alpha_1 \alpha_2 } \f$ pairs
+        Pair* pair= getPair(i);
+        int maxc= pair->get_number_of_coeff();
+        for( int ci= 0; ci < maxc; ci++ ) { // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
+            Newcoef* coefi;
+            double normi;
+            pair->getCoeff( ci, &coefi, &normi ); // coefi now points to Pair::coeflist[i], normi is the norm (only \neq 1 for open shells, set by Pair::setfnorm())
 
-        double vali= normi*coefi->getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
-        string keyi= coefi->getkey();
-        map < string, Paircoef* >::iterator iti = paircoefs->find( keyi ); // is the key already in our map?
-        if( iti == paircoefs->end() ) // no
-        {
-          (*paircoefs)[keyi]= new Paircoef( coefi );
-          iti = paircoefs->find(keyi);
+            double vali= normi*coefi->getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
+            string keyi= coefi->getkey();
+            map < string, Paircoef* >::iterator iti = paircoefs->find( keyi ); // is the key already in our map?
+            if( iti == paircoefs->end() ) { // no
+                (*paircoefs)[keyi]= new Paircoef( coefi );
+                iti = paircoefs->find(keyi);
+            }
+            Paircoef* pci= iti->second;
+
+            // Add value of the matrix element of a paircoef with itself, e.g. \f$ | C_{\alpha_1,\alpha_2}^{A} |^{2} \f$
+            pci->add(vali*vali);
+
+            // Add all the links of a Paircoef with the other Paircoefs generated
+            // from this Pair.
+            // A link is only added to one of the two Paircoefs involved.
+            // Hence the sum from ci+1.
+            for( int cj= ci+1; cj < maxc; cj++ ) {
+                Newcoef* coefj;
+                double normj;
+                pair->getCoeff( cj, &coefj, &normj );
+
+                double valj= normj*coefj->getCoef();
+                string keyj= coefj->getkey();
+                map < string, Paircoef* >::iterator itj = paircoefs->find( keyj );
+                if( itj == paircoefs->end() ) {
+                    (*paircoefs)[keyj]= new Paircoef( coefj );
+                    itj = paircoefs->find(keyj);
+                }
+                Paircoef* pcj= itj->second;
+
+                pci->add( pcj, vali*valj );
+            }
         }
-        Paircoef* pci= iti->second;
-
-        // Add value of the matrix element of a paircoef with itself, e.g. \f$ | C_{\alpha_1,\alpha_2}^{A} |^{2} \f$
-        pci->add(vali*vali);
-      
-      // Add all the links of a Paircoef with the other Paircoefs generated
-      // from this Pair.
-      // A link is only added to one of the two Paircoefs involved.
-      // Hence the sum from ci+1.
-      for( int cj= ci+1; cj < maxc; cj++ )
-      {
-        Newcoef* coefj;
-        double normj;
-        pair->getCoeff( cj, &coefj, &normj );
-
-        double valj= normj*coefj->getCoef();
-        string keyj= coefj->getkey();
-        map < string, Paircoef* >::iterator itj = paircoefs->find( keyj );
-        if( itj == paircoefs->end() )
-        {
-          (*paircoefs)[keyj]= new Paircoef( coefj );
-          itj = paircoefs->find(keyj);
-        }
-        Paircoef* pcj= itj->second;
-
-        pci->add( pcj, vali*valj );
-      }
     }
-  }
-  cout << "pair coefs " << paircoefs->size() << endl;
-  number_of_paircoefs= paircoefs->size();
-  paircoefsMade= true;
+    cout << "pair coefs " << paircoefs->size() << endl;
+    number_of_paircoefs= paircoefs->size();
+    paircoefsMade= true;
 }
 
 
@@ -639,139 +527,130 @@ void Nucleus::makepaircoefs()
  */
 void Nucleus::maketripletcoefs()
 {
-  if( tripletsMade == false ) maketriplets();
-  cout << "MAKE TRIPLET COEFS" << endl;
-  int max= get_number_of_triplets();
-  for( int i= 0; i < max; i++ )
-  {
-    Triplet* triplet= getTriplet(i);
-    int maxc= triplet->getSize();
-    for( int ci= 0; ci < maxc; ci++ )
-    {
-      Threebodycoef* coefi;
-      double normi;
-      triplet->getCoeff( ci, &coefi, &normi );
+    if( tripletsMade == false ) maketriplets();
+    cout << "MAKE TRIPLET COEFS" << endl;
+    int max= get_number_of_triplets();
+    for( int i= 0; i < max; i++ ) {
+        Triplet* triplet= getTriplet(i);
+        int maxc= triplet->getSize();
+        for( int ci= 0; ci < maxc; ci++ ) {
+            Threebodycoef* coefi;
+            double normi;
+            triplet->getCoeff( ci, &coefi, &normi );
 
-        double vali= normi*coefi->getvalue();
-        string keyi= coefi->getkey();
-        map < string, Tripletcoef* >::iterator iti = tripletcoefs->find( keyi );
-        if( iti == tripletcoefs->end() )
-        {
-          (*tripletcoefs)[keyi]= new Tripletcoef( coefi );
-          iti = tripletcoefs->find(keyi);
+            double vali= normi*coefi->getvalue();
+            string keyi= coefi->getkey();
+            map < string, Tripletcoef* >::iterator iti = tripletcoefs->find( keyi );
+            if( iti == tripletcoefs->end() ) {
+                (*tripletcoefs)[keyi]= new Tripletcoef( coefi );
+                iti = tripletcoefs->find(keyi);
+            }
+            Tripletcoef* tci= iti->second;
+
+            tci->add(vali*vali);
+
+            for( int cj= ci+1; cj < maxc; cj++ ) {
+                Threebodycoef* coefj;
+                double normj;
+                triplet->getCoeff( cj, &coefj, &normj );
+
+                double valj= normj*coefj->getvalue();
+                string keyj= coefj->getkey();
+                map < string, Tripletcoef* >::iterator itj = tripletcoefs->find( keyj );
+                if( itj == tripletcoefs->end() ) {
+                    (*tripletcoefs)[keyj]= new Tripletcoef( coefj );
+                    itj = tripletcoefs->find(keyj);
+                }
+                Tripletcoef* tcj= itj->second;
+
+                tci->add( tcj, vali*valj );
+            }
         }
-        Tripletcoef* tci= iti->second;
-
-        tci->add(vali*vali);
-      
-      for( int cj= ci+1; cj < maxc; cj++ )
-      {
-        Threebodycoef* coefj;
-        double normj;
-        triplet->getCoeff( cj, &coefj, &normj );
-
-        double valj= normj*coefj->getvalue();
-        string keyj= coefj->getkey();
-        map < string, Tripletcoef* >::iterator itj = tripletcoefs->find( keyj );
-        if( itj == tripletcoefs->end() )
-        {
-          (*tripletcoefs)[keyj]= new Tripletcoef( coefj );
-          itj = tripletcoefs->find(keyj);
-        }
-        Tripletcoef* tcj= itj->second;
-        
-        tci->add( tcj, vali*valj );
-      }
+        // REMOVE TRIPLETS IF NOT NEEDED NAY MORE
+        delete triplet;
     }
-    // REMOVE TRIPLETS IF NOT NEEDED NAY MORE
-    delete triplet;
-  }
-  cout << "triplet coefs " << tripletcoefs->size() << endl;
-  number_of_tripletcoefs= tripletcoefs->size();
+    cout << "triplet coefs " << tripletcoefs->size() << endl;
+    number_of_tripletcoefs= tripletcoefs->size();
 
 // REMOVE TRIPLETS IF NOT NEEDED
-  delete triplets;
-  triplets= new vector<Triplet*>();
-  triplets->reserve(256);
-  tripletsMade= false;
+    delete triplets;
+    triplets= new vector<Triplet*>();
+    triplets->reserve(256);
+    tripletsMade= false;
 
-  tripletcoefsMade= true;
+    tripletcoefsMade= true;
 }
 
 
 
 int Nucleus::get_number_of_tripletcoefs()
 {
-  if( tripletcoefsMade == false ) maketripletcoefs();
-  return number_of_tripletcoefs;
+    if( tripletcoefsMade == false ) maketripletcoefs();
+    return number_of_tripletcoefs;
 }
 
 int Nucleus::get_number_of_paircoefs()
 {
-  if( paircoefsMade == false ) makepaircoefs();
-  return number_of_paircoefs;
+    if( paircoefsMade == false ) makepaircoefs();
+    return number_of_paircoefs;
 }
 
 int Nucleus::get_number_of_pairs()
 {
-  if( pairsMade == false ) makepairs();
-  return number_of_pairs;
+    if( pairsMade == false ) makepairs();
+    return number_of_pairs;
 }
 
 int Nucleus::get_number_of_triplets()
 {
-  if( tripletsMade == false ) maketriplets();
-  return number_of_triplets;
+    if( tripletsMade == false ) maketriplets();
+    return number_of_triplets;
 }
 
 Pair* Nucleus::getPair( int i )
 {
-  if( pairsMade == false ) makepairs();
-  if( i >= number_of_pairs )
-  {
-    cerr << "get_Pairs " << i << " index out of range" << endl;
-    exit(-1);
-  }
-  return (*pairs)[i];
+    if( pairsMade == false ) makepairs();
+    if( i >= number_of_pairs ) {
+        cerr << "get_Pairs " << i << " index out of range" << endl;
+        exit(-1);
+    }
+    return (*pairs)[i];
 }
 
 Paircoef* Nucleus::getPaircoef( int i )
 {
-  if( pairsMade == false ) makepaircoefs();
-  if( i >= number_of_paircoefs )
-  {
-    cerr << "get_Paircoefs " << i << " index out of range" << endl;
-    exit(-1);
-  }
-  map< string, Paircoef*>::iterator it= paircoefs->begin();
-  for( int j= 0; j < i; j++)
-    it++;
-  return it->second;
+    if( pairsMade == false ) makepaircoefs();
+    if( i >= number_of_paircoefs ) {
+        cerr << "get_Paircoefs " << i << " index out of range" << endl;
+        exit(-1);
+    }
+    map< string, Paircoef*>::iterator it= paircoefs->begin();
+    for( int j= 0; j < i; j++)
+        it++;
+    return it->second;
 }
 
 Triplet* Nucleus::getTriplet( int i )
 {
-  if( tripletsMade == false ) maketriplets();
-  if( i >= number_of_triplets )
-  {
-    cerr << "get_triplets " << i << " index out of range" << endl;
-    exit(-1);
-  }
-  return triplets->at(i);
+    if( tripletsMade == false ) maketriplets();
+    if( i >= number_of_triplets ) {
+        cerr << "get_triplets " << i << " index out of range" << endl;
+        exit(-1);
+    }
+    return triplets->at(i);
 }
 
 Tripletcoef* Nucleus::getTripletcoef( int i )
 {
-  if( pairsMade == false ) maketripletcoefs();
-  if( i >= number_of_tripletcoefs )
-  {
-    cerr << "get_Tripletcoefs " << i << " index out of range" << endl;
-    exit(-1);
-  }
-  map< string, Tripletcoef*>::iterator it= tripletcoefs->begin();
-  for( int j= 0; j < i; j++)
-    it++;
-  return it->second;
+    if( pairsMade == false ) maketripletcoefs();
+    if( i >= number_of_tripletcoefs ) {
+        cerr << "get_Tripletcoefs " << i << " index out of range" << endl;
+        exit(-1);
+    }
+    map< string, Tripletcoef*>::iterator it= tripletcoefs->begin();
+    for( int j= 0; j < i; j++)
+        it++;
+    return it->second;
 }
 
 
@@ -779,103 +658,98 @@ Tripletcoef* Nucleus::getTripletcoef( int i )
 
 double Nucleus::getlLPairs( int n, int l, int S, int L )
 {
-  if( pairsMade == false ) makepairs();
-        double sum= 0;
-        vector< Pair*>::iterator it;
-        for( it= pairs->begin(); it!= pairs->end(); it++ )
-        {
-                double val= (*it)->getRelPair( n, l, S, L);
-                sum += val;
-        }
-        return sum;
+    if( pairsMade == false ) makepairs();
+    double sum= 0;
+    vector< Pair*>::iterator it;
+    for( it= pairs->begin(); it!= pairs->end(); it++ ) {
+        double val= (*it)->getRelPair( n, l, S, L);
+        sum += val;
+    }
+    return sum;
 
 }
 
 double Nucleus::getlPairs( int n, int l, int S )
 {
-  if( pairsMade == false ) makepairs();
-        double sum= 0;
-        vector< Pair*>::iterator it;
-        for( it= pairs->begin(); it!= pairs->end(); it++ )
-        {
-                double val= (*it)->getRelPair( n, l, S);
-                sum += val;
-        }
-        return sum;
+    if( pairsMade == false ) makepairs();
+    double sum= 0;
+    vector< Pair*>::iterator it;
+    for( it= pairs->begin(); it!= pairs->end(); it++ ) {
+        double val= (*it)->getRelPair( n, l, S);
+        sum += val;
+    }
+    return sum;
 }
 
 void Nucleus::printPairsPerShell()
 {
-  if( pairsMade == false ) makepairs();
+    if( pairsMade == false ) makepairs();
 
-  stringstream filename;
-  filename << resultdir << "/PairsPerShell." << A << "." << getT1() << "." << getT2();
-  ofstream file( filename.str().c_str() );
-  file << "# " << A << " " << Z << endl;
-  file << "# T1 " << getT1() << " \t A1 " << getA1() << endl;
-  file << "# T2 " << getT2() << " \t A2 " << getA2() << endl;
-  file << "# n_1 \t l_1 \t j_1 \t mj1";
-  file << " \t n_2 \t l_2 \t j_2 \t mj2";
-  file << "\t all \t l=0 \t 1 \t 2 \t 3 \t ...";
-  file << endl;
-
-  vector< Pair*>::iterator it;
-  for( it= pairs->begin(); it!= pairs->end(); it++ )
-  {
-    double totalPairs= (*it)->getRelPair( -1 );
-    file << (*it)->getn1() << "\t" << (*it)->getl1() << "\t" << (*it)->gettwo_j1() << "\t" << (*it)->gettwo_mj1() ;
-    file << "\t" << (*it)->getn2() << "\t" << (*it)->getl2() << "\t" << (*it)->gettwo_j2() << "\t" << (*it)->gettwo_mj2() ;
-    file << "\t" << totalPairs;
-    int i= 0;
-    double sum= 0;
-    while( sum < 0.999*totalPairs )
-    {
-      double result = (*it)->getRelPair( i );
-      file << "\t" << result;
-      sum+= result;
-      i++;
-    }
+    stringstream filename;
+    filename << resultdir << "/PairsPerShell." << A << "." << getT1() << "." << getT2();
+    ofstream file( filename.str().c_str() );
+    file << "# " << A << " " << Z << endl;
+    file << "# T1 " << getT1() << " \t A1 " << getA1() << endl;
+    file << "# T2 " << getT2() << " \t A2 " << getA2() << endl;
+    file << "# n_1 \t l_1 \t j_1 \t mj1";
+    file << " \t n_2 \t l_2 \t j_2 \t mj2";
+    file << "\t all \t l=0 \t 1 \t 2 \t 3 \t ...";
     file << endl;
-  }
-  file.close();
+
+    vector< Pair*>::iterator it;
+    for( it= pairs->begin(); it!= pairs->end(); it++ ) {
+        double totalPairs= (*it)->getRelPair( -1 );
+        file << (*it)->getn1() << "\t" << (*it)->getl1() << "\t" << (*it)->gettwo_j1() << "\t" << (*it)->gettwo_mj1() ;
+        file << "\t" << (*it)->getn2() << "\t" << (*it)->getl2() << "\t" << (*it)->gettwo_j2() << "\t" << (*it)->gettwo_mj2() ;
+        file << "\t" << totalPairs;
+        int i= 0;
+        double sum= 0;
+        while( sum < 0.999*totalPairs ) {
+            double result = (*it)->getRelPair( i );
+            file << "\t" << result;
+            sum+= result;
+            i++;
+        }
+        file << endl;
+    }
+    file.close();
 }
 void Nucleus::printPairs()
- {
-  stringstream filename;
-  filename << resultdir << "/Pairs." << A << "." << getT1() << "." << getT2();
-  ofstream file( filename.str().c_str() );
+{
+    stringstream filename;
+    filename << resultdir << "/Pairs." << A << "." << getT1() << "." << getT2();
+    ofstream file( filename.str().c_str() );
 
-  file << "# " << A << " " << Z << endl;
-  file << "# T1 " << getT1() << " \t A1 " << getA1() << endl;
-  file << "# T2 " << getT2() << " \t A2 " << getA2() << endl;
-  file << " (n l S) " << endl;
-  file << " (0 0 0) \t" << getlPairs( 0, 0, 0 ) << endl;
-  file << " (0 0 1) \t" << getlPairs( 0, 0, 1 ) << endl;
-  file << " (- 0 0) \t" << getlPairs( -1, 0, 0) << endl;
-  file << " (- 0 1) \t" << getlPairs( -1, 0, 1) << endl;
-  file << " (- - 1) \t" << getlPairs( -1, -1, 1) << endl;
-  double sum= 0;
-  double totalpairs = getlPairs( -1 );
-  int i= 0;
-  while( sum < 0.999*totalpairs )
-  {
-    double result = getlPairs( i);
+    file << "# " << A << " " << Z << endl;
+    file << "# T1 " << getT1() << " \t A1 " << getA1() << endl;
+    file << "# T2 " << getT2() << " \t A2 " << getA2() << endl;
+    file << " (n l S) " << endl;
+    file << " (0 0 0) \t" << getlPairs( 0, 0, 0 ) << endl;
+    file << " (0 0 1) \t" << getlPairs( 0, 0, 1 ) << endl;
+    file << " (- 0 0) \t" << getlPairs( -1, 0, 0) << endl;
+    file << " (- 0 1) \t" << getlPairs( -1, 0, 1) << endl;
+    file << " (- - 1) \t" << getlPairs( -1, -1, 1) << endl;
+    double sum= 0;
+    double totalpairs = getlPairs( -1 );
+    int i= 0;
+    while( sum < 0.999*totalpairs ) {
+        double result = getlPairs( i);
 //   double resultS1 = getlPairs( -1, i, 1);
-    file << " (- " << i << " -) \t"  << result << endl;
+        file << " (- " << i << " -) \t"  << result << endl;
 // file << " (- " << i << " 1) \t"  << resultS1 << endl;
-    sum += result;
-    i++;
-  }
-  file << " (- - -) \t" << sum << "/" << totalpairs << endl;
-  file << "# (n l S L) " << endl;
-  file << " (0 0 0 0) \t" << getlLPairs(0, 0, 0, 0) << endl;
-  file << " (0 0 1 0) \t" << getlLPairs(0, 0, 1, 0) << endl;
-  file << " (- 0 0 0) \t" << getlLPairs(-1, 0, 0, 0) << endl;
-  file << " (- 0 1 0) \t" << getlLPairs(-1, 0, 1, 0) << endl;
-  file.close();
+        sum += result;
+        i++;
+    }
+    file << " (- - -) \t" << sum << "/" << totalpairs << endl;
+    file << "# (n l S L) " << endl;
+    file << " (0 0 0 0) \t" << getlLPairs(0, 0, 0, 0) << endl;
+    file << " (0 0 1 0) \t" << getlLPairs(0, 0, 1, 0) << endl;
+    file << " (- 0 0 0) \t" << getlLPairs(-1, 0, 0, 0) << endl;
+    file << " (- 0 1 0) \t" << getlLPairs(-1, 0, 1, 0) << endl;
+    file.close();
 
 }
-  
+
 /*
 double Nucleus::angle( double angle )
 {

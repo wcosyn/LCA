@@ -14,16 +14,16 @@ using std::map;
 /**
  * \brief Containts the result of  \f$ F(P) = \int dr r^{i+2} j_l(\frac{rP}{\sqrt{\nu}})  j_k(\frac{r q\sqrt{2}}{\sqrt{nu}} )  f(\frac{r}{\sqrt{nu}})  e^{\frac{-r^2}{2}} \f$
  *
- * where \f$P\f$ in cm momentum. 
+ * where \f$P\f$ in cm momentum.
  *\f$ f\f$ is the correlation function and \f$q\f$ is a fixed parameter (e.g. the ONMD momentum ).
  * So a different density_ob_integrand_cf object is needed for every \f$q\f$.
  * Used by different operators.
- * See thesis appendix D3 - one nucleon momentum distribution for more 
+ * See thesis appendix D3 - one nucleon momentum distribution for more
  * information about the integral
  */
 class density_ob_integrand_cf
 {
-  public:
+public:
     /**
      * \brief Constructor
      *
@@ -43,7 +43,7 @@ class density_ob_integrand_cf
      */
     double get_value( int k, int l, int nA, int lA, double p );
 
-  private:
+private:
     /// Mass number
     int A;
     /// stepsize for parameter P
@@ -76,7 +76,15 @@ class density_ob_integrand_cf
      * @struct params_doic
      * \brief integrand(double r, void* params) parameters @see integrand( double r, void* params ).
      */
-    struct params_doic { int k; int l; uint i; double nu; double P; double q; double(*f)(double); };
+    struct params_doic {
+        int k;
+        int l;
+        uint i;
+        double nu;
+        double P;
+        double q;
+        double(*f)(double);
+    };
 };
 #endif
- 
+

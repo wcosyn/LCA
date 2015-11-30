@@ -3,9 +3,11 @@
 #include <gsl/gsl_sf_bessel.h>
 #include <gsl/gsl_sf_exp.h>
 #include <vector>
-using std::vector; 
+using std::vector;
 #include <iostream>
-using std::cout; using std::endl; using std::cerr;
+using std::cout;
+using std::endl;
+using std::cerr;
 #include <cmath>
 #include "correlation_functions.h"
 
@@ -19,7 +21,7 @@ using std::cout; using std::endl; using std::cerr;
  */
 class speedy
 {
-  public:
+public:
     speedy( int lmax, double delta );
     // Bessel function j_l(r)
     double get_bessel( int l, double r );
@@ -40,7 +42,7 @@ class speedy
     static double spinisospin_fit2( double r );
 
 
-  private:
+private:
     int lmax;
     double delta;
     double rmax;
