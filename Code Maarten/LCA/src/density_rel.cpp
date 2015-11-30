@@ -1,5 +1,19 @@
 #include "density_rel.h"
 
+#include <algorithm>
+using std::min;
+using std::max;
+#include <sstream>
+using std::stringstream;
+#include <fstream>
+using std::ofstream;
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
+#include <omp.h>
+
+
 density_rel::density_rel(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm, int qmax)
     : operator_virtual( nucleus, central, tensor, isospin, norm ), qmax(qmax)
 {

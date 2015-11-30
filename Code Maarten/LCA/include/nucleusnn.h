@@ -1,6 +1,7 @@
 #ifndef NUCLEUSNN_H
 #define NUCLEUSNN_H
 #include "nucleus.h"
+#include <vector>
 
 /**
  * \brief Class for PP pairs in a nucleus
@@ -37,10 +38,10 @@ private:
     int getT2() {
         return -1;
     };
-    vector < Shell* >* getShells1() {
+    std::vector < Shell* >* getShells1() {
         return &Shell::shellsN;
     };
-    vector < Shell* >* getShells2() {
+    std::vector < Shell* >* getShells2() {
         return &Shell::shellsN;
     };
     int getA1() {

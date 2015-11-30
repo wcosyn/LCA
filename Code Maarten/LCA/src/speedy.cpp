@@ -1,5 +1,18 @@
 #include "speedy.h"
 
+#include <gsl/gsl_sf_bessel.h>
+#include <gsl/gsl_sf_exp.h>
+#include <gsl/gsl_errno.h>
+#include <vector>
+using std::vector;
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
+#include <cmath>
+#include "correlation_functions.h"
+
+
 speedy speedy::speedies= speedy( 35, 0.0015 );
 
 

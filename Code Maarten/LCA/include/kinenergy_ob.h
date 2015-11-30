@@ -1,9 +1,8 @@
-#ifndef __KINE_OB__
-#define __KINE_OB__
+#ifndef KINE_OB_H
+#define KINE_OB_H
 #include "nucleus.h"
 #include "operator_virtual_ob.h"
-#include <algorithm>
-using std::min;
+
 
 /*
  * DEPRECATED Class that calculates the one-body kinetic energy
@@ -42,4 +41,4 @@ public:
 
 };
 
-#endif
+#endif // KINE_OB_H

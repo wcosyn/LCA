@@ -1,5 +1,10 @@
 #include "nucleusall.h"
 
+#include <vector>
+using std::vector;
+#include <iostream>
+using std::cout;
+using std::endl;
 
 Nucleusall::Nucleusall(char* inputdir, char* resultdir, int A, int Z)
     : Nucleus( inputdir, resultdir, A, Z)

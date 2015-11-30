@@ -1,5 +1,10 @@
 #include "norm_tb.h"
 
+#include "correlation_functions.h"
+#include <iostream>
+using std::cout;
+using std::endl;
+
 norm_tb::norm_tb(Nucleus* nucleus, bool central, bool tensor, bool isospin)
     : operator_virtual( nucleus, central, tensor, isospin )
 {

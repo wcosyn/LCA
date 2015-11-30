@@ -1,5 +1,18 @@
 #include "density_ob3.h"
 
+#include "threej.h"
+#include <omp.h>
+#include <algorithm>
+using std::min;
+using std::max;
+#include <fstream>
+using std::ofstream;
+#include <sstream>
+using std::stringstream;
+#include <iostream>
+using std::endl;
+using std::cout;
+using std::cerr;
 
 density_ob3::density_ob3(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm, int qmax )
     : operator_virtual_ob( nucleus, central, tensor, isospin, norm ),

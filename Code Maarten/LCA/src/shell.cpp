@@ -1,5 +1,8 @@
 #include "shell.h"
 
+#include <vector>
+using std::vector;
+
 int Shell::shellsinit = 0;
 vector< Shell* > Shell::shellsN= vector< Shell* >(22);
 vector< Shell* > Shell::shellsP= vector< Shell* >(22);

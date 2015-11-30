@@ -7,7 +7,8 @@
 #define WSPAIR_H
 #include "pair.h"
 #include "wsexpansion.h"
-#include <limits>
+
+#include <vector>
 
 class WSPair
 {
@@ -37,9 +38,9 @@ private:
     int A;
     char* recmoshPath;
     char* output;
-    vector< double > vector1;
-    vector< double > vector2;
-    vector< Pair* > vectorpair;
+    std::vector< double > vector1;
+    std::vector< double > vector2;
+    std::vector< Pair* > vectorpair;
     double sum;
     double norm;
 };

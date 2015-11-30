@@ -1,5 +1,19 @@
 #include "density_rel_integrand2.h"
 
+#include "wavefunctionp.h"
+#include <gsl/gsl_sf_gamma.h>
+#include <map>
+using std::map;
+#include <string>
+using std::string;
+using std::stoi;
+#include <sstream>
+using std::stringstream;
+#include <vector>
+using std::vector;
+#include <iostream>
+using std::cerr;
+using std::endl;
 
 density_rel_integrand2::density_rel_integrand2( int A )
     : A(A)

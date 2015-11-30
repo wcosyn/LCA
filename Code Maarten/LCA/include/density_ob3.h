@@ -1,13 +1,10 @@
-#ifndef __DENS_OB3__
-#define __DENS_OB3__
+#ifndef DENS_OB3_H
+#define DENS_OB3_H
+
 #include "nucleus.h"
-#include "operator_virtual_ob.h"
 #include "density_ob_integrand3.h"
-#include "threej.h"
-#include <omp.h>
-#include <algorithm>
-using std::min;
-using std::max;
+#include "paircoef.h"
+#include "operator_virtual_ob.h"
 
 /**
  * \brief calculates the one-nucleon momentum distribution n_1(p).
@@ -130,4 +127,4 @@ protected:
 
 };
 
-#endif
+#endif // DENS_OB_3

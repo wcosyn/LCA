@@ -1,10 +1,8 @@
-#ifndef __DENS_REL__
-#define __DENS_REL__
+#ifndef DENS_REL_H
+#define DENS_REL_H
 #include "operator_virtual.h"
 #include "density_rel_integrand2.h"
-#include <algorithm>
-using std::min;
-using std::max;
+
 
 
 /**
@@ -149,4 +147,4 @@ private:
 
 
 };
-#endif // __DENS_REL__
+#endif // DENS_REL_H

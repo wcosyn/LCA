@@ -1,5 +1,10 @@
 #include "rms_ob.h"
 
+#include "correlation_functions.h"
+#include <iostream>
+using std::endl;
+using std::cout;
+using std::cerr;
 
 rms_ob::rms_ob(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm )
     : operator_virtual_ob( nucleus, central, tensor, isospin, norm )

@@ -85,4 +85,4 @@ public:
     void get_links( int i, Tripletcoef** pc, double* val );
 };
 
-#endif
+#endif //TRIPLETCOEF_H

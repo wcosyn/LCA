@@ -1,5 +1,31 @@
 #include "wswf.h"
 
+#include <vector>
+using std::vector;
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
+using std::ios;
+#include <cmath>
+#include <fstream>
+using std::ifstream;
+using std::ofstream;
+#include <sstream>
+using std::stringstream;
+#include <limits>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_odeiv.h>
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_sf_exp.h>
+#include <gsl/gsl_sf_coupling.h>
+#include <gsl/gsl_sf_bessel.h>
+
+const double ENER_EPS = 1e-7;
+const double R_MAX = 12;
+const double EPS = 0.01;
+const int NSTEPS = 5000;
 
 WSWF::WSWF(const double ENER0, const double rmatch, int A, int Z, int n, int l, int two_j, int two_t)
 // massConstant = 2* (reduced)mass /hbarc / hbarc

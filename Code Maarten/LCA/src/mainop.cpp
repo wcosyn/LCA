@@ -16,7 +16,10 @@ using std::string;
 #include <iomanip>
 using std::setprecision;
 using std::setw;
-
+#include <iostream>
+using std::endl;
+using std::cout;
+#include <gsl/gsl_errno.h>
 
 // input and output dir
 char* input;

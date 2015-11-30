@@ -1,5 +1,19 @@
 #include "wspair.h"
 
+#include <iostream>
+#include <limits>
+#include <fstream>
+#include <sstream>
+#include <vector>
+
+using std::cout;
+using std::endl;
+using std::cerr;
+using std::ofstream;
+using std::ifstream;
+using std::stringstream;
+using std::vector;
+
 // Constructor
 // recmoshPath: Path to recursive moshinsky brackets
 // wsexpPath: Path to WS expansion coefficients

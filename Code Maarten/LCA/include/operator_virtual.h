@@ -1,7 +1,7 @@
-#ifndef __OPERATOR_V__
-#define __OPERATOR_V__
+#ifndef OPERATOR_V_H
+#define OPERATOR_V_H
 #include "nucleus.h"
-#include <gsl/gsl_sf_hyperg.h>
+
 
 
 /**
@@ -224,4 +224,4 @@ protected:
 };
 
 
-#endif // __OPERATOR_V__
+#endif // OPERATOR_V_H

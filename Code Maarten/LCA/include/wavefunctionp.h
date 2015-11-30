@@ -1,25 +1,8 @@
-#ifndef WFP_H
-#define WFP_H
+#ifndef WAVEFUNCTIONP_H
+#define WAVEFUNCTIONP_H
+
 #include <vector>
-using std::vector;
 #include <map>
-using std::map;
-#include <gsl/gsl_integration.h>
-#include <gsl/gsl_sf_bessel.h>
-#include <gsl/gsl_sf_laguerre.h>
-#include <gsl/gsl_sf_exp.h>
-#include <gsl/gsl_sf_result.h>
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_sf_hyperg.h>
-#include "correlation_functions.h"
-#include <cmath>
-using std::sqrt;
-using std::pow;
-#include <iostream>
-using std::cout;
-using std::endl;
-using std::cerr;
-#include <omp.h>
 
 class MapWavefunctionP;
 
@@ -40,8 +23,8 @@ private:
     double pstep;
     double(*f)(double);
     int max;
-    vector <vector<double> > values;
-    vector <vector<bool> > values_set;
+    std::vector <std::vector<double> > values;
+    std::vector <std::vector<bool> > values_set;
     static double integrand( double r, void* params );
     struct integrand_params {
         int n;
@@ -86,14 +69,14 @@ public:
 class MapWavefunctionP
 {
 private:
-    vector< vector < WavefunctionP*> > vectorwfp;
+    std::vector< std::vector < WavefunctionP*> > vectorwfp;
     int A;
     double nu;
     double pstep;
     bool pstepSet;
     int lmax;
     double(*f)(double);
-    map< int, double > overlaps;
+    std::map< int, double > overlaps;
 public:
     MapWavefunctionP(double(*f)(double));
     int setpstep( double pstep );
@@ -114,4 +97,5 @@ public:
 
 };
 
-#endif // WFP_H
+#endif // WAVEFUNCTIONP_H
+

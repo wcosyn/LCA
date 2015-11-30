@@ -1,5 +1,26 @@
 #include "density_ob_integrand_pow.h"
 
+#include <gsl/gsl_sf_bessel.h>
+#include <gsl/gsl_sf_pow_int.h>
+#include <gsl/gsl_sf_exp.h>
+#include <gsl/gsl_sf_result.h>
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_errno.h>
+#include <vector>
+using std::vector;
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
+#include <sstream>
+using std::stringstream;
+#include <fstream>
+using std::ofstream;
+using std::ifstream;
+#include <iomanip>
+using std::setprecision;
+using std::setw;
+
 density_ob_integrand_pow::density_ob_integrand_pow( char* input, char* output, int l1, int l2, int i )
     : input( input ), output( output ), l1( l1 ), l2( l2 ), i( i )
 {

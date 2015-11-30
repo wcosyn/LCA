@@ -1,10 +1,20 @@
 #include "threebodycoef.h"
+
+#include <gsl/gsl_sf_coupling.h>
+#include <gsl/gsl_sf_trig.h>
+#include "recmosh.h"
+#include "newcoef.h"
+#include <cmath>
+#include <cstdlib>
+
 using std::sqrt;
 using std::fabs;
 using std::pow;
 using std::exit;
 using std::string;
 using std::stringstream;
+using std::cerr;
+using std::endl;
 
 Threebodycoef::Threebodycoef(char* input, char* output, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2, int n3, int l3, int two_j3, int two_mj3, int two_t3,
                              int n12, int l12, int S12, int j12, int mj12, int T12, int MT12, int N123, int L123, int ML123, int n123, int l123, int ml123, int two_ms3, int perm)

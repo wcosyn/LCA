@@ -34,10 +34,10 @@ private:
     int getT2() {
         return 1;
     };
-    vector < Shell* >* getShells1() {
+    std::vector < Shell* >* getShells1() {
         return &Shell::shellsP;
     };
-    vector < Shell* >* getShells2() {
+    std::vector < Shell* >* getShells2() {
         return &Shell::shellsP;
     };
     int getA1() {

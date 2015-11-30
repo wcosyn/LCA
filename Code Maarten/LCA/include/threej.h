@@ -1,19 +1,7 @@
-#ifndef __THREEJ__
-#define __THREEJ__
-#include <gsl/gsl_sf_coupling.h>
-#include <gsl/gsl_statistics_int.h>
-#include <gsl/gsl_math.h>
+#ifndef THREEJ_H
+#define THREEJ_H
+
 #include <vector>
-using std::vector;
-#include <iostream>
-using std::cout;
-using std::endl;
-using std::cerr;
-#include <cmath>
-using std::fabs;
-#include <utility> // for swap method
-
-
 
 /*
  * Class that calculates and saves 3j- coefficients.
@@ -34,8 +22,8 @@ public:
 
 private:
     int lmax;
-    vector< double >* vector_threej;
-    vector< bool >* bool_threej;
+    std::vector< double >* vector_threej;
+    std::vector< bool >* bool_threej;
     //void swap( int*i, int*j );
     int cmax;
     int triangle_selection_fails(int two_ja, int two_jb, int two_jc);
@@ -43,5 +31,5 @@ private:
                           int two_ma, int two_mb, int two_mc);
 };
 
-#endif
+#endif // THREE_J
 

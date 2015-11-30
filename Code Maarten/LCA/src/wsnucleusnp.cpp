@@ -1,5 +1,15 @@
 #include "wsnucleusnp.h"
 
+#include <vector>
+using std::vector;
+#include <sstream>
+using std::stringstream;
+#include <iostream>
+using std::cout;
+using std::endl;
+#include <fstream>
+using std::ofstream;
+
 void WSNucleusNP::n1_p( char* name, double pmin, double pmax )
 {
     double dP= 0.05;

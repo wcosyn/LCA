@@ -1,5 +1,12 @@
 #include "triplet.h"
 
+#include <vector>
+using std::vector;
+#include <iostream>
+using std::cout;
+using std::cerr;
+using std::endl;
+#include <cmath>
 
 /*
  *  |a_1 a_2 a_3>_{nas} = (1-P_{12}) [ \a_1a_2a_3> + |a_2a_3a_1> + \a_3a_1a_2> ]

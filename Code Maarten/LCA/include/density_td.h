@@ -1,7 +1,7 @@
-#ifndef __DENS_TD__
-#define __DENS_TD__
+#ifndef DENS_TD_H
+#define DENS_TD_H
 #include "operator_virtual.h"
-#include <omp.h>
+
 
 
 /**
@@ -78,4 +78,4 @@ private:
     };
 
 };
-#endif // __DENS_REL__
+#endif // DENS_TD_H

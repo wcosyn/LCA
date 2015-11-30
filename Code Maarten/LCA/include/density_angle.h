@@ -1,8 +1,8 @@
-#ifndef __DENS_ANG__
-#define __DENS_ANG__
+#ifndef DENS_ANG_H
+#define DENS_ANG_H
+
 #include "operator_virtual.h"
-#include <gsl/gsl_sf_coupling.h>
-#include <gsl/gsl_sf_legendre.h>
+
 
 /**
  * OUTDATED class which calculated the angle dependent two-nucleon momentum
@@ -34,4 +34,4 @@ private:
     };
 
 };
-#endif // __DENS_ANG__
+#endif // DENS_ANG_H

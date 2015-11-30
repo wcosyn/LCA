@@ -1,5 +1,17 @@
 #include "wsnucleus.h"
 
+#include <vector>
+using std::vector;
+/*
+#include "wswf.h"
+#include <gsl/gsl_math.h>
+*/
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
+
+
 WSNucleus::WSNucleus( char* recmosh_inputdir, char* wsexp_inputdir, char* resultdir, int A, int Z )
 {
     this->recmosh_inputdir= recmosh_inputdir;

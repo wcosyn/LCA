@@ -1,8 +1,8 @@
 #ifndef WSEXPANSION_H
 #define WSEXPANSION_H
 #include "wswf.h"
-#include "pair.h"
-#include "correlation_functions.h"
+#include <vector>
+
 
 /*
  * Class that expands a Woods-Saxon wave function in HO wave functions
@@ -13,7 +13,7 @@ class WSexpansion
 {
 private:
     WSWF* wf;
-    vector <double > coeff;
+    std::vector <double > coeff;
     int A;
     char* outputPath;
     int l;
@@ -24,7 +24,7 @@ private:
     void integrate( int n_HO, int l_HO, double* result);
     double normalize();
     struct normf_params {
-        vector<double> coeff;
+        std::vector<double> coeff;
         int l;
         int A;
     };
@@ -41,7 +41,7 @@ private:
 public:
     WSexpansion(WSWF* wf, int A, char* outputPath);
     ~WSexpansion();
-    vector<double> getCoeff();
+    std::vector<double> getCoeff();
     void writeToFile(const char* fileName);
 
 };

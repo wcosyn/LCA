@@ -1,13 +1,11 @@
-#ifndef __DENS_OB_INT_CF__
-#define __DENS_OB_INT_CF__
+#ifndef DENS_OB_INT_CF_H
+#define DENS_OB_INT_CF_H
 #include "correlation_functions.h"
-#include <gsl/gsl_sf_bessel.h>
-#include <gsl/gsl_sf_result.h>
+
 #include <gsl/gsl_integration.h>
 #include <vector>
-using std::vector;
 #include <map>
-using std::map;
+
 #include "speedy.h"
 
 
@@ -61,9 +59,9 @@ private:
     double(*f)(double);
 
     /// containers that tracks if a integral is already calculated
-    map < int, vector < vector< bool>* >* > mapbools;
+    std::map < int, std::vector < std::vector< bool>* >* > mapbools;
     /// container of the calculated (and not yet calculated) integrals
-    map < int, vector < vector< double>* >* > mapintegrals;
+    std::map < int, std::vector < std::vector< double>* >* > mapintegrals;
 
     double calculate( int k, int l, uint i, int intp );
     /// Integration workspace
@@ -86,5 +84,5 @@ private:
         double(*f)(double);
     };
 };
-#endif
+#endif //DENS_OB_INT_CF_H
 

@@ -1,15 +1,9 @@
 #ifndef WSNUCLEUS_H
 #define WSNUCLEUS_H
 
-#include <vector>
-using std::vector;
 #include "wspair.h"
-#include "wswf.h"
 #include "shell.h"
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_math.h>
-
-
+#include <vector>
 /*
  * Parent Class for WSNucleusNN/PP/NP and WSnucleusall classes
  * Makes all Pairs combination for the given nucleus and pair (nn, pp, pn or all)
@@ -29,13 +23,13 @@ public:
     void makepairs( );
     double getLPairs( int l );
 private:
-    vector< WSPair*> pairs;
+    std::vector< WSPair*> pairs;
     virtual int getT1() =0;
     virtual int getT2() =0;
     virtual int getA1() =0;
     virtual int getA2() =0;
-    virtual vector< Shell* >* getShells1() =0;
-    virtual vector< Shell* >* getShells2() =0;
+    virtual std::vector< Shell* >* getShells1() =0;
+    virtual std::vector< Shell* >* getShells2() =0;
     bool pairsMade;
     int number_of_pairs;
 protected:

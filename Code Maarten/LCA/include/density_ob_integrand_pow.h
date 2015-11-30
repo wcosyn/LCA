@@ -1,25 +1,7 @@
-#ifndef __DENS_OB_INt_POW__
-#define __DENS_OB_INT_POW__
-#include <gsl/gsl_sf_bessel.h>
-#include <gsl/gsl_sf_pow_int.h>
-#include <gsl/gsl_sf_exp.h>
-#include <gsl/gsl_sf_result.h>
-#include <gsl/gsl_integration.h>
-#include <gsl/gsl_errno.h>
+#ifndef DENS_OB_INT_POW_H
+#define DENS_OB_INT_POW_H
+
 #include <vector>
-using std::vector;
-#include <fstream>
-using std::ofstream;
-using std::ifstream;
-#include <sstream>
-using std::stringstream;
-#include <iostream>
-using std::cout;
-using std::endl;
-using std::cerr;
-#include <iomanip>
-using std::setprecision;
-using std::setw;
 
 /**
  * \brief Deprecated class similar to density_ob_integrand_cf
@@ -41,7 +23,7 @@ private:
     bool updated, loaded;
     int max;
     double step;
-    vector< vector < double > >* matrix;
+    std::vector< std::vector < double > >* matrix;
 
     void calculate();
     void loadFile();
@@ -56,4 +38,4 @@ private:
     };
 };
 
-#endif
+#endif // DENS_OB_INT_POW_H

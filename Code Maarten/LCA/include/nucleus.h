@@ -1,20 +1,17 @@
 #ifndef NUCLEUS_H
 #define NUCLEUS_H
-#include <vector>
-using std::vector;
+
 #include "pair.h"
 #include "newcoef.h"
 #include "paircoef.h"
 #include "triplet.h"
 #include "tripletcoef.h"
 #include "shell.h"
-#include <gsl/gsl_math.h>
+
 #include <map>
-using std::map;
+#include <vector>
 #include <string>
-using std::string;
-using std::stoi;
-#include <cassert> // testing <-- Camille
+
 
 
 /**
@@ -167,12 +164,12 @@ public:
      * \brief Give pointer to the static vector of n/p shells defined in shell.h
      * @see Shell
      */
-    virtual vector< Shell* >* getShells1() =0;
+    virtual std::vector< Shell* >* getShells1() =0;
     /**
      * \brief Give pointer to the static vector of n/p shells defined in shell.h
      * @see Shell
      */
-    virtual vector< Shell* >* getShells2() =0;
+    virtual std::vector< Shell* >* getShells2() =0;
 
 private:
 
@@ -194,10 +191,10 @@ private:
      */
     void get_shell_max( int A, int* shell_max, int* max );
 
-    vector< Pair*>* pairs;               ///< container for all Pairs
-    vector< Triplet*>* triplets;         ///< container for all Triplets
-    map< string, Paircoef*>* paircoefs;  ///< container for all Paircoefs
-    map< string, Tripletcoef*>* tripletcoefs; ///< container for all Tripletscoefs
+    std::vector< Pair*>* pairs;               ///< container for all Pairs
+    std::vector< Triplet*>* triplets;         ///< container for all Triplets
+    std::map< std::string, Paircoef*>* paircoefs;  ///< container for all Paircoefs
+    std::map< std::string, Tripletcoef*>* tripletcoefs; ///< container for all Tripletscoefs
 
     char* inputdir;         ///< Path to input directory
     char* resultdir;        ///< Path to result/output directory

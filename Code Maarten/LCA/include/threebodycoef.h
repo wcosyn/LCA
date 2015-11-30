@@ -1,15 +1,7 @@
 #ifndef THREEBODYCOEF_H
 #define THREEBODYCOEF_H
 
-#include <cmath>
-#include <cstdlib>
 #include <string>
-#include <gsl/gsl_sf_coupling.h>
-#include <gsl/gsl_sf_trig.h>
-#include "recmosh.h"
-#include "newcoef.h"
-
-
 
 /* Calculates the coefficients
  * <a1 a2 a3| n12 l12 ml12 T12 MT12 S12 MS12 n123 l123 ml123 N123 L123 ML123 ms3 >

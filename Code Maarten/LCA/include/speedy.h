@@ -1,16 +1,7 @@
-#ifndef __SPEEDY__
-#define __SPEEDY__
-#include <gsl/gsl_sf_bessel.h>
-#include <gsl/gsl_sf_exp.h>
-#include <vector>
-using std::vector;
-#include <iostream>
-using std::cout;
-using std::endl;
-using std::cerr;
-#include <cmath>
-#include "correlation_functions.h"
+#ifndef SPEEDY_H
+#define SPEEDY_H
 
+#include <vector>
 
 /*
  * class which contain regularly used functions like the bessel functions.
@@ -47,12 +38,12 @@ private:
     double delta;
     double rmax;
     int imax;
-    vector< double > bessel;
-    vector< double > neg_exp;
-    vector< double > min_central;
-    vector< double > tensor;
-    vector< double > spinisospin;
+    std::vector< double > bessel;
+    std::vector< double > neg_exp;
+    std::vector< double > min_central;
+    std::vector< double > tensor;
+    std::vector< double > spinisospin;
 
 
 };
-#endif
+#endif // SPEEDY_H

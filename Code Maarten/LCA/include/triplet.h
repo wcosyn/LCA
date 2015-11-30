@@ -1,7 +1,7 @@
 #ifndef TRIPLET_H
 #define TRIPLET_H
+
 #include <vector>
-using std::vector;
 #include "threebodycoef.h"
 
 /*
@@ -53,7 +53,7 @@ private:
      */
     void fillcoefmap( int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2, int n3, int l3, int two_j3, int two_mj3, int two_t3, int perm );
 
-    vector< Threebodycoef* > coefficients;
+    std::vector< Threebodycoef* > coefficients;
     char* input;
     char* output;
     double fnorm;

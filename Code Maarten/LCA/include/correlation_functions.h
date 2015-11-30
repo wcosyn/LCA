@@ -1,29 +1,5 @@
-#ifndef __CORR_FUNC__
-#define __CORR_FUNC__
-
-#include <iostream>
-using std::cout;
-using std::endl;
-using std::cerr;
-#include <fstream>
-using std::ofstream;
-using std::ifstream;
-#include <sstream>
-using std::stringstream;
-#include <cmath>
-using std::sqrt;
-using std::exp;
-#include <vector>
-using std::vector;
-#include <gsl/gsl_sf_bessel.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_sf_exp.h>
-#include <gsl/gsl_sf_result.h>
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_sf_laguerre.h>
-#include <gsl/gsl_sf_legendre.h>
-
-
+#ifndef CORR_FUNC_H
+#define CORR_FUNC_H
 
 /**
  * Collection of GLOBAL function concerning correlation function
@@ -55,4 +31,4 @@ double tensor_fit( double r );
 double spinisospin_fit( double r );
 
 
-#endif
+#endif // CORR_FUNC_H

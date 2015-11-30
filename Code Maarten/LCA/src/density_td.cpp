@@ -1,5 +1,14 @@
 #include "density_td.h"
 
+#include <omp.h>
+#include <sstream>
+using std::stringstream;
+#include <fstream>
+using std::ofstream;
+#include <iostream>
+using std::cout;
+using std::endl;
+
 density_td::density_td(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm)
     : operator_virtual( nucleus, central, tensor, isospin, norm )
 {

@@ -1,13 +1,12 @@
-#ifndef __DENS_REL_INT2__
-#define __DENS_REL_INT2__
-#include "wavefunctionp.h"
+#ifndef DENS_REL_INT2_H
+#define DENS_REL_INT2_H
+
 #include "density_ob_integrand_cf.h"
-#include <gsl/gsl_sf_gamma.h>
+
 #include <map>
-using std::map;
+#include <vector>
 #include <string>
-using std::string;
-using std::stoi;
+
 
 /**
  * \brief collection of integrals used for the calculations in density_rel
@@ -79,7 +78,7 @@ private:
     double nu;
 
     /// Container of the integrals
-    map< string, vector <double>* > mapintegrals;
+    std::map< std::string, std::vector <double>* > mapintegrals;
 
     /**
      * \brief Calculate one integral over cm momentum P.
@@ -112,5 +111,4 @@ private:
 
 };
 
-#endif
-
+#endif // DENS_REL_INT2_H

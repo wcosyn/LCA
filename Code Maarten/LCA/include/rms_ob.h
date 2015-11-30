@@ -1,9 +1,8 @@
-#ifndef __RMS__
-#define __RMS__
+#ifndef RMS_H
+#define RMS_H
 #include "nucleus.h"
 #include "operator_virtual_ob.h"
-#include <algorithm>
-using std::min;
+
 
 /*
  * class that calculates the root-mean-square
@@ -37,4 +36,4 @@ private:
 
 };
 
-#endif
+#endif // RMS_H

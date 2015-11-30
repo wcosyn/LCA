@@ -2,7 +2,7 @@
 #define NUCLEUSALL_H
 #include "nucleus.h"
 
-
+#include <vector>
 
 /**
  * \brief Class for PP, NN and PN pairs in a nucleus
@@ -24,8 +24,8 @@ private:
     int A2;
     int t1;
     int t2;
-    vector < Shell* >* shells1;
-    vector < Shell* >* shells2;
+    std::vector < Shell* >* shells1;
+    std::vector < Shell* >* shells2;
 
     virtual void makepairs();
     virtual void maketriplets();
@@ -36,10 +36,10 @@ private:
     int getT2() {
         return t2;
     };
-    vector < Shell* >* getShells1() {
+    std::vector < Shell* >* getShells1() {
         return shells1;
     };
-    vector < Shell* >* getShells2() {
+    std::vector < Shell* >* getShells2() {
         return shells2;
     };
     int getA1() {

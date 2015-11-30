@@ -1,5 +1,12 @@
 #include "operator_virtual.h"
 
+#include <omp.h>
+#include <iostream>
+using std::cout;
+using std::endl;
+
+//#include <gsl/gsl_sf_hyperg.h>
+
 /*
  * TODO: ADAPT for triplet and threebodycoef the 2*left to left+right
  * important, the left functions are now defined so 2*left is correct.

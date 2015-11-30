@@ -1,5 +1,15 @@
 #include "density_ob_integrand_cf.h"
 
+#include <vector>
+using std::vector;
+#include <map>
+using std::map;
+#include <cmath>
+#include <iostream>
+using std::endl;
+using std::cerr;
+
+
 density_ob_integrand_cf::density_ob_integrand_cf( int A, double q, double(*f)(double), double pstep )
     : A( A ), pstep( pstep ), q(q)
 {

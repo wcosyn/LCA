@@ -1,5 +1,9 @@
 #include "kinenergy_ob.h"
-
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
+#include "correlation_functions.h"
 
 kinenergy_ob::kinenergy_ob(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm )
     : operator_virtual_ob( nucleus, central, tensor, isospin, norm )

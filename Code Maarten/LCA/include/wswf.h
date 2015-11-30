@@ -1,37 +1,7 @@
 #ifndef WSWF_H
 #define WSWF_H
 
-#include <iostream>
-using std::cout;
-using std::endl;
-using std::cerr;
-#include <fstream>
-using std::ifstream;
-using std::ofstream;
-using std::ios;
 #include <vector>
-using std::vector;
-#include <cmath>
-using std::pow;
-using std::fabs;
-#include <sstream>
-using std::stringstream;
-#include <map>
-using std::map;
-
-#include <limits>
-#include <stdio.h>
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_matrix.h>
-#include <gsl/gsl_odeiv.h>
-#include <gsl/gsl_sf_exp.h>
-#include <gsl/gsl_sf_result.h>
-#include <gsl/gsl_integration.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_sf_coupling.h>
-#include <gsl/gsl_sf_bessel.h>
-
-
 
 /*
  * Calculate WSWF from H = p^2/2m + V(r) + V_C(r) + 1/r d/dr V_SO(r) L*S
@@ -70,7 +40,7 @@ private:
      * Vector in wich WF and diff of WF is saved.
      * Each vector countains r, u (= wf*r), phi (=u')
      */
-    vector< vector<double> > *RadialWF ;
+    std::vector< std::vector<double> > *RadialWF ;
     double Rmin;
     double Rmax;
     double Rmatchi;
@@ -140,19 +110,6 @@ struct ODE_params {
     double energy;
     WSWF* wswf;
 };
-
-
-// const double constant = 197*197/702.4;  // hbar*hbar/mass in [Mev][fm]^2 !! Adjusted mass used
-// const double R = 2.; // [fm]
-// const double a = 0.662; // [fm]
-// const double V0 = 77; //[MeV]
-// const int l = 0;
-
-const double ENER_EPS = 1e-7;
-const double R_MAX = 12;
-const double EPS = 0.01;
-const int NSTEPS = 5000;
-//const double e = 0.303; //18.095; // hbarc * 4 pi * alpha [MeV fm]
 
 #endif // WSWF_H
 

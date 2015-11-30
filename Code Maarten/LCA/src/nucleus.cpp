@@ -1,6 +1,21 @@
 #include "nucleus.h"
 #include <cassert>
-
+#include <gsl/gsl_math.h>
+#include <string>
+using std::string;
+using std::stoi;
+#include <map>
+using std::map;
+#include <vector>
+using std::vector;
+#include <sstream>
+using std::stringstream;
+#include <fstream>
+using std::ofstream;
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
 
 Nucleus::Nucleus( char* inputdir, char* resultdir,int A, int Z)
     : Z(Z), A(A)

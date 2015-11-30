@@ -1,5 +1,5 @@
-#ifndef __NORM_TB__
-#define __NORM_TB__
+#ifndef NORM_TB_H
+#define NORM_TB_H
 #include "operator_virtual.h"
 
 
@@ -103,4 +103,4 @@ private:
 };
 
 
-#endif // __NORM__
+#endif // NORM_H

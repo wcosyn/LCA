@@ -1,11 +1,8 @@
 #ifndef SHELL_H
 #define SHELL_H
-#include <iostream>
+
 #include <vector>
-using std::cout;
-using std::endl;
-using std::cerr;
-using std::vector;
+
 
 /*
  * Class shell contains the quantum numbers of a shell: n l j
@@ -37,8 +34,8 @@ public:
     /*
     * Global variables which contains list of neutron and proton shells
     */
-    static vector< Shell* > shellsN;
-    static vector< Shell* > shellsP;
+    static std::vector< Shell* > shellsN;
+    static std::vector< Shell* > shellsP;
 
     /*
      * Initialize lists of proton and neutron shell, shellsP and shellsN,

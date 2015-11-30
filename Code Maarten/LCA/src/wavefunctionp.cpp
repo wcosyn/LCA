@@ -1,6 +1,28 @@
 #include "wavefunctionp.h"
 
 
+#include <vector>
+using std::vector;
+#include <map>
+using std::map;
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_sf_bessel.h>
+#include <gsl/gsl_sf_laguerre.h>
+#include <gsl/gsl_sf_exp.h>
+#include <gsl/gsl_sf_result.h>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_sf_hyperg.h>
+#include "correlation_functions.h"
+#include <cmath>
+using std::sqrt;
+using std::pow;
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
+#include <omp.h>
+
+
 MapWavefunctionP WavefunctionP::mapwfp = MapWavefunctionP( nothing );
 MapWavefunctionP WavefunctionP::mapwfcentralp = MapWavefunctionP( min_central_fit );
 MapWavefunctionP WavefunctionP::mapwftensorp = MapWavefunctionP( tensor_fit );

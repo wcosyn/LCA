@@ -2,6 +2,12 @@
 #include "wsexpansion.h"
 #include "wsnucleusnp.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
+#include <gsl/gsl_errno.h>
+
 int main( int argc, char *argv[])
 {
     gsl_set_error_handler_off();
@@ -46,5 +52,5 @@ int main( int argc, char *argv[])
 
 
 
-    cout << "Wrong arguments" << endl;
+    cerr << "Wrong arguments" << endl;
 }

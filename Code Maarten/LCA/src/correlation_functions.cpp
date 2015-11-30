@@ -1,5 +1,13 @@
 #include "correlation_functions.h"
 
+#include <gsl/gsl_sf_exp.h>
+#include <gsl/gsl_sf_laguerre.h>
+#include <gsl/gsl_errno.h>
+#include <cmath>
+#include <iostream>
+using std::endl;
+using std::cerr;
+
 
 double central_coeff[] =
 {1, 0.242591985,-5.659767100, 125.462069938,  -791.088106337, 2320.032495246, -3916.60734015, 4029.447497350, -2493.546793079, 847.209859791, -121.830895978};

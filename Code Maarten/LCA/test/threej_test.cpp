@@ -1,6 +1,7 @@
 #include "threej.h"
 #include <gsl/gsl_sf_coupling.h>
 #include <iostream>
+#include <cmath>
 
 class Threej_checker {
 	/* remember, all j's and m's are actually two j and two m */
@@ -53,7 +54,7 @@ class Threej_checker {
 };
 
 int main(){
-	Threej_checker c(10,10);
+	Threej_checker c(24,24);
 	c.runcheck();
 	// for j1 = 24, j2=24, j3 is in the range [0,48]
 	unsigned nonzero=0;

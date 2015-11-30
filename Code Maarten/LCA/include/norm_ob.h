@@ -1,9 +1,7 @@
-#ifndef __NORM_OB__
-#define __NORM_OB__
+#ifndef NORM_OB_H
+#define NORM_OB_H
 #include "nucleus.h"
 #include "operator_virtual_ob.h"
-#include <algorithm>
-using std::min;
 
 /**
  * \brief calculates the one-nucleon norm
@@ -64,4 +62,4 @@ public:
 };
 
 
-#endif
+#endif // NORM_OB_H

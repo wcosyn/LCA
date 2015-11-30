@@ -1,10 +1,13 @@
 #include "tripletcoef.h"
 #include <iostream>
+#include <cmath>
+using std::fabs;
 
-using std::cout;
+
 using std::endl;
 using std::cerr;
 using std::map;
+
 
 Tripletcoef::Tripletcoef( int n12, int l12, int S12, int j12, int mj12, int T12, int MT12, int N123, int L123, int ML123, int n123, int l123, int ml123, int two_ms3, int two_t3 )
     : n12( n12), l12( l12), S12( S12), j12(j12), mj12(mj12), T12(T12), MT12(MT12),  n123(n123), l123(l123), ml123(ml123), N123( N123), L123( L123), ML123( ML123), two_ms3(two_ms3), two_t3(two_t3)

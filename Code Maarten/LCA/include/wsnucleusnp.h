@@ -1,6 +1,7 @@
 #ifndef WSNUCLEUSNP_H
 #define WSNUCLEUSNP_H
 #include "wsnucleus.h"
+#include <vector>
 
 class WSNucleusNP : public WSNucleus
 {
@@ -14,10 +15,10 @@ private:
     int getT2() {
         return 1;
     };
-    vector < Shell* >* getShells1() {
+    std::vector < Shell* >* getShells1() {
         return &Shell::shellsN;
     };
-    vector < Shell* >* getShells2() {
+    std::vector < Shell* >* getShells2() {
         return &Shell::shellsP;
     };
     int getA1() {

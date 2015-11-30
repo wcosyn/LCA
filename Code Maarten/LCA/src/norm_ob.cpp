@@ -1,5 +1,11 @@
 #include "norm_ob.h"
 
+#include <algorithm>
+using std::min;
+#include <iostream>
+using std::cout;
+using std::endl;
+#include "correlation_functions.h"
 
 norm_ob::norm_ob(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm )
     : operator_virtual_ob( nucleus, central, tensor, isospin, norm )

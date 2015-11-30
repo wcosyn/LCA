@@ -1,5 +1,21 @@
 #include "threej.h"
 
+#include <gsl/gsl_sf_coupling.h>
+#include <gsl/gsl_statistics_int.h>
+#include <gsl/gsl_math.h>
+
+#include <vector>
+using std::vector;
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
+#include <cmath>
+using std::fabs;
+#include <utility> // for swap method
+using std::swap;
+
+
 threej threej::threejs= threej( 40 );
 
 threej::threej( int lmax ) : lmax( lmax )

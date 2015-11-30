@@ -1,4 +1,14 @@
 #include "density_angle.h"
+#include <gsl/gsl_sf_coupling.h>
+#include <gsl/gsl_sf_legendre.h>
+#include <fstream>
+using std::ofstream;
+#include <sstream>
+using std::stringstream;
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
 
 density_angle::density_angle(Nucleus* nucleus, bool central, bool tensor, bool isospin)
     : operator_virtual( nucleus, central, tensor, isospin )

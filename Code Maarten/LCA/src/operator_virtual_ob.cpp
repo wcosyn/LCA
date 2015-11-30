@@ -1,5 +1,12 @@
 #include "operator_virtual_ob.h"
 
+//#include <gsl/gsl_sf_hyperg.h>
+//#include <gsl/gsl_sf_bessel.h>
+
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
 
 operator_virtual_ob::operator_virtual_ob( Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm )
     : nucleus( nucleus ), bcentral( central ), tensor( tensor ), spinisospin( isospin ), norm( norm )

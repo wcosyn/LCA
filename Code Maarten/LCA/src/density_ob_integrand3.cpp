@@ -1,5 +1,20 @@
 #include "density_ob_integrand3.h"
 
+#include <map>
+using std::map;
+#include <string>
+using std::string;
+using std::stoi;
+#include <gsl/gsl_sf_gamma.h>
+#include <sstream>
+using std::stringstream;
+#include <omp.h>
+#include <vector>
+using std::vector;
+#include <iostream>
+using std::cerr;
+using std::endl;
+
 density_ob_integrand3::density_ob_integrand3( int A )
     : A(A)
 {

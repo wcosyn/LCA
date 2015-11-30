@@ -1,14 +1,11 @@
-#ifndef __DENS_OB_INT3__
-#define __DENS_OB_INT3__
+#ifndef DENS_OB_INT3_H
+#define DENS_OB_INT3_H
+
 #include "wavefunctionp.h"
 #include "density_ob_integrand_cf.h"
-#include <gsl/gsl_sf_gamma.h>
-#include <omp.h>
 #include <map>
-using std::map;
 #include <string>
-using std::string;
-using std::stoi;
+
 
 
 /**
@@ -110,15 +107,15 @@ private:
         int l2;
         int k2;
         int k;
-        vector< double >* pow_values;
+        std::vector< double >* pow_values;
     };
 
     ///Container of the integrals.
-    map< string, doi3_struct > mapintegrals;
+    std::map< std::string, doi3_struct > mapintegrals;
 
 
 };
 
 
-#endif
+#endif // DENS_OB_INT3_H
 

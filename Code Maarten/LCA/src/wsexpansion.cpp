@@ -1,5 +1,19 @@
 #include "wsexpansion.h"
 
+#include "correlation_functions.h"
+#include "pair.h"
+
+#include <iostream>
+using std::cout;
+using std::endl;
+using std::cerr;
+#include <sstream>
+using std::stringstream;
+#include <fstream>
+using std::ofstream;
+#include <gsl/gsl_integration.h>
+#include <vector>
+using std::vector;
 
 WSexpansion::WSexpansion( WSWF* wf, int A, char* outputPath)
     : wf( wf),
