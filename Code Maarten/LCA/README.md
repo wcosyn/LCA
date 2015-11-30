@@ -21,3 +21,9 @@ If you have doxygen installed you can generate html documentation by doing
 	- $> make doc;
 
 The documentation will be generated in the doc/ directory.
+
+2. CODE CONVENTIONS
+=====================
+For the indentation we adopt the Kernighan & Ritchie style (K&R style) with an indentation with of 4 spaces. With the program "astyle" you can do this with
+    - $> astyle --style=kr --indent=spaces=4 [yourfile.ext]
+
