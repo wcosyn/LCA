@@ -464,7 +464,7 @@ void Nucleus::makepairs()
  * Make from the list of Pairs, a list of Pair coefs
  * There isn't any overlap between Pairs because the me have
  * \sum_{\alpha<\beta} nas<\alpha\beta| O |\alpha\beta>_nas
- * Between Paircoefs there is overlap possible of they originate
+ * Between Paircoefs there is overlap possible if they originate
  * from the same Pair.
  */
 void Nucleus::makepaircoefs()
@@ -472,7 +472,7 @@ void Nucleus::makepaircoefs()
     if( pairsMade == false ) makepairs();
     cout << "Make Pair Coefs ... " << endl;
     int max= get_number_of_pairs();
-    // SUm over the pairs
+    // summ over the pairs
     for( int i= 0; i < max; i++ ) { // loop over \f$ \braket{ \alpha_1 \alpha_2 } \f$ pairs
         Pair* pair= getPair(i);
         int maxc= pair->get_number_of_coeff();
@@ -610,11 +610,7 @@ int Nucleus::get_number_of_triplets()
 Pair* Nucleus::getPair( int i )
 {
     if( pairsMade == false ) makepairs();
-    if( i >= number_of_pairs ) {
-        cerr << "get_Pairs " << i << " index out of range" << endl;
-        exit(-1);
-    }
-    return (*pairs)[i];
+    return (*pairs).at(i); // std::vector::at(int i) does bounds checking!
 }
 
 Paircoef* Nucleus::getPaircoef( int i )

@@ -1,6 +1,9 @@
 // See header for more information about class and functions
 #include "pair.h"
-
+#include <gsl/gsl_sf_legendre.h>
+#include <gsl/gsl_sf_trig.h>
+#include <gsl/gsl_sf_log.h>
+using std::vector;
 //double Pair::hbarc = 0.197327; // MeV*fm
 
 Pair::Pair( RecMosh* mosh,

@@ -3,11 +3,6 @@
 #include "newcoef.h"
 #include "wavefunctionp.h"
 #include <vector>
-using std::vector;
-#include <gsl/gsl_sf_legendre.h>
-#include <gsl/gsl_sf_trig.h>
-#include <gsl/gsl_sf_log.h>
-
 
 /*
  * Class of a Pair |\alpha_1\alpha_2>_nas with \alpha = nljm_jt
@@ -99,7 +94,7 @@ public:
     void getCoeff( u_int i, Newcoef** coef);
 
 private:
-    vector < Newcoef* > coeflist;
+    std::vector < Newcoef* > coeflist;
     int n1, l1, two_j1, two_mj1, two_t1;
     int n2, l2, two_j2, two_mj2, two_t2;
     RecMosh* mosh;
