@@ -1,2 +1,13 @@
 ABOVE 4 THERE WHERE SOME PEAKS IN THE MF CALCULATIONS,
 THESE VALUES ARES MANIPULATED (SET TO 0) SO FIGURES DOESNT SHOW THEM
+
+
+Camille:
+File name convention seems to be
+dens_ob4.[isospin1][isospin2].[central][tensor][spinisospin].[nucleus].[n1][l1][n2][l2]
+
+Where a value of -1 for n1,l1,n2,l2 means including all orbitals...
+
+I think value of 0 for isospin1 and isospin2 means include all, seems to be correct (see test.py)
+
+What the 4 in dens_ob4 means, no idea...
