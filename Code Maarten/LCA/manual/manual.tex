@@ -152,11 +152,19 @@ A \texttt{Paircoef} object has all the quantum numbers in a rcm state $A$. In ad
 \todo[inline]{\texttt{Paircoef::add(double val)} adds \texttt{val} to private member \texttt{value} but as far as I can see this private member \texttt{value} is NEVER used!}
 
 \section{Matrix Elements}
-\subsection{norm\_ob}
+\subsection{norm\_ob : public operator\_virtual\_ob}
 Here we take a look at the calculation of the norm $\mathcal{N}$ in \texttt{norm\_ob.cpp}.
+Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring general one body member functions.
 \begin{itemize}
 	\item \texttt{norm\_ob::get\_me( Pair )}.
-		This calculates the matrix element $\sum_{ A B } C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket {A | B }$ for a specific pair $\alpha_1 \alpha_2$ passed trough \texttt{Pair}. It is possible to filter on relative quantum numbers on $n_A,l_A,n_B,l_B$, selecting specific contributions \texttt{nAs,lAs,nBs,lBs} to the sum. A value of $-1$ for these variables is interpreted as ``all values allowed''. Trough the braket $\braket{ A | B }$ we already have $n_A = n_B := n$, $l_A = l_B := l$.
+		This calculates the matrix element \textbf{meanfield} matrix element sum 
+		\begin{enumerate}
+		\item $\frac{2}{A} \sum_{ A B } C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket {A | B }$ for a pp and/or nn pair(s) (isospin $M_T = \pm 1$)
+		\item $\frac{1}{A} \sum_{ A B} C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket {A | B }$ for a pn pair (isospin $M_T = 0$)
+	\end{enumerate}
+	for a specific pair $\alpha_1 \alpha_2$ passed trough \texttt{Pair}.
+	\todo[inline]{For now I have no clue why/how the factor $\frac{2}{A}$($\frac{1}{A}$) in front of $\sum_{ A B } C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket {A | B }$ ...}		
+		It is possible to filter on relative quantum numbers on $n_A,l_A,n_B,l_B$, selecting specific contributions \texttt{nAs,lAs,nBs,lBs} to the sum. A value of $-1$ for these variables is interpreted as ``all values allowed''. Trough the braket $\braket{ A | B }$ we already have $n_A = n_B := n$, $l_A = l_B := l$.
 		\begin{itemize}
 			\item \texttt{if (nAs > -1 \&\& nBs > -1)}
 				This forces $\texttt{nAs} = \texttt{nBs} = n$. So for $\texttt{nAs} \neq \texttt{nBs}$ we will get $0$.
@@ -173,12 +181,27 @@ Here we take a look at the calculation of the norm $\mathcal{N}$ in \texttt{norm
 			\item (\texttt{-1, 2,-1,-1}) : allow all $n = n_A = n_B$ values. Restriction on $l = l_A = l_B = \texttt{2}$.
 			\item (\texttt{-1, 2,-1, 2}) : allow all $n = n_A = n_B$ values. Restriction on $l = l_A = l_B = \texttt{2}$.
 		\end{itemize}
-		Factors $1/2$ you see popping up comes from the fact that if we select a specific contribution for the isospin $t_1$ we have something like $ \sum_{T M_T} \braket{ 1/2 t_1 1/2 t_2 | T M_T } \braket{ T M_T | 1/2 t_1 1/2 t_2}$. If $t_1 \neq t_2$ we have $M_T = 0$ and this is equal to,
-		\begin{align}
-		&\braket{ 1/2 t_1 1/2 t_2 | 1 0}\braket{1 0 | 1/2 t_1 1/2 t_2} +  \braket{ 1/2 t_1 1/2 t_2 | 0 0}\braket{0 0 | 1/2 t_1 1/2 t_2}\\
-		=& \frac{1}{2} \left| \braket{ t_1 t_2 | \uparrow \downarrow + \downarrow \uparrow } \right|^{2} + \frac{1}{2} \left| \braket{ t_1 t_2 | \uparrow \downarrow - \downarrow \uparrow } \right|^{2} 
-		\end{align}
-		However due to antisymmetry of the wave function $ L + S + T = -1 $ ( or something like that (I need to look up exact quantum numbers there). We have that one of these terms will be zero and we get a factor $1/2$ if we choose a specific $t_1,t_2$ combination, $\uparrow \downarrow$ or $\downarrow \uparrow$.
-		
+	As the unrestricted sum $\sum_{ A B } C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket {A | B } = \sum_{A} | C^{A}_{\alpha_1 \alpha_2}|^{2} $ equals 1, the return value of \texttt{get\_me} (for the unrestricted sum) is,
+	\begin{itemize}
+		\item $\frac{2}{A}$ with no restriction on the isospin ( \texttt{norm\_ob::norm\_ob\_params.t = 0})
+		\item $\frac{2}{A}$ for pp-pairs, $\frac{1}{A}$ for pn-pairs and $0$ for nn-pairs for a proton (\texttt{norm\_ob::norm\_ob\_params.t~=~1})
+		\item $0$ for pp-pairs, $\frac{1}{A}$ for pn-pairs and $\frac{2}{A}$ for nn-pairs for a neutron (\texttt{norm\_ob::norm\_ob\_params.t~=-1})
+	\end{itemize}
+	If we sum over all the pairs $ \sum_{\texttt{pair in pairs}} $ \texttt{norm::ob\_get\_me(pair,...)} we get,
+	\begin{itemize}
+		\item $\frac{A(A-1)}{2} \frac{2}{A} = A-1$ with no restriction on the isospin ( \texttt{norm\_ob::norm\_ob\_params.t~=~0})
+		\item $\frac{Z(Z-1)}{2}\frac{2}{A} + NZ \frac{1}{A} + \frac{N(N-1)}{2} 0 = Z \frac{A-1}{A}$ for a proton (\texttt{norm\_ob::norm\_ob\_params.t~=~1})
+		\item $\frac{Z(Z-1)}{2}0 + NZ \frac{1}{A} + \frac{N(N-1)}{2} \frac{2}{A} = N \frac{A-1}{A}$ for a neutron (\texttt{norm\_ob::norm\_ob\_params.t~=-1})
+	\end{itemize}
+	\todo[inline,caption={}]{
+	\textbf{Open shellness not taken into account here. Must be done somewhere else (higher up)...} \\	
+	For closed shell nuclei everything seems fine. For open shells however we get some strange results. For example $^{27}$Al with $13$ protons and $14$ neutrons has an open $1d\frac{5}{2}$ proton shell. Open-shell nuclei are treated as closed shell but the pairs in the open shells get a weight factor. This weight factor however is \textbf{not} present in the method \texttt{norm::ob\_get\_me(pair,...)}. Hence as $A = 27$ but the closed shell equivalent with $A=28$ causes the number of pairs to be $28\cdot 27 /2$ instead of $ 27 \cdot 26 /2$. We get
+	\begin{itemize}
+	\item $ \frac{ 28 \cdot 27}{2} \frac{2}{27} = 28$ ( \texttt{norm\_ob::norm\_ob\_params.t = 0}) 
+	\item $ \frac{ 14 \cdot 13}{2} \frac{2}{27} + \frac{14 \cdot 14 }{27} = \frac{378}{27} = 14 $ (\texttt{norm\_ob::norm\_ob\_params.t~=~1}) \\
+	\item $ \frac{14 \cdot 14 }{27} + \frac{ 14 \cdot 13}{2} \frac{2}{27} = \frac{378}{27} = 14 $ (\texttt{norm\_ob::norm\_ob\_params.t~=-~1}) \\
+	\end{itemize}
+	}
+	\item \texttt{norm\_ob::get\_me\_corr\_right( Pair )}.
 \end{itemize}
 \end{document}
