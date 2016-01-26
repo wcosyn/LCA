@@ -37,4 +37,14 @@ ax2.set_yscale('log')
 ax2.set_ylim((1e-10,200))
 ax2.legend()
 
+
+from scipy.integrate import trapz
+
+MF_norm_nn = trapz(Xnn[:,1]*Xnn[:,0]**2,Xnn[:,0])
+MF_norm_np = trapz(Xnp[:,1]*Xnp[:,0]**2,Xnp[:,0])
+MF_norm_pp = trapz(Xpp[:,1]*Xpp[:,0]**2,Xpp[:,0])
+
+print("MF nn/np is {:}, expected N(N-1)/(2NZ) {:}".format(MF_norm_nn/MF_norm_np, 61.*60./(2.*61.*47.)))
+print("MF pp/np is {:}, expected N(N-1)/(2NZ) {:}".format(MF_norm_pp/MF_norm_np, 47.*46./(2.*61.*47.)))
+
 pl.show()

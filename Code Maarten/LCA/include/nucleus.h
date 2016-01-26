@@ -47,6 +47,18 @@ public:
     int getA() {
         return A;
     };
+    /**
+     * \brief Get proton number
+     */
+    int getZ() {
+            return Z;
+    }
+    /**
+     * \brief Get neutron number
+     */
+    int getN() {
+        return N;
+    }
 
     /**
      * \brief Give total number of Pairs made,

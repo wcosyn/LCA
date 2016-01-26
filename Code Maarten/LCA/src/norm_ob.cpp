@@ -9,10 +9,7 @@ using std::endl;
 #include <cassert> //< testing... Camille
 
 norm_ob::norm_ob(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm )
-    : operator_virtual_ob( nucleus, central, tensor, isospin, norm )
-{
-    cout << "norm_ob operator made" << endl;
-}
+    : operator_virtual_ob( nucleus, central, tensor, isospin, norm ) { }
 
 double norm_ob::get_me( Pair* pair, void* params )
 {
@@ -24,7 +21,7 @@ double norm_ob::get_me( Pair* pair, void* params )
     int t= nob->t;
     int t1= pair->gettwo_t1();
     int t2= pair->gettwo_t2();
-    if( nAs+lAs+nBs+lBs < -3 ) { // if you set n_a l_a n_b l_b to -1-1-1-1 we get -4, select all. Better would be to do explicit check?
+    /*if( nAs+lAs+nBs+lBs < -3 ) { // if you set n_a l_a n_b l_b to -1-1-1-1 we get -4, select all. Better would be to do explicit check?
         if( t == 0 )   // both neutron and proton
             return 2./A;
         if( t1 != t2 ) // proton neutron pair, ob -> one body, we want half of the pair, divide by 2
@@ -32,7 +29,7 @@ double norm_ob::get_me( Pair* pair, void* params )
         if( t == t1 ) //  t of ob same as t1 of pair (t==t1==t2 because above!)
             return 2./A;
         return 0;
-    }
+    }*/
 
     double sum= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
@@ -46,9 +43,8 @@ double norm_ob::get_me( Pair* pair, void* params )
             // The correlation operator keeps S j m_j unchanged
 
             double vali = coefi->getCoef(); // < a_1 a_2 | A >
-            double valj = coefj->getCoef(); // < b_1 b_2 | B >
+            double valj = coefj->getCoef(); // < a_1 a_2 | B >
             
-            assert( fabs(vali - valj) < 1e-12);
             // the following block is delta in
             // n l S j m_j N L M_L T M_T, which characterizes a
             // rcm state A = | n l S j m_j N L M_L T M_T >
@@ -62,6 +58,13 @@ double norm_ob::get_me( Pair* pair, void* params )
             if( coefi->getML() != coefj->getML() ) continue;
             if( coefi->getn()  != coefj->getn()  ) continue;
             if( coefi->getl()  != coefj->getl()  ) continue;
+            
+            if( fabs(vali - valj) > 1e-12){ //< testing camille
+                //-- camille testing: because of "kron. delta" above this should not never be true
+                std::cerr << " ci  , cj   " << ci << ", " << cj << std::endl;
+                std::cerr << " vali, valj " << vali << ", " << valj << std::endl;
+                exit(-1);
+            }
             // the following block is to select contribution from
             // specific relative qn's n l
             // n_i == nAs, n_j == nBs, l_i == lAs, l_j == lBs

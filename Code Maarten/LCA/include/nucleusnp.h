@@ -18,6 +18,10 @@ public:
      * @param Z number of protons
      */
     NucleusNP(char* inputdir, char* resultdir, int A, int Z);
+    int getA1() {return  N;}
+    int getA2() {return  Z;}
+    int getT1() {return -1;}
+    int getT2() {return  1;}
 private:
     virtual void makepairs();
     /**
@@ -33,24 +37,13 @@ private:
     virtual void maketriplets( int t3 ) {
         Nucleus::maketriplets( t3 );
     };
-    int getT1() {
-        return -1;
-    };
-    int getT2() {
-        return 1;
-    };
     std::vector < Shell* >* getShells1() {
         return &Shell::shellsN;
     };
     std::vector < Shell* >* getShells2() {
         return &Shell::shellsP;
     };
-    int getA1() {
-        return N;
-    };
-    int getA2() {
-        return Z;
-    };
+
 };
 
 #endif // NUCLEUSNP_H

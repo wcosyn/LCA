@@ -49,7 +49,7 @@ public:
      * @var norm_ob_params::lB
      * \brief Selects pairs with certain qn. -1 if you want all.
      * @var norm_ob_params::t
-     * \brief select proton (+1), neutron (-1), both (0)
+     * \brief select proton (+1), neutron (-1), both (0). Note that this does not correspond with an isospin projection of a particle or particle pair!
      */
     struct norm_ob_params {
         int nA;
