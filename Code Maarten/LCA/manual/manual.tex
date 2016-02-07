@@ -6,6 +6,7 @@
 \usepackage{amsfonts}
 \usepackage{braket}
 \usepackage{todonotes}
+\usepackage{bbold}
 
 \begin{document}
 \section{Momentum distributions}
@@ -152,6 +153,34 @@ A \texttt{Paircoef} object has all the quantum numbers in a rcm state $A$. In ad
 \todo[inline]{\texttt{Paircoef::add(double val)} adds \texttt{val} to private member \texttt{value} but as far as I can see this private member \texttt{value} is NEVER used!}
 
 \section{Matrix Elements}
+First some theory on the matrix elements. In the calculation of the norm we only have the correlation operator $\hat{\wr}$ between the bras and kets.
+\begin{align*}
+	\braket{ \alpha \beta |\hat{\wr}(\vec{x}_{1},\vec{x}_{2}) + \hat{\wr}^{\dagger}(\vec{x}_{1},\vec{x}_{2}) + \hat{\wr}^{\dagger}(\vec{x}_{1},\vec{x}_{2})\hat{\wr}(\vec{x}_{1},\vec{x}_{2}) | \alpha \beta}
+\end{align*}
+$\hat{\wr}$ contains a central, tensor and spin-isospin part,
+\begin{align*}
+	\hat{\wr}(\vec{x}_{1},\vec{x}_{2}) = -f_c(r_{12}) + f_{t\tau}(r_{12}) \hat{S}_{12} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} + f_{\sigma \tau}(r_{12}) \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} \hat{ \vec{\tau}}_{1} \cdot \hat{ \vec{\tau}}_{2}  \, .
+\end{align*}
+Transforming to the c.m. and relative coordinates a general matrix-element term can be written as,
+\begin{align*}
+	\braket{ n (l S) j m_j N L M_L T M_T |  \hat{\mathcal{O}}^{p\dagger} f^{\dagger}_{p} f_{q} \hat{\mathcal{O}}^{q} | n' (l' S') j' m_j' N' L' M_L' T' M_T'} 
+\end{align*}
+With $f_{p,q} \in \{ 1, f_{c}, f_{t\tau}, f_{\sigma \tau} \}$ and $\hat{\mathcal{O}}^{p,q}$ the corresponding operator $\in \{ \mathbb{1}, \mathbb{1},  \hat{S}_{12} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}, \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} \hat{ \vec{\tau}}_{1} \cdot \hat{ \vec{\tau}}_{2} \} $.
+As no operators act on the c.m. part $ \ket{ N L M_L}$ here we have,
+\begin{align*}
+	\delta_{NN'} \delta_{LL'} \delta_{M_L M_L'} \braket{ n (l S) j m_j T M_T |  \hat{\mathcal{O}}^{p\dagger} f^{\dagger}_{p} f_{q} \hat{\mathcal{O}}^{q} | n' (l' S') j' m_j' T' M_T'}  
+\end{align*}
+
+\section{Matrix elements bis}
+
+Let us take a look at
+\begin{align*}
+	\braket{ S | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | S'} = 4 \braket{ S | \hat{ \vec{s}}_{1} \cdot \hat{ \vec{s}}_{2} | S'} = 4 \braket{ S | \hat{\vec{S}}^{\, 2} - \hat{\vec{s}}_{1}^{\,2} - \hat{\vec{s}}_{2}^{\,2} | S'} = 2 ( S(S+1) - \frac{3}{4} - \frac{3}{4} ) \delta_{SS'} = \delta_{SS'} (2 S(S+1) - 3)
+\end{align*}
+As we have 2 spin $1/2$ particles S can be either $0,1$ resulting in $\braket{ 1 | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | 1} = 1$, $\braket{ 0 | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | 0} = -3$.
+\todo[inline]{ Note that in the Maartens code the expression is modified to $4S-3$, which is equivalent for $S \in \{0,1\} $.}
+Exactly the same derivation can be made for $\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ leading to the same result.
+
 \subsection{norm\_ob : public operator\_virtual\_ob}
 Here we take a look at the calculation of the norm $\mathcal{N}$ in \texttt{norm\_ob.cpp}.
 Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring general one body member functions.
@@ -204,4 +233,5 @@ Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring gen
 	}
 	\item \texttt{norm\_ob::get\_me\_corr\_right( Pair )}.
 \end{itemize}
+
 \end{document}

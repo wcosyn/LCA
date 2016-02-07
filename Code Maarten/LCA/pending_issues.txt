@@ -1,0 +1,11 @@
+
+
+
+operator_virtual_ob.cpp:
+    
+    [207] operator_virtual_ob::get_spinisospin_me( int la, int l, int S, int J, int T, double* result )
+        
+        Q : Why passing la,l,J as the result does not depend on these quantum numbers?
+        
+        A [pending] : maybe some other place some operators are used that do depend upon these and trough inheritance the function must conform to 
+                the overriding of the virtual function????

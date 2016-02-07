@@ -127,13 +127,13 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
             pair->getCoeff( cj, &coefj, &normj );
             // The correlation operator keeps S j m_j unchanged
 
-            if( coefi->getS() != coefj->getS() ) continue;
-            if( coefi->getj() != coefj->getj() ) continue;
+            if( coefi->getS()  != coefj->getS()  ) continue;
+            if( coefi->getj()  != coefj->getj()  ) continue;
             if( coefi->getmj() != coefj->getmj() ) continue;
-            if( coefi->getT() != coefj->getT() ) continue;
+            if( coefi->getT()  != coefj->getT()  ) continue;
             if( coefi->getMT() != coefj->getMT() ) continue;
-            if( coefi->getN() != coefj->getN() ) continue;
-            if( coefi->getL() != coefj->getL() ) continue;
+            if( coefi->getN()  != coefj->getN()  ) continue;
+            if( coefi->getL()  != coefj->getL()  ) continue;
             if( coefi->getML() != coefj->getML() ) continue;
             int l1= coefi->getl();
             int l2= coefj->getl();
@@ -252,13 +252,13 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
             pair->getCoeff( cj, &coefj, &normj );
             // The correlation operator keeps S j m_j unchanged
 
-            if( coefi->getS() != coefj->getS() ) continue;
-            if( coefi->getj() != coefj->getj() ) continue;
+            if( coefi->getS()  != coefj->getS()  ) continue;
+            if( coefi->getj()  != coefj->getj()  ) continue;
             if( coefi->getmj() != coefj->getmj() ) continue;
-            if( coefi->getT() != coefj->getT() ) continue;
+            if( coefi->getT()  != coefj->getT()  ) continue;
             if( coefi->getMT() != coefj->getMT() ) continue;
-            if( coefi->getN() != coefj->getN() ) continue;
-            if( coefi->getL() != coefj->getL() ) continue;
+            if( coefi->getN()  != coefj->getN()  ) continue;
+            if( coefi->getL()  != coefj->getL()  ) continue;
             if( coefi->getML() != coefj->getML() ) continue;
             int l1= coefi->getl();
             int l2= coefj->getl();
