@@ -170,7 +170,25 @@ As no operators act on the c.m. part $ \ket{ N L M_L}$ here we have,
 \begin{align*}
 	\delta_{NN'} \delta_{LL'} \delta_{M_L M_L'} \braket{ n (l S) j m_j T M_T |  \hat{\mathcal{O}}^{p\dagger} f^{\dagger}_{p} f_{q} \hat{\mathcal{O}}^{q} | n' (l' S') j' m_j' T' M_T'}  
 \end{align*}
-
+Let us now take a look at the separate cases for $\delta_{NN'} \delta_{LL'} \delta_{M_L M_L'} \braket{ n (l S) j m_j T M_T |  \hat{\mathcal{O}}^{p\dagger} f^{\dagger}_{p} f_{q} \hat{\mathcal{O}}^{q} | n' (l' S') j' m_j' T' M_T'} $,
+\begin{itemize}
+	\item $\hat{\mathcal{O}}^{p} = \mathbb{1}$, $f_{p} = 1$, $\hat{\mathcal{O}}^{q} = \mathbb{1}$ , $f_{q} = f_c(r_{12})$ 
+	\begin{multline*}
+		\delta_{NN'} \delta_{LL'} \delta_{M_L M_L'} \braket{ n (l S) j m_j T M_T |  f_{c}(r_{12}) | n' (l' S') j' m_j' T' M_T'}  \\
+		= \delta_{NN'} \delta_{LL'} \delta_{M_L M_L'} \delta_{SS'} \delta_{jj'} \delta_{m_j m_j'} \delta_{TT'} \delta_{M_T M_T'} \braket{ n l |  f_{c}(r_{12}) | n' l'} 
+	\end{multline*}
+	\begin{multline*}
+		\braket{ n l |  f_{c}(r_{12}) | n' l'} = \int \text{d} r_{12} R_{nl}(r_{12}) f_{c}(r_{12}) R_{n'l'}(r_{12}) \\
+	\end{multline*}
+	With  $R_{nl}(r) = \left[ \frac{2n!}{\Gamma(n + l + 3/2)} \nu^{l + 3/2} \right] r^{l} e^{-\nu r^{2} /2} L_{n}^{l+1/2}(\nu r^{2}) = N_{nl} r^{l} e^{-\nu r^{2} /2} L_{n}^{l+1/2}(\nu r^{2})$ and $ \nu = M_N \omega / \hbar $.
+	\begin{multline*}
+		\braket{ n l |  f_{c}(r_{12}) | n' l'} = N_{nl} N_{n'l'} \int \text{d} r_{12} r_{12}^{l} e^{-\nu r_{12}^{2} /2} L_{n}^{l+1/2}(\nu r_{12}^{2}) f_{c}(r_{12}) r_{12}^{l'} e^{-\nu r_{12}^{2} /2} L_{n'}^{l'+1/2}(\nu r_{12}^{2}) \\
+	\end{multline*}
+	The correlation functions are expanded as $ \sum_{\lambda} b_{\lambda} r^{\lambda} e^{-b r^{2}}$, expanding the generalized laguerre polynomials as well, $ L_{n}^{l}(r) = \sum_{k} a_{nl,k} r^{k}$,
+	\begin{multline*}
+		\braket{ n l |  f_{c}(r_{12}) | n' l'} = N_{nl} N_{n'l'} \sum_{kk'\lambda} a_{nl,k} a_{n'l',k'} b_{\lambda}  \int \text{d} r_{12} r_{12}^{l+l'} e^{-\nu r_{12}^{2}} ( \nu r_{12}^{2} )^{k} r^{\lambda} e^{-b r_{12}^{2}} ( \nu r_{12}^{2})^{k'}
+	\end{multline*}
+\end{itemize}
 \section{Matrix elements bis}
 
 Let us take a look at
