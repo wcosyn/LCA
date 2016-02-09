@@ -7,6 +7,13 @@
  * Be Carefull with factor sqrt(2) in the def of distance r
  */
 double exponent(double x);
+/**
+ * @brief Calculates the Gamma function.
+ * @param two_n \f$ 2n\f$, for calculating \f$ \Gamma(n) \f$.
+ *        Note that you supply twice the value of the argument
+ *        you actually intend.
+ * @return Returns \f$Gamma(n)\f$.
+ */
 double gamma( int two_n);
 double binomial( double n, int k);
 double laguerre_coeff( double nu, int n, int l, int k);

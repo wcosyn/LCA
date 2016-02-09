@@ -160,14 +160,14 @@ double uncorrelatedradialwf(int n, int l, double r, int A)
 
 double ho_norm( double nu, int n, int l )
 {
-    double norm = sqrt( 2*gamma( 2*(n+1)) / gamma( 2*n+2*l+3) );
+    double norm = sqrt( 2*gamma( 2*(n+1)) / gamma( 2*n+2*l+3) ); // warning! this uses custom gamma function which does actually gamma(n/2)
     norm *= pow( nu, l/2.+3./4.);
     return norm;
 }
 
 double ho_norm( int n, int l )
 {
-    double norm = sqrt( 2*gamma( 2*(n+1)) / gamma( 2*n+2*l+3) );
+    double norm = sqrt( 2*gamma( 2*(n+1)) / gamma( 2*n+2*l+3) ); // warning! this uses custom gamma function which does actually gamma(n/2)
     return norm;
 
 }
