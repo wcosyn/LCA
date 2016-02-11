@@ -160,16 +160,13 @@ double uncorrelatedradialwf(int n, int l, double r, int A)
 
 double ho_norm( double nu, int n, int l )
 {
-    double norm = sqrt( 2*gamma( 2*(n+1)) / gamma( 2*n+2*l+3) ); // warning! this uses custom gamma function which does actually gamma(n/2)
-    norm *= pow( nu, l/2.+3./4.);
-    return norm;
+    return ho_norm(n,l)*pow( nu, l/2. + 3.);
 }
 
 double ho_norm( int n, int l )
 {
-    double norm = sqrt( 2*gamma( 2*(n+1)) / gamma( 2*n+2*l+3) ); // warning! this uses custom gamma function which does actually gamma(n/2)
-    return norm;
-
+    /** warning! this uses custom gamma function hiGamma which does actually gamma(n/2) */
+    return sqrt( 2*hiGamma( 2*(n+1)) / hiGamma( 2*n+2*l+3) );
 }
 
 double binomial( double n, int k )
@@ -181,18 +178,17 @@ double binomial( double n, int k )
     return product;
 }
 
-double gamma( int two_n)
+double hiGamma( int two_n)
 {
     if( two_n == 2 ) return 1.;
     if( two_n == 1 ) return sqrt(M_PI);
     if( two_n == 0 ) cerr << "two_n == 0 !" << endl;
-    return (two_n-2)/2. * gamma( two_n-2);
+    return (two_n-2)/2. * hiGamma( two_n-2);
 }
 
 double laguerre_coeff( double nu, int n, int l, int i)
 {
-    double result = binomial( n+l+0.5 , n-i ) / gamma( 2*i+2);
-//  double result = gamma(2*n+2*l+3)/gamma(2*n-2*i+2)/gamma(2*l+2*i+3)/gamma(2*i+2);
+    double result = binomial( n+l+0.5 , n-i ) / hiGamma( 2*i+2);
     result*= pow( nu, i );
 
     if(i%2) {
@@ -203,8 +199,7 @@ double laguerre_coeff( double nu, int n, int l, int i)
 
 double laguerre_coeff( int n, int l, int i)
 {
-    double result = binomial( n+l+0.5 , n-i ) / gamma( 2*i+2);
-//  double result = gamma(2*n+2*l+3)/gamma(2*n-2*i+2)/gamma(2*l+2*i+3)/gamma(2*i+2);
+    double result = binomial( n+l+0.5 , n-i ) / hiGamma( 2*i+2);
 
     if(i%2) {
         result*= -1;
@@ -212,15 +207,10 @@ double laguerre_coeff( int n, int l, int i)
     return result;
 }
 
-
-
-
 double nothing( double r )
 {
     return 1;
 }
-
-
 
 double exponent(double x)
 {

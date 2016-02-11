@@ -197,7 +197,7 @@ int operator_virtual_ob::get_tensor_me( int la, int l, int S, int J, int T, doub
             Smatrix= 6.*sqrt(J*(J+1))/(2*J+1.)*fT;
         } else if( la == J+1 ) {
             Smatrix= -2.*(J+2)/(2*J+1.)*fT;
-        } else return 1;
+        } else return 1; // Camille: shouldn't this be "return 0"???????
     } else return 0;
 
     *result = Smatrix;

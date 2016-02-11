@@ -2,6 +2,12 @@
 
 
 operator_virtual_ob.cpp:
+
+    [200]
+        Q: On this line you should return 0 in stead of 1???? Does not make
+difference in end result because result is set to zero. 
+
+        A:
     
     [207] operator_virtual_ob::get_spinisospin_me( int la, int l, int S, int J, int T, double* result )
         
@@ -9,3 +15,4 @@ operator_virtual_ob.cpp:
         
         A [pending] : maybe some other place some operators are used that do depend upon these and trough inheritance the function must conform to 
                 the overriding of the virtual function????
+

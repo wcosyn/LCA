@@ -175,27 +175,42 @@ Let us now take a look at the separate cases for $\delta_{NN'} \delta_{LL'} \del
 	\item $\hat{\mathcal{O}}^{p} = \mathbb{1}$, $f_{p} = 1$, $\hat{\mathcal{O}}^{q} = \mathbb{1}$ , $f_{q} = f_c(r_{12})$ 
 	\begin{multline*}
 		\delta_{NN'} \delta_{LL'} \delta_{M_L M_L'} \braket{ n (l S) j m_j T M_T |  f_{c}(r_{12}) | n' (l' S') j' m_j' T' M_T'}  \\
-		= \delta_{NN'} \delta_{LL'} \delta_{M_L M_L'} \delta_{SS'} \delta_{jj'} \delta_{m_j m_j'} \delta_{TT'} \delta_{M_T M_T'} \braket{ n l |  f_{c}(r_{12}) | n' l'} 
+		= \delta_{NN'} \delta_{LL'} \delta_{M_L M_L'} \delta_{SS'} \delta_{jj'} \delta_{m_j m_j'} \delta_{TT'} \delta_{M_T M_T'} \delta_{l l'} \braket{ n l |  f_{c}(r_{12}) | n' l'} 
 	\end{multline*}
 	\begin{multline*}
-		\braket{ n l |  f_{c}(r_{12}) | n' l'} = \int \text{d} r_{12} R_{nl}(r_{12}) f_{c}(r_{12}) R_{n'l'}(r_{12}) \\
+		\braket{ n l |  f_{c}(r_{12}) | n' l'} = \int \text{d} r_{12} \, r_{12}^{2} R_{nl}(r_{12}) f_{c}(r_{12}) R_{n'l'}(r_{12}) \\
 	\end{multline*}
 	With  $R_{nl}(r) = \left[ \frac{2n!}{\Gamma(n + l + 3/2)} \nu^{l + 3/2} \right]^{\frac{1}{2}} r^{l} e^{-\nu r^{2} /2} L_{n}^{l+1/2}(\nu r^{2}) = N_{nl} \nu^{\frac{l + 3/2}{2}} r^{l} e^{-\nu r^{2} /2} L_{n}^{l+1/2}(\nu r^{2})$ and $ \nu = M_N \omega / \hbar $.
 	\begin{multline*}
-		\braket{ n l |  f_{c}(r_{12}) | n' l'} = N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \int \text{d} r_{12} r_{12}^{l} e^{-\nu r_{12}^{2} /2} L_{n}^{l+1/2}(\nu r_{12}^{2}) f_{c}(r_{12}) r_{12}^{l'} e^{-\nu r_{12}^{2} /2} L_{n'}^{l'+1/2}(\nu r_{12}^{2}) \\
+		\braket{ n l |  f_{c}(r_{12}) | n' l'} = N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \int \text{d} r_{12} \, r_{12}^{2} r_{12}^{l} e^{-\nu r_{12}^{2} /2} L_{n}^{l+1/2}(\nu r_{12}^{2}) f_{c}(r_{12}) r_{12}^{l'} e^{-\nu r_{12}^{2} /2} L_{n'}^{l'+1/2}(\nu r_{12}^{2}) \\
 	\end{multline*}
 	The correlation functions $f_{p}(r)$ are expanded as $ \sum_{\lambda} b_{\lambda} r^{\lambda} e^{-b r^{2}}$, expanding the generalized laguerre polynomials as well, $ L_{n}^{l}(r) = \sum_{k} a_{nl,k} r^{k}$,
 	\begin{multline*}
-		\braket{ n l |  f_{c}(r_{12}) | n' l'} = N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \sum_{kk'\lambda} a_{nl,k} a_{n'l',k'} b_{\lambda}  \int \text{d} r_{12} r_{12}^{l+l'} e^{-\nu r_{12}^{2}} ( \nu r_{12}^{2} )^{k} r_{12}^{\lambda} e^{-b r_{12}^{2}} ( \nu r_{12}^{2})^{k'}
+		\braket{ n l |  f_{c}(r_{12}) | n' l'} = N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \sum_{kk'\lambda} a_{nl,k} a_{n'l',k'} b_{\lambda}  \int \text{d} r_{12} r_{12}^{2+l+l'} e^{-\nu r_{12}^{2}} ( \nu r_{12}^{2} )^{k} r_{12}^{\lambda} e^{-b r_{12}^{2}} ( \nu r_{12}^{2})^{k'}
 	\end{multline*}
 	With the substitution $r = \sqrt{\nu} \, r_{12}, B = b/\nu$ (units are $[\nu] = \text{m}^{-2}, [b] = \text{m}^{-2}, [r] = 1, [B] = 1$) we get,
-	\todo[inline]{Maarten says $B = b/\sqrt{\nu}$ (D.19), I think this is incorrect (units do not match), $Bx^{2}$ of (D.19) is NOT dimensionless while it should be...}
+	\todo[inline]{Maarten says $B = b/\sqrt{\nu}$ (D.19), I think this is incorrect (units do not match), $Bx^{2}$ of (D.19) is NOT dimensionless while it should be... (appears to be correct in the code however...)}
+	\begin{multline}
+		\braket{ n l |  f_{c}(r_{12}) | n' l'} = N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \sum_{kk'\lambda} a_{nl,k} a_{n'l',k'} b_{\lambda}  \nu^{- \frac{3 + l + l' + \lambda}{2}} \int \text{d} r \, r^{2+l+l'} e^{-r^{2}} r^{2k} r^{\lambda} e^{-B r^{2}} r^{2k'} \\
+		= N_{nl} N_{n'l'} \sum_{kk'\lambda} \nu^{-\frac{\lambda}{2}}  a_{nl,k} a_{n'l',k'} b_{\lambda} \int \text{d} r \, r^{2+l+l'+\lambda + 2k + 2k'} e^{-(B+1) r^{2}} \\
+		=  N_{nl} N_{n'l'}  \sum_{kk'\lambda} \nu^{-\frac{\lambda}{2}} a_{nl,k} a_{n'l',k'} b_{\lambda} \frac{1}{2} \Gamma \left( \frac{K+1}{2} \right) (1 + B)^{-\frac{K+1}{2}} \\
+		= \frac{N_{nl} N_{n'l'}}{2}  \sum_{kk'\lambda} \nu^{-\frac{\lambda}{2}} a_{nl,k} a_{n'l',k'} b_{\lambda} \Gamma \left( \frac{K+1}{2} \right) (1 + B)^{-\frac{K+1}{2}}
+		\label{eq:central_corr_single}
+	\end{multline}
+	$K = 2+l+l'+ \lambda + 2k + 2k'$. To recapitulate, $a_{nl,k}$ is the $k$'th expansion coefficient of the Laguerre polynomials. The sum over $k$ ($k'$) ranges from $0$ to $n$ ($n'$). $b_{\lambda}$ is the $\lambda$'th expansion coefficient of the correlation function, runs from $0$ to a finite value ($10$ or $11$ for Maartens' fits). $\nu = M_N \omega /\hbar$ is the H.O.-potential parameter and is nucleus dependent. $N_{nl} = \left[ \frac{2n!}{\Gamma(n + l + 3/2)} \right]^{\frac{1}{2}} = \left[ \frac{ 2 \, \Gamma( n + 1)}{\Gamma(n + l + 3/2)} \right]^{\frac{1}{2}} $ are the normalisation factors of the orbital wave functions, these factors are nucleus independent (only $n,l$ dependencies).
+
+	Orthonormality using this expansion (Eq.~\ref{eq:central_corr_single}) can easily be checked, $\braket{ n l |  1 | n' l}$ ($l=l'$ because of the orthonormality of the spherical harmonics), if we set $b_{\lambda} = \delta_{\lambda,0}$, $b=0$.
+	\begin{align}
+		\braket{ n l |  1 | n' l} =  \frac{N_{nl} N_{n'l}}{2}  \sum_{kk'} a_{nl,k} a_{n'l,k'} \Gamma \left( \frac{3+2l+2k + 2k'}{2} \right)
+	\end{align}
+	\item $\hat{\mathcal{O}}^{p} = \mathbb{1}$, $f_{p} = f_c(r_{12})$, $\hat{\mathcal{O}}^{q} = \mathbb{1}$ , $f_{q} = f_c(r_{12})$, the non trivial part of the matrix element now comes down to calculating,
 	\begin{multline*}
-		\braket{ n l |  f_{c}(r_{12}) | n' l'} = N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \sum_{kk'\lambda} a_{nl,k} a_{n'l',k'} b_{\lambda}  \nu^{- \frac{1 + l + l' + \lambda}{2}} \int \text{d} r \, r^{l+l'} e^{-r^{2}} r^{2k} r^{\lambda} e^{-B r^{2}} r^{2k'} \\
-		= N_{nl} N_{n'l'} \sum_{kk'\lambda} \nu^{\frac{2-\lambda}{2}}  a_{nl,k} a_{n'l',k'} b_{\lambda} \int \text{d} r \, r^{l+l'+\lambda + 2k + 2k'} e^{-(B+1) r^{2}} \\
-		=  N_{nl} N_{n'l'}  \sum_{kk'\lambda} \nu^{\frac{2-\lambda}{2}} a_{nl,k} a_{n'l',k'} b_{\lambda} \frac{1}{2} \Gamma \left( \frac{K+1}{2} \right) (1 + B)^{-\frac{K+1}{2}}
+		\braket{ n l |  f_{c}^{2}(r_{12}) | n' l'} = \int \text{d} r_{12} \, r_{12}^{2} R_{nl}(r_{12}) f_{c}^{2}(r_{12}) R_{n'l'}(r_{12}) \\
+		= N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \sum_{kk'\lambda \lambda'} a_{nl,k} a_{n'l',k'} b_{\lambda} b_{\lambda'}  \int \text{d} r_{12} r_{12}^{2+l+l'} e^{-\nu r_{12}^{2}} ( \nu r_{12}^{2} )^{k} r_{12}^{\lambda+\lambda'} e^{-2 b r_{12}^{2}} ( \nu r_{12}^{2})^{k'} \\
+		= N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \sum_{kk'\lambda \lambda'} a_{nl,k} a_{n'l',k'} b_{\lambda} b_{\lambda'} \nu^{- \frac{3 + l + l' + \lambda + \lambda'}{2}} \int \text{d} r \, r^{2+l+l'+2k+2k'+\lambda + \lambda'} e^{- ( 2B + 1) r^{2}} \\
+		=  \frac{N_{nl} N_{n'l'}}{2} \sum_{kk'\lambda \lambda'} \nu^{ - \frac{\lambda + \lambda'}{2}} a_{nl,k} a_{n'l',k'} b_{\lambda} b_{\lambda'} \Gamma\left(\frac{K+1}{2}\right) (2B+1)^{-\frac{K+1}{2}}
 	\end{multline*}
-	$K = l+l'+ \lambda + 2k + 2k'$. To recapitulate, $a_{nl,k}$ is the $k$'th expansion coefficient of the Laguerre polynomials. The sum over $k$ ($k'$) ranges from $0$ to $n$ ($n'$). $b_{\lambda}$ is the $\lambda$'th expansion coefficient of the correlation function, runs from $0$ to a finite value ($10$ or $11$ for Maartens' fits). $\nu = M_N \omega /\hbar$ is the H.O.-potential parameter and is nucleus dependent. $N_{nl} = \left[ \frac{2n!}{\Gamma(n + l + 3/2)} \right]^{\frac{1}{2}}$ are the normalisation factors of the orbital wave functions, these factors are nucleus independent (only $n,l$ dependencies).
+	With $K = 2+l+l'+2k+2k'+\lambda+\lambda'$.
 \end{itemize}
 \section{Matrix elements bis}
 

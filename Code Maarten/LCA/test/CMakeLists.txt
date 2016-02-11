@@ -7,8 +7,11 @@ add_executable(nucleus_test nucleus_test.cpp)
 target_link_libraries(nucleus_test ${LIBS})
 
 add_executable(normob_test normob_test.cpp)
-targeT_link_libraries(normob_test ${LIBS})
+target_link_libraries(normob_test ${LIBS})
 
-install(TARGETS threej_test nucleus_test normob_test
+add_executable(ho_test hotest.cpp)
+target_link_libraries(ho_test ${LIBS})
+
+install(TARGETS threej_test nucleus_test normob_test ho_test
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)
 

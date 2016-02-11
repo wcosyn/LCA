@@ -405,7 +405,7 @@ double WavefunctionP::wf_central_p3( int n, int l, int k, double p )
         double power = pow(p,k);
         for( int lambda= 0; lambda < 11; lambda++ ) {
             double alambda= get_central_pow( lambda );
-            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* gamma( 3+2*i+k+l+lambda)/gamma(3+2*k);
+            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k);
             gsl_sf_result hyperg;
             double a= 0.5*(3+2*i+k+l+lambda);
             double b= 1.5+k;
@@ -439,7 +439,7 @@ double WavefunctionP::wf_spinisospin_p3( int n, int l, int k, double p )
         double power = pow(p,k);
         for( int lambda= 0; lambda < 10; lambda++ ) {
             double alambda= get_spinisospin_pow( lambda );
-            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* gamma( 3+2*i+k+l+lambda)/gamma(3+2*k);
+            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k);
             gsl_sf_result hyperg;
             double a= 0.5*(3+2*i+k+l+lambda);
             double b= 1.5+k;
@@ -473,7 +473,7 @@ double WavefunctionP::wf_tensor_p3( int n, int l, int k, double p )
         double power = pow(p,k);
         for( int lambda= 0; lambda < 10; lambda++ ) {
             double alambda= get_tensor_pow( lambda );
-            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* gamma( 3+2*i+k+l+lambda)/gamma(3+2*k);
+            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k);
             gsl_sf_result hyperg;
             double a= 0.5*(3+2*i+k+l+lambda);
             double b= 1.5+k;
@@ -503,7 +503,7 @@ double WavefunctionP::wf_p3( int n, int l, int k, double p )
     double sum= 0;
     for( int i= 0; i < n+1; i++ ) {
         double anli = laguerre_coeff( nu, n, l, i );
-        double f = pow( 2., -2-k)* pow(0.5*nu,0.5*(-3-2*i-k-l))*sqrt(M_PI)* gamma( 3+2*i+k+l)/gamma(3+2*k);
+        double f = pow( 2., -2-k)* pow(0.5*nu,0.5*(-3-2*i-k-l))*sqrt(M_PI)* hiGamma( 3+2*i+k+l)/hiGamma(3+2*k);
         double power = pow(p,k);
         gsl_sf_result hyperg;
         double a= 0.5*(3+2*i+k+l);

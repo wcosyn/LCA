@@ -32,7 +32,7 @@ double rms_ob::calc_me( int n, int l )
         double anli= laguerre_coeff( nu, n, l, i );
         for( int j= 0; j< n+1; j++ ) {
             double anlj= laguerre_coeff( nu, n, l, j );
-            sum+= 0.5* anli* anlj* gamma( 5+ 2*i+ 2*j+ 2*l );
+            sum+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*l );
         }
     }
 
@@ -90,11 +90,11 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
                             if( N1 == N2 ) {
                                 int rpow1= -5-2*i-2*j-lambda-l1-l2;
                                 double power= pow( 1.+aa, 0.5*rpow1);
-                                me1-=  cen* no* 0.5* anli* anlj* alambda* gamma(-rpow1)* power/nu;
+                                me1-=  cen* no* 0.5* anli* anlj* alambda* hiGamma(-rpow1)* power/nu;
                             }
                             int rpow2= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*rpow2);
-                            me2-=  cen* no* 0.5* anli* anlj* alambda* gamma(-rpow2)* power;
+                            me2-=  cen* no* 0.5* anli* anlj* alambda* hiGamma(-rpow2)* power;
                         }
                     }
                 }
@@ -111,11 +111,11 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
                             if( N1 == N2 ) {
                                 int rpow1= -5-2*i-2*j-lambda-l1-l2;
                                 double power= pow( 1.+aa, 0.5*rpow1);
-                                me1+= ten* no* 0.5* anli* anlj* alambda* gamma(-rpow1)* power/nu;
+                                me1+= ten* no* 0.5* anli* anlj* alambda* hiGamma(-rpow1)* power/nu;
                             }
                             int rpow2= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*rpow2);
-                            me2+= ten* no* 0.5* anli* anlj* alambda* gamma(-rpow2)* power;
+                            me2+= ten* no* 0.5* anli* anlj* alambda* hiGamma(-rpow2)* power;
                         }
                     }
                 }
@@ -126,7 +126,7 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
                 double anli= laguerre_coeff( nu, N1, L, i );
                 for( int j= 0; j< N2+1; j++ ) {
                     double anlj= laguerre_coeff( nu, N2, L, j );
-                    me2_cm+= 0.5* anli* anlj* gamma( 5+ 2*i+ 2*j+ 2*L )* no/ nu;
+                    me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* no/ nu;
                 }
             }
 //      cout << n1 << l1 << " " << n2 << l2 << ": " << me1 << " " << me2 << endl;
@@ -185,11 +185,11 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
                             if( N1 == N2 ) {
                                 int rpow1= -5-2*i-2*j-lambda-l1-l2;
                                 double power= pow( 1.+aa, 0.5*rpow1);
-                                me1-=  cen* no* 0.5* anli* anlj* alambda* gamma(-rpow1)* power/nu;
+                                me1-=  cen* no* 0.5* anli* anlj* alambda* hiGamma(-rpow1)* power/nu;
                             }
                             int rpow2= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*rpow2);
-                            me2-=  cen* no* 0.5* anli* anlj* alambda* gamma(-rpow2)* power;
+                            me2-=  cen* no* 0.5* anli* anlj* alambda* hiGamma(-rpow2)* power;
                         }
                     }
                 }
@@ -206,11 +206,11 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
                             if( N1 == N2 ) {
                                 int rpow1= -5-2*i-2*j-lambda-l1-l2;
                                 double power= pow( 1.+aa, 0.5*rpow1);
-                                me1+= ten* no* 0.5* anli* anlj* alambda* gamma(-rpow1)* power/nu;
+                                me1+= ten* no* 0.5* anli* anlj* alambda* hiGamma(-rpow1)* power/nu;
                             }
                             int rpow2= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*rpow2);
-                            me2+=  ten* no* 0.5* anli* anlj* alambda* gamma(-rpow2)* power;
+                            me2+=  ten* no* 0.5* anli* anlj* alambda* hiGamma(-rpow2)* power;
                         }
                     }
                 }
@@ -221,7 +221,7 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
                 double anli= laguerre_coeff( nu, N1, L, i );
                 for( int j= 0; j< N2+1; j++ ) {
                     double anlj= laguerre_coeff( nu, N2, L, j );
-                    me2_cm+= 0.5* anli* anlj* gamma( 5+ 2*i+ 2*j+ 2*L )* no/ nu;
+                    me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* no/ nu;
                 }
             }
 //      cout << n1 << l1 << " " << n2 << l2 << ": " << me1 << " " << me2 << endl;
@@ -274,7 +274,7 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
                 double anli= laguerre_coeff( nu, N1, L, i );
                 for( int j= 0; j< N2+1; j++ ) {
                     double anlj= laguerre_coeff( nu, N2, L, j );
-                    me2_cm+= 0.5* anli* anlj* gamma( 5+ 2*i+ 2*j+ 2*L )* norm_cm/ nu;
+                    me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* norm_cm/ nu;
                 }
             }
 
@@ -299,9 +299,9 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
                                     double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
                                     double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                                     if( N1 == N2 ) {
-                                        me1+= alambdai* alambdaj* pow( 1+ 2*expc, 0.5*rpow1 )* gamma( -rpow1 )/nu * anli* anlj* 0.5* mec1* mec2* norm_rel;
+                                        me1+= alambdai* alambdaj* pow( 1+ 2*expc, 0.5*rpow1 )* hiGamma( -rpow1 )/nu * anli* anlj* 0.5* mec1* mec2* norm_rel;
                                     }
-                                    me2+= alambdai* alambdaj* pow( 1+2*expc, 0.5*rpow2)* gamma( -rpow2 ) * anli* anlj* 0.5* mec1* mec2* norm_rel;
+                                    me2+= alambdai* alambdaj* pow( 1+2*expc, 0.5*rpow2)* hiGamma( -rpow2 ) * anli* anlj* 0.5* mec1* mec2* norm_rel;
 
 //                  prefactor_sum+= mec1* mec2* alambdai* alambdaj* power;
                                 }
@@ -309,18 +309,18 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
                                     double alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
                                     double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                                     if( N1 == N2 ) {
-                                        me1+= alambdai* alambdaj* pow( 1+ 2*expt, 0.5*rpow1 )* gamma( -rpow1 )/nu * anli* anlj* 0.5* met1* met2* norm_rel;
+                                        me1+= alambdai* alambdaj* pow( 1+ 2*expt, 0.5*rpow1 )* hiGamma( -rpow1 )/nu * anli* anlj* 0.5* met1* met2* norm_rel;
                                     }
-                                    me2+= alambdai* alambdaj* pow( 1+2*expt, 0.5*rpow2)* gamma( -rpow2 ) * anli* anlj* 0.5* met1* met2* norm_rel;
+                                    me2+= alambdai* alambdaj* pow( 1+2*expt, 0.5*rpow2)* hiGamma( -rpow2 ) * anli* anlj* 0.5* met1* met2* norm_rel;
 
                                 }
                                 if( bcentral && tensor ) {
                                     double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
                                     double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                                     if( N1 == N2 ) {
-                                        me1-= alambdai* alambdaj* pow( 1+ expt+ expc, 0.5*rpow1 )* gamma( -rpow1 )/nu * anli* anlj* 0.5*norm_rel* ( mec1*met2 + met1* mec2 );
+                                        me1-= alambdai* alambdaj* pow( 1+ expt+ expc, 0.5*rpow1 )* hiGamma( -rpow1 )/nu * anli* anlj* 0.5*norm_rel* ( mec1*met2 + met1* mec2 );
                                     }
-                                    me2-= alambdai* alambdaj* pow( 1+ expt+ expc, 0.5*rpow2)* gamma( -rpow2 ) * anli* anlj* 0.5* norm_rel* ( mec1*met2+ met1*mec2 );
+                                    me2-= alambdai* alambdaj* pow( 1+ expt+ expc, 0.5*rpow2)* hiGamma( -rpow2 ) * anli* anlj* 0.5* norm_rel* ( mec1*met2+ met1*mec2 );
 
                                     /*
                                     alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );

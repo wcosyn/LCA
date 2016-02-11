@@ -8,13 +8,13 @@
  */
 double exponent(double x);
 /**
- * @brief Calculates the Gamma function.
+ * @brief Calculates the Gamma function for integers or half integers (hi).
  * @param two_n \f$ 2n\f$, for calculating \f$ \Gamma(n) \f$.
  *        Note that you supply twice the value of the argument
  *        you actually intend.
  * @return Returns \f$Gamma(n)\f$.
  */
-double gamma( int two_n);
+double hiGamma( int two_n);
 double binomial( double n, int k);
 double laguerre_coeff( double nu, int n, int l, int k);
 double laguerre_coeff(  int n, int l, int k);

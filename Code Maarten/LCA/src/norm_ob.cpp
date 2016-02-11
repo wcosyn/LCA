@@ -121,7 +121,6 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
         double normi;
         pair->getCoeff( ci, &coefi, &normi );
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-
             Newcoef* coefj;
             double normj;
             pair->getCoeff( cj, &coefj, &normj );
@@ -168,18 +167,24 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
+                            double alambda= get_central_pow( lambda )/ pow(nu, 0.5*lambda );
+                            double B = get_central_exp()/nu;
+                            int K    = 2+l1+l2+lambda+2*i+2*j;
+                            cen_sum -= anli*anlj*alambda*hiGamma(K+1)*pow(1+B, -0.5*(K+1) ); // note the minus sign (central corr op has minus sign in front)
+
+                            /* this is the original code, to be removed once safe...*//*
                             double alambda= get_central_pow( lambda )/ pow( sqrt(nu), lambda );
                             double aa= get_central_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            cen_sum-= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            cen_sum-= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;*/
+
                         }
                     }
                 }
                 sum+=  norm* 0.5* cen_sum* cen* vali* valj;
             }
             if( tensor && get_tensor_me( l1, l2, S, j, T, &ten ) ) {
-
                 double ten_sum= 0;
                 double norm= ho_norm( n1, l1)* ho_norm( n2, l2 );
                 for( int i= 0; i < n1+1; i++ ) {
@@ -191,7 +196,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                             double aa= get_tensor_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            ten_sum+= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            ten_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                         }
                     }
                 }
@@ -209,7 +214,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                             double aa= get_spinisospin_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            iso_sum+= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            iso_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                         }
                     }
                 }
@@ -287,7 +292,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
             int j= coefi->getj();
             int T= coefi->getT();
             double cen, ten, iso;
-            if( bcentral && get_central_me( l2, l1, S, j, T, &cen ) ) {
+            if( bcentral && get_central_me( l2, l1, S, j, T, &cen ) ) { // note: l2,l1,... here, l1,l2 in get_me_corr_right
                 double cen_sum= 0;
                 double norm= ho_norm( n1, l1)* ho_norm( n2, l2 );
                 for( int i= 0; i < n1+1; i++ ) {
@@ -295,11 +300,17 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
+                            double alambda= get_central_pow( lambda )/ pow(nu, 0.5*lambda );
+                            double B = get_central_exp()/nu;
+                            int K    = 2+l1+l2+lambda+2*i+2*j;
+                            cen_sum -= anli*anlj*alambda*hiGamma(K+1)*pow(1+B, -0.5*(K+1) );
+
+                            /* this is the original code, remove once safe
                             double alambda= get_central_pow( lambda )/ pow( sqrt(nu), lambda );
                             double aa= get_central_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            cen_sum-= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            cen_sum-= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;*/
                         }
                     }
                 }
@@ -318,7 +329,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                             double aa= get_tensor_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            ten_sum+= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            ten_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                         }
                     }
                 }
@@ -336,7 +347,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                             double aa= get_spinisospin_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            iso_sum+= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            iso_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                         }
                     }
                 }
@@ -471,7 +482,7 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
                                     alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                                     prefactor_sum+= met1* mes2* alambdai* alambdaj* power;
                                 }
-                                sum+= anli* anlj* prefactor_sum* gamma( 3+2*i+2*j+lambdai+lambdaj+l1+l2);
+                                sum+= anli* anlj* prefactor_sum* hiGamma( 3+2*i+2*j+lambdai+lambdaj+l1+l2);
                             }
                         }
                     }
@@ -582,7 +593,7 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
                     double aa= get_central_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
-                    cen_sum-= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                    cen_sum-= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                 }
             }
         }
@@ -602,7 +613,7 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
                     double aa= get_tensor_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
-                    ten_sum+= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                    ten_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                 }
             }
         }
@@ -620,7 +631,7 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
                     double aa= get_spinisospin_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
-                    iso_sum+= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                    iso_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                 }
             }
         }
@@ -692,7 +703,7 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
                     double aa= get_central_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
-                    cen_sum-= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                    cen_sum-= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                 }
             }
         }
@@ -711,7 +722,7 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
                     double aa= get_tensor_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
-                    ten_sum+= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                    ten_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                 }
             }
         }
@@ -729,7 +740,7 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
                     double aa= get_spinisospin_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
-                    iso_sum+= anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                    iso_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                 }
             }
         }
@@ -851,7 +862,7 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
                             alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                             prefactor_sum+= met1* mes2* alambdai* alambdaj* power;
                         }
-                        sum+= anli* anlj* prefactor_sum* gamma( 3+2*i+2*j+lambdai+lambdaj+l1+l2);
+                        sum+= anli* anlj* prefactor_sum* hiGamma( 3+2*i+2*j+lambdai+lambdaj+l1+l2);
                     }
                 }
             }

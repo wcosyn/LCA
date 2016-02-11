@@ -136,7 +136,7 @@ double kinenergy_ob::get_me_corr_right( Pair* pair, void* params )
                             double aa= get_central_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            cen_sum-= 0.5* kin_cm* anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            cen_sum-= 0.5* kin_cm* anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                             /*
                              * Term 2, the rel kin energy
                              */
@@ -154,7 +154,7 @@ double kinenergy_ob::get_me_corr_right( Pair* pair, void* params )
                                 double fint=
                                     ( ea*ea*(k+k*k-N*(N+1)) + e*e*(k+k*k-Na*(Na+1))
                                       + e*ea*( 3+2*k*(1+k)+ 3*N+ 3*Na+ 2*N*Na) )
-                                    * gamma( 1+N+Na)/ pow( sqrt(e+ea), 5+N+Na);
+                                    * hiGamma( 1+N+Na)/ pow( sqrt(e+ea), 5+N+Na);
                                 cen_sum-= 0.5* nu* anli* anlj* alambda* fint;
                             }
                         }
@@ -177,7 +177,7 @@ double kinenergy_ob::get_me_corr_right( Pair* pair, void* params )
                             double aa= get_tensor_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            ten_sum+= 0.5* kin_cm* anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            ten_sum+= 0.5* kin_cm* anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                             /*
                              * Term 2, the rel kin energy
                              */
@@ -194,7 +194,7 @@ double kinenergy_ob::get_me_corr_right( Pair* pair, void* params )
                                 double fint=
                                     ( ea*ea*(k+k*k-N*(N+1)) + e*e*(k+k*k-Na*(Na+1))
                                       + e*ea*( 3+2*k*(1+k)+ 3*N+ 3*Na+ 2*N*Na) )
-                                    * gamma( 1+N+Na)/ pow( sqrt(e+ea), 5+N+Na);
+                                    * hiGamma( 1+N+Na)/ pow( sqrt(e+ea), 5+N+Na);
                                 ten_sum+= 0.5* nu* anli* anlj* alambda* fint;
                             }
 
@@ -295,7 +295,7 @@ double kinenergy_ob::get_me_corr_left( Pair* pair, void* params )
                             double aa= get_central_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            cen_sum-= 0.5* kin_cm* anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            cen_sum-= 0.5* kin_cm* anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
                             /*
                              * Term 1, the rel kin energy
                              */
@@ -313,7 +313,7 @@ double kinenergy_ob::get_me_corr_left( Pair* pair, void* params )
                                 double fint=
                                     ( ea*ea*(k+k*k-N*(N+1)) + e*e*(k+k*k-Na*(Na+1))
                                       + e*ea*( 3+2*k*(1+k)+ 3*N+ 3*Na+ 2*N*Na) )
-                                    * gamma( 1+N+Na)/ pow( sqrt(e+ea), 5+N+Na);
+                                    * hiGamma( 1+N+Na)/ pow( sqrt(e+ea), 5+N+Na);
                                 cen_sum-= 0.5* nu* anli* anlj* alambda* fint;
                             }
                         }
@@ -334,7 +334,7 @@ double kinenergy_ob::get_me_corr_left( Pair* pair, void* params )
                             double aa= get_tensor_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            ten_sum+= 0.5* kin_cm* anli* anlj* alambda* gamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            ten_sum+= 0.5* kin_cm* anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
 
                             /*
                              * Term 2, the rel kin energy
@@ -352,7 +352,7 @@ double kinenergy_ob::get_me_corr_left( Pair* pair, void* params )
                                 double fint=
                                     ( ea*ea*(k+k*k-N*(N+1)) + e*e*(k+k*k-Na*(Na+1))
                                       + e*ea*( 3+2*k*(1+k)+ 3*N+ 3*Na+ 2*N*Na) )
-                                    * gamma( 1+N+Na)/ pow( sqrt(e+ea), 5+N+Na);
+                                    * hiGamma( 1+N+Na)/ pow( sqrt(e+ea), 5+N+Na);
                                 ten_sum+= 0.5* nu* anli* anlj* alambda* fint;
                             }
                         }
@@ -487,7 +487,7 @@ double kinenergy_ob::get_me_corr_both( Pair* pair, void* params )
                                     alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                                     prefactor_sum-= met1* mec2* alambdai* alambdaj* power;
                                 }
-                                sum+= 0.5* kin_cm* anli* anlj* prefactor_sum* gamma( 3+2*i+2*j+lambdai+lambdaj+l1+l2);
+                                sum+= 0.5* kin_cm* anli* anlj* prefactor_sum* hiGamma( 3+2*i+2*j+lambdai+lambdaj+l1+l2);
                                 /*
                                  * Term 2, the rel kin energy
                                  */
@@ -495,7 +495,7 @@ double kinenergy_ob::get_me_corr_both( Pair* pair, void* params )
                                     int Ni= 2*i+l1+lambdai;
                                     int Nj= 2*j+l2+lambdaj;
                                     double prefactor_sum= 0;
-                                    double general_factor= gamma( 1+Ni+Nj);
+                                    double general_factor= hiGamma( 1+Ni+Nj);
                                     if( bcentral && mec1 && mec2 ) {
                                         double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
                                         double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
