@@ -16,7 +16,8 @@
  * over the correlation functions.
  * The density_ob_integrand_cf are functions of one-nucleon momentum k and cm momentum P.
  * k is the density_ob momentum: n1(k).
- * A different object of density_ob_integrand3 is needed for every correlation function combination e.g. central-central, central-tensor, nothing-central, ...
+ * A different object of density_ob_integrand3 is needed for every correlation function combination
+ * e.g. central-central, central-tensor, nothing-central, ...
  */
 class density_ob_integrand3
 {

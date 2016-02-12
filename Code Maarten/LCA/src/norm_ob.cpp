@@ -192,11 +192,10 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 10; lambda++ ) {
-                            double alambda= get_tensor_pow( lambda )/ pow( sqrt(nu), lambda );
-                            double aa= get_tensor_exp()/nu;
-                            int N= -3-2*i-2*j-lambda-l1-l2;
-                            double power= pow( 1.+aa, 0.5*N);
-                            ten_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            double alambda= get_tensor_pow( lambda )/ pow(nu, 0.5*lambda );
+                            double B = get_tensor_exp()/nu;
+                            int K    = 2+l1+l2+lambda+2*i+2*j;
+                            ten_sum+= anli* anlj* alambda* hiGamma( K+1)*pow(1+B,-0.5*(K+1));
                         }
                     }
                 }
@@ -210,11 +209,10 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
-                            double alambda= get_spinisospin_pow( lambda )/ pow( sqrt(nu), lambda );
-                            double aa= get_spinisospin_exp()/nu;
-                            int N= -3-2*i-2*j-lambda-l1-l2;
-                            double power= pow( 1.+aa, 0.5*N);
-                            iso_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            double alambda= get_spinisospin_pow( lambda )/ pow( , 0.5*lambda );
+                            double B = get_spinisospin_exp()/nu;
+                            int K    = 2+l1+l2+lambda+2*i+2*j;
+                            iso_sum+= anli* anlj* alambda* hiGamma( K+1)*pow(1+B,-0.5*(K+1));
                         }
                     }
                 }
@@ -304,13 +302,6 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                             double B = get_central_exp()/nu;
                             int K    = 2+l1+l2+lambda+2*i+2*j;
                             cen_sum -= anli*anlj*alambda*hiGamma(K+1)*pow(1+B, -0.5*(K+1) );
-
-                            /* this is the original code, remove once safe
-                            double alambda= get_central_pow( lambda )/ pow( sqrt(nu), lambda );
-                            double aa= get_central_exp()/nu;
-                            int N= -3-2*i-2*j-lambda-l1-l2;
-                            double power= pow( 1.+aa, 0.5*N);
-                            cen_sum-= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;*/
                         }
                     }
                 }
@@ -324,12 +315,10 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 10; lambda++ ) {
-                            double alambda= get_tensor_pow( lambda )/ pow( sqrt(nu), lambda );
-
-                            double aa= get_tensor_exp()/nu;
-                            int N= -3-2*i-2*j-lambda-l1-l2;
-                            double power= pow( 1.+aa, 0.5*N);
-                            ten_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            double alambda= get_tensor_pow( lambda )/ pow(nu, 0.5*lambda );
+                            double B = get_tensor_exp()/nu;
+                            int K    = 2+l1+l2+lambda+2*i+2*j;
+                            ten_sum+= anli* anlj* alambda* hiGamma( K+1)*pow(1+B,-0.5*(K+1));
                         }
                     }
                 }
@@ -343,11 +332,10 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
-                            double alambda= get_spinisospin_pow( lambda )/ pow( sqrt(nu), lambda );
-                            double aa= get_spinisospin_exp()/nu;
-                            int N= -3-2*i-2*j-lambda-l1-l2;
-                            double power= pow( 1.+aa, 0.5*N);
-                            iso_sum+= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            double alambda= get_spinisospin_pow( lambda )/ pow( , 0.5*lambda );
+                            double B = get_spinisospin_exp()/nu;
+                            int K    = 2+l1+l2+lambda+2*i+2*j;
+                            iso_sum+= anli* anlj* alambda* hiGamma( K+1)*pow(1+B,-0.5*(K+1));
                         }
                     }
                 }
@@ -551,13 +539,13 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
 
     double sum= 0;
 
-    if( pc1->getS() != pc2->getS() ) return 0;
-    if( pc1->getj() != pc2->getj() ) return 0;
+    if( pc1->getS()  != pc2->getS()  ) return 0;
+    if( pc1->getj()  != pc2->getj()  ) return 0;
     if( pc1->getmj() != pc2->getmj() ) return 0;
-    if( pc1->getT() != pc2->getT() ) return 0;
+    if( pc1->getT()  != pc2->getT()  ) return 0;
     if( pc1->getMT() != pc2->getMT() ) return 0;
-    if( pc1->getN() != pc2->getN() ) return 0;
-    if( pc1->getL() != pc2->getL() ) return 0;
+    if( pc1->getN()  != pc2->getN()  ) return 0;
+    if( pc1->getL()  != pc2->getL()  ) return 0;
     if( pc1->getML() != pc2->getML() ) return 0;
     int l1= pc1->getl();
     int l2= pc2->getl();

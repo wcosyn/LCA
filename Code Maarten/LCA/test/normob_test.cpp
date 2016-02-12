@@ -28,7 +28,7 @@ int testUnit(Nucleusall& nuc){
 int testCentral(Nucleusall& nuc){
     int np = nuc.get_number_of_pairs(); // force makepairs() to be called
 
-    norm_ob nob(&nuc,true,false,false); // booleans are central,tensor,isospin
+    norm_ob nob(&nuc,true,true,false); // booleans are central,tensor,isospin
     struct norm_ob::norm_ob_params nob_params;
     nob_params.nA = -1;
     nob_params.nB = -1;
