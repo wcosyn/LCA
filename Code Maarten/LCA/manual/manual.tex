@@ -275,4 +275,45 @@ Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring gen
 	\item \texttt{norm\_ob::get\_me\_corr\_right( Pair )}.
 \end{itemize}
 
+\section{One body momentum distribution}
+We will look into one-body momentum distributions. A matrix element as calculated in the norm (??) is now extended by including the ony-body momentum operator $\hat{n}^{[1]}(\vec{p})$.
+\begin{align*}
+	\hat{n}_{AA'}^{[1]}(p) = \braket { A \equiv n (l S) j m_j N L M_L T M_T | \hat{\mathcal{O}}^{p\dagger} f_{p}^{\dagger} \hat{n}^{[1]}(\vec{p}) f_{q} \hat{ \mathcal{O}}^{q} | A' \equiv n' (l' S') j' m_j' N' L' M_L' T' M_T' }
+\end{align*}
+The one-body momentum operator is given by,
+\begin{align*}
+	\hat{n}^{[1]}(\vec{p}_1) = \ket{\vec{p}_1} \bra{\vec{p}_1} = \int \text{d}^{3} \vec{p}_{2} \, n^{[2]}(\vec{p}_1,\vec{p}_2) = \int \text{d}^{3} \vec{p}_{2} \ket{ \vec{p}_1 \vec{p}_2 } \bra { \vec{p}_1 \vec{p}_2}
+\end{align*}
+Hence,
+\begin{multline*}
+	\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \int \text{d}^{3} \vec{p}_{2} \braket{ A | \hat{\mathcal{O}}^{p\dagger} f_{p}^{\dagger} | \vec{p}_1 \vec{p}_2 } \braket{ \vec{p}_1 \vec{p}_2 | f_{q} \hat{ \mathcal{O}}^{q} | A'} \\
+	=  \int \text{d}^{3} \vec{p}_{2} \text{d}^{3} \vec{r}_{1} \text{d}^{3} \vec{r}_{2} \text{d}^{3} \vec{r}_{1}^{\, \prime} \text{d}^{3} \vec{r}_{2}^{\, \prime} \braket{ A | \hat{\mathcal{O}}^{p\dagger} f_{p}^{\dagger} | \vec{r}_{1} \vec{r}_{2} } \braket{ \vec{r}_1 \vec{r}_2 | \vec{p}_1 \vec{p}_2 } \braket{ \vec{p}_1 \vec{p}_2 | \vec{r}_{1}^{\, \prime} \vec{r}_{2}^{\, \prime} } \braket{ \vec{r}_{1}^{\, \prime} \vec{r}_{2}^{\, \prime} | f_{q} \hat{ \mathcal{O}}^{q} | A'}
+\end{multline*}
+With $\braket{ \vec{r} | \vec{p} } = \frac{1}{(2 \pi)^{3/2}} e^{i \vec{p} \cdot \vec{r}}$ and $ \vec{R}_{12} = \frac{\vec{r}_{1} + \vec{r}_{2}}{\sqrt{2}}, \vec{r}_{12} = \frac{\vec{r}_{1} - \vec{r}_{2}}{\sqrt{2}}$.
+\begin{multline*}
+	\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \\
+  \frac{1}{(2 \pi)^{6}} \int \text{d}^{3} \vec{p}_{2} \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{R}_{12}^{\, \prime} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \vec{p}_{1} \cdot ( \vec{r}_{1} - \vec{r}_{1}^{\, \prime}) } e^{ i \vec{p}_{2} \cdot ( \vec{r}_{2} - \vec{r}_{2}^{\, \prime} )} \braket{ A | \hat{\mathcal{O}}^{p\dagger} f_{p}^{\dagger} | \vec{R}_{12} \vec{r}_{12} } \braket{ \vec{R}_{12}^{\, \prime} \vec{r}_{12}^{\, \prime} | f_{q} \hat{ \mathcal{O}}^{q} | A'}
+\end{multline*}
+With $ \vec{r}_{1} - \vec{r}_{1}^{\, \prime} = \frac{\vec{R}_{12} + \vec{r}_{12} - \vec{R}_{12}^{\, \prime} - \vec{r}_{12}^{\, \prime}}{\sqrt{2}}$, $\vec{r}_{2} - \vec{r}_{2}^{\, \prime} = \frac{\vec{R}_{12} - \vec{r}_{12} - \vec{R}_{12}^{\, \prime} + \vec{r}_{12}^{\, \prime}}{\sqrt{2}}$, we have,
+\begin{align*}
+	\int \text{d}^{3} \vec{p}_{2} e^{ i \vec{p}_{2} \cdot ( \vec{r}_{2} - \vec{r}_{2}^{\, \prime} )} = (2 \pi)^{3} \sqrt{2}^{3} \delta^{(3)}( \vec{R}_{12} - \vec{r}_{12} - \vec{R}_{12}^{\, \prime} + \vec{r}_{12}^{\, \prime} )
+\end{align*}
+\begin{multline*}
+	\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \\
+  \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) } \braket{ A | \hat{\mathcal{O}}^{p\dagger} f_{p}^{\dagger} | \vec{R}_{12} \vec{r}_{12} } \braket{ \vec{R}_{12}^{\, \prime} \vec{r}_{12}^{\, \prime} | f_{q} \hat{ \mathcal{O}}^{q} | A'} \Big|_{\vec{R}_{12}^{\, \prime} = \vec{R}_{12} - \vec{r}_{12}  + \vec{r}_{12}^{\, \prime} }
+\end{multline*}
+We write out the explicit orbital wave functions. Let us denote the matrix element with the operators $\hat{\mathcal{O}}^{p,q}$, $ \braket{ A | \hat{\mathcal{O}}^{p\dagger} \hat{ \mathcal{O}}^{q} | A'}$, (central,tensor or spin-isospin) as $\mathcal{M}_{A A'}^{p,q}$.
+\begin{multline*}
+	\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \\
+  \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) } f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}') \\
+   \psi_{N L M_L}^{\dagger}(\vec{R}_{12}) \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{N' L' M_L'}(\vec{R}_{12}^{\, \prime}) \psi_{ n (lS) j m_j}(\vec{r}_{12}^{\, \prime}) \Big|_{\vec{R}_{12}^{\, \prime} = \vec{R}_{12} - \vec{r}_{12}  + \vec{r}_{12}^{\, \prime} }
+\end{multline*}
+Writing the wave functions as Fourier transformations $ \psi_{N L M_L}(\vec{R}_{12}) = 1/(2 \pi)^{3/2} \int \text{d}^{3} \vec{P}_{12} e^{ i \vec{P}_{12} \cdot \vec{R}_{12}} \phi_{N L M_L}(\vec{P}_{12})$,
+\begin{multline*}
+	\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \\
+  \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) }  f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}') \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{ n (lS) j m_j}(\vec{r}_{12}^{\, \prime})  \\
+   \frac{1}{(2 \pi)^{3}} \int \text{d}^{3} \vec{P}_{12} \int \text{d}^{3} \vec{P}_{12}^{\, \prime} e^{ -i \vec{P}_{12} \cdot \vec{R}_{12}} \phi_{N L M_L}^{\dagger}(\vec{P}_{12}) e^{ i \vec{P}_{12}^{\, \prime} \cdot ( \vec{R}_{12} - \vec{r}_{12} + \vec{r}_{12}^{\, \prime})} \phi_{N' L' M_L'}(\vec{P}_{12}^{\, \prime}) \\
+   = \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) } f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}')  \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{ n (lS) j m_j}(\vec{r}_{12}^{\, \prime}) \\
+   \int \text{d}^{3} \vec{P}_{12} e^{ -i \vec{P}_{12} \cdot (\vec{r}_{12} - \vec{r}_{12}^{\, \prime})} \phi_{N L M_L}^{\dagger}(\vec{P}_{12}) \phi_{N' L' M_L'}(\vec{P}_{12}) 
+\end{multline*}
 \end{document}
