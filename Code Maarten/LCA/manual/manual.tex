@@ -306,14 +306,26 @@ We write out the explicit orbital wave functions. Let us denote the matrix eleme
 \begin{multline*}
 	\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \\
   \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) } f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}') \\
-   \psi_{N L M_L}^{\dagger}(\vec{R}_{12}) \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{N' L' M_L'}(\vec{R}_{12}^{\, \prime}) \psi_{ n (lS) j m_j}(\vec{r}_{12}^{\, \prime}) \Big|_{\vec{R}_{12}^{\, \prime} = \vec{R}_{12} - \vec{r}_{12}  + \vec{r}_{12}^{\, \prime} }
+   \psi_{N L M_L}^{\dagger}(\vec{R}_{12}) \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{N' L' M_L'}(\vec{R}_{12}^{\, \prime}) \psi_{ n' (l'S') j' m_j'}(\vec{r}_{12}^{\, \prime}) \Big|_{\vec{R}_{12}^{\, \prime} = \vec{R}_{12} - \vec{r}_{12}  + \vec{r}_{12}^{\, \prime} }
 \end{multline*}
 Writing the wave functions as Fourier transformations $ \psi_{N L M_L}(\vec{R}_{12}) = 1/(2 \pi)^{3/2} \int \text{d}^{3} \vec{P}_{12} e^{ i \vec{P}_{12} \cdot \vec{R}_{12}} \phi_{N L M_L}(\vec{P}_{12})$,
 \begin{multline*}
 	\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \\
-  \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) }  f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}') \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{ n (lS) j m_j}(\vec{r}_{12}^{\, \prime})  \\
+  \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) }  f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}') \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{ n' ('lS') j' m_j'}(\vec{r}_{12}^{\, \prime})  \\
    \frac{1}{(2 \pi)^{3}} \int \text{d}^{3} \vec{P}_{12} \int \text{d}^{3} \vec{P}_{12}^{\, \prime} e^{ -i \vec{P}_{12} \cdot \vec{R}_{12}} \phi_{N L M_L}^{\dagger}(\vec{P}_{12}) e^{ i \vec{P}_{12}^{\, \prime} \cdot ( \vec{R}_{12} - \vec{r}_{12} + \vec{r}_{12}^{\, \prime})} \phi_{N' L' M_L'}(\vec{P}_{12}^{\, \prime}) \\
-   = \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) } f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}')  \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{ n (lS) j m_j}(\vec{r}_{12}^{\, \prime}) \\
+   = \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) } f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}')  \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{ n' (l'S') j' m_j'}(\vec{r}_{12}^{\, \prime}) \\
    \int \text{d}^{3} \vec{P}_{12} e^{ -i \vec{P}_{12} \cdot (\vec{r}_{12} - \vec{r}_{12}^{\, \prime})} \phi_{N L M_L}^{\dagger}(\vec{P}_{12}) \phi_{N' L' M_L'}(\vec{P}_{12}) 
+\end{multline*}
+Using the plane wave expansion $e^{i \vec{p} \cdot \vec{r}} = 4 \pi \sum_{l m_l} i^{l} j_{l}(p r) Y_{l m_l}^{*}(\Omega_{p}) Y_{l m_l}(\Omega_{r})$ and the fact that the isotropic harmonic oscillator wavefunctions factorize in $\psi_{n l m_l}(\vec{r}) = R_{n l}(r) Y_{l m_l}(\Omega_{r})$, $\psi_{n l m_l}(\vec{p}) = \Pi_{N L}(p) Y_{l m_l}(\Omega_{p})$, $\psi_{n (lS) j m_j}(\vec{r}) = R_{n l}(r) \mathcal{Y}_{(lS) j m_j}(\Omega_{r})$.
+\begin{multline*}
+	\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \\
+  \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) }  f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}') \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{ n' (l'S') j' m_j'}(\vec{r}_{12}^{\, \prime})  \\
+   \frac{1}{(2 \pi)^{3}} \int \text{d}^{3} \vec{P}_{12} \int \text{d}^{3} \vec{P}_{12}^{\, \prime} e^{ -i \vec{P}_{12} \cdot \vec{R}_{12}} \phi_{N L M_L}^{\dagger}(\vec{P}_{12}) e^{ i \vec{P}_{12}^{\, \prime} \cdot ( \vec{R}_{12} - \vec{r}_{12} + \vec{r}_{12}^{\, \prime})} \phi_{N' L' M_L'}(\vec{P}_{12}^{\, \prime}) \\
+   = \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8} (4 \pi)^{4}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime} f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}')  R_{n l}(r_{12}) \mathcal{Y}_{(lS)jm_j}^{*}(\Omega_{r_{12}}) R_{n' l'}(r_{12}') \mathcal{Y}_{(l'S')j'm_j'}(\Omega_{r_{12}'}) \\
+   \sum_{k m_k} i^{k} j_{k}( \sqrt{2} p_1 r_{12}) Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k m_k}(\Omega_{r_{12}}) \\
+   \sum_{k' m_k'} (-i)^{k'} j_{k'}( \sqrt{2} p_1 r_{12}') Y_{k' m_k'}(\Omega_{p_1}) Y_{k' m_k'}^{*}(\Omega_{r_{12}'}) \\
+   \int \text{d}^{3} \vec{P}_{12} \Pi_{N L}(P_{12}) Y_{L M_L}^{*}(\Omega_{P_{12}}) \Pi_{N' L'}(P_{12}) Y_{L' M_L'}(\Omega_{P_{12}})   \\
+   \sum_{K m_K} (-i)^{K} j_{K}(P_{12} r_{12}) Y_{K m_K}(\Omega_{P_{12}}) Y_{K m_K}^{*}(\Omega_{r_{12}}) \\
+   \sum_{K' m_K'} i^{K'} j_{K'}(P_{12} r_{12}') Y_{K' m_K'}^{*}(\Omega_{P_{12}}) Y_{K' m_K'}(\Omega_{r_{12}'}) \\
 \end{multline*}
 \end{document}
