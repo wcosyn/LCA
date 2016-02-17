@@ -316,7 +316,7 @@ Writing the wave functions as Fourier transformations $ \psi_{N L M_L}(\vec{R}_{
    = \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) } f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}')  \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{ n' (l'S') j' m_j'}(\vec{r}_{12}^{\, \prime}) \\
    \int \text{d}^{3} \vec{P}_{12} e^{ -i \vec{P}_{12} \cdot (\vec{r}_{12} - \vec{r}_{12}^{\, \prime})} \phi_{N L M_L}^{\dagger}(\vec{P}_{12}) \phi_{N' L' M_L'}(\vec{P}_{12}) 
 \end{multline*}
-Using the plane wave expansion $e^{i \vec{p} \cdot \vec{r}} = 4 \pi \sum_{l m_l} i^{l} j_{l}(p r) Y_{l m_l}^{*}(\Omega_{p}) Y_{l m_l}(\Omega_{r})$ and the fact that the isotropic harmonic oscillator wavefunctions factorize in $\psi_{n l m_l}(\vec{r}) = R_{n l}(r) Y_{l m_l}(\Omega_{r})$, $\psi_{n l m_l}(\vec{p}) = \Pi_{N L}(p) Y_{l m_l}(\Omega_{p})$, $\psi_{n (lS) j m_j}(\vec{r}) = R_{n l}(r) \mathcal{Y}_{(lS) j m_j}(\Omega_{r})$.
+Using the plane wave expansion $e^{i \vec{p} \cdot \vec{r}} = 4 \pi \sum_{l m_l} i^{l} j_{l}(p r) Y_{l m_l}^{*}(\Omega_{p}) Y_{l m_l}(\Omega_{r}) = 4 \pi \sum_{l m_l} i^{l} j_{l}(p r) Y_{l m_l}(\Omega_{p}) Y_{l m_l}^{*}(\Omega_{r})$ and the fact that the isotropic harmonic oscillator wavefunctions factorize in $\psi_{n l m_l}(\vec{r}) = R_{n l}(r) Y_{l m_l}(\Omega_{r})$, $\psi_{n l m_l}(\vec{p}) = \Pi_{N L}(p) Y_{l m_l}(\Omega_{p})$, $\psi_{n (lS) j m_j}(\vec{r}) = R_{n l}(r) \mathcal{Y}_{(lS) j m_j}(\Omega_{r})$.
 \begin{multline*}
 	\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \\
   \mathcal{M}_{A A'}^{p,q} \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) }  f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}') \psi_{ n (lS) j m_j}^{\dagger}(\vec{r}_{12}) \psi_{ n' (l'S') j' m_j'}(\vec{r}_{12}^{\, \prime})  \\
@@ -327,5 +327,46 @@ Using the plane wave expansion $e^{i \vec{p} \cdot \vec{r}} = 4 \pi \sum_{l m_l}
    \int \text{d}^{3} \vec{P}_{12} \Pi_{N L}(P_{12}) Y_{L M_L}^{*}(\Omega_{P_{12}}) \Pi_{N' L'}(P_{12}) Y_{L' M_L'}(\Omega_{P_{12}})   \\
    \sum_{K m_K} (-i)^{K} j_{K}(P_{12} r_{12}) Y_{K m_K}(\Omega_{P_{12}}) Y_{K m_K}^{*}(\Omega_{r_{12}}) \\
    \sum_{K' m_K'} i^{K'} j_{K'}(P_{12} r_{12}') Y_{K' m_K'}^{*}(\Omega_{P_{12}}) Y_{K' m_K'}(\Omega_{r_{12}'}) \\
+\end{multline*}
+\begin{multline*}
+\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \mathcal{M}_{A A'}^{p,q} 64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K m_K} \sum_{K' m_K'} (-1)^{k'+K} i^{k+k'+K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
+ \int \text{d} P_{12} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12})\\
+ \int \text{d} r_{12}\, r_{12}^{2} f_{p}^{\dagger}(r_{12}) R_{n l}(r_{12}) j_{k}( \sqrt{2} p_1 r_{12})  j_{K}(P_{12} r_{12}) \\
+\int \text{d} r_{12}' \, r_{12}^{\prime \, 2} f_{q}(r_{12}')  R_{n' l'}(r_{12}') j_{k'}( \sqrt{2} p_1 r_{12}')  j_{K'}(P_{12} r_{12}') \\
+ \int \text{d}^{2} \Omega_{r_{12}}  \mathcal{Y}_{(lS)jm_j}^{*}(\Omega_{r_{12}}) Y_{k m_k}(\Omega_{r_{12}}) Y_{K m_K}^{*}(\Omega_{r_{12}}) \\
+ \int \text{d}^{2} \Omega_{r_{12}'}  \mathcal{Y}_{(l'S')j'm_j'}(\Omega_{r_{12}'})  Y_{k' m_k'}^{*}(\Omega_{r_{12}'}) Y_{K' m_K'}(\Omega_{r_{12}'}) \\
+   \int \text{d}^{2} \Omega_{P_{12}}  Y_{L M_L}^{*}(\Omega_{P_{12}})  Y_{L' M_L'}(\Omega_{P_{12}}) Y_{K m_K}(\Omega_{P_{12}}) Y_{K' m_K'}^{*}(\Omega_{P_{12}}) \\
+\end{multline*}
+As in Eq. (D.38) we define,
+\begin{align*}
+	\chi_{p,nl}^{kK}(p,P) = \int \text{d} r\, r^{2} f_{p}(r) R_{n l}(r) j_{k}( \sqrt{2} p r)  j_{K}(P r)
+\end{align*}
+Using the identity (see for example \textit{Sakurai, modern quantum mechanics})
+\begin{align*}
+	Y_{ l m }(\Omega) Y_{ l' m'}(\Omega) = \sum_{LM} \sqrt{ \frac{(2l+1)(2l'+1)}{4 \pi (2L+1)}} \braket{ l m l' m' | L M} \braket{ l 0 l' 0 | L 0 } Y_{L M}(\Omega)
+\end{align*}
+We can easily derive
+\begin{align*}
+	\int \text{d} \Omega \, Y_{ l m }(\Omega) Y_{ l' m'}(\Omega) Y_{ l'' m''}^{*}(\Omega) = \sqrt{ \frac{(2l+1)(2l'+1)}{4 \pi (2l''+1)}} \braket{ l m l' m' | l'' m''} \braket{ l 0 l' 0 | l'' 0 } \, ,
+\end{align*}
+\begin{multline*}
+	\int \text{d} \Omega \, \mathcal{Y}_{ (l S) j m_j }(\Omega) Y_{ l' m'}(\Omega) Y_{ l'' m''}^{*}(\Omega) = \\
+	= \sum_{m m_S} \braket{ l m S m_S | j m_j} \int \text{d} \Omega \, Y_{ l m }(\Omega) Y_{ l' m'}(\Omega) Y_{ l'' m''}^{*}(\Omega) \\
+	= \sum_{m m_S} \braket{ l m S m_S | j m_j} \sqrt{ \frac{(2l+1)(2l'+1)}{4 \pi (2l''+1)}} \braket{ l m l' m' | l'' m''} \braket{ l 0 l' 0 | l'' 0 }
+\end{multline*}
+and,
+\begin{multline*}
+	\int \text{d} \Omega \, Y_{ l m_l }(\Omega) Y_{ l' m_l'}(\Omega) Y_{ k m_k}^{*}(\Omega) Y_{ k' m_k'}^{*}(\Omega) \\
+	= \int \text{d} \Omega \sum_{LM_L} \sqrt{ \frac{(2l+1)(2l'+1)}{4 \pi (2L+1)}} \braket{ l m_l l' m_l' | L M} \braket{ l 0 l' 0 | L 0 } Y_{L M}(\Omega) \\
+	 \sum_{K M_K} \sqrt{ \frac{(2k+1)(2k'+1)}{4 \pi (2K+1)}} \braket{ k m_k k' m_k' | K M_K} \braket{ k 0 k' 0 | K 0 } Y_{K M_K}^{*}(\Omega) \\
+	 = \sum_{LM_L} \sqrt{ \frac{(2l+1)(2l'+1)}{4 \pi (2L+1)}} \sqrt{ \frac{(2k+1)(2k'+1)}{4 \pi (2L+1)}} \braket{ l m_l l' m_l' | L M} \braket{ l 0 l' 0 | L 0 } \braket{ k m_k k' m_k' | L M_L} \braket{ k 0 k' 0 | L 0 } 
+\end{multline*}
+So we get for the one-body momentum matrix element,
+\begin{multline*}
+\braket{ A | \hat{n}^{[1]}(\vec{p}_1) | A'} = \mathcal{M}_{A A'}^{p,q} 64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K m_K} \sum_{K' m_K'} (-1)^{k'+K} i^{k+k'+K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
+ \int \text{d} P_{12} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l'}^{k'K'}(p_1,P_{12}) \\
+ \sum_{m_l m_S} \braket{l m_l S m_s | j m_j} \sqrt{ \frac{ (2l+1)(2K+1)}{ 4 \pi (2k+1)} } \braket{ l m_l K M_K | k m_k } \braket{ l 0 K 0 | k 0}  \\
+  \sum_{m_l' m_S'} \braket{l' m_l' S' m_s' | j' m_j'} \sqrt{ \frac{ (2l'+1)(2K'+1)}{ 4 \pi (2k'+1)} } \braket{ l' m_l' K' M_K' | k' m_k' } \braket{ l' 0 K' 0 | k' 0}  \\
+   \int \text{d}^{2} \Omega_{P_{12}}  Y_{L M_L}^{*}(\Omega_{P_{12}})  Y_{L' M_L'}(\Omega_{P_{12}}) Y_{K m_K}(\Omega_{P_{12}}) Y_{K' m_K'}^{*}(\Omega_{P_{12}}) \\
 \end{multline*}
 \end{document}
