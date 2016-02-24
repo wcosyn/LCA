@@ -11,9 +11,9 @@ using std::cerr;
 
 
 density_ob_integrand_cf::density_ob_integrand_cf( int A, double q, double(*f)(double), double pstep )
-    : A( A ), pstep( pstep ), q(q)
+    : A( A ), pstep( pstep ), q(q) , f(f)
 {
-    this->f=f;
+    //this->f=f;
     pmax= 10;
     max= int(pmax/pstep);
     double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
@@ -67,7 +67,7 @@ double density_ob_integrand_cf::get_value( int k, int l, int nA, int lA, int int
      * Make a map with key, the k and l, because every k and l combinations gives a different result.
      */
 
-    // is save because never l > 99  :p
+    // is safe because never l > 99  :p
     int key = 100*k+l;
     map< int, vector< vector< bool >* >* >::iterator it;
     map< int, vector< vector<double>* >* >::iterator it2;
@@ -184,7 +184,7 @@ double density_ob_integrand_cf::integrand( double r, void* params )
         return 0;
     }
     double bessel1b= speedy::speedies.get_bessel( l, r*P/sqrtnu );
-    double bessel2b= speedy::speedies.get_bessel( k, r*q*sqrt(2)/sqrtnu );
+    double bessel2b= speedy::speedies.get_bessel( k, r*q*M_SQRT2/sqrtnu );
 
 
     return  bessel1b* bessel2b* gsl_pow_uint(r, i+2)* (*f)(r/sqrtnu)* exp;

@@ -18,7 +18,7 @@ density_ob3::density_ob3(Nucleus* nucleus, bool central, bool tensor, bool isosp
     : operator_virtual_ob( nucleus, central, tensor, isospin, norm ),
       qmax( qmax )
 {
-    cout << "ob density operator made" << endl;
+    cout << "[Density_ob3] ob density operator made" << endl;
 }
 
 density_ob3::~density_ob3()
@@ -79,7 +79,7 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
      * But stores something in the void* params they receive.
      * Works similar as density_rel
      */
-    cout << "start initialization" << endl;
+    cout << "[Density_ob3] start initialization" << endl;
     density_ob_integrand3* icc= new density_ob_integrand3( A);
     density_ob_integrand3* itt= new density_ob_integrand3( A);
     density_ob_integrand3* iss= new density_ob_integrand3( A);
@@ -98,7 +98,7 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
     sum_me_corr( &dop );
 
 
-    cout << "initialization done ... " << endl;
+    cout << "[Density_ob3] initialization done ... " << endl;
 
     /*
      * All the to-be-calculated integrals and their prefactors are known
@@ -174,13 +174,13 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
     file << "# cor integral is " << integral << endl;
     file << "# tot integral is " << integral+ integral_mf << endl;
     file.close();
-    cout << "written to file " << filename.str().c_str() << endl;
-    cout << "mf integral is " << integral_mf << endl;
-    cout << "cor integral is " << integral << endl;
-    cout << "tot integral is " << integral+ integral_mf << endl;
-    cout << "kin energy mf is " << kinenergy_mf << endl;
-    cout << "kin energy co is " << kinenergy_co << endl;
-    cout << "kin energy to is " << kinenergy_mf+ kinenergy_co << endl;
+    cout << "[Density_ob3] written to file " << filename.str().c_str() << endl;
+    cout << "[Density_ob3] mf integral is " << integral_mf << endl;
+    cout << "[Density_ob3] cor integral is " << integral << endl;
+    cout << "[Density_ob3] tot integral is " << integral+ integral_mf << endl;
+    cout << "[Density_ob3] kin energy mf is " << kinenergy_mf << endl;
+    cout << "[Density_ob3] kin energy co is " << kinenergy_co << endl;
+    cout << "[Density_ob3] kin energy to is " << kinenergy_mf+ kinenergy_co << endl;
     *intmf= integral_mf;
     *intcorr= integral;
     delete i0;

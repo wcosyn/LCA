@@ -208,7 +208,7 @@ Let us now take a look at the separate cases for $\delta_{NN'} \delta_{LL'} \del
 
 	Orthonormality using this expansion (Eq.~\ref{eq:central_corr_single}) can easily be checked, $\braket{ n l |  1 | n' l}$ ($l=l'$ because of the orthonormality of the spherical harmonics), if we set $b_{\lambda} = \delta_{\lambda,0}$, $b=0$.
 	\begin{align}
-		\braket{ n l |  1 | n' l} =  \frac{N_{nl} N_{n'l}}{2}  \sum_{kk'} a_{nl,k} a_{n'l,k'} \Gamma \left( \frac{3+2l+2k + 2k'}{2} \right)
+		\braket{ n l |  1 | n' l} =  \frac{N_{nl} N_{n'l}}{2}  \sum_{kk'=0}^{nn'} a_{nl,k} a_{n'l,k'} \Gamma \left( \frac{3+2l+2k + 2k'}{2} \right)
 	\end{align}
 	\item $\hat{\mathcal{O}}^{p} = \mathbb{1}$, $f_{p} = f_c(r_{12})$, $\hat{\mathcal{O}}^{q} = \mathbb{1}$ , $f_{q} = f_c(r_{12})$, the non trivial part of the matrix element now comes down to calculating,
 	\begin{multline*}
@@ -282,6 +282,35 @@ Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring gen
 	\item \texttt{norm\_ob::get\_me\_corr\_right( Pair )}.
 \end{itemize}
 
+\subsection{ density\_ob\_integrand3 }
+Here we look at the file \texttt{ density\_ob\_integrand3}.
+
+\subsection{ density\_ob\_integrand\_cf }
+cf probably stands for correlation function. This class calculates integrals of the form
+\begin{align*}
+F_{p_1}(P) = \int dr r^{i+2} j_l(\frac{rP}{\sqrt{\nu}})  j_k(\frac{r p_1\sqrt{2}}{\sqrt{\nu}} )  f(\frac{r}{\sqrt{\nu}})  e^{\frac{-r^2}{2}}
+\end{align*}
+Where $p$ is the one-body momentum and $P$ is the c.m. momentum. This corresponds with the $\chi$ symbols defined (??).
+\begin{align*}
+	\chi_{p,nl}^{kK}(p_1,P) = \int \text{d} r\, r^{2} f_{p}(r) R_{n l}(r) j_{k}( \sqrt{2} p_1 r)  j_{K}(P r)
+\end{align*}
+With  $R_{nl}(r) = N_{nl} \nu^{\frac{l + 3/2}{2}} r^{l} e^{-\nu r^{2} /2} L_{n}^{l+1/2}(\nu r^{2})$ and $ \nu = M_N \omega / \hbar $,
+\begin{align*}
+	\chi_{p,nl}^{kK}(p_1,P) = N_{nl} \nu^{\frac{l + 3/2}{2}} \int \text{d} r\, r^{2+l} f_{p}(r)  e^{-\nu r^{2} /2} L_{n}^{l+1/2}(\nu r^{2}) j_{k}( \sqrt{2} p_1 r)  j_{K}(P r)
+\end{align*}
+Expanding the Generalized-Laguerre polynomials gives,
+\begin{align*}
+	\chi_{p,nl}^{kK}(p_1,P) = N_{nl} \nu^{\frac{l + 3/2}{2}} \sum_{i=0}^{n} a_{nl,i} \int \text{d} r\, r^{2+l} f_{p}(r)  e^{-\nu r^{2} /2}  (\nu r^{2})^{i} j_{k}( \sqrt{2} p_1 r)  j_{K}(P r)
+\end{align*}
+Changing variables $ r \rightarrow r/\sqrt{\nu}$ gives,
+\begin{align*}
+	\chi_{p,nl}^{kK}(p_1,P) =  N_{nl} \nu^{-\frac{3}{4}} \sum_{i=0}^{n} a_{nl,i} \int \text{d} r\, r^{2+l+2i} f_{p}( \nu^{-\frac{1}{2}} r)  e^{-r^{2} /2} j_{k}( \nu^{-\frac{1}{2}} \sqrt{2} p_1 r)  j_{K}(\nu^{-\frac{1}{2}} P r)
+\end{align*}
+This is exactly what is found in \texttt{density\_ob\_integrand\_cf::integrand} and \\ \texttt{density\_ob\_integrand\_cf::get\_value}.
+The integrals are stored in a map where the key field contains the order of the spherical Bessel functions $k,K$ and is calculated as $100k+K$. It is necessary to assume that $ K < 100$.
+The value field contains a two dimensional vector (\texttt{std::vector<std::vector<double>>}).
+The first dimension (index) corresponds with the power of $r$ in the integrand and ranges from $0$ to $2n+l+2$.
+The second dimension (index) corresponds with the different discretized values of $P$.
 \section{One body momentum distribution}
 We will look into one-body momentum distributions. A matrix element as calculated in the norm (??) is now extended by including the ony-body momentum operator $\hat{n}^{[1]}(\vec{p})$.
 \begin{align*}
@@ -346,7 +375,7 @@ Using the plane wave expansion $e^{i \vec{p} \cdot \vec{r}} = 4 \pi \sum_{l m_l}
 \end{multline*}
 As in Eq. (D.38) we define,
 \begin{align*}
-	\chi_{p,nl}^{kK}(p,P) = \int \text{d} r\, r^{2} f_{p}(r) R_{n l}(r) j_{k}( \sqrt{2} p r)  j_{K}(P r)
+	\chi_{p,nl}^{kK}(p_1,P) = \int \text{d} r\, r^{2} f_{p}(r) R_{n l}(r) j_{k}( \sqrt{2} p_1 r)  j_{K}(P r)
 \end{align*}
 Using the identity (see for example \textit{Sakurai, modern quantum mechanics})
 \begin{align*}
@@ -425,7 +454,7 @@ Finally we make use of
 \begin{align*}
 	\threej{l,k,l_1,m_l,m_k,m_{l_1}} \threej{l,k,l_1,0,0,0} =  \threej{ l, l_1, k, m_l, m_{l_1}, m_k } \threej{l, l_1, k,0,0,0}
 \end{align*}
-and compare our expression against (D.37) (using a final trick $ (-1)^{-k} = i^{-2k}$). Parts that are not found in (D.37) are colored \textcolor{red}{red}. Parts in (D.37) not appearing here are colored \textcolor{blue}{blue}.
+and compare our expression against (D.37) (using a final ``trick'' $ (-1)^{-k} = i^{-2k}$). Parts that are not found in (D.37) are colored \textcolor{red}{red}. Parts in (D.37) not appearing here are colored \textcolor{blue}{blue}.
 \begin{multline*}
 \braket{ A | \hat{n}^{[1]}(p_1) | A'} = \mathcal{M}_{A A'}^{p,q} \frac{4 \sqrt{2}}{\pi} \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} (-1)^{l+l'\textcolor{red}{-S-S'}+m_j+m_j'} i^{\textcolor{blue}{L_A+L_B}+k'-k} \hat{l}_{1}^{2} \hat{k}^{2} \hat{k}'^{2} \hat{l} \hat{l}' \hat{L} \hat{L}' \hat{j}  \hat{j}'  \\
  \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl}^{l_1 k\dagger}(p_1,P_{12}) \chi_{q,n'l'}^{ l_1 k'}(p_1,P_{12}) \\

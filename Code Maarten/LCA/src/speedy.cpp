@@ -20,7 +20,7 @@ speedy::speedy( int lmax, double delta)
     : lmax( lmax ), delta( delta )
 {
     gsl_set_error_handler_off();
-    cout << "create bessel " << endl;
+    cout << "[Speedy] create bessel " << endl;
     rmax= 60;
     imax= floor( rmax/delta );
     rmax= (imax-1)*delta;
@@ -31,7 +31,7 @@ speedy::speedy( int lmax, double delta)
         double array[lmax+1];
         int status= gsl_sf_bessel_jl_array( lmax, i*delta, array );
         if( status ) {
-            cerr << __LINE__ << __FILE__ << " errno " << status << endl;
+            cerr << "[Speedy] " << __LINE__ << __FILE__ << " errno " << status << endl;
         }
 //  vector< double >::iterator it= bessel.begin();
 //    cout << i*(lmax+1) << " " << i*(lmax+1)+lmax+1 << endl;
@@ -42,7 +42,7 @@ speedy::speedy( int lmax, double delta)
 //  cout << array[3] << " " << bessel.at(i*(lmax+1)+3) << endl;
     }
 //  cout << bessel.size() << endl;
-    cout << "create exp " << endl;
+    cout << "[Speedy] create exp " << endl;
     neg_exp= vector< double >( imax, 0 );
     gsl_sf_result exp;
     for( int i= 0; i < imax; i++ ) {
@@ -53,28 +53,28 @@ speedy::speedy( int lmax, double delta)
         neg_exp.at(i)= exp.val;
     }
 
-    cout << "create tensor " << endl;
+    cout << "[Speedy] create tensor " << endl;
     tensor= vector< double >( imax, 0 );
     for( int i= 0; i < imax; i++ ) {
         tensor.at(i)= tensor_fit( i*delta );
     }
-    cout << "create min_central " << endl;
+    cout << "[Speedy] create min_central " << endl;
     min_central= vector< double >( imax, 0 );
     for( int i= 0; i < imax; i++ ) {
         min_central.at(i)= min_central_fit( i*delta );
     }
-    cout << "create spinisospin " << endl;
+    cout << "[Speedy] create spinisospin " << endl;
     spinisospin= vector< double >( imax, 0 );
     for( int i= 0; i < imax; i++ ) {
         spinisospin.at(i)= spinisospin_fit( i*delta );
     }
 
-    cout << "done" << endl;
+    cout << "[Speedy] done. Functions discretized and ready to be evaluated trough interpolation " << endl;
 }
 
 speedy::~speedy()
 {
-    cout << "speedy removed" << endl;
+    cout << "[Speedy] speedy removed" << endl;
 }
 
 double speedy::get_bessel( int l, double r )
@@ -84,7 +84,7 @@ double speedy::get_bessel( int l, double r )
         return 0;
     }
     if( l > lmax ) {
-        cerr << "l < lmax " << l << endl;
+        cerr << "[Speedy] l < lmax " << l << endl;
         exit(-1);
     }
     int intr= (int)(floor(r/delta));

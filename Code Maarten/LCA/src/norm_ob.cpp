@@ -209,7 +209,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
-                            double alambda= get_spinisospin_pow( lambda )/ pow( , 0.5*lambda );
+                            double alambda= get_spinisospin_pow( lambda )/ pow(nu, 0.5*lambda );
                             double B = get_spinisospin_exp()/nu;
                             int K    = 2+l1+l2+lambda+2*i+2*j;
                             iso_sum+= anli* anlj* alambda* hiGamma( K+1)*pow(1+B,-0.5*(K+1));
@@ -332,7 +332,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
-                            double alambda= get_spinisospin_pow( lambda )/ pow( , 0.5*lambda );
+                            double alambda= get_spinisospin_pow( lambda )/ pow(nu , 0.5*lambda );
                             double B = get_spinisospin_exp()/nu;
                             int K    = 2+l1+l2+lambda+2*i+2*j;
                             iso_sum+= anli* anlj* alambda* hiGamma( K+1)*pow(1+B,-0.5*(K+1));

@@ -6,3 +6,11 @@
 2. Clean up 
 	- Nucleus::makepairs() (nucleus.cpp)
     - Nucleus::get_shell_max(...) (nucleus.cpp)
+
+3. Make use of general 1d interpolator instead of 
+   repeating heaps of code in speedy.cpp...
+
+
+4. Reproduce the table with "norms" on page 97 of Maartens thesis.
+   Make this into a exec file.
+
