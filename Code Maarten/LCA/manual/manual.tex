@@ -226,9 +226,39 @@ Let us take a look at
 	\braket{ S | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | S'} = 4 \braket{ S | \hat{ \vec{s}}_{1} \cdot \hat{ \vec{s}}_{2} | S'} = 4 \braket{ S | \hat{\vec{S}}^{\, 2} - \hat{\vec{s}}_{1}^{\,2} - \hat{\vec{s}}_{2}^{\,2} | S'} = 2 ( S(S+1) - \frac{3}{4} - \frac{3}{4} ) \delta_{SS'} = \delta_{SS'} (2 S(S+1) - 3)
 \end{align*}
 As we have 2 spin $1/2$ particles S can be either $0,1$ resulting in $\braket{ 1 | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | 1} = 1$, $\braket{ 0 | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | 0} = -3$.
-\todo[inline]{ Note that in the Maartens code the expression is modified to $4S-3$, which is equivalent for $S \in \{0,1\} $.}
+\todo[inline]{ Note that in the Maartens code the expression is modified to $4S-3$, which is equivalent for $S \in \{0,1\} $.} As this is independent of the spin projection $M_S$ we have,
+\begin{align*}
+	\braket{ S M_S | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | S' M_S'} = \delta_{SS'} \delta_{M_S M_S'} (2 S(S+1) - 3)
+\end{align*}
 Exactly the same derivation can be made for $\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ leading to the same result.
-
+\begin{align*}
+	\braket{ T M_T | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | T' M_T'} = \delta_{TT'} \delta_{M_T M_T'} (2 T(T+1) - 3)
+\end{align*}
+However when selecting a specific isospin projection $m_t = \pm 1/2 $ (proton or neutron) we get,
+\begin{align*}
+	\braket{ T M_T | \delta_{m_{\tau_1},m_t} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | T' M_T'}
+\end{align*}
+The product $\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ written in the spherical basis becomes,
+\begin{align*}
+	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} = \hat{\tau}_{1,0} \hat{\tau}_{2,0} - \hat{\tau}_{1,+} \hat{\tau}_{2,-} - \hat{\tau}_{1,-} \hat{\tau}_{2,+} = \hat{\tau}_{1,0} \hat{\tau}_{2,0} + \frac{\hat{\tau}_{1}^{+} \hat{\tau}_{2}^{-}}{2} + \frac{ \hat{\tau}_{1}^{-} \hat{\tau}_{2}^{+}}{2}
+\end{align*}
+Where $\hat{\tau}^{\pm}$ are the raising/lowering operators. Transitioning to the operators $\hat{t} = \hat{\tau}/2$ (analogues to the spin case $\hat{S} = \hat{\sigma}/2$).
+\begin{align*}
+	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} = 4 \hat{t}_{1,0} \hat{t}_{2,0} + 2 \hat{t}_{1}^{+} \hat{t}_{2}^{-} + 2 \hat{t}_{1}^{-} \hat{t}_{2}^{+} 
+\end{align*}
+We now investigate $ \delta_{m_{\tau_1},m_t} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \ket { T M_T}$
+\begin{align*}
+	\delta_{m_{\tau_1},m_t} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \ket { 1, 1 } &= \delta_{1,2 m_t} \ket{ 1, 1 } \\
+	\delta_{m_{\tau_1},m_t} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \ket { 1, 0 } &= \frac{1}{\sqrt{2}} \ket{ \frac{1}{2}, m_{t}} \otimes  \ket{ \frac{1}{2}, -m_{t}} \\
+	\delta_{m_{\tau_1},m_t} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \ket { 1, -1 } &= \delta_{-1,2 m_t} \ket{ 1, -1 } \\
+	\delta_{m_{\tau_1},m_t} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \ket { 0, 0 } &= \text{sgn}({-m_t}) \frac{3}{\sqrt{2}} \ket{ \frac{1}{2}, m_{t}} \otimes  \ket{ \frac{1}{2}, -m_{t}} \\
+	&= - 2 m_t \frac{3}{\sqrt{2}} \ket{ \frac{1}{2}, m_{t}} \otimes  \ket{ \frac{1}{2}, -m_{t}}
+\end{align*}
+The only non-zero matrix elements for $ \braket{ T M_T | \delta_{m_{\tau_1},m_t} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | T' M_T'}$ are,
+\begin{align*}
+	\braket{ 1,1 | \delta_{m_{\tau_1},m_t} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,1} &= \delta_{1,2m_t}  \\
+	\braket{ 1,-1 | \delta_{m_{\tau_1},m_t} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,-1} &= \delta_{-1,2m_t}
+\end{align*}
 \subsection{norm\_ob : public operator\_virtual\_ob}
 Here we take a look at the calculation of the norm $\mathcal{N}$ in \texttt{norm\_ob.cpp}.
 Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring general one body member functions.

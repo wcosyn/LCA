@@ -281,15 +281,15 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
             int MT= coefi->getMT();
             double preifactor=1;
 
-            if( t != 0 ) {
-                if( t == -MT  )
+            if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
                     continue;
-                if( MT == 0 ) {
+                if( MT == 0 ) { // MT = 0, pn pair, t = +1 or -1, select only half of the pair's strength! -> preifactor *= 0.5
                     preifactor*= 0.5;
-                    if( TA != TB ) preifactor *= t;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
                 }
             }
-            if( t == 0 && TA != TB )
+            if( t == 0 && TA != TB ) // as proton and neutron will both generate a + and a - sign leaving the rest of the matrix element unaffected the result will be zero, SKIP for loop iteration!
                 continue;
 
             int NA= coefi->getN();
@@ -360,10 +360,10 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
                                            * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                            * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                                 if( cg == 0 ) continue;
-                                double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0)
-                                                * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0 )
-                                                * threej::threejs.get( 2*kB, 2*l, 2*k,0, 0, 0 )
-                                                * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0 );
+                                double threej1=   threej::threejs.get( 2*LA, 2*l , 2*q, 0, 0, 0 )
+                                                * threej::threejs.get( 2*LB, 2*la, 2*q, 0, 0, 0 )
+                                                * threej::threejs.get( 2*kB, 2*l , 2*k, 0, 0, 0 )
+                                                * threej::threejs.get( 2*kA, 2*la, 2*k, 0, 0, 0 );
                                 if ( threej1 == 0 ) {
                                     continue;
                                 }
@@ -371,10 +371,10 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
                                     int ml= -mq-MLA;
                                     int mla= -mq-MLB;
                                     int mk= -ml-mkB;
-                                    double threej2= threej::threejs.get( 2*LA, 2*l, 2*q, 2*MLA, 2*ml , 2*mq)
+                                    double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q, 2*MLA, 2*ml , 2*mq)
                                                     * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
-                                                    * threej::threejs.get( 2*kB, 2*l, 2*k, 2*mkB, 2*ml, 2*mk )
-                                                    * threej::threejs.get( 2*kA, 2*la, 2*k, -2*mkA, -2*mla, -2*mk );
+                                                    * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
+                                                    * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
                                     if ( threej2 == 0 ) {
                                         continue;
                                     }
@@ -389,16 +389,12 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
                             {
                                 integrand->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm* vali*valj*sum*ifactor );
                             }
-
-
-                        }
-
-                    }
-                }
-            }
-
-        }
-    }
+                        } // k
+                    } // la
+                } // l
+            } // q
+        } // cj
+    } // ci
     return 0;
 }
 
@@ -978,7 +974,7 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
     density_ob_integrand3* integrand = dop->i0;
 
 
-    if( pc1->getS() != pc2->getS() ) return 0;
+    if( pc1->getS() != pc2->getS() ) return 0; // ob-momentum operator nor correlation operators change total spin
     //      if( pc1->getT() != pc2->getT() ) return 0;
     if( pc1->getMT() != pc2->getMT() ) return 0;
     int nA= pc1->getn();

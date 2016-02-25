@@ -85,6 +85,8 @@ protected:
      * \brief Selects pairs with certain qn. -1 if you want all.
      * @var dens_ob_params::lB
      * \brief Selects pairs with certain qn. -1 if you want all.
+     * @var t
+     * \brief [Camille:] I'm guessing this is the isospin of the nucleon. +1 for proton, -1 neutron, 0 for both.
      * @var dens_ob_params::i0
      * \brief integral for uncorrelated system.
      * @var dens_ob_params::ic
