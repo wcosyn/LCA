@@ -302,6 +302,7 @@ The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[1]} \h
 	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}| 0,0} = -\frac{1}{2} \\
 	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 0,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}| 1,0}=-\frac{1}{2} 2m_t
 \end{align*}
+These matrix element have been checked with a simple python program (\texttt{numpy.kron} ftw for kronecker products).
 \subsection{norm\_ob : public operator\_virtual\_ob}
 Here we take a look at the calculation of the norm $\mathcal{N}$ in \texttt{norm\_ob.cpp}.
 Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring general one body member functions.
