@@ -7,6 +7,7 @@
 \usepackage{braket}
 \usepackage{todonotes}
 \usepackage{bbold}
+\usepackage{multicol}
 
 
 \def\threej#1{\inthreej(#1)}
@@ -249,24 +250,40 @@ we get
 	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} = 4 \hat{t}_{1,0} \hat{t}_{2,0} + 2 \hat{t}_{1}^{+} \hat{t}_{2}^{-} + 2 \hat{t}_{1}^{-} \hat{t}_{2}^{+} 
 \end{align*}
 
-Defining the isospin-projection operator acting on particle ``1'' of the nucleon pair $ \hat{\delta}_{m_t}^{[1]} = ( 1 + (2 m_t) \hat{t}_{1,0})/2$ we get,
+Defining the isospin-projection operator acting on particle ``$i$'' of the nucleon pair $ \hat{\delta}_{m_t}^{[1]} = ( 1 + (2 m_t) \hat{t}_{i,0})/2$ we get,
+\begin{multicols}{2}
+\noindent
 \begin{align*}
 	\hat{\delta}_{m_t}^{[1]} \ket{ 1, \pm 1} &= \delta_{\pm 1,2m_t}  \ket{ 1, \pm 1}  \\
 	\hat{\delta}_{m_t}^{[1]} \ket{ 1,0} &= \frac{1}{\sqrt{2}} \ket{ \frac{1}{2}, m_t} \otimes \ket{ \frac{1}{2}, -m_t} \\
 	\hat{\delta}_{m_t}^{[1]} \ket{ 0,0} &= \frac{1}{\sqrt{2}} 2 m_t \ket{ \frac{1}{2}, m_t} \otimes \ket{ \frac{1}{2}, -m_t}
 \end{align*}
+\begin{align*}
+	\hat{\delta}_{m_t}^{[2]} \ket{ 1, \pm 1} &= \delta_{\pm 1,2m_t}  \ket{ 1, \pm 1}  \\
+	\hat{\delta}_{m_t}^{[2]} \ket{ 1,0} &= \frac{1}{\sqrt{2}} \ket{ \frac{1}{2}, -m_t} \otimes \ket{ \frac{1}{2}, m_t} \\
+	\hat{\delta}_{m_t}^{[2]} \ket{ 0,0} &= \frac{1}{\sqrt{2}} (-2 m_t) \ket{ \frac{1}{2}, m_t} \otimes \ket{ \frac{1}{2}, -m_t}
+\end{align*}
+\end{multicols}
 Note that sgn$(m_t) \equiv 2m_t$ as $m_t = \pm 1/2$.
 It is straightforward to show that,
+\begin{multicols}{2}
+\noindent
 \begin{align*}
 	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[1]} | 1, \pm 1} &= \delta_{\pm 1,2m_t}  \\
 	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} | 1,0} = \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} | 0,0} &=  \frac{1}{2} \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} | 0,0} = \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} | 1,0} &=  \frac{1}{2} 2 m_t \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} | 0,0} = \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} | 1,0} &=  \frac{1}{2} 2 m_t
 \end{align*}
-We now investigate the effect of the insertion of the isospin-projection operator $\hat{\delta}_{m_t}^{[1]}$ in 
+\begin{align*}
+	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[2]} | 1, \pm 1} &= \delta_{\pm 1,2m_t}  \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} | 1,0} = \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} | 0,0} &=  \frac{1}{2} \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} | 0,0} = \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} | 1,0} &=  \frac{1}{2} (-2 m_t) 
+\end{align*}
+\end{multicols}
+We now investigate the effect of the insertion of the isospin-projection operator $\hat{\delta}_{m_t}^{[i]}$ in 
 \begin{align*}
 	\braket{ T M_T | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | T' M_T'}
 \end{align*}
-Note that $\hat{\delta}_{m_t}^{[1]}$ and $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ are hermitian but do not commute. Hence the operator $\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}$ is \textbf{not hermitian}.
+Note that $\hat{\delta}_{m_t}^{[i]}$ and $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ are hermitian but do not commute. Hence the operator $\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[i]}$ is \textbf{not hermitian}.
 \begin{align*}
 	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} \ket { 1, \pm 1 } = \delta_{ \pm 1,2 m_t} \ket{ 1, \pm 1 }
 \end{align*}
@@ -280,7 +297,9 @@ Note that $\hat{\delta}_{m_t}^{[1]}$ and $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{
 	 + (2m_t-1) \ket{ \frac{1}{2}, m_t + 1} \otimes \ket{ \frac{1}{2},- m_t - 1} \\
 	+  (2m_t+1) \ket{ \frac{1}{2}, m_t -1 } \otimes \ket{ \frac{1}{2}, -m_t + 1} \Big) \\
 \end{multline*}
-The non-zero matrix elements for $ \braket{ T M_T | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | T' M_T'}$ are (one can make use of the fact that both $\hat{\delta}_{m_t}^{[1]}$ and $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ are hermitian and let them act on the neighbouring bra or ket),
+The non-zero matrix elements for $ \braket{ T M_T | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[i]} | T' M_T'}$ are (one can make use of the fact that both $\hat{\delta}_{m_t}^{[i]}$ and $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ are hermitian and let them act on the neighbouring bra or ket),
+\begin{multicols}{2}
+\noindent
 \begin{align*}
 	\braket{ 1, \pm 1 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
 	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &= \frac{1}{2} \\
@@ -288,7 +307,17 @@ The non-zero matrix elements for $ \braket{ T M_T | \hat{\vec{\tau}}_{1} \cdot \
 	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &=-\frac{3}{2}2m_t \\
 	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 0,0} &=-\frac{3}{2}
 \end{align*}
-The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | T' M_T'}$ are,
+\begin{align*}
+	\braket{ 1, \pm 1 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
+	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1,0} &= \frac{1}{2} \\
+	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 0,0} &=-\frac{1}{2}2m_t \\
+	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1,0} &= \frac{3}{2}2m_t \\
+	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 0,0} &=-\frac{3}{2}
+\end{align*}
+\end{multicols}
+The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[i]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | T' M_T'}$ are,
+\begin{multicols}{2}
+\noindent
 \begin{align*}
 	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
 	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &= \frac{1}{2} \\
@@ -296,13 +325,24 @@ The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[1]} \h
 	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &= \frac{1}{2} 2m_t \\
 	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &=-\frac{3}{2}
 \end{align*}
-The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | T' M_T'}$ are,
 \begin{align*}
-	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}| 0,0} = -\frac{1}{2} \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 0,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}| 1,0}=-\frac{1}{2} 2m_t
+	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &= \frac{1}{2} \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &= \frac{3}{2} 2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &=-\frac{1}{2} 2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &=-\frac{3}{2}
 \end{align*}
-These matrix element have been checked with a simple python program (\texttt{numpy.kron} ftw for kronecker products).
+\end{multicols}
+
+The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[i]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[i]} | T' M_T'}$ are,
+\begin{align*}
+	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1, \pm 1} &= \braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1, \pm 1} = \delta_{ \pm 1,2m_t}  \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}| 0,0} = -\frac{1}{2} \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 0,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}| 1,0}=-\frac{1}{2} 2m_t \\
+		\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]}| 0,0} = -\frac{1}{2} \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 0,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]}| 1,0}=\frac{1}{2} 2m_t
+\end{align*}
+These matrix element have been checked with a simple python program (\texttt{numpy.kron} ftw for kronecker products). Note that all the matrix elements for $i=1,2$ are the same expect for a minus sign whenever a combination like $ \braket{ 1,0 | \ldots | 0,0}$ or $\braket{0,0| \ldots | 1,0}$ is involved.
 \subsection{norm\_ob : public operator\_virtual\_ob}
 Here we take a look at the calculation of the norm $\mathcal{N}$ in \texttt{norm\_ob.cpp}.
 Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring general one body member functions.
