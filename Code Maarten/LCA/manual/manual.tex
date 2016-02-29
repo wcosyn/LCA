@@ -342,6 +342,22 @@ The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[i]} \h
 		\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]}| 0,0} = -\frac{1}{2} \\
 	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 0,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]}| 1,0}=\frac{1}{2} 2m_t
 \end{align*}
+Note that the combinations of different isospin-projections are not necessarily zero when the operator $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ is involved,
+\begin{multicols}{2}
+\noindent
+\begin{align*}
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 1,0 } &= 1 \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 0,0 } &= -2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 1,0 } &= 2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 0,0 } &= -1
+\end{align*}
+\begin{align*}
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 1,0 } &= 1 \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 0,0 } &= 2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 1,0 } &=-2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 0,0 } &= -1
+\end{align*}
+\end{multicols}
 These matrix element have been checked with a simple python program (\texttt{numpy.kron} ftw for kronecker products). Note that all the matrix elements for $i=1,2$ are the same expect for a minus sign whenever a combination like $ \braket{ 1,0 | \ldots | 0,0}$ or $\braket{0,0| \ldots | 1,0}$ is involved.
 \subsection{norm\_ob : public operator\_virtual\_ob}
 Here we take a look at the calculation of the norm $\mathcal{N}$ in \texttt{norm\_ob.cpp}.
