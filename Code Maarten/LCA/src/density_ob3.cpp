@@ -267,7 +267,7 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
             double vali= coefi->getCoef();
             double valj= coefj->getCoef();
             if( coefi->getS() != coefj->getS() ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
+            if( coefi->getMT() != coefj->getMT() ) continue; // this should NOT be here? (see manual)
             int nA= coefi->getn();
             int nB= coefj->getn();
             int lA= coefi->getl();
@@ -281,15 +281,20 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
             int MT= coefi->getMT();
             double preifactor=1;
 
+            /** Camille: see manual, section about isospin matrix elements
+              * the conditionals below are equivalent with the expression for
+              * \f$ \langle T M_T | \hat{\delta}_{t}^{[1]} | T' M_T' \rangle \f$
+              * in the manual. (Projection of particle 1 on specific isospin).
+              */
             if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
                 if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
                     continue;
-                if( MT == 0 ) { // MT = 0, pn pair, t = +1 or -1, select only half of the pair's strength! -> preifactor *= 0.5
+                if( MT == 0 ) {
                     preifactor*= 0.5;
                     if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
                 }
             }
-            if( t == 0 && TA != TB ) // as proton and neutron will both generate a + and a - sign leaving the rest of the matrix element unaffected the result will be zero, SKIP for loop iteration!
+            if( t == 0 && TA != TB ) // operators don't change isospin. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
                 continue;
 
             int NA= coefi->getN();
