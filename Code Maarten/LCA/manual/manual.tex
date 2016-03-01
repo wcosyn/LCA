@@ -359,6 +359,7 @@ Note that the combinations of different isospin-projections are not necessarily 
 \end{align*}
 \end{multicols}
 These matrix element have been checked with a simple python program (\texttt{numpy.kron} ftw for kronecker products). Note that all the matrix elements for $i=1,2$ are the same expect for a minus sign whenever a combination like $ \braket{ 1,0 | \ldots | 0,0}$ or $\braket{0,0| \ldots | 1,0}$ is involved.
+Also note that all the matrix elements do not mix different $M_T, M_T'$, so we effectively have $\delta_{M_T M_T'}$ everywhere.
 \subsection{norm\_ob : public operator\_virtual\_ob}
 Here we take a look at the calculation of the norm $\mathcal{N}$ in \texttt{norm\_ob.cpp}.
 Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring general one body member functions.

@@ -267,7 +267,7 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
             double vali= coefi->getCoef();
             double valj= coefj->getCoef();
             if( coefi->getS() != coefj->getS() ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue; // this should NOT be here? (see manual)
+            if( coefi->getMT() != coefj->getMT() ) continue; // ok, this is correct (see manual)
             int nA= coefi->getn();
             int nB= coefj->getn();
             int lA= coefi->getl();
