@@ -14,3 +14,7 @@
 4. Reproduce the table with "norms" on page 97 of Maartens thesis.
    Make this into a exec file.
 
+5. Clean up
+    operator_virtual_ob::get_tensor_me(...)
+    do something more elegant and clearer than all those if/else if/else statements
+
