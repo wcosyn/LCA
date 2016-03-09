@@ -117,7 +117,7 @@ This class represents the state
 \end{align}
 The class calculates all the coefficients,
 \begin{align}
-	C_{\alpha_1 \alpha_2}^{A} = \braket{A \equiv \{ n l S j m_j, N L M_L T M_T\} | \alpha_1 \alpha_2}
+	C_{\alpha_1 \alpha_2}^{A} = \braket{A \equiv \{ n l S j m_j, N L M_L T M_T\} | \alpha_1 \alpha_2}_{\text{nas}}
 	\label{eq:coef}
 \end{align}
 The main method here is \texttt{Pair::makecoeflist()}. It loops over all possible values of $ A \equiv \{ S,T,n,l,N,M_L,j,m_j \}$. Where in the summation over $\{n,l,N,L\}$ the energy conservation $2n_1 + l_1 + 2n_2 + l_2 = 2n + l + 2N + L$ is taken into account to eliminate one of the summation loops, $L = 2n_1 + l_1 + 2n_2 + l_2 - 2n - l - 2N$. Note that $M_T$ is also fixed by $M_T = m_{t_1} + m_{t_2}$ and no summation over this is performed, as we want to keep the contribution from different pairs seperated.
@@ -456,6 +456,7 @@ The one-body momentum operator is given by,
 	& = \sum_{s_2,t_2} \int \text{d}^{3} \vec{p}_{2} \ket{ \vec{p}_1 s_1 t_1, \vec{p}_2 s_2 t_2 } \bra { \vec{p}_1 s_1 t_1, \vec{p}_2 s_2 t_2}
 \end{align*}
 Hence,
+\todo[inline]{Do spin projection before inserting coordinates}
 \begin{multline*}
 	\braket{ A | \hat{n}_{s_1,t_1}^{[1]}(\vec{p}_1) | A'} = \sum_{s_2,t_2} \int \text{d}^{3} \vec{p}_{2} \braket{ A | \hat{\mathcal{O}}^{p\dagger} f_{p}^{\dagger} | \vec{p}_1 s_1 t_1, \vec{p}_2 s_2 t_2 } \braket{ \vec{p}_1 s_1 t_1, \vec{p}_2 s_2 t_2 | f_{q} \hat{ \mathcal{O}}^{q} | A'} \\
 	=  \sum_{s_2,t_2} \int \text{d}^{3} \vec{p}_{2} \text{d}^{3} \vec{r}_{1} \text{d}^{3} \vec{r}_{2} \text{d}^{3} \vec{r}_{1}^{\, \prime} \text{d}^{3} \vec{r}_{2}^{\, \prime} \\
@@ -474,9 +475,18 @@ With $ \vec{r}_{1} - \vec{r}_{1}^{\, \prime} = \frac{\vec{R}_{12} + \vec{r}_{12}
 	\braket{ A | \hat{n}_{s_1, t_1}^{[1]}(\vec{p}_1) | A'} = \frac{\sqrt{8}}{(2 \pi)^{3}} \sum_{s_2,t_2} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) } \\
 	 \braket{ A | \hat{\mathcal{O}}^{p\dagger} f_{p}^{\dagger} | \vec{R}_{12} s_1 t_1, \vec{r}_{12} s_2 t_2 } \braket{ \vec{R}_{12}^{\, \prime} s_1 t_1 , \vec{r}_{12}^{\, \prime} s_2 t_2 | f_{q} \hat{ \mathcal{O}}^{q} | A'} \Big|_{\vec{R}_{12}^{\, \prime} = \vec{R}_{12} - \vec{r}_{12}  + \vec{r}_{12}^{\, \prime} }
 \end{multline*}
-We write out the explicit orbital wave functions. Let us denote the matrix element with the operators $ \hat{\mathcal{O}}^{p,q}$ (central,tensor or spin-isospin) and the spin/isospin projections $s_1,t_1,s_2,t_2$: 
+Let us investigate the matrix element with the operators $ \hat{\mathcal{O}}^{p,q}$ (central,tensor or spin-isospin) and the spin/isospin projections $s_1,t_1,s_2,t_2$ in detail: 
 \begin{align*}
 \mathcal{M}_{A A'}^{p,q}(s_1,t_1) = \sum_{s_2,t_2} \braket{ A | \hat{\mathcal{O}}^{p\dagger} | s_1 t_1, s_2 t_2} \braket{ s_1 t_1, s_2 t_2 | \hat{ \mathcal{O}}^{q} | A'}
+\end{align*}
+Using the expressions for $ \hat{ \mathcal{O}}^{p}  \ket{ A'} $ (??) this becomes,
+\begin{align*}
+	\mathcal{M}_{A A'}^{p,q}(s_1,t_1) = \sum_{s_2,t_2} \sum_{l_p = |j-1|}^{j+1} \sum_{l_q = |j' - 1|}^{j'+1} \text{O}^{\dagger}(S,T,j,l,l_p) \text{O}(S',T',j',l',l_q') \braket{ A | s_1 t_1, s_2 t_2} \braket{ s_1 t_1, s_2 t_2 | A'}
+\end{align*}
+Together with
+\begin{align*}
+	\braket{ \frac{1}{2} s_1 \frac{1}{2} s_2 | (l S) j m_j} &= \sum_{m_l m_s} \braket{ l m_l S m_S | j m_j } \braket{   \frac{1}{2} s_1 \frac{1}{2} s_2 | S m_S} \ket{ l m_l} \\
+	&= \braket{ l m_l S m_S | j m_j } \braket{   \frac{1}{2} s_1 \frac{1}{2} s_2 | S m_S} \ket{ l m_l} \Big|_{ \substack{ m_S = s_1 + s_2 \phantom{ + m_j} \\ m_l = m_j - s_1 - s_2} }
 \end{align*}
 \begin{multline*}
 	\braket{ A | \hat{n}_{s_1,t_1}^{[1]}(\vec{p}_1) | A'} = \\
@@ -605,7 +615,7 @@ In the case that Maarten has simply omitted the LS coupling but than there shoul
 \subsection{The matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$}
 Let us now look into the factorized matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$ in the one-body momentum distribution . Note that we implicitly assumed that the operators $\mathcal{O}^{p,q}$ do not change the quantum numbers of the orbital wave functions, $ n (lS) j m_j N L M_L$ (the quantum numbers involved in the radial integrals). More explicitly,
 \begin{align*}
-	\hat{\mathcal{O}}^{p} \ket{ n (lS) j m_j N L M_L } = f(n,l,S,j,m_j,N,L,M_L) \ket{ n (lS) j m_j N L M_L }
+	\hat{\mathcal{O}}^{p} \ket{ n (lS) j m_j N L M_L } = \text{O}^{p}(n,l,S,j,m_j,N,L,M_L) \ket{ n (lS) j m_j N L M_L }
 \end{align*}
 If not it is impossible to factorize $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$ as is done in (above (??)). We now investigate this in detail to make sure this is the case.
 For the central and spin-isospin operators $\hat{\mathcal{O}} = \mathbb{1}, \vec{\sigma}_{1} \cdot \vec{\sigma_{2}} \vec{ \tau}_{1} \cdot \vec{ \tau}_{2} $ this is trivially valid,
@@ -618,12 +628,23 @@ The case for the tensor operator $\hat{S}_{12} = 2 \left[ 3 \frac{ \vec{S} \cdot
 \begin{align*}
 	\hat{S}_{12} \ket{ (lS) j m_j} &= \sum_{l' S' j' m_j'} \ket{ (l' S') j' m_j' } \bra{ (l' S') j' m_j'} \hat{S}_{12} \ket{ (lS) j m_j} \\
 	&= \sum_{l' S' j' m_j'} \ket{ (l' S') j' m_j' } 2 \delta_{jj'} \delta_{m_j m_j'} (-1)^{S+j} \sqrt{ 120 } \, \hat{l} \hat{l}' \threej{l,l',2,0,0,0} \sixj{l,l',2,S',S,j} \delta_{jj'} \delta_{m_j m_j'} \delta_{S S'} \delta_{S1} \\
-	&= \sum_{l'=|j-1|}^{j+1} \ket{ (l' S) j m_j } (-1)^{S+j} \sqrt{ 120 } \, \hat{l} \hat{l}' \threej{l,l',2,0,0,0} \sixj{l,l',2,S,S,j} \delta_{S1}
+	&= \sum_{l'=|j-1|}^{j+1} \ket{ (l' S) j m_j } (-1)^{S+j} \sqrt{ 120 } \, \hat{l} \hat{l}' \threej{l,l',2,0,0,0} \sixj{l,l',2,S,S,j} \delta_{S1} \\
+	&= \sum_{l'=|j-1|}^{j+1} \text{S}_{12}(S,j,l,l') \ket{ (l' S) j m_j }
 \end{align*}
 Where we have made use of the unity,
 \begin{align*}
 \sum_{l S j m_j} \ket{ (l S) j m_j} \bra{ (l S) j mj} &= \sum_{l S j m_j} \sum_{ m_l m_S} \sum_{m_l' m_S'} \braket{ l m_l S m_S | j m_j } \ket{ l m_l S m_S} \braket{ j m_j | l m_l' S m_S'} \bra{ l m_l' S m_S'} \\
 &= \sum_{l S} \sum_{ m_l m_S} \sum_{m_l' m_S'}  \ket{ l m_l S m_S}  \bra{ l m_l' S m_S'} \sum_{j m_j} \braket{ l m_l S m_S | j m_j } \braket{ j m_j | l m_l' S m_S'} \\
 &=  \sum_{l S} \sum_{ m_l m_S} \ket{ l m_l S m_S}  \bra{ l m_l S m_S} = \mathbb{1}
+\end{align*}
+Summarizing we can write,
+\begin{align*}
+	\hat{\mathcal{O}}^{p} \ket{ n (lS) j m_j N L M_L T M_T } = \sum_{l' = |j-1|}^{j+1} \text{O}^{p}(S,T,j,l,l') \ket{ n (l'S) j m_j N L M_L T M_T }
+\end{align*}
+With
+\begin{align*}
+	\hat{\mathcal{O}}^{p} = \mathbb{1} & \Rightarrow  \text{O}^{p}(S,T,j,l,l') = 1 \\
+	\hat{\mathcal{O}}^{p} = \vec{\sigma}_{1} \cdot \vec{\sigma_{2}} \vec{ \tau}_{1} \cdot \vec{ \tau}_{2} & \Rightarrow  \text{O}^{p}(S,T,j,l,l') = [ 2S(S+1) - 3 ] [ 2T(T+1) - 3] \\
+	\hat{\mathcal{O}}^{p} =  \hat{S}_{12} &\Rightarrow \text{O}^{p}(S,T,j,l,l') = \text{S}_{12}(S,j,l,l')
 \end{align*}
 \end{document}
