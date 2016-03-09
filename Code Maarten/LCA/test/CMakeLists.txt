@@ -12,6 +12,9 @@ target_link_libraries(normob_test ${LIBS})
 add_executable(ho_test hotest.cpp)
 target_link_libraries(ho_test ${LIBS})
 
-install(TARGETS threej_test nucleus_test normob_test ho_test
+add_executable(newcoef_test newcoef_test.cpp)
+target_link_libraries(newcoef_test ${LIBS})
+
+install(TARGETS threej_test nucleus_test normob_test ho_test newcoef_test
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)
 

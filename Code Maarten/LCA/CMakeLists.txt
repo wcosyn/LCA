@@ -15,11 +15,11 @@ MESSAGE(" -- [info] Type ${CMAKE_BUILD_TYPE}")
 find_package(GSL REQUIRED)
 find_package(Doxygen)
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused -std=c++11 -fopenmp")
-set (LIBS "${LIBS}${GSL_LIBRARIES}" nmd)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused -std=c++11 -fopenmp")
+set(LIBS "${LIBS}${GSL_LIBRARIES}" nmd)
 
 # make sure our executables will find dynimcal library:
-set ( CMAKE_INSTALL_RPATH "${CMAKE_SOURCE_DIR}/lib") 
+set( CMAKE_INSTALL_RPATH "${CMAKE_SOURCE_DIR}/lib")
 
 
 

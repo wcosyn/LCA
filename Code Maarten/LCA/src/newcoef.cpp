@@ -41,19 +41,20 @@ Newcoef::Newcoef( int n1, int l1, int two_j1, int two_mj1, int two_t1,
             return;
         }
         for( int two_J = fabs(two_j1-two_j2); two_J <= two_j1+two_j2; two_J +=2) {
-            int J = two_J/2;
+            int J = two_J/2; // this assumes j1 and j2 are always HALF integer (2*j1 and 2*j2 are then odd, making the sum even
             for( int MJ = -J; MJ <= J; MJ++) {
                 if( two_mj1+ two_mj2 != 2*MJ ) continue;
                 if( ML+ mj != MJ ) continue;
 
                 double threej1 = sqrt( two_J+1) * threej::threejs.get( two_j1, two_j2, two_J, two_mj1, two_mj2, -2*MJ );
-                int mod = (two_j1-two_j2+2*MJ)%4 ;
-                if( mod == 2 || mod == -2 ) threej1 *= -1;
-
+                int mod = (two_j1-two_j2+2*MJ)%4 ; // result is either -2,0,2
+                if( mod == 2 || mod == -2 ) threej1 *= -1; // for -2,2 , equivalent with \f$ (-1)^{j1-j2+MJ} \f$
+                // threej1 is now actually the corresponding CGC-coefficient
 
                 double threej2 =  sqrt( two_J+1) * threej::threejs.get( 2*j, 2*L, 2*J, 2*mj, 2*ML, -2*MJ);
 //      if( (j-L+MJ)%2 ) isospin *= -1;
                 if( (j-L+MJ)%2 ) threej2 *= -1;
+                // threej2 is now actually the corresponding CGC-coefficient
 
                 for( int Lambda = fabs(l1-l2); Lambda <= l1+l2; Lambda++) {
                     if( Lambda < fabs(l-L ) ) continue;
@@ -64,8 +65,10 @@ Newcoef::Newcoef( int n1, int l1, int two_j1, int two_mj1, int two_t1,
                     }
                     double ninej = sqrt(two_j1+1) * sqrt(two_j2+1) * sqrt(2*S+1) * sqrt(2*Lambda+1)
                                    * gsl_sf_coupling_9j(2*l1, 1, two_j1, 2*l2, 1, two_j2, 2*Lambda, 2*S, 2*J);
+                    // ninej has no phase factor (~(-1)^{...}) when converting back to CGC. Only some square roots (above)
                     double sixj = sqrt(2*Lambda+1) * sqrt(2*j+1) * gsl_sf_coupling_6j(2*j, 2*L, 2*J, 2*Lambda, 2*S, 2*l);
-                    if( (j+Lambda+S+L)%2 ) sixj *= -1;
+                    if( (j+Lambda+S+L)%2 ) sixj *= -1; // phase factor to go back to CG-coupling
+                    // sixj is now back to CG-coupling
                     value += ninej*sixj*threej1*threej2*isospin*2*moshme; // *2 from non zero [ 1 - (-1)^{L+S+T}] = 2
                 }
             }
