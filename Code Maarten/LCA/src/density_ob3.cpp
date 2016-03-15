@@ -319,7 +319,7 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
                         int ipower1= (LA-LB+l-la)%4;
                         int ipower2= (LA-LB+la-l)%4;
                         double ifactor= preifactor;
-                        if( TA == TB ) {
+                        if( TA == TB ) { // Maarten says term something like TA-TB
                             if( GSL_IS_ODD( ipower1 ) ) {
                                 if( (ipower1+ipower2)%4 == 0 ) continue;
                                 else
@@ -495,12 +495,11 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                             else
                                 ifactor*= -2;
                         }
-                        if( TA != TB ) {
+                        if( TA != TB ) { // this should better be "else" matching " if (TA==TB)
                             if( GSL_IS_ODD( ipower1 ) ) {
                                 if( fabs((ipower1+ipower2)%4) == 2 ) continue;
                                 else
                                     cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-
                             }
                             if( fabs( ipower1) == fabs(ipower2) ) continue;
                             if( ipower1 == 0 )
@@ -513,6 +512,8 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                         // SUM DUE TO CORRELATION OPERATORS kA and kB
                         // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTLY AFFECTED BY CORRELATION OPERATOR
                         // BUT THE ALLOWED k RANGE CAN CHANGE
+                        /** Camille: sum of kA and kB is due do the tensor operator (see manual)
+                         * */
                         for( int kA= jA-1; kA <= jA+1; kA++ ) {
                             if( kA < 0 ) continue;
                             int kB= lB;
@@ -544,10 +545,10 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                                         int ml= -mq-MLA;
                                         int mla= -mq-MLB;
                                         int mk= -ml-mkB;
-                                        double threej2= threej::threejs.get( 2*LA, 2*l, 2*q, -2*MLA, -2*ml , -2*mq)
+                                        double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
                                                         * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
-                                                        * threej::threejs.get( 2*kB, 2*l, 2*k, 2*mkB, 2*ml, 2*mk )
-                                                        * threej::threejs.get( 2*kA, 2*la, 2*k, -2*mkA, -2*mla, -2*mk );
+                                                        * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
+                                                        * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
                                         if ( threej2 == 0 ) {
                                             continue;
                                         }
@@ -558,7 +559,6 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                                 if( fabs(sum)< 1e-10 ) {
                                     continue;
                                 }
-
                                 #pragma omp critical(add)
                                 {
                                     if( bcentral && mec1 ) {
@@ -571,10 +571,8 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                                         integrand_s->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm*mes1*vali*valj*sum*ifactor*factor_right );
                                     }
                                 }
-
                             }
                         }
-
                     }
                 }
             }
@@ -721,10 +719,10 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
                                         int ml= -mq-MLA;
                                         int mla= -mq-MLB;
                                         int mk= -ml-mkB;
-                                        double threej2= threej::threejs.get( 2*LA, 2*l, 2*q, -2*MLA, -2*ml , -2*mq)
+                                        double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
                                                         * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
-                                                        * threej::threejs.get( 2*kB, 2*l, 2*k, 2*mkB, 2*ml, 2*mk )
-                                                        * threej::threejs.get( 2*kA, 2*la, 2*k, -2*mkA, -2*mla, -2*mk );
+                                                        * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
+                                                        * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
                                         if ( threej2 == 0 ) {
                                             continue;
                                         }
@@ -735,7 +733,6 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
                                 if( fabs(sum)< 1e-10 ) {
                                     continue;
                                 }
-
                                 #pragma omp critical(add)
                                 {
                                     if( bcentral && mec2 ) {
@@ -747,8 +744,6 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
                                     if( spinisospin && mes2 ) {
                                         integrand_s->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k, pair_norm*mes2*vali*valj*sum*ifactor );
                                     }
-
-
                                 }
                             }
                         }
@@ -900,10 +895,10 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
                                                    * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                                    * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                                         if( cg == 0 ) continue;
-                                        double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0)
-                                                        * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0 )
-                                                        * threej::threejs.get( 2*kB, 2*l, 2*k,0, 0, 0 )
-                                                        * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0 );
+                                        double threej1=   threej::threejs.get( 2*LA, 2*l , 2*q,0, 0, 0)
+                                                        * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0)
+                                                        * threej::threejs.get( 2*kB, 2*l , 2*k,0, 0, 0)
+                                                        * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0);
                                         if ( threej1 == 0 ) {
                                             continue;
                                         }
@@ -911,10 +906,10 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
                                             int ml= -mq-MLA;
                                             int mla= -mq-MLB;
                                             int mk= -ml-mkB;
-                                            double threej2= threej::threejs.get( 2*LA, 2*l, 2*q, -2*MLA, -2*ml , -2*mq)
+                                            double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
                                                             * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
-                                                            * threej::threejs.get( 2*kB, 2*l, 2*k, 2*mkB, 2*ml, 2*mk )
-                                                            * threej::threejs.get( 2*kA, 2*la, 2*k, -2*mkA, -2*mla, -2*mk );
+                                                            * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
+                                                            * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
                                             if ( threej2 == 0 ) {
                                                 continue;
                                             }
@@ -1081,10 +1076,10 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
                             int ml= -mq-MLA;
                             int mla= -mq-MLB;
                             int mk= -ml-mkB;
-                            double threej2= threej::threejs.get( 2*LA, 2*l, 2*q, 2*MLA, 2*ml , 2*mq)
+                            double threej2=   threej::threejs.get( 2*LA, 2*l,  2*q, 2*MLA, 2*ml , 2*mq)
                                             * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
-                                            * threej::threejs.get( 2*kB, 2*l, 2*k, 2*mkB, 2*ml, 2*mk )
-                                            * threej::threejs.get( 2*kA, 2*la, 2*k, -2*mkA, -2*mla, -2*mk );
+                                            * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
+                                            * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
                             if ( threej2 == 0 ) {
                                 continue;
                             }
@@ -1229,10 +1224,10 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
                                 int ml= -mq-MLA;
                                 int mla= -mq-MLB;
                                 int mk= -ml-mkB;
-                                double threej2= threej::threejs.get( 2*LA, 2*l, 2*q, -2*MLA, -2*ml , -2*mq)
+                                double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
                                                 * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
-                                                * threej::threejs.get( 2*kB, 2*l, 2*k, 2*mkB, 2*ml, 2*mk )
-                                                * threej::threejs.get( 2*kA, 2*la, 2*k, -2*mkA, -2*mla, -2*mk );
+                                                * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
+                                                * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
                                 if ( threej2 == 0 ) {
                                     continue;
                                 }
@@ -1392,10 +1387,10 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
                                 int ml= -mq-MLA;
                                 int mla= -mq-MLB;
                                 int mk= -ml-mkB;
-                                double threej2= threej::threejs.get( 2*LA, 2*l, 2*q, -2*MLA, -2*ml , -2*mq)
+                                double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
                                                 * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
-                                                * threej::threejs.get( 2*kB, 2*l, 2*k, 2*mkB, 2*ml, 2*mk )
-                                                * threej::threejs.get( 2*kA, 2*la, 2*k, -2*mkA, -2*mla, -2*mk );
+                                                * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
+                                                * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
                                 if ( threej2 == 0 ) {
                                     continue;
                                 }
@@ -1564,10 +1559,10 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
                                     int ml= -mq-MLA;
                                     int mla= -mq-MLB;
                                     int mk= -ml-mkB;
-                                    double threej2= threej::threejs.get( 2*LA, 2*l, 2*q, -2*MLA, -2*ml , -2*mq)
+                                    double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
                                                     * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
-                                                    * threej::threejs.get( 2*kB, 2*l, 2*k, 2*mkB, 2*ml, 2*mk )
-                                                    * threej::threejs.get( 2*kA, 2*la, 2*k, -2*mkA, -2*mla, -2*mk );
+                                                    * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
+                                                    * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
                                     if ( threej2 == 0 ) {
                                         continue;
                                     }
