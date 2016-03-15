@@ -1,0 +1,633 @@
+
+\documentclass[notitlepage,a4paper,final,amsfonts,amsmath,amssymb]{revtex4-1}
+
+%
+% activate reftex-mode M-x 
+%
+%
+\usepackage{graphicx}% Include figure files
+\usepackage{amsmath}
+\usepackage{tabularx}
+%\graphicspath{{./figs/}}
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{float}
+\usepackage[Gray,squaren,thinqspace,thinspace]{SIunits} % Elegant eenheden zetten
+\usepackage{subcaption}
+
+%----------------
+% package grffile: allows to use ``.^{\; \prime}^{\; \prime} in file names
+%    for includegraphics
+%   \includegraphics{aaa.bbb.ccc.png} would not work without package grffile
+%
+\usepackage{grffile}
+%
+%--------------------------------
+\bibliographystyle{apsrev}
+%
+%
+\newcommand{\ket}[1]{\mid #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 \mid}
+\newcommand{\bket}[1]{\Big| #1 \Big>}
+\newcommand{\bbra}[1]{\Big< #1 \Big|}
+\newcommand{\braket}[2]{\langle #1 \mid #2 \rangle}
+%
+%
+
+\begin{document}
+
+\title{ 2013, December}
+
+\author{Maarten Vanhalst}
+\date{\today}
+
+\maketitle 
+
+The one-body density operator $\hat{n}^{[1]}(\vec{k})$ and the radial one-body momentum 
+distribution operator $\hat{n}^{[1]}(k)$ are defined as
+\begin{align}
+  \hat{n}^{[1]}(\vec{k}) 
+  & = \frac{1}{(2\pi)^3} \sum_i e^{-\imath \vec{k}( \vec{r}_i^{\;\prime} -\vec{r}_i)} \prod_{j\not= i} \delta( \vec{r}_j^{\;\prime} - \vec{r}_j )
+  \label{eq:defobd} \\
+  \hat{n}^{[1]}(k) & = \int \mathrm{d} \Omega_k \; \hat{n}^{[1]}(\vec{k}) 
+  \label{}
+\end{align}
+The effective (correlated) operator of $\hat{n}^{[1]}(k)$ in the TBC approximation reads
+\begin{equation}
+  \hat{n}^{[1],eff}(k)= 
+  \sum_{i}  \hat{n}^{[1]}(i)
+  + \sum_{i<j}  [\hat{n}^{[1]}(i)+\hat{n}^{[1]}(j)] \hat{l}(i,j)
+  + \sum_{i<j}  \hat{l}^\dagger(i,j)[\hat{n}^{[1]}(i)+\hat{n}^{[1]}(j)]
+  + \sum_{i<j}  \hat{l}^\dagger(i,j)[\hat{n}^{[1]}(i)+\hat{n}^{[1]}(j)] \hat{l}(i,j),
+\end{equation}
+where $\hat{n}^{[1]}(i)$ is the part of $\hat{n}^{[1]}(k)$ acting on particle $i$.
+The expectation value of the correlated one-body momentum distribution is 
+\begin{align}
+  n^{[1]}(k) = {} &
+  \bra{\Psi} \hat{n}^{[1],eff}(k) \ket{Psi} \\
+  = {} &
+  \bra{\Psi} \sum_{i} \hat{n}^{[1]}(i) \ket{\Psi}
+  + \bra{\Psi} \sum_{i<j}  [\hat{n}^{[1]}(i)+\hat{n}^{[1]}(j)] \hat{l}(i,j) \ket{\Psi}
+  + \bra{\Psi} \sum_{i<j}  \hat{l}^\dagger(i,j)[\hat{n}^{[1]}(i)+\hat{n}^{[1]}(j)] \ket{\Psi} \nonumber \\
+  & + \bra{\Psi} \sum_{i<j}  \hat{l}^\dagger(i,j)[\hat{n}^{[1]}(i)+\hat{n}^{[1]}(j)] \hat{l}(i,j) \ket{\Psi} \nonumber \\
+  = {} &
+  \sum_{\alpha} \bra{\alpha} \hat{n}^{[1]}(1) \ket{\alpha}
+  + \sum_{\alpha<\beta} {}_{nas} \bra{\alpha\beta} [\hat{n}^{[1]}(1)+\hat{n}^{[1]}(2)] \hat{l}(1,2) \ket{\alpha\beta}_{nas} \nonumber \\ &
+  + \sum_{\alpha<\beta} {}_{nas} \bra{\alpha\beta} \hat{l}^\dagger(1,2) [\hat{n}^{[1]}(1)+\hat{n}^{[1]}(2)]\ket{\alpha\beta}_{nas} \nonumber \\ &
+   + \sum_{\alpha<\beta} {}_{nas} \bra{\alpha\beta} \hat{l}^\dagger(1,2) [\hat{n}^{[1]}(1)+\hat{n}^{[1]}(2)] \hat{l}(1,2) \ket{\alpha\beta}_{nas}
+   \label{eq:n1TBC}
+\end{align}
+
+The calculation of the bare operator $\bra{\alpha} \hat{n}^{[1]}(1) \ket{\alpha}$
+is straightforward.
+The calculations of the correlated two-body operators are more complex.
+
+\subsection{Correlated one-body density operator}
+The one-body momentum distribution $n^{[1]}(\vec{k}_1)$ is related to the two-body momentum distribution $n^{[2]}(\vec{k}_1,\vec{k}_2)$,
+\begin{equation}
+  n^{[1]}(\vec{k}_1) = \int \mathrm{d} \vec{k}_2 \; n^{[2]}(\vec{k}_1,\vec{k}_2).
+\end{equation}
+This can also be seen as the substitution of the delta function 
+$\delta( \vec{r}_2 -\vec{r}_2^{\;\prime})$ by its integral representation 
+%in the 
+%definition of the one-body momentum distribution 
+in Eq.~(\ref{eq:defobd}).
+We take a look at the expectation value of $\hat{n}^{[1]}(i)$ for a pair $\ket{\alpha\beta}$,
+\begin{align}
+  n^{[1]}_{\alpha\beta}(\vec{k}_1) 
+  & =  {}_{nas} \bra{\alpha\beta} \hat{n}^{[1]}(1) \ket{\alpha\beta}_{nas}
+  \nonumber \\ 
+  & = \frac{1}{(2\pi)^6} 
+  \int \mathrm{d} \vec{k}_2 
+  \int \mathrm{d} \vec{r}_1 \int \mathrm{d} \vec{r}_1^{\;\prime} 
+  \int \mathrm{d} \vec{r}_2 \int \mathrm{d} \vec{r}_2^{\;\prime} \;
+  e^{\imath  \vec{k}_1 (\vec{r}_1^{\;\prime} - \vec{r}_1 )}
+  e^{\imath  \vec{k}_2 (\vec{r}_2^{\;\prime} - \vec{r}_2 )}
+  \rho^{[2]}(\vec{r}_1^{\;\prime}, \vec{r}_2^{\;\prime}; \vec{r}_1, \vec{r}_2).
+\end{align}
+where  $\rho^{[2]}$ is the two-body non-diagonal density.
+We introduce the relative $\vec{r}_{12}$ and c.m. coordinates $\vec{R}_{12}$ in its usual way.
+%\begin{align}
+%  \vec{r}_2^{\;\prime} - \vec{r}_2= \frac{\vec{R}_{12}^{\;\prime} - \vec{r}_{12}^{\;\prime} - \vec{R}_{12} + \vec{r}_{12}}{\sqrt{2}}. \\
+%\vec{r}_1^{\;\prime} - \vec{r}_1= \frac{\vec{R}_{12}^{\;\prime} + \vec{r}_{12}^{\;\prime} - \vec{R}_{12} - \vec{r}_{12}}{\sqrt{2}} ,
+%\end{align}
+\begin{align}
+  n^{[1]}_{\alpha\beta}(\vec{k}_1) 
+  & = \frac{1}{(2\pi)^3} 
+  \int \mathrm{d} \vec{r}_{12} \int \mathrm{d} \vec{r}_{12}^{\;\prime} 
+  \int \mathrm{d} \vec{R}_{12} \int \mathrm{d} \vec{R}_{12}^{\;\prime} \;
+  e^{\imath  \vec{k}_1 (\vec{r}_1^{\;\prime} - \vec{r}_1 )}
+  \frac{1}{(2\pi)^3} \int \mathrm{d} \vec{k}_2 
+  e^{\imath  \vec{k}_2 \frac{(\vec{R}_{12}^{\;\prime} - \vec{r}_{12}^{\;\prime}- \vec{R}_{12} + \vec{r}_{12} )}{\sqrt{2}}}
+  \rho^{[2]}(\vec{r}_{12}^{\;\prime}, \vec{R}_{12}^{\;\prime}; \vec{r}_{12}, \vec{R}_{12}) 
+  \label{eq:n10}
+\end{align}
+
+The two-body non-diagonal density in function of the relative and c.m. coordinates is
+\begin{equation}
+  \rho^{[2]}(\vec{r}_{12}^{\;\prime},\vec{R}_{12}^{\;\prime};\vec{r}_{12},\vec{R}_{12})
+  = 
+  \sum_{A,B} {C_{\alpha\beta}^A}^\dagger C_{\alpha\beta}^B
+  \Psi_{N_AL_AM_{L_A}}^*(\vec{R}_{12}^{\;\prime})
+  \Psi_{n_Al_AS_Aj_Am_{j_A}}^*(\vec{r}_{12}^{\;\prime})
+  \Psi_{N_BL_BM_{L_B}}^*(\vec{R}_{12})
+  \Psi_{n_Bl_BS_Bj_Bm_{j_B}}(\vec{r}_{12}).
+  \label{eq:rho}
+\end{equation}
+After performing the integration over $\vec{k}_2$, Eq.~(\ref{eq:n10}) becomes 
+\begin{align}
+  n^{[1]}_{\alpha\beta}(\vec{k}_1) 
+  = {} & \frac{1}{(2\pi)^3} \sqrt{8}
+  \int \mathrm{d} \vec{r}_{12} \int \mathrm{d} \vec{r}_{12}^{\;\prime} 
+  \int \mathrm{d} \vec{R}_{12} \int \mathrm{d} \vec{R}_{12}^{\;\prime} \;
+  e^{\imath  \vec{k}_1 (\vec{r}_1^{\;\prime} - \vec{r}_1 )}
+  \delta( \vec{R}_{12}^{\;\prime} - \vec{r}_{12}^{\;\prime} - \vec{R}_{12} + \vec{r}_{12})
+  \nonumber \\
+  & \times
+  \sum_{A,B} {C_{\alpha\beta}^A}^\dagger C_{\alpha\beta}^B
+  \Psi_{N_AL_AM_{L_A}}^*(\vec{R}_{12}^{\;\prime})
+  \Psi_{n_Al_AS_Aj_Am_{j_A}}^*(\vec{r}_{12}^{\;\prime})
+  \Psi_{N_BL_BM_{L_B}}^*(\vec{R}_{12})
+  \Psi_{n_Bl_BS_Bj_Bm_{j_B}}(\vec{r}_{12})
+  \label{eq:n11}
+\end{align}
+We can rewrite 
+$\Psi_{N_AL_AM_{L_A}}^*(\vec{R}_{12}^{\;\prime})$ 
+as
+\begin{align}
+\Psi_{N_AL_AM_{L_A}}^*(\vec{R}_{12}^{\;\prime})
+& = 
+\int \frac{ \mathrm{d} \vec{P}_{12} }{(2\pi)^{3/2}}
+e^{-\imath \vec{P}_{12} \vec{R}_{12}^{\;\prime}}  
+\int \frac{ \mathrm{d} \vec{R}_{12}^{\;\prime\prime}}{(2\pi)^{3/2}}
+e^{+\imath \vec{P}_{12} \vec{R}_{12}^{\;\prime\prime}}  
+\Psi_{N_AL_AM_{L_A}}^*(\vec{R}_{12}^{\;\prime\prime})
+\nonumber \\
+& = 
+(\imath)^{L_A} \int \frac{ \mathrm{d} \vec{P}_{12} }{(2\pi)^{3/2}}
+e^{-\imath \vec{P}_{12} \vec{R}_{12}^{\;\prime}}  
+\phi_{N_AL_A}(P_{12}) Y^*_{L_A M_{L_A}}(\Omega_P),
+\label{eq:psiR}
+\end{align}
+where we used the plane wave expansion and defined the radial momentum wave function
+\begin{equation}
+  \phi_{N_AL_A}(P) = \sqrt{\frac{2}{\pi}} \int \mathrm{d}R \; R^2 j_{L_A}(RP) R_{N_AL_A}(R).
+\end{equation}
+Performing the integration over $\vec{R}_{12}^{\;\prime}$ and as a result thereof substituting $\vec{R}_{12}^{\;\prime} = \vec{R}_{12} - \vec{r}_{12} + \vec{r}_{12}^{\;\prime}$, gives
+\begin{align}
+  n^{[1]}_{\alpha\beta}(\vec{k}_1) 
+  = {} & 
+  \frac{1}{(2\pi)^3} \sqrt{8}
+   \sum_{A,B} {C_{\alpha\beta}^A}^\dagger C_{\alpha\beta}^B
+  \int \mathrm{d} \vec{r}_{12} \int \mathrm{d} \vec{r}_{12}^{\;\prime}  \;
+  e^{\imath  \sqrt{2} \vec{k}_1 (\vec{r}_{12}^{\;\prime} - \vec{r}_{12})}
+  \nonumber \\ & \times
+  \Psi_{n_Al_AS_Aj_Am_{j_A}}^*(\vec{r}_{12}^{\;\prime})
+  \Psi_{n_Bl_BS_Bj_Bm_{j_B}}(\vec{r}_{12})
+  \nonumber \\ & \times
+  (\imath)^{L_A}
+\int \vec{P}_{12} 
+e^{-\imath \vec{P}_{12} (\vec{r}_{12}^{\;\prime} - \vec{r}_{12})}  
+\phi_{N_AL_A}(P_{12}) Y_{L_A M_{L_A}}^*(\Omega_P)
+  \nonumber \\ & \times
+\int \frac{\mathrm{d} \vec{R}_{12}}{(2\pi)^{3/2}} \;
+e^{-\imath \vec{P}_{12} \vec{R}_{12} }  
+  \Psi_{N_BL_BM_{L_B}}(\vec{R}_{12}).
+  \label{eq:n11b}
+\end{align}
+After applying the plane wave expansions,
+$n^{[1]}_{\alpha\beta}(k_1) = \int \mathrm{d} \Omega_{k_1} \;
+  n^{[1]}_{\alpha\beta}(\vec{k}_1)$ becomes
+\begin{align}
+  n^{[1]}_{\alpha\beta}(k_1) = {} &
+  \frac{1}{(2\pi)^3} 
+   \sum_{A,B} {C_{\alpha\beta}^A}^\dagger C_{\alpha\beta}^B
+  \int \mathrm{d} \vec{r}_{12} \int \mathrm{d} \vec{r}_{12}^{\;\prime}
+  \int \mathrm{d} \vec{P}_{12} \;
+   \nonumber \\ & \times
+   (4\pi)^2 \sqrt{8} \sum_{l_1 m_{l_1}} 
+   j_{l_1}(\sqrt{2}k_1r_{12}^{\;\prime})
+   j_{l_1}(\sqrt{2}k_1r_{12})
+   Y_{l_1m_{l_1}}^*(\Omega_{12}^\prime)
+   Y_{l_1m_{l_1}}(\Omega_{12})
+   \nonumber \\ & \times
+  \Psi_{n_Al_AS_Aj_Am_{j_A}}^*(\vec{r}_{12}^{\;\prime})
+  \Psi_{n_Bl_BS_Bj_Bm_{j_B}}(\vec{r}_{12})
+   \nonumber \\ & \times
+  (4\pi)^2
+  \sum_{l m_l l^\prime m_{l^\prime}}
+  (\imath)^{L_A-L_B+l-l^\prime}
+  j_l(P_{12}r_{12})
+  j_{l^\prime}(P_{12}r_{12}^\prime)
+  Y_{l m_l}(\Omega_{12})
+  Y_{l^\prime m_{l^\prime}}^*(\Omega_{12}^\prime)
+  Y_{l m_l}^*(\Omega_{P})
+  Y_{l^\prime m_{l^\prime}}(\Omega_{P})
+   \nonumber \\ & \times
+\phi_{N_AL_A}(P_{12}) Y_{L_A M_{L_A}}^*(\Omega_P)
+\phi_{N_BL_B}(P_{12}) Y_{L_B M_{L_B}}(\Omega_P)
+\label{eq:n12}
+\end{align}
+
+The $\Omega_P$ dependent part of (\ref{eq:n12}) gives
+\begin{multline}
+  \int \mathrm{d} \Omega_P \;
+  Y_{lm_l}^*(\Omega_{P})
+Y_{L_A M_{L_A}}^*(\Omega_P)
+  Y_{l^\prime m_l^\prime} (\Omega_{P})
+Y_{L_B M_{L_B}} (\Omega_P)
+=  \\
+\sum_{q m_q} 
+\frac{ \hat{L}_A \hat{l} \hat{q} }{\sqrt{4\pi}}
+\begin{pmatrix}
+  L_A & l & q \\
+  0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}
+  L_A & l & q \\
+  M_{L_A} & m_l & m_q
+\end{pmatrix}
+%\nonumber \\ & \times
+\frac{ \hat{L}_B \hat{l}^\prime \hat{q} }{\sqrt{4\pi}}
+\begin{pmatrix}
+  L_B & l^\prime & q \\
+  0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}
+  L_B & l^\prime & q \\
+  M_{L_B} & m_{l^\prime} & m_q
+\end{pmatrix}.
+\end{multline}
+The integration over $\Omega_{12}$ and $\Omega_{12}^\prime$ gives respectively
+\begin{align}
+  \int \mathrm{d} \Omega_{12} \; 
+  Y_{l_1 m_{l_1}}(\Omega_{12})
+  Y_{l_B m_{l_B}}(\Omega_{12})
+  Y_{l m_{l}}(\Omega_{12})
+  & = 
+  \frac{\sqrt{ \hat{l}_1 \hat{l}_B \hat{l}}}{\sqrt{4\pi}} 
+  \begin{pmatrix}
+    l_1 & l_B & l \\
+    0 & 0 & 0
+  \end{pmatrix}
+  \begin{pmatrix}
+    l_1 & l_B & l \\
+    m_{l_1} & m_{l_B} & m_l
+  \end{pmatrix},
+ \\
+  \int \mathrm{d} \Omega_{12}^\prime  \; 
+  Y_{l_1 m_{l_1}}(\Omega_{12}^\prime )
+  Y_{l_A m_{l_A}}(\Omega_{12}^\prime )
+  Y_{l^\prime m_{l^\prime}}(\Omega_{12}^\prime )
+  & = \frac{\sqrt{ \hat{l}_1 \hat{l}_B \hat{l}^\prime }}{\sqrt{4\pi}} 
+  \begin{pmatrix}
+    l_1 & l_B & l^\prime \\
+    0 & 0 & 0
+  \end{pmatrix}
+  \begin{pmatrix}
+    l_1 & l_B & l^\prime \\
+    m_{l_1} & m_{l_B} & m_{l^\prime}
+  \end{pmatrix}.
+\end{align}
+We generalize Eq.~(\ref{eq:n12}) 
+by inserting the general correlation operator $\hat{f}_B(\vec{r}_{12})= f_B(r_{12}) \hat{\mathcal{O}}$ and $\hat{f}_A^\dagger(\vec{r}_{12}^{\;\prime})$.
+We can return to the non-correlated expression by taking $\hat{f}^\dagger_A(\vec{r}_{12}^{\;\prime})=\hat{f}_B(\vec{r}_{12})=1$.
+For now we suppose $\hat{\mathcal{O}}=1$, extension to $\hat{\mathcal{O}}$ equal to tensor or spin-isospin operator is straightforward, but complicates the expression slightly (extra summations possible).
+The final expression for the expectation value of $n^{[1]}(k)$ for a nucleon pair $\ket{\alpha\beta}$ is then
+\begin{align}
+  n^{[1]}_{\alpha\beta}(k_1) = {} &
+  \frac{1}{(2\pi)^3} (4\pi)^2 (4\pi)^2 \sqrt{8}
+  \sum_{A,B} {C_{\alpha\beta}^A}^\dagger C_{\alpha\beta}^B
+   \sum_{l_1 m_{l_1}} \sum_{l m_l l^\prime m_{l^\prime}}
+   \nonumber \\ & \times
+  (\imath)^{L_A-L_B+l-l^\prime}
+  \frac{\sqrt{ \hat{l}_1 \hat{l}_B \hat{l}}}{\sqrt{4\pi}} 
+  \begin{pmatrix}
+    l_1 & l_B & l \\
+    0 & 0 & 0
+  \end{pmatrix}
+  \begin{pmatrix}
+    l_1 & l_B & l \\
+    m_{l_1} & m_{l_B} & m_l
+  \end{pmatrix}
+  \frac{\sqrt{ \hat{l}_1 \hat{l}_B \hat{l}^\prime }}{\sqrt{4\pi}} 
+  \begin{pmatrix}
+    l_1 & l_B & l^\prime \\
+    0 & 0 & 0
+  \end{pmatrix}
+  \begin{pmatrix}
+    l_1 & l_B & l^\prime \\
+    m_{l_1} & m_{l_B} & m_{l^\prime}
+  \end{pmatrix}.
+  \nonumber \\ & \times
+\sum_{q m_q} 
+\frac{ \hat{L}_A \hat{l} \hat{q} }{\sqrt{4\pi}}
+\begin{pmatrix}
+  L_A & l & q \\
+  0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}
+  L_A & l & q \\
+  M_{L_A} & m_l & m_q
+\end{pmatrix}
+%\nonumber \\ & \times
+\frac{ \hat{L}_B \hat{l}^\prime \hat{q} }{\sqrt{4\pi}}
+\begin{pmatrix}
+  L_B & l^\prime & q \\
+  0 & 0 & 0
+\end{pmatrix}
+\begin{pmatrix}
+  L_B & l^\prime & q \\
+  M_{L_B} & m_{l^\prime} & m_q
+\end{pmatrix}
+\nonumber \\ & \times
+\int \mathrm{d} r_{12} \; r_{12}^2
+\int \mathrm{d} r_{12}^\prime \; {r_{12}^\prime}^2
+\int \mathrm{d} P_{12} \; P_{12}^2 \;
+   j_{l_1}(\sqrt{2}k_1r_{12}^{\;\prime})
+   j_{l_1}(\sqrt{2}k_1r_{12})
+   j_l(P_{12}r_{12})
+   j_{l^\prime}(P_{12}r_{12}^\prime)
+\nonumber \\ & \times
+\phi_{N_AL_A}(P_{12})
+\phi_{N_BL_B}(P_{12})\;
+f_A(r_{12}^\prime)
+R_{n_Al_A}(r_{12}^\prime)
+ f_B(r_{12})
+R_{n_Bl_B}(r_{12}).
+\label{eq:n1f1}
+\end{align}
+The only integral is `only' three dimensional, but is depends on 11 parameters for
+every correlation operator combination.
+Advantage of this expression is that each correlated term in
+(\ref{eq:n1TBC}) has a similar shape. 
+
+\subsection{ $\hat{n}^{[1]}(2)$ term }
+Eq.~(\ref{eq:n1f1}) gives expression for 
+${}_{nas} \bra{\alpha\beta}\hat{l}^\dagger(1,2)\hat{n}^{[1]}(1) \hat{l}(1,2) \ket{\alpha\beta}_{nas}$.
+In this section we derive the expression for the full term 
+${}_{nas} \bra{\alpha\beta}\hat{l}^\dagger(1,2)[\hat{n}^{[1]}(1)+\hat{n}^{[2]}] \hat{l}(1,2) \ket{\alpha\beta}_{nas}$.
+The expectation value of Eq.(\ref{eq:n10}) for the $n^{[1]}(2)$ term has 
+\begin{equation}
+\int \mathrm{d} \vec{k}_2 \; 
+e^{\vec{k}_2 (\vec{r}_1^{\;\prime} - \vec{r}_1)}
+e^{\vec{k}_1 (\vec{r}_2^{\;\prime} - \vec{r}_2)}
+\end{equation}
+instead of
+\begin{equation}
+\int \mathrm{d} \vec{k}_2 \; 
+e^{\vec{k}_1 (\vec{r}_1^{\;\prime} - \vec{r}_1)}
+e^{\vec{k}_2 (\vec{r}_2^{\;\prime} - \vec{r}_2)}.
+\end{equation}
+The integration over $\vec{k}_2$ will give
+$\delta( \vec{r}_1^{\;\prime} - \vec{r}_1)$ instead of
+$\delta( \vec{r}_2^{\;\prime} - \vec{r}_2)$.
+The exponent 
+$e^{\vec{k}_1 (\vec{r}_1^{\;\prime} - \vec{r}_1)}$  becomes
+$e^{-\sqrt{2} \vec{k}_1 (\vec{r}_{12}^{\;\prime} - \vec{r}_{12})}$ in Eq.~(\ref{eq:n11b}).
+After integrating over $\Omega_{k_1}$, the sign difference will 
+make no difference in the expression for $n^{[1]}(k_1)$ in Eq.~(\ref{eq:n12}).
+
+The exponent 
+$e^{-\vec{P} \vec{R}_{12}^{\;\prime}}$
+becomes 
+$e^{-\vec{P} (\vec{R}_{12}-\vec{r}_{12} +\vec{r}_{12}^{\;\prime})}$
+in Eq.~(\ref{eq:n11b}) 
+instead of 
+$e^{-\vec{P} (\vec{R}_{12}+\vec{r}_{12} -\vec{r}_{12}^{\;\prime})}$.
+This will result in Eq.~(\ref{eq:n1f1}) in a factor 
+$(\imath)^{l^\prime-l}$ instead of
+$(\imath)^{l-l^\prime}$.
+
+
+
+%\subsubsection{proof}
+%Proof ${}_{nas} \bra{\alpha\beta} \hat{n}^{[1]}(1) \hat{l}(1,2) \ket{\alpha\beta}_{nas} =
+%{}_{nas} \bra{\alpha\beta} \hat{n}^{[1]}(2) \hat{l}(1,2) \ket{\alpha\beta}_{nas}$.
+%\begin{align}
+%  {}_{nas} \bra{\alpha\beta} \hat{n}^{[1]}(1) \hat{l}(1,2) \ket{\alpha\beta}_{nas} 
+%  = {} & \frac{1}{(2\pi)^6} 
+%  \int \mathrm{d} \vec{k}_2 
+%  \int \mathrm{d} \vec{r}_1 \int \mathrm{d} \vec{r}_1^{\;\prime} 
+%  \int \mathrm{d} \vec{r}_2 \int \mathrm{d} \vec{r}_2^{\;\prime} \;
+%  e^{\imath  \vec{k}_1 (\vec{r}_1^{\;\prime} - \vec{r}_1 )}
+%  e^{\imath  \vec{k}_2 (\vec{r}_2^{\;\prime} - \vec{r}_2 )}
+%  \nonumber \\
+%  & \times 
+%  {}_{nas}\braket{\alpha\beta}{\vec{r}_1^{\;\prime}\vec{r}_2^{\;\prime}}
+%  \bra{\vec{r}_1\vec{r}_2}\hat{l}\ket{\alpha\beta}_{nas}
+%  \label{eq:proof1}
+%\end{align}
+%We rename $\vec{r}_1 \rightarrow \vec{r}_2$ and $\vec{r}_2 \rightarrow \vec{r}_1$, and similar for $\vec{r}_1^{\;\prime}$ and $\vec{r}_2^{\;\prime}$.
+%For nas wave functions we have
+%\begin{align}
+%  {}_{nas}\braket{\alpha\beta}{\vec{r}_2^{\;\prime}\vec{r}_1^{\;\prime}}
+%  & = 
+%  - {}_{nas}\braket{\alpha\beta}{\vec{r}_1^{\;\prime}\vec{r}_2^{\;\prime}},
+%  \\
+%  \bra{\vec{r}_2\vec{r}_1}\hat{l}\ket{\alpha\beta}_{nas}
+%  & = 
+%  -\bra{\vec{r}_1\vec{r}_2}\hat{l}\ket{\alpha\beta}_{nas},
+%\end{align}
+%where we used  $\hat{l}(1,2) = \hat{l}(2,1)$.
+%So Eq.~(\ref{eq:proof1}) becomes
+%\begin{align}
+%  {}_{nas} \bra{\alpha\beta} \hat{n}^{[1]}(1) \hat{l}(1,2) \ket{\alpha\beta}_{nas} 
+%  & = \frac{1}{(2\pi)^6} 
+%  \int \mathrm{d} \vec{k}_2 
+%  \int \mathrm{d} \vec{r}_1 \int \mathrm{d} \vec{r}_1^{\;\prime} 
+%  \int \mathrm{d} \vec{r}_2 \int \mathrm{d} \vec{r}_2^{\;\prime} \;
+%  e^{\imath  \vec{k}_1 (\vec{r}_2^{\;\prime} - \vec{r}_2 )}
+%  e^{\imath  \vec{k}_2 (\vec{r}_1^{\;\prime} - \vec{r}_1 )}
+%  \nonumber \\
+%  & \times 
+%  {}_{nas}\braket{\alpha\beta}{\vec{r}_1^{\;\prime}\vec{r}_2^{\;\prime}}
+%  \hat{l}(\vec{r}_{12})
+%  \braket{\vec{r}_1\vec{r}_2}{\alpha\beta}_{nas}
+%  \nonumber \\
+%  & =
+%  {}_{nas} \bra{\alpha\beta} \hat{n}^{[1]}(2) \hat{l}(1,2) \ket{\alpha\beta}_{nas} 
+%  \label{eq:proof1}
+%\end{align}
+
+\subsection{A second method}
+A second method to calculate the correlated momentum distribution uses the expansion for the correlation function. In case of the central correlation, we have
+\begin{align}
+  g_c(r_{12}) =  {} &2 \sqrt{\pi} Y_{00}(\Omega_{12}) g_c(r_{12})
+  \nonumber \\ 
+  =  {} & 8 \sum_{l_1 m_{l_1}} \sum_{l_2 m_{l_2}} \hat{l}_1 \hat{l}_2 
+  \begin{pmatrix}
+    l_1 & l_2 & 0 \\
+    0 & 0 & 0
+  \end{pmatrix}
+  \begin{pmatrix}
+    l_1 & l_2 & 0 \\
+    m_{l_1} & m_{l_2} & 0
+  \end{pmatrix}
+  Y_{l_1 m_{l_1}}^*(\Omega_1)
+  Y_{l_2 m_{l_2}}(\Omega_2)
+  \nonumber \\ & \times
+  \imath^{l_1-l_2}
+  \int \mathrm{d}q \; q^2 j_{l_1}(\frac{qr_1}{\sqrt{2}}) j_{l_2}(\frac{qr_2}{\sqrt{2}})
+  g_c(q) 
+\end{align}
+Or, 
+\begin{align}
+  g_c(r_{12}) \propto  {} &
+  \int \mathrm{d}x \; P_l(x) f(\sqrt{r_1^2+r_2^2-2r_1r_2})
+\end{align}
+This works well for central correlation, left or right, but it becomes complicated for
+tensor correlation and computational expensive for left-right correlations.
+
+
+\section{Extended TBC approximation for relative two-body momentum distribution}
+In the extended TBC approximation, we add the terms 
+\begin{align}
+  \sum_{i<j<k}
+  &
+  [ \hat{\Omega}(i,j) + \hat{\Omega}(i,k) ] \hat{l}(j,k)
+  +
+  [ \hat{\Omega}(i,j) + \hat{\Omega}(j,k) ] \hat{l}(i,k)
+  +
+  [ \hat{\Omega}(i,k) + \hat{\Omega}(j,k) ] \hat{l}(i,j)
+  \nonumber \\ &
+  +
+  \hat{l}^\dagger(j,k)[ \hat{\Omega}(i,j) + \hat{\Omega}(i,k) ] \hat{l}(j,k)
+  +
+  \hat{l}^\dagger(i,k)[ \hat{\Omega}(i,j) + \hat{\Omega}(j,k) ] \hat{l}(i,k)
+  +
+  \hat{l}^\dagger(i,j)[ \hat{\Omega}(i,k) + \hat{\Omega}(j,k) ] \hat{l}(i,j)
+  \nonumber \\ &
+  +
+  \hat{l}^\dagger(j,k)[ \hat{\Omega}(i,j) + \hat{\Omega}(i,k) ] 
+  +
+  \hat{l}^\dagger(i,k)[ \hat{\Omega}(i,j) + \hat{\Omega}(j,k) ] 
+  +
+  \hat{l}^\dagger(i,j)[ \hat{\Omega}(i,k) + \hat{\Omega}(j,k) ] 
+\end{align}
+The expectation value of the term $\sum_{i<j<k}\hat{\Omega}(i,j)\hat{l}(j,k)$ for the 
+MF Slater determinant $\ket{\Psi_A}$ is
+\begin{equation}
+  \sum_{\alpha<\beta<\gamma}
+  {}_{nas} \bra{\alpha\beta\gamma} \hat{\Omega}(1,2)\hat{l}(2,3) \ket{\alpha\beta\gamma}_{nas}
+\end{equation}
+For further calculation, we write $\ket{\alpha\beta\gamma}$ for this term as
+\begin{align}
+  \ket{\alpha\beta\gamma} = (1-P_{23}) ( \ket{\alpha\beta\gamma} + \ket{\beta\gamma\alpha} + \ket{\gamma\alpha\beta} ).
+  \label{eq:nasexp}
+\end{align}
+The correlation operator $\hat{l(2,3)}$ depends on the relative coordinates $\vec{r}_{23}$ between the two-particles it acts on.
+Therefore, a transformation of the antisymmetric 3N states from the particle coordinates  $(\vec{r}_1, \vec{r}_2, \vec{r}_3)$ to the internal Jacobi coordinates 
+$(\vec{r}_{23}, \vec{r}_{1(23)}, \vec{R}_{123})$,
+\begin{align}
+  \vec{r}_{1(23)} & = \frac{ \vec{R}_{23} - \sqrt{2} \vec{r}_1 }{\sqrt{3}}, \\
+  \vec{R}_{123} & = \frac{ \sqrt{2} \vec{R}_{23} + \vec{r}_1 }{\sqrt{3}}.
+\end{align}
+
+One readily finds that for the uncoupled three-nucleon state in a HO basis
+\begin{align}
+  (1-P_{23}) \ket{ \alpha(\vec{r}_1) \beta(\vec{r}_2) \gamma(\vec{r}_3) } 
+  = {} &
+  \sum_{ A_{23}= n_{23} l_{23} S_{23} j_{23} m_{j_{23}} T_{23} M_{T_{23}} }
+  \sum_{ B_{123}= N_{123} L_{123} M_{L_{123}}}
+  \sum_{ \Gamma_{1(23)} = n_{1(23)} l_{1(23)} m_{l_{1(23)}}}
+  \sum_{m_{s_\alpha}} \nonumber \\ &
+  \times
+  \bra{ A_{23} B_{123} \Gamma_{1(23)} m_{s_\alpha} t_\alpha   }
+   (1-P_{23}) \ket{\alpha \beta \gamma } 
+   \ket{ A_{23} B_{123} \Gamma_{1(23)} m_{s_{\alpha}} t_\alpha  }.
+   \label{eq:3ntransformation}
+\end{align}
+
+First we take a look at the two-body norm operator $\hat{n}^{[2]} = \frac{2}{A(A-1)}$.
+The expectation value of the term 
+$[ \hat{\Omega}(1,2) + \hat{\Omega}(1,3) ] \hat{l}(2,3)$ is
+\begin{equation}
+  \frac{4}{A(A-1)} \sum_{\alpha<\beta<\gamma} {}_{nas}\bra{\alpha\beta\gamma} \hat{l}(2,3) \ket{\alpha\beta\gamma}_{nas}.
+\end{equation}
+Using the expression of Eq.~(\ref{eq:nasexp}) and retaining only the first term,
+\begin{multline}
+  \bra{\alpha\beta\gamma} (1-P_{23})^\dagger \hat{l}(2,3) (1-P_{23}) \ket{\alpha\beta\gamma} = \\
+  \frac{4}{A(A-1)} 
+  \sum_{\alpha<\beta<\gamma} 
+  \sum_{ A_{23}, A_{23}^\prime }
+  \sum_{ B_{123} }
+  \sum_{ \Gamma_{1(23)} }
+  \sum_{m_{s_\alpha}} 
+  \bra{\alpha \beta \gamma } 
+  (1-P_{23})^\dagger
+  \ket{ A^\prime_{23} B_{123} \Gamma_{1(23)} m_{s_\alpha} t_\alpha   }  \\ \times
+  \bra{ A_{23} B_{123} \Gamma_{1(23)} m_{s_\alpha} t_\alpha   }
+   (1-P_{23}) \ket{\alpha \beta \gamma }  
+   \bra{ A^\prime_{23} } \hat{l}(2,3) \ket{A_{23}}
+ \end{multline}
+where we applied the transformation of Eq.~(\ref{eq:3ntransformation}).
+The second and third term in Eq.~(\ref{eq:nasexp}) will give a similar contribution to the total expectation value.
+
+Similar to the one-body momentum distribution, we start for the relative two-body momentum distribution $n^{[2]}(\vec{k}_{12})$ from the operator
+\begin{equation}
+  \hat{n}^{[2]}(\vec{k}_{12}) =
+  \int \mathrm{d}\vec{P}_{12} \int \mathrm{d} \vec{k}_3
+  e^{\imath \vec{k}_1 (\vec{r}^{\;\prime}_1 - \vec{r}_1)}
+  e^{\imath \vec{k}_2 (\vec{r}^{\;\prime}_2 - \vec{r}_2)}
+  e^{\imath \vec{k}_3 (\vec{r}^{\;\prime}_3 - \vec{r}_3)}
+\end{equation}
+The expectation value of the correlated operator
+$\hat{n}^{[2]}(\vec{k}_{12}) \hat{l}(2,3)$
+for the first term of Eq.~(\ref{eq:nasexp}) then reads
+\begin{align}
+  \sum_{\alpha\beta\gamma} 
+  &
+  \bra{\alpha\beta\gamma} (1-P_{23})^\dagger 
+  \hat{n}^{[2]}(\vec{k}_{12}) \hat{l}(2,3)
+  (1-P_{23}) \ket{\alpha\beta\gamma}
+  \nonumber \\ 
+  ={} & 
+  \sum_{\alpha\beta\gamma} 
+  \int \mathrm{d}\vec{P}_{12} \int \mathrm{d} \vec{k}_3
+  \int \mathrm{d} \vec{r}^{\;\prime}_{1\dots3}
+  \int \mathrm{d} \vec{r}_{1\dots3} 
+  \bra{\alpha\beta\gamma}(1-P_{23})^\dagger\ket{\vec{r}_{1\dots3}^{\;\prime}}
+  \nonumber \\ & \times
+  e^{\imath \vec{k}_1 (\vec{r}^{\;\prime}_1 - \vec{r}_1)}
+  e^{\imath \vec{k}_2 (\vec{r}^{\;\prime}_2 - \vec{r}_2)}
+  e^{\imath \vec{k}_3 (\vec{r}^{\;\prime}_3 - \vec{r}_3)}
+  \bra{\vec{r}_{1\dots3}}
+  \hat{l}(2,3)
+  (1-P_{23})
+  \ket{\alpha\beta\gamma}.
+\end{align}
+The transformation of Eq.~(\ref{eq:3ntransformation}) gives
+\begin{align}
+  \sum_{\alpha\beta\gamma} 
+  \int \mathrm{d}\vec{P}_{12} \int \mathrm{d} \vec{k}_3
+  \int \mathrm{d} \vec{r}^{\;\prime}_{1\dots3}
+  \int \mathrm{d} \vec{r}_{1\dots3} 
+  \bra{\alpha\beta\gamma}(1-P_{23})^\dagger\ket{\vec{r}_{1\dots3}^{\;\prime}}
+  \nonumber \\ & \times
+  e^{\imath \vec{k}_1 (\vec{r}^{\;\prime}_1 - \vec{r}_1)}
+  e^{\imath \vec{k}_2 (\vec{r}^{\;\prime}_2 - \vec{r}_2)}
+  e^{\imath \vec{k}_3 (\vec{r}^{\;\prime}_3 - \vec{r}_3)}
+  \bra{\vec{r}_{1\dots3}}
+  \hat{l}(2,3)
+  (1-P_{23})
+  \ket{\alpha\beta\gamma}.
+\end{align}
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+\bibliography{science}
+
+
+
