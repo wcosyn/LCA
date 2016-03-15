@@ -599,40 +599,50 @@ To cross check this result with Maartens (D.37) we write the CGC coefficients as
 \braket{ A | \hat{n}_{s_1,t_1}^{[1]}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
  \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{K M_K} \sum_{K' M_K'} i^{-K+K'} (-1)^{ m_{l_p} + m_{l_q'}}  \\
  \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k K'}(p_1,P_{12}) \\
-     \hat{k}^{2} \hat{K} \hat{K}' \hat{l}_{p} \hat{l}_{q}' \threej{k,K,l_p,K,M_K,-m_{l_p}} \threej{k,K,l_p,0,0,0} \threej{k,K',l_q',m_k,M_K',-m_{l_q'}} \threej{k,K',l_q',0,0,0} \\
+     \hat{k}^{2} \hat{K} \hat{K}' \hat{l}_{p} \hat{l}_{q}' \threej{k,K,l_p,m_k,M_K,-m_{l_p}} \threej{k,K,l_p,0,0,0} \threej{k,K',l_q',m_k,M_K',-m_{l_q'}} \threej{k,K',l_q',0,0,0} \\
     \sum_{J M_J} \hat{L} \hat{L}' \hat{K} \hat{K}' \hat{J}^{2}  \threej{ L,K,J,M_L,M_K,M_J} \threej{ L,K,J,0,0,0} \threej{L',K',J,M_L',M_K',M_J} \threej{L',K',J,0,0,0} 
 \end{multline*}
 Where we flipped the sign of $M_J$ as it as a summation index. Writing $\mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2)$ explicitly gives,
 \begin{multline*}
 \braket{ A | \hat{n}_{s_1,t_1}^{[1]}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S',T',j',l',l_q') \\
  (-1)^{M_T + M_T' + M_S + M_S' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \threej{ \frac{1}{2}, \frac{1}{2}, S, s_1,s_2, - M_S} \threej{ \frac{1}{2}, \frac{1}{2}, S', s_1,s_2, - M_S'} \\
- (-1)^{ l_p + l_q' - S - S' + m_j + m_j'} \threej{ l_p,S,j,m_{l_p},m_S,m_j} \threej{l_q',S',j',m_{l_q'},m_S',m_j'} \\
+ (-1)^{ l_p + l_q' - S - S' + m_j + m_j'} \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,m_j} \threej{l_q',S',j',m_{l_q'},m_S',m_j'} \\
  \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{K M_K} \sum_{K' M_K'} i^{-K+K'} (-1)^{ m_{l_p} + m_{l_q'}}  \\
  \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k K'}(p_1,P_{12}) \\
-     \hat{k}^{2} \hat{K} \hat{K}' \hat{l}_{p} \hat{l}_{q}' \threej{k,K,l_p,K,M_K,-m_{l_p}} \threej{k,K,l_p,0,0,0} \threej{k,K',l_q',m_k,M_K',-m_{l_q'}} \threej{k,K',l_q',0,0,0} \\
+     \hat{k}^{2} \hat{K} \hat{K}' \hat{l}_{p} \hat{l}_{q}' \threej{k,K,l_p,m_k,M_K,-m_{l_p}} \threej{k,K,l_p,0,0,0} \threej{k,K',l_q',m_k,M_K',-m_{l_q'}} \threej{k,K',l_q',0,0,0} \\
     \sum_{J M_J} \hat{L} \hat{L}' \hat{K} \hat{K}' \hat{J}^{2}  \threej{ L,K,J,M_L,M_K,M_J} \threej{ L,K,J,0,0,0} \threej{L',K',J,M_L',M_K',M_J} \threej{L',K',J,0,0,0} 
 \end{multline*}
 If we are not interested in a specific spin contribution we get,
 \begin{multline*}
-\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1]}(p_1) | A'} = \sum_{t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
- (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \\
- (-1)^{ l_p + l_q'+ m_j + m_j'} \threej{ l_p,S,j,m_{l_p},m_S,m_j} \threej{l_q',S,j',m_{l_q'},m_S,m_j'} \\
+\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1]}(p_1) | A'} =  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
+ \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \\
+ (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,m_j} \threej{l_q',S,j',m_{l_q'},m_S,m_j'} \\
  \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{K M_K} \sum_{K' M_K'} i^{-K+K'} (-1)^{ m_{l_p} + m_{l_q'}}  \\
  \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k K'}(p_1,P_{12}) \\
-     \hat{k}^{2} \hat{K} \hat{K}' \hat{l}_{p} \hat{l}_{q}' \threej{k,K,l_p,K,M_K,-m_{l_p}} \threej{k,K,l_p,0,0,0} \threej{k,K',l_q',m_k,M_K',-m_{l_q'}} \threej{k,K',l_q',0,0,0} \\
+     \hat{k}^{2} \hat{K} \hat{K}' \hat{l}_{p} \hat{l}_{q}' \threej{k,K,l_p,m_k,M_K,-m_{l_p}} \threej{k,K,l_p,0,0,0} \threej{k,K',l_q',m_k,M_K',-m_{l_q'}} \threej{k,K',l_q',0,0,0} \\
     \sum_{J M_J} \hat{L} \hat{L}' \hat{K} \hat{K}' \hat{J}^{2}  \threej{ L,K,J,M_L,M_K,M_J} \threej{ L,K,J,0,0,0} \threej{L',K',J,M_L',M_K',M_J} \threej{L',K',J,0,0,0} 
 \end{multline*}
 To make the comparison with (D.37) easier we swap variables: $J M_J \rightarrow q m_q$, $K M_K \rightarrow k m_k$, $K' M_K' \rightarrow k' m_k'$, $ k m_k \rightarrow l_1 m_{l_1}$
 \begin{multline*}
-\braket{ A | \hat{n}_{s_1,t_1}^{[1]}(p_1) | A'} = \mathcal{M}_{A A'}^{p,q}(s_1,t_1) \frac{4 \sqrt{2}}{\pi} \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} (-1)^{-k+l+l'-S-S'+m_j+m_j'} i^{k+k'}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl}^{l_1 k\dagger}(p_1,P_{12}) \chi_{q,n'l'}^{ l_1 k'}(p_1,P_{12}) \\
- \sum_{m_l m_S} \hat{j} \hat{l} \hat{k} \hat{l}_1  \threej{l,S,j,m_l,m_S,-m_j} \threej{l,k,l_1,m_l,m_k,m_{l_1}}  \threej{l,k,l_1,0,0,0}  \\
-  \sum_{m_l' m_S'} \hat{j}' \hat{l}' \hat{k}' \hat{l}_1 \threej{l',S',j',m_l',m_S',-m_j'} \threej{l',k',l_1,m_l',m_k',m_{l_1}}  \threej{l',k',l_1,0,0,0}  \\
-   \sum_{q m_q} \hat{k} \hat{L} \hat{k}' \hat{L}' \threej{L',k,q,M_L',m_k,m_q} \threej{L',k,q,0,0,0} \threej{L,k',q,M_L,m_k',m_q} \threej{L,k',q,0,0,0} 
+    \braket{ A | \hat{n}_{s_1,t_1}^{[1]}(p_1) | A'} = \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
+ \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \\
+ (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,m_j} \threej{l_q',S,j',m_{l_q'},m_S,m_j'}
+ \frac{ 4 \sqrt{2}}{\pi} \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} i^{-k+k'} (-1)^{ m_{l_p} + m_{l_q'}}  \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
+     \hat{l}_{1}^{2} \hat{k}^{2} \hat{k}'^{2} \hat{l}_{p} \hat{l}_{q}' \hat{L} \hat{L}'
+     \threej{l_p,l_1,k,-m_{l_p},m_{l_1},m_k}
+     \threej{l_p,l_1,k,0,0,0}
+     \threej{l_q',l_1,k',-m_{l_q'},m_{l_1},m_k'}
+     \threej{l_q',l_1,k',0,0,0} \\
+     \sum_{q m_q} \hat{q}^{2}
+     \threej{ L,k,q,M_L,m_k,m_q}
+     \threej{ L,k,q,0,0,0}
+     \threej{L',k',q,M_L',m_k',m_q}
+     \threej{L',k',q,0,0,0} 
 \end{multline*}
-Finally we make use of
+Finally we make use of the fact that $m_{l_1}$ and $m_{k}$ are sum indices to flip their sign and
 \begin{align*}
-	\threej{l,k,l_1,m_l,m_k,m_{l_1}} \threej{l,k,l_1,0,0,0} =  \threej{ l, l_1, k, m_l, m_{l_1}, m_k } \threej{l, l_1, k,0,0,0}
+	\threej{l_p,l_1,k,-m_{l_p},-m_{l_1},-m_{k}} = \threej{l_p,l_1,k,-m_{l_p},-m_{l_1},-m_{k}}
 \end{align*}
 and compare our expression against (D.37) (using a final ``trick'' $ (-1)^{-k} = i^{-2k}$). Parts that are not found in (D.37) are colored \textcolor{red}{red}. Parts in (D.37) not appearing here are colored \textcolor{blue}{blue} (I think Maarten intended to write \textcolor{blue}{$L,L'$} in stead of \textcolor{blue}{$L_A,L_B$}).
 \begin{multline*}
@@ -678,4 +688,40 @@ With
 	\hat{\mathcal{O}}^{p} = \vec{\sigma}_{1} \cdot \vec{\sigma_{2}} \vec{ \tau}_{1} \cdot \vec{ \tau}_{2} & \Rightarrow  \text{O}^{p}(S,T,j,l,l') = [ 2S(S+1) - 3 ] [ 2T(T+1) - 3] \delta_{l l'}\\
 	\hat{\mathcal{O}}^{p} =  \hat{S}_{12} &\Rightarrow \text{O}^{p}(S,T,j,l,l') = \text{S}_{12}(S,j,l,l')
 \end{align*}
+\subsection{Isospin projection part}
+Let us investigate the expression,
+\begin{align*}
+	\sum_{t_2} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | T M_T} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | T' M_T'} = \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'}
+\end{align*}
+separately as in Maartens code the 3j symbols do not appear but some \texttt{if, else} magic is employed. We will cover the 3 cases for $\ket{ T M_T}, \ket{ T' M_T'} \in \{ \ket{1 1} , \ket{ 1 0 }, \ket{ 1 -1} , \ket{ 0 0} \}$, leading to 10 ($\frac{ 4 \cdot 5}{2}$) possible combinations:
+\begin{align*}
+	\sum_{t_2} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 1 \pm 1} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 1 \mp 1 } &= 
+	0 \\
+	\sum_{t_2} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 1 \pm 1} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 1 \pm 1 } &=
+	\delta_{t_1,\pm \frac{1}{2}} \\
+	\sum_{t_2} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 1 \pm 1} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 1  0 } &=
+	0 \\
+	\sum_{t_2} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 1 \pm 1} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 0  0 } &=
+	0 \\
+	\sum_{t_2} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 1  0} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 1  0 } &= 				\frac{1}{2} \\
+	\sum_{t_2} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 1  0} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 0  0 } &=
+	\text{sgn}(t_1) \frac{1}{2} = t_1 \\
+	\sum_{t_2} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 0  0} \braket{ \frac{1}{2} t_1 \frac{1}{2} t_2 | 0  0 } &=
+	\frac{1}{2}
+\end{align*}
+Yes, there are 10 terms here above if you take the $\pm$-signs into account. The first line only counts for $1$, the second, third and fourth lines each represent $2$ different combinations. Together with the last $3$ single combinations that makes $ 1 + 6 + 3 = 10$. Note that all the non zero terms have $M_T=M_T'$, and we may effectively include a $\delta_{M_T,M_T'}$ (which is done in Maarten's Code):
+\begin{verbatim}
+            if( t != 0 ) {
+                if( t == -MT  )
+                    continue;
+                if( MT == 0 ) {
+                    preifactor*= 0.5;
+                    if( TA != TB ) preifactor *= t;
+                }
+            }
+            if( t == 0 && TA != TB ) {
+                continue;
+            }
+\end{verbatim}
+\texttt{t} is equal to $2 t_1$. A value of \texttt{t=0} means summing over $t_1$ resulting in $\delta_{T T'}\delta_{M_T M_T'}$.
 \end{document}
