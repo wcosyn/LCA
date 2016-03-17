@@ -724,4 +724,90 @@ Yes, there are 10 terms here above if you take the $\pm$-signs into account. The
             }
 \end{verbatim}
 \texttt{t} is equal to $2 t_1$. A value of \texttt{t=0} means summing over $t_1$ resulting in $\delta_{T T'}\delta_{M_T M_T'}$.
+\section{Fourier transform of HO wave functions}
+The HO Shr\"odinger equation is given by
+\begin{align*}
+\left( -\frac{\hbar^{2}}{2 m_N} \nabla^{2} + \frac{1}{2} m_N \omega^{2} r^{2} - E  \right) \psi(\vec{r}) = 0
+\end{align*}
+With $\nu = \frac{m_N \omega}{\hbar}$ (units 1/fm$^{2}$) and writing $E$ in units $\hbar \omega$ ($E \rightarrow \hbar \omega E$),
+\begin{align*}
+\left( -\frac{1}{2} \nabla^{2} + \frac{1}{2} \nu^{2} r^{2} - \nu E  \right) \psi(\vec{r}) = 0
+\end{align*}
+With solutions
+\begin{align*}
+	\psi_{n l m}(r) = \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu^{l+\frac{3}{2}} \right]^{\frac{1}{2}} r^{l} e^{-\frac{\nu r^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu r^{2}) Y_{l m}(\Omega_{r})
+\end{align*}
+The HO Shr\"odinger equation in momentum space is obtained by using $\hat{\vec{r}} = i \hbar \vec{\nabla}_{\vec{p}}$,
+\begin{align*}
+\left( \frac{p^{2}}{2 m_N} - \frac{1}{2} m_N \hbar^{2} \omega^{2} \nabla^{2} - E  \right) \phi(\vec{p}) = 0 
+\end{align*}
+Defining $\nu' = 1/\nu = \frac{\hbar}{m_N \omega}$ and writing the energy $E$ again in units of $\hbar \omega$ ($E \rightarrow \hbar \omega E$),
+\begin{align*}
+\left(- \frac{1}{2} \frac{\hbar^{2}}{\nu'} \nabla^{2} + \frac{\nu'}{\hbar^{2}} p^{2}  - E  \right) \phi(\vec{p}) = 0 
+\end{align*}
+If we define $\vec{p}$ in units $\hbar$ so that the dimension of $\vec{p}$ becomes $1/$fm we get ($\vec{p} \rightarrow \hbar \vec{p}$),
+\begin{align*}
+\left(- \frac{1}{2} \nabla^{2} + \nu'^{2} p^{2}  - \nu' E  \right) \phi(\vec{p}) = 0 
+\end{align*}
+This has exactly the same form as the Shr\"odinger equation in $r$-space. The solutions are,
+\begin{align*}
+	\phi_{n l m}(p) = \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} p^{l} e^{-\frac{\nu' p^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu' p^{2}) Y_{l m}(\Omega_{p})
+\end{align*}
+If you don't believe in the trick $\hat{\vec{r}} = i \hbar \vec{\nabla}_{p}$, we can also show this in a slightly more elaborate way, starting from the $r$-space Shr\"odinger equation and write (we will now explicitly put the $\hbar$'s in the exponents, this is generally omitted) $\psi_{n l m}(\vec{r})$ as $ \frac{1}{(2\pi \hbar)^{\frac{3}{2}}} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r} / \hbar} \phi_{n l m}(\vec{p})$,
+\begin{align*}
+\left( -\frac{1}{2} \nabla^{2} + \frac{1}{2} \nu^{2} r^{2} - \nu E  \right) \frac{1}{(2\pi \hbar)^{\frac{3}{2}}} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r} / \hbar} \phi_{n l m}(\vec{p}) = 0
+\end{align*}
+Noting that $\vec{r} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r} / \hbar} \psi_{n l m}(\vec{p})$ can be written as,
+\begin{align*}
+\vec{r} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r}/ \hbar} \psi_{n l m}(\vec{p}) &= \frac{\hbar}{i} \int \text{d}^{3} \vec{p} \, \left( \vec{\nabla}_{p} e^{i \vec{p} \cdot \vec{r}/ \hbar} \right) \phi_{n l m}(\vec{p}) \\
+	&= \frac{\hbar}{i} \left[ e^{i \vec{p} \cdot \vec{r}/ \hbar } \phi_{ n l m}(\vec{p}) \right]^{+\infty}_{-\infty} - \frac{\hbar}{i}\int \text{d}^{3} \vec{p} \,  e^{i \vec{p} \cdot \vec{r} / \hbar} \left( \vec{\nabla_{p}} \phi_{n l m}(\vec{p}) \right) \\
+	&= i \hbar \int \text{d}^{3} \vec{p} \,  e^{i \vec{p} \cdot \vec{r} / \hbar} \left( \vec{\nabla_{p}} \phi_{n l m}(\vec{p}) \right)
+\end{align*}
+and $\vec{\nabla} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r}/ \hbar} \phi_{n l m}(\vec{p}) = \int \textrm{d}^{3} \vec{p} \frac{i}{\hbar} \vec{p} e^{i \vec{p} \cdot \vec{r}} \phi_{n l m}(\vec{p}) $, we get,
+\begin{align*}
+\left( -\frac{1}{2} \nabla^{2} + \frac{1}{2} \nu^{2} r^{2} - \nu E  \right) \frac{1}{(2\pi \hbar)^{\frac{3}{2}}} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r}/ \hbar} \phi_{n l m}(\vec{p}) &= 0 \\
+\Rightarrow \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r}/ \hbar} \left( \frac{1}{2} \frac{p^{2}}{\hbar^{2}} - \frac{1}{2} \nu^{2} \hbar^{2} \nabla^{2}_{\vec{p}} - \nu E  \right) \phi_{n l m}(\vec{p}) = 0
+\end{align*}
+As this last line must be true for all $\vec{r}$ we must have that,
+\begin{align*}
+	\left( \frac{1}{2} \frac{p^{2}}{\hbar^{2}} - \frac{1}{2} \nu^{2} \hbar^{2} \nabla^{2}_{\vec{p}} - \nu E  \right)  \phi_{n l m}(\vec{p}) = 0
+\end{align*}
+Again redefining $\vec{p}$ in units $\hbar$ so that its dimension becomes $1/$fm instead of MeV/c. We get,
+\begin{align*}
+	\left(-\frac{1}{2}  \nabla^{2}_{\vec{p}} + \frac{1}{2} \frac{1}{\nu^{2}} p^{2} - \frac{1}{\nu} E  \right)  \phi_{n l m}(\vec{p}) &= 0 \\
+\Rightarrow \left(-\frac{1}{2}  \nabla^{2}_{\vec{p}} + \frac{1}{2} \nu'^{2} p^{2} - \nu' E  \right)  \phi_{n l m}(\vec{p}) &= 0
+\end{align*}
+which is exactly what we set out to prove!
+But let us try a even more elaborate way by taking the Fourier transform of the wave function in $r$-space!
+\begin{align*}
+	\phi_{n l m}(\vec{p}) &= \frac{1}{(2 \pi)^{\frac{3}{2}}}\int \text{d}^{3} \vec{r} \, e^{- i \vec{p} \cdot \vec{r}} \psi_{n l m}(\vec{r})\\
+	&= \frac{1}{(2 \pi)^{\frac{3}{2}}} \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu^{l+\frac{3}{2}} \right]^{\frac{1}{2}} \int \text{d}^{3} \vec{r} \,  e^{- i \vec{p} \cdot \vec{r}} r^{l} e^{-\frac{\nu r^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu r^{2}) Y_{l m}(\Omega_{r})
+\end{align*}
+For the sake of conciseness We define $N_{nl} = \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu^{l+\frac{3}{2}} \right]^{\frac{1}{2}}$. We use the plane wave expansion $ e^{- i \vec{p} \cdot \vec{r}} = (4 \pi) \sum_{k m_k} (-i)^{k} j_{k}( p r) Y_{k m_k}^{*}(\Omega_r) Y_{k m_k}(\Omega_p)$.
+\begin{align*}
+	\phi_{n l m}(\vec{p}) &= \frac{1}{(2 \pi)^{\frac{3}{2}}} \int \text{d}^{3} \vec{r} \, e^{- i \vec{p} \cdot \vec{r}} \psi_{n l m}(\vec{r})\\
+	&=  N_{nl} \frac{4 \pi}{(2 \pi)^{\frac{3}{2}}} \sum_{k m_k} (-i)^{k}  Y_{k m_k}(\Omega_p) \int \text{d}r \, r^{2} j_{k}( p r) r^{l}  e^{-\frac{\nu r^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu r^{2}) \int \text{d}^{2} \Omega_{r} \, Y_{k m_k}^{*}(\Omega_r) Y_{l m}(\Omega_{r}) \\
+	&= N_{nl} \sqrt{ \frac{2}{\pi}} (-i)^{l}  Y_{l m}(\Omega_p) \int \text{d}r \, r^{2} j_{l}( p r) r^{l}  e^{-\frac{\nu r^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu r^{2}) 
+\end{align*}
+Using the expansion of the spherical bessel function $j_l(x)$ and the generalized Laguerre polynomials $L_{n}^{l+\frac{1}{2}}(x)$ ,
+\begin{align*}
+	j_l(x) &= \sqrt{ \frac{\pi}{2 x}} J_{l+\frac{1}{2}}(x) = \sqrt{ \frac{\pi}{2 x}} J_{l+\frac{1}{2}}(x) = \sqrt{ \frac{\pi}{2 x}} \sum_{k} \frac{ (-1)^{k}}{k! \Gamma(k+l+3/2)} \left(\frac{x}{2}\right)^{2k+l+1/2} \\
+	L_{n}^{l+\frac{1}{2}}(x) &= \sum_{j} (-1)^{j} \left( \begin{array}{c} n + l +1/2 \\ n - j \end{array} \right) \frac{x^j}{j!}
+\end{align*}
+\begin{multline*}
+	\phi_{n l m}(\vec{p}) = N_{nl} \sqrt{ \frac{2}{\pi}} (-i)^{l}  Y_{l m}(\Omega_p) \\
+	\int \text{d}r \, r^{2}  \sqrt{ \frac{\pi}{2 p r}} \sum_{k} \frac{ (-1)^{k}}{k! \Gamma(k+l+3/2)} \left(\frac{p r}{2}\right)^{2k+l+1/2} r^{l}  e^{-\frac{\nu r^{2}}{2}}  \sum_{j} (-1)^{j} \left( \begin{array}{c} n + l +1/2 \\ n - j \end{array} \right) \frac{(\nu r^{2})^j}{j!} \\
+	=  N_{nl} (-i)^{l}  Y_{l m}(\Omega_p) \sum_{k j} \frac{ (-1)^{k+j}}{k! j! \Gamma(k+l+3/2)} \left( \begin{array}{c} n + l +1/2 \\ n - j \end{array} \right) \nu^{j} 2^{- 2k - l -\frac{1}{2} } p^{2k+l}\\
+	\int \text{d}r \, r^{2}  r^{2k+2l}  e^{-\frac{\nu r^{2}}{2}} r^{2j} \\
+\end{multline*}
+TODO: CONTINUE CORRECTING BELOW!!!!
+Looking at the $r$ integral separately we have,
+\begin{multline*}
+	\int \text{d}r \, r^{2}  r^{2k+l-\frac{1}{2}}  e^{-\frac{\nu r^{2}}{2}} r^{2j} = \int \text{d}r \, r^{2k+2j+l+3/2} e^{-\frac{\nu r^{2}}{2}} = \left( \frac{2}{\nu} \right)^{\frac{1+2k+2j+l+3/2}{2}}  \int \text{d}r' \, r'^{2k+2j+l+3/2} e^{-r'^{2}} \\
+	= \left( \frac{2}{\nu} \right)^{\frac{1+2k+2j+l+3/2}{2}} \frac{1}{2} \Gamma \left( \frac{2k + 2j+l+3/2 + 1}{2} \right)
+\end{multline*}
+\begin{multline*}
+	\phi_{n l m}(\vec{p}) =  N_{nl} 4 \pi \sqrt{\pi} (-i)^{l}  Y_{l m}(\Omega_p) \sum_{k j} \frac{ (-1)^{k+j}}{k! j! \Gamma(k+l+3/2)} \left( \begin{array}{c} n + l +1/2 \\ n - j \end{array} \right) \\
+	\nu^{-\frac{2k+l+3/2+1}{2}} 2^{ \frac{ 2j - 2k - l - 1/2}{2} } p^{2k+l-\frac{1}{2}} \Gamma \left( \frac{2k + 2j+l+3/2 + 1}{2} \right)
+\end{multline*}
 \end{document}
