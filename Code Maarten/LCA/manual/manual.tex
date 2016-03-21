@@ -791,23 +791,34 @@ For the sake of conciseness We define $N_{nl} = \left[ \frac{ 2n!}{\Gamma(n+l+\f
 \end{align*}
 Using the expansion of the spherical bessel function $j_l(x)$ and the generalized Laguerre polynomials $L_{n}^{l+\frac{1}{2}}(x)$ ,
 \begin{align*}
-	j_l(x) &= \sqrt{ \frac{\pi}{2 x}} J_{l+\frac{1}{2}}(x) = \sqrt{ \frac{\pi}{2 x}} J_{l+\frac{1}{2}}(x) = \sqrt{ \frac{\pi}{2 x}} \sum_{k=0}^{\infty} \frac{ (-1)^{k}}{k! \Gamma(k+l+3/2)} \left(\frac{x}{2}\right)^{2k+l+1/2} \\
-	L_{n}^{l+\frac{1}{2}}(x) &= \sum_{j=0}^{n} (-1)^{j} \left( \begin{array}{c} n + l +1/2 \\ n - j \end{array} \right) \frac{x^j}{j!}
+	j_l(x) &= \sqrt{ \frac{\pi}{2 x}} J_{l+\frac{1}{2}}(x) = \sqrt{ \frac{\pi}{2 x}} \sum_{k=0}^{\infty} \frac{ (-1)^{k}}{k! \Gamma(k+l+3/2)} \left(\frac{x}{2}\right)^{2k+l+1/2} \\
+	&= \sqrt{ \frac{\pi}{2 x}} J_{l+\frac{1}{2}}(x) = \sqrt{ \frac{\pi}{2 x}} \left( \frac{x}{2} \right)^{l+\frac{1}{2}} e^{-t} \sum_{k=0}^{\infty} \frac{t^k}{\Gamma(k+l+3/2)} L^{l+\frac{1}{2}}_{k}\left( \frac{x^{2}}{4t} \right) \\
+	L_{n}^{l+\frac{1}{2}}(x) &= \sum_{j=0}^{n} (-1)^{j} \left( \begin{array}{c} n + l +1/2 \\ n - j \end{array} \right) \frac{x^j}{j!} = \sum_{j=0}^{n} (-1)^{j} \frac{ \Gamma(n+l+3/2)}{\Gamma(j+l+3/2) (n-j)!} \frac{x^j}{j!}
 \end{align*}
+Making the ``inspired'' choice $t= \frac{p^{2}}{2 \nu}$ we get,
 \begin{multline*}
-	\phi_{n l m}(\vec{p}) = N_{nl} \sqrt{ \frac{2}{\pi}} (-i)^{l}  Y_{l m}(\Omega_p) \\
-	\int \text{d}r \, r^{2}  \sqrt{ \frac{\pi}{2 p r}} \sum_{k=0}^{\infty} \frac{ (-1)^{k}}{k! \Gamma(k+l+3/2)} \left(\frac{p r}{2}\right)^{2k+l+1/2} r^{l}  e^{-\frac{\nu r^{2}}{2}}  \sum_{j=0}^{n} (-1)^{j} \left( \begin{array}{c} n + l +1/2 \\ n - j \end{array} \right) \frac{(\nu r^{2})^j}{j!} \\
-	=  N_{nl} (-i)^{l}  Y_{l m}(\Omega_p) \sum_{k=0}^{\infty} \sum_{j=0}^{n} \frac{ (-1)^{k+j}}{k! j! \Gamma(k+l+3/2)} \left( \begin{array}{c} n + l +1/2 \\ n - j \end{array} \right) \nu^{j} 2^{- 2k - l -\frac{1}{2} } p^{2k+l}\\
-	\int \text{d}r \, r^{2}  r^{2k+2l}  e^{-\frac{\nu r^{2}}{2}} r^{2j} \\
+	\phi_{n l m}(\vec{p}) = N_{nl} (-i)^{l} p^{l}  Y_{l m}(\Omega_p) e^{-\frac{p^{2}}{2 \nu}} 2^{-l-\frac{1}{2}} \sum_{k=0}^{\infty}  \frac{\left( \frac{p^{2}}{2 \nu} \right)^{k}}{\Gamma(k+l+3/2)} \int \text{d}r \, r^{2+2l} L_{k}^{l+\frac{1}{2}} ( \frac{\nu r^{2}}{2} ) e^{-\frac{\nu r^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu r^{2}) 
 \end{multline*}
-TODO: CONTINUE CORRECTING BELOW!!!!
-Looking at the $r$ integral separately we have,
+Changing the integration variable $r$ to $x= \nu r^{2}$ gives,
 \begin{multline*}
-	\int \text{d}r \,   r^{2k+2l+2j+2}  e^{-\frac{\nu r^{2}}{2}} = \left( \frac{2}{\nu} \right)^{k+l+j+\frac{3}{2}} \int \text{d}r' \, r'^{2k+2l+2j+2} e^{-r'^{2}} = \left( \frac{2}{\nu} \right)^{k+l+j+\frac{3}{2}} \frac{1}{2} \Gamma \left( k + l + j + 3/2 \right) \\
-	= 2^{k+l+j+\frac{1}{2}} \nu^{-k-l-j-\frac{3}{2}} \Gamma \left( k + l + j + 3/2 \right)
+	\phi_{n l m}(\vec{p}) = N_{nl} (-i)^{l} p^{l}  Y_{l m}(\Omega_p) e^{-\frac{p^{2}}{2 \nu}} 2^{-l-\frac{3}{2}} \nu^{-l-\frac{3}{2}} \\
+	 \sum_{k=0}^{\infty}  \frac{\left( \frac{p^{2}}{2 \nu} \right)^{k}}{\Gamma(k+l+3/2)} \int \text{d}x \, x^{l+\frac{1}{2}}  e^{-\frac{x}{2}} L_{k}^{l+\frac{1}{2}} \left( x/2 \right) L_{n}^{l+\frac{1}{2}}(x) 
 \end{multline*}
+Using the identity (\texttt{Applied Mathematics Letters 16 (2003) 1131-1136, equation (19)}) \footnote{ Remarks on Some Associated Laguerre Integral Results. \\ http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.99.2040\&rep=rep1\&type=pdf }.
+\begin{align*}
+	\int_{0}^{+\infty} \text{d} x \, x^{\alpha} e^{-\sigma x} L_{n}^{\alpha}(\lambda x) L_{k}^{\alpha}( \sigma x) = \frac{\Gamma(\alpha+n+1)}{\sigma^{\alpha+n+1}} \frac{(\sigma - \lambda)^{n-k}}{(n-k)!} \frac{\lambda^{k}}{k!}
+\end{align*}
+With $\alpha = l+1/2, \sigma = 1/2, \lambda = 1$ we get,
 \begin{multline*}
-	\phi_{n l m}(\vec{p}) =  N_{nl} (-i)^{l}  Y_{l m}(\Omega_p) p^{l} \nu^{-l-\frac{3}{2}} \\
-	\sum_{k=0}^{\infty} \sum_{j=0}^{n} \frac{ (-1)^{k+j}}{k! j! \Gamma(k+l+3/2)} \left( \begin{array}{c} n + l +1/2 \\ n - j \end{array} \right) 2^{- k + j } p^{2k} \nu^{-k} \Gamma \left( k + l + j + 3/2 \right)\\
+	\phi_{n l m}(\vec{p}) = N_{nl} (-i)^{l} p^{l}  Y_{l m}(\Omega_p) e^{-\frac{p^{2}}{2 \nu}} 2^{-l-\frac{3}{2}} \nu^{-l-\frac{3}{2}} \\
+	 \sum_{k=0}^{\infty}  \frac{\left( \frac{p^{2}}{2 \nu} \right)^{k}}{\Gamma(k+l+3/2)} \frac{\Gamma(n+l+3/2)}{(1/2)^{n+l+3/2}} \frac{\left(-\frac{1}{2}\right)^{n-k}}{(n-k)!} \frac{1}{k!} \\
+	 = N_{nl} (-i)^{l} p^{l}  Y_{l m}(\Omega_p) e^{-\frac{p^{2}}{2 \nu}} \nu^{-l-\frac{3}{2}} \\
+	 (-1)^{n} \sum_{k=0}^{n} \frac{(-1)^{k}}{k!} \left( \frac{p^{2}}{\nu} \right)^{k} \frac{\Gamma(n+l+3/2)}{(n-k)! \Gamma(k+l+3/2)} \\
+	 = \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu^{l+\frac{3}{2}} \right]^{\frac{1}{2}} (-i)^{l} p^{l}  Y_{l m}(\Omega_p) e^{-\frac{p^{2}}{2 \nu}} \nu^{-l-\frac{3}{2}} (-1)^{n} L_{n}^{l+\frac{1}{2}}(\frac{p^{2}}{\nu})
 \end{multline*}
+Note that we have applied a somewhat dirty trick we truncated the sum $\sum_{k=0}^{\infty} \ldots 1/(n-k)! \ldots$ to $ \sum_{k=0}^{n} \ldots 1/(n-k)! \ldots$. The reasoning is that the factorial of a negative integer diverges to $\pm \infty$. Because the negative integer factorial appears in the denominator for $k>n$ we can truncate the sum to $k=n$. With $\nu' = 1/\nu$ the final solution becomes,
+\begin{align*}
+	\phi_{n l m}(\vec{p}) =  (-i)^{l} (-1)^{n} \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} p^{l}  Y_{l m}(\Omega_p) e^{-\frac{\nu' p^{2}}{2}} L_{n}^{l+\frac{1}{2}}(\nu'p^{2})
+\end{align*}
+Which is the expected result except for the phase factor $(-i)^{l} (-1)^{n} = i^{2n+3l}$.
 \end{document}
