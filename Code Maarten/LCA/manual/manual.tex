@@ -766,13 +766,12 @@ Noting that $\vec{r} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r} / \h
 and $\vec{\nabla} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r}/ \hbar} \phi_{n l m}(\vec{p}) = \int \textrm{d}^{3} \vec{p} \frac{i}{\hbar} \vec{p} e^{i \vec{p} \cdot \vec{r}} \phi_{n l m}(\vec{p}) $, we get,
 \begin{align*}
 \left( -\frac{1}{2} \nabla^{2} + \frac{1}{2} \nu^{2} r^{2} - \nu E  \right) \frac{1}{(2\pi \hbar)^{\frac{3}{2}}} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r}/ \hbar} \phi_{n l m}(\vec{p}) &= 0 \\
-\Rightarrow \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r}/ \hbar} \left( \frac{1}{2} \frac{p^{2}}{\hbar^{2}} - \frac{1}{2} \nu^{2} \hbar^{2} \nabla^{2}_{\vec{p}} - \nu E  \right) \phi_{n l m}(\vec{p}) = 0
+\Rightarrow \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r}/ \hbar} \left( \frac{1}{2} \frac{p^{2}}{\hbar^{2}} - \frac{1}{2} \nu^{2} \hbar^{2} \nabla^{2}_{\vec{p}} - \nu E  \right) \phi_{n l m}(\vec{p}) &= 0 \\
+\Rightarrow \int \frac{\text{d}^{3} \vec{r}}{(2\pi)^{3}} e^{-i \vec{p}' \cdot \vec{r}} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r}/ \hbar} \left( \frac{1}{2} \frac{p^{2}}{\hbar^{2}} - \frac{1}{2} \nu^{2} \hbar^{2} \nabla^{2}_{\vec{p}} - \nu E  \right) \phi_{n l m}(\vec{p}) &= \int \frac{\text{d}^{3} \vec{r}}{(2\pi)^{3}} e^{-i \vec{p}' \cdot \vec{r}} 0 \\
+\Rightarrow  \int \textrm{d}^{3} \vec{p} \delta(\vec{p} - \vec{p}^{\, \prime}) \left( \frac{1}{2} \frac{p^{2}}{\hbar^{2}} - \frac{1}{2} \nu^{2} \hbar^{2} \nabla^{2}_{\vec{p}} - \nu E  \right) \phi_{n l m}(\vec{p}) &= 0 \\
+\Rightarrow  \left( \frac{1}{2} \frac{p^{2}}{\hbar^{2}} - \frac{1}{2} \nu^{2} \hbar^{2} \nabla^{2}_{\vec{p}} - \nu E  \right) \phi_{n l m}(\vec{p}) &= 0
 \end{align*}
-As this last line must be true for all $\vec{r}$ we must have that,
-\begin{align*}
-	\left( \frac{1}{2} \frac{p^{2}}{\hbar^{2}} - \frac{1}{2} \nu^{2} \hbar^{2} \nabla^{2}_{\vec{p}} - \nu E  \right)  \phi_{n l m}(\vec{p}) = 0
-\end{align*}
-Again redefining $\vec{p}$ in units $\hbar$ so that its dimension becomes $1/$fm instead of MeV/c. We get,
+We replaced $\vec{p}^{\, \prime}$ with $\vec{p}$ in the last line. Again, redefining $\vec{p}$ in units $\hbar$ so that its dimension becomes $1/$fm instead of MeV/c. We get,
 \begin{align*}
 	\left(-\frac{1}{2}  \nabla^{2}_{\vec{p}} + \frac{1}{2} \frac{1}{\nu^{2}} p^{2} - \frac{1}{\nu} E  \right)  \phi_{n l m}(\vec{p}) &= 0 \\
 \Rightarrow \left(-\frac{1}{2}  \nabla^{2}_{\vec{p}} + \frac{1}{2} \nu'^{2} p^{2} - \nu' E  \right)  \phi_{n l m}(\vec{p}) &= 0
