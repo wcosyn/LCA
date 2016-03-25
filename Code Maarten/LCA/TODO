@@ -18,3 +18,7 @@
     operator_virtual_ob::get_tensor_me(...)
     do something more elegant and clearer than all those if/else if/else statements
 
+6. Check if the signs in the threejs in density_ob3.cpp really don't matter
+   That is the ones that can be matched to corresponding threej of the form
+   (*,*,*,0,0,0)
+

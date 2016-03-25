@@ -906,6 +906,11 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
                                             int ml= -mq-MLA;
                                             int mla= -mq-MLB;
                                             int mk= -ml-mkB;
+                                            /**
+                                             * note that for each threej here we have one like (*,*,*,0,0,0) above
+                                             *  which means we can flip the signs of the the j's here with no sign change
+                                             *  as the sum of the first three must be even
+                                             */
                                             double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
                                                             * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
                                                             * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
@@ -1376,9 +1381,9 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
                                        * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                        * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                             if( cg == 0 ) continue;
-                            double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0)
+                            double threej1=   threej::threejs.get( 2*LA, 2*l , 2*q,0, 0, 0)
                                             * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0 )
-                                            * threej::threejs.get( 2*kB, 2*l, 2*k,0, 0, 0 )
+                                            * threej::threejs.get( 2*kB, 2*l , 2*k,0, 0, 0 )
                                             * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0 );
                             if ( threej1 == 0 ) {
                                 continue;
