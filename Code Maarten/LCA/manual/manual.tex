@@ -575,14 +575,14 @@ Using the plane wave expansion $e^{i \vec{p} \cdot \vec{r}} = 4 \pi \sum_{l m_l}
     \frac{\sqrt{8} (4 \pi)^{4}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime} f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}')  R_{n l_p}(r_{12}) Y_{l_p m_{l_p}}^{*}(\Omega_{r_{12}}) R_{n' l_q'}(r_{12}') Y_{l_q' m_{l_q'}}(\Omega_{r_{12}'}) \\
    \sum_{k m_k} i^{k} j_{k}( \sqrt{2} p_1 r_{12}) Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k m_k}(\Omega_{r_{12}}) \\
    \sum_{k' m_k'} i^{-k'} j_{k'}( \sqrt{2} p_1 r_{12}') Y_{k' m_k'}(\Omega_{p_1}) Y_{k' m_k'}^{*}(\Omega_{r_{12}'}) \\
-   \int \text{d}^{3} \vec{P}_{12} \Pi_{N L}(P_{12}) Y_{L M_L}^{*}(\Omega_{P_{12}}) \Pi_{N' L'}(P_{12}) Y_{L' M_L'}(\Omega_{P_{12}})   \\
+   \int \text{d}^{3} \vec{P}_{12} \Pi_{N L}^{*}(P_{12}) Y_{L M_L}^{*}(\Omega_{P_{12}}) \Pi_{N' L'}(P_{12}) Y_{L' M_L'}(\Omega_{P_{12}})   \\
    \sum_{K m_K} i^{-K} j_{K}(P_{12} r_{12}) Y_{K m_K}^{*}(\Omega_{P_{12}}) Y_{K m_K}(\Omega_{r_{12}}) \\
    \sum_{K' m_K'} i^{K'} j_{K'}(P_{12} r_{12}') Y_{K' m_K'}(\Omega_{P_{12}}) Y_{K' m_K'}^{*}(\Omega_{r_{12}'}) \\
 \end{multline*}
 \begin{multline*}
 \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(\vec{p}_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
 64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K m_K} \sum_{K' m_K'} i^{k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12})\\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}^{*}(P_{12}) \Pi_{N' L'}(P_{12})\\
  \int \text{d} r_{12}\, r_{12}^{2} f_{p}^{\dagger}(r_{12}) R_{n l_p}(r_{12}) j_{k}( \sqrt{2} p_1 r_{12})  j_{K}(P_{12} r_{12}) \\
 \int \text{d} r_{12}' \, r_{12}^{\prime \, 2} f_{q}(r_{12}')  R_{n' l_q'}(r_{12}') j_{k'}( \sqrt{2} p_1 r_{12}')  j_{K'}(P_{12} r_{12}') \\
  \int \text{d}^{2} \Omega_{r_{12}}  Y_{l_p m_{l_p} }^{*}(\Omega_{r_{12}}) Y_{k m_k}(\Omega_{r_{12}}) Y_{K m_K}(\Omega_{r_{12}}) \\
@@ -617,7 +617,7 @@ So we get for the one-body momentum matrix element,
 \begin{multline*}
 \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(\vec{p}_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
  64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K M_K} \sum_{K' M_K'} i^{k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k'K'}(p_1,P_{12}) \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}^{*}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k'K'}(p_1,P_{12}) \\
     \sqrt{ \frac{(2 k + 1)(2 K+1)}{4 \pi (2 l_p +1 )}} \braket{ k m_k K M_K | l_p m_{l_p}} \braket{ k 0 K 0 | l_p 0} \\
     \sqrt{ \frac{(2 k' + 1)(2 K'+1)}{4 \pi (2 l_q' +1 )}} \braket{ k' m_k' K' M_K' | l_q' m_{l_q'}} \braket{ k' 0 K' 0 | l_q' 0} \\
     \sum_{J M_J} \sqrt{ \frac{ (2L+1)(2K+1)}{ 4 \pi (2 J+1)} } \braket{ L M_L K M_K | J M_J} \braket{ L 0 K 0 | J 0 } \\ \sqrt{ \frac{ (2L'+1)(2K'+1)}{ 4 \pi (2 J+1)} } \braket{L' M_L' K' M_K' | J M_J } \braket{ L' 0 K' 0 | J 0 } \\ 
@@ -626,7 +626,7 @@ Introducing the notation $\hat{j} = \sqrt{2 j + 1}$ we get,
 \begin{multline*}
 \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(\vec{p}_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
  \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{k' m_k'} \sum_{K M_K} \sum_{K' M_K'} i^{k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k'K'}(p_1,P_{12}) \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k'K'}(p_1,P_{12}) \\
      \frac{ \hat{k} \hat{k}' \hat{K} \hat{K}' }{ \hat{l}_p \hat{l}_{q}'} \braket{ k m_k K M_K | l_p m_{l_p}} \braket{ k 0 K 0 | l_p 0} \braket{ k' m_k' K' M_K' | l_q' m_{l_q'}} \braket{ k' 0 K' 0 | l_q' 0} \\
     \sum_{J M_J} \frac{ \hat{L} \hat{L}' \hat{K} \hat{K}' }{\hat{J}^{2}} \braket{ L M_L K M_K | J M_J} \braket{ L 0 K 0 | J 0 } \braket{L' M_L' K' M_K' | J M_J } \braket{ L' 0 K' 0 | J 0 } \\ 
 \end{multline*}
@@ -634,7 +634,7 @@ Integration over the ob-momentum angle $\Omega_{p_1}$ gives $ \delta_{k k'} \del
 \begin{multline*}
 \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
  \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{K M_K} \sum_{K' M_K'} i^{-K+K'} \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k K'}(p_1,P_{12}) \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k K'}(p_1,P_{12}) \\
      \frac{ \hat{k}^{2} \hat{K} \hat{K}' }{ \hat{l}_p \hat{l}_{q}'} \braket{ k m_k K M_K | l_p m_{l_p}} \braket{ k 0 K 0 | l_p 0} \braket{ k m_k K' M_K' | l_q' m_{l_q'}} \braket{ k 0 K' 0 | l_q' 0} \\
     \sum_{J M_J} \frac{ \hat{L} \hat{L}' \hat{K} \hat{K}' }{\hat{J}^{2}} \braket{ L M_L K M_K | J M_J} \braket{ L 0 K 0 | J 0 } \braket{L' M_L' K' M_K' | J M_J } \braket{ L' 0 K' 0 | J 0 }
 \end{multline*}
@@ -642,7 +642,7 @@ To cross check this result with Maartens (D.37) we must go back a step and make 
 \begin{multline*}
 \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(\vec{p}_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
 64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K m_K} \sum_{K' m_K'} i^{k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{k'K'}(p_1,P_{12}) \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{k'K'}(p_1,P_{12}) \\
  \int \text{d}^{2} \Omega_{r_{12}}  Y_{l_p m_{l_p} }^{*}(\Omega_{r_{12}}) Y_{k m_k}(\Omega_{r_{12}}) Y_{K m_K}^{*}(\Omega_{r_{12}}) \\
  \int \text{d}^{2} \Omega_{r_{12}'}  Y_{ l_q' m_{l_q'} }(\Omega_{r_{12}'})  Y_{k' m_k'}^{*}(\Omega_{r_{12}'}) Y_{K' m_K'}(\Omega_{r_{12}'}) \\
    \int \text{d}^{2} \Omega_{P_{12}}  Y_{L M_L}^{*}(\Omega_{P_{12}})  Y_{L' M_L'}(\Omega_{P_{12}}) Y_{K m_K}(\Omega_{P_{12}}) Y_{K' m_K'}^{*}(\Omega_{P_{12}})
@@ -650,7 +650,7 @@ To cross check this result with Maartens (D.37) we must go back a step and make 
 \begin{multline*}
 \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
 64 \sqrt{2} \pi \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{-K+K'}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
  \int \text{d}^{2} \Omega_{r_{12}}  Y_{l_p m_{l_p} }^{*}(\Omega_{r_{12}}) Y_{k m_k}(\Omega_{r_{12}}) Y_{K m_K}^{*}(\Omega_{r_{12}}) \\
  \int \text{d}^{2} \Omega_{r_{12}'}  Y_{ l_q' m_{l_q'} }(\Omega_{r_{12}'})  Y_{k m_k}^{*}(\Omega_{r_{12}'}) Y_{K' m_K'}(\Omega_{r_{12}'}) \\
    \int \text{d}^{2} \Omega_{P_{12}}  Y_{L M_L}^{*}(\Omega_{P_{12}})  Y_{L' M_L'}(\Omega_{P_{12}}) Y_{K m_K}(\Omega_{P_{12}}) Y_{K' m_K'}^{*}(\Omega_{P_{12}})
@@ -658,7 +658,7 @@ To cross check this result with Maartens (D.37) we must go back a step and make 
 \begin{multline*}
 \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
 \frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{-K+K'}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
  \frac{\hat{l}_{p} \hat{K}}{ \hat{k} } \braket { l_p m_{l_p} K m_K | k m_k } \braket{ l_p 0 K 0 | k 0 }  \\
  \frac{\hat{l}_{q}' \hat{K}'}{\hat{k}} \braket { l_q' m_{l_q'} K' m_K' | k m_k } \braket{ l_q' 0 K' 0 | k 0 } \\
  \sum_{J M_J} \frac{\hat{L} \hat{K}'}{\hat{J}} \frac{ \hat{L}' \hat{K}}{\hat{J}} \braket{ L M_L K' m_K' | J M_J } \braket{ L 0 K' 0 | J M_J}  \braket{ L' M_L' K m_K | J 0} \braket{ L' 0 K 0 | J 0 } 
@@ -670,64 +670,66 @@ We write the CGC coefficients as Wigner-3j symbols,
 \begin{multline*}
 \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
 \frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{-K+K'}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
- \hat{l}_{p} \hat{l}_{q}' \hat{K} \hat{K}' \hat{k}^{2} \threej{ l_p,K,k,m_{l_p},m_K,m_k} \threej{l_p,K,k,0,0,0}  \threej{ l_q',K',k,m_{l_q'},m_K',m_k} \threej{ l_q',K',k',0,0,0} \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
+ \hat{l}_{p} \hat{l}_{q}' \hat{K} \hat{K}' \hat{k}^{2} \threej{ l_p,K,k,m_{l_p},m_K,m_k} \threej{l_p,K,k,0,0,0}  \threej{ l_q',K',k,m_{l_q'},m_K',m_k} \threej{ l_q',K',k,0,0,0} \\
  \sum_{J M_J}  \hat{K} \hat{L} \hat{K}' \hat{L}' \hat{J}^{2} \threej{ L,K',J,M_L,m_K',M_J} \threej{ L,K',J,0,0,0} \threej{ L',K,J,M_L',m_K,M_J} \threej{L',K,J,0,0,0}
 \end{multline*}
-Where we flipped the signs of the summation indices $M_J$ and $m_k$, this is equivalent with rearranging the terms in de sum over $M_J$ and $m_k$.
-\todo[inline]{Continue here!}
+Where we flipped the signs of the summation indices $M_J$ and $m_k$, this is equivalent with simply rearranging the terms in the sums over $M_J$ and $m_k$.
 %$m_{l_p}, m_{l_q'}$ are also summation dummy's restricted to the values $m_j - s_1-s_2$, $m_j'-s_1-s_2$. It is safe to flip the sign of these as well. Their value will then be restricted to $ s_1+s_2 - m_j$, $s_1+s_2 - m_j'$.
 Writing $\mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2)$ explicitly gives,
 \begin{multline*}
 \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S',T',j',l',l_q') \\
  (-1)^{M_T + M_T' + m_S + m_S' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \threej{ \frac{1}{2}, \frac{1}{2}, S, s_1,s_2, - m_S} \threej{ \frac{1}{2}, \frac{1}{2}, S', s_1,s_2, - m_S'} \\
  (-1)^{ l_p + l_q' - S - S' + m_j + m_j'} \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S',j',m_{l_q'},m_S',-m_j'} \\
- \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{K M_K} \sum_{K' M_K'} i^{-K+K'} (-1)^{ m_{l_p} + m_{l_q'}}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k K'}(p_1,P_{12}) \\
-     \hat{k}^{2} \hat{K} \hat{K}' \hat{l}_{p} \hat{l}_{q}' \threej{k,K,l_p,m_k,M_K,-m_{l_p}} \threej{k,K,l_p,0,0,0} \threej{k,K',l_q',m_k,M_K',-m_{l_q'}} \threej{k,K',l_q',0,0,0} \\
-    \sum_{J M_J} \hat{L} \hat{L}' \hat{K} \hat{K}' \hat{J}^{2}  \threej{ L,K,J,M_L,M_K,M_J} \threej{ L,K,J,0,0,0} \threej{L',K',J,M_L',M_K',M_J} \threej{L',K',J,0,0,0} 
+ \frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{-K+K'}  \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
+ \hat{l}_{p} \hat{l}_{q}' \hat{K} \hat{K}' \hat{k}^{2} \threej{ l_p,K,k,m_{l_p},m_K,m_k} \threej{l_p,K,k,0,0,0}  \threej{ l_q',K',k,m_{l_q'},m_K',m_k} \threej{ l_q',K',k,0,0,0} \\
+ \sum_{J M_J}  \hat{K} \hat{L} \hat{K}' \hat{L}' \hat{J}^{2} \threej{ L,K',J,M_L,m_K',M_J} \threej{ L,K',J,0,0,0} \threej{ L',K,J,M_L',m_K,M_J} \threej{L',K,J,0,0,0}
 \end{multline*}
 If we are not interested in a specific spin contribution we get,
 \begin{multline*}
-\braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1]}(p_1) | A'} =  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
+\braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} =  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
  \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \\
  (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} \\
- \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{K M_K} \sum_{K' M_K'} i^{-K+K'} (-1)^{ m_{l_p} + m_{l_q'}}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k K'}(p_1,P_{12}) \\
-     \hat{k}^{2} \hat{K} \hat{K}' \hat{l}_{p} \hat{l}_{q}' \threej{k,K,l_p,m_k,M_K,-m_{l_p}} \threej{k,K,l_p,0,0,0} \threej{k,K',l_q',m_k,M_K',-m_{l_q'}} \threej{k,K',l_q',0,0,0} \\
-    \sum_{J M_J} \hat{L} \hat{L}' \hat{K} \hat{K}' \hat{J}^{2}  \threej{ L,K,J,M_L,M_K,M_J} \threej{ L,K,J,0,0,0} \threej{L',K',J,M_L',M_K',M_J} \threej{L',K',J,0,0,0} 
+ \frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{-K+K'}  \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
+ \hat{l}_{p} \hat{l}_{q}' \hat{K} \hat{K}' \hat{k}^{2} \threej{ l_p,K,k,m_{l_p},m_K,m_k} \threej{l_p,K,k,0,0,0}  \threej{ l_q',K',k,m_{l_q'},m_K',m_k} \threej{ l_q',K',k,0,0,0} \\
+ \sum_{J M_J}  \hat{K} \hat{L} \hat{K}' \hat{L}' \hat{J}^{2} \threej{ L,K',J,M_L,m_K',M_J} \threej{ L,K',J,0,0,0} \threej{ L',K,J,M_L',m_K,M_J} \threej{L',K,J,0,0,0}
 \end{multline*}
 To make the comparison with (D.37) easier we swap variables: $J M_J \rightarrow q m_q$, $K M_K \rightarrow k m_k$, $K' M_K' \rightarrow k' m_k'$, $ k m_k \rightarrow l_1 m_{l_1}$
 \begin{multline*}
-    \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} = \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
+\braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} =  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
  \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \\
- (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'}
- \frac{ 4 \sqrt{2}}{\pi} \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} i^{-k+k'} (-1)^{ m_{l_p} + m_{l_q'}}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
-     \hat{l}_{1}^{2} \hat{k}^{2} \hat{k}'^{2} \hat{l}_{p} \hat{l}_{q}' \hat{L} \hat{L}'
-     \threej{l_p,l_1,k,-m_{l_p},m_{l_1},m_k}
-     \threej{l_p,l_1,k,0,0,0}
-     \threej{l_q',l_1,k',-m_{l_q'},m_{l_1},m_k'}
-     \threej{l_q',l_1,k',0,0,0} \\
-     \sum_{q m_q} \hat{q}^{2}
-     \threej{ L,k,q,M_L,m_k,m_q}
-     \threej{ L,k,q,0,0,0}
-     \threej{L',k',q,M_L',m_k',m_q}
-     \threej{L',k',q,0,0,0} 
+ (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} \\
+ \frac{4 \sqrt{2}}{ \pi } \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} i^{-k+k'}  \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
+ \hat{l}_{p} \hat{l}_{q}' \hat{k} \hat{k}' \hat{l}_{1}^{2} \threej{ l_p,k,l_1,m_{l_p},m_k,m_{l_1}} \threej{l_p,k,l_1,0,0,0}  \threej{ l_q',k',l_1,m_{l_q'},m_k',m_{l_1}} \threej{ l_q',k',l_1,0,0,0} \\
+ \sum_{q m_q}  \hat{k} \hat{L} \hat{k}' \hat{L}' \hat{q}^{2} \threej{ L,k',q,M_L,m_k',m_q} \threej{ L,k',q,0,0,0} \threej{ L',k,q,M_L',m_k,m_q} \threej{L',k,q,0,0,0}
 \end{multline*}
-Finally we make use of the fact that $m_{l_1}$ and $m_{k}$ are sum indices to flip their sign and
+Finally we make use of
 \begin{align*}
-	\threej{l_p,l_1,k,-m_{l_p},-m_{l_1},-m_{k}} = \threej{l_p,l_1,k,-m_{l_p},-m_{l_1},-m_{k}}
+	\threej{a,b,c,m_a,m_b,m_c} \threej{ a,b,c,0,0,0} = \threej{a,c,b,m_a,m_c,m_b} \threej{ a,c,b,0,0,0}
 \end{align*}
-and compare our expression against (D.37) (using a final ``trick'' $ (-1)^{-k} = i^{-2k}$). Parts that are not found in (D.37) are colored \textcolor{red}{red}. Parts in (D.37) not appearing here are colored \textcolor{blue}{blue} (I think Maarten intended to write \textcolor{blue}{$L,L'$} in stead of \textcolor{blue}{$L_A,L_B$}).
+and compare our expression against (D.37). Parts that are not found in (D.37) are colored \textcolor{red}{red}. Parts in (D.37) not appearing here are colored \textcolor{blue}{blue} (I think Maarten intended to write \textcolor{blue}{$L,L'$} in stead of \textcolor{blue}{$L_A,L_B$}).
+Maarten uses the definition,
+\todo[inline]{continue here}
 \begin{multline*}
-\braket{ A | \hat{n}_{s_1, t_1}^{[1]}(p_1) | A'} = \mathcal{M}_{A A'}^{p,q}(s_1,t_1) \frac{4 \sqrt{2}}{\pi} \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} (-1)^{l+l'\textcolor{red}{-S-S'}+m_j+m_j'} i^{\textcolor{blue}{L_A-L_B}+k'-k} \hat{l}_{1}^{2} \hat{k}^{2} \hat{k}'^{2} \hat{l} \hat{l}' \hat{L} \hat{L}' \hat{j}  \hat{j}'  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl}^{l_1 k\dagger}(p_1,P_{12}) \chi_{q,n'l'}^{ l_1 k'}(p_1,P_{12}) \\
- \textcolor{red} {\sum_{m_l m_S} \threej{l,S,j,m_l,m_S,-m_j}} \threej{ l, l_1, k, m_l, m_{l_1}, m_k } \threej{l, l_1, k,0,0,0}  \\
-  \textcolor{red}{\sum_{m_l' m_S'} \threej{l',S',j',m_l',m_S',-m_j'}} \threej{l',l_1,k',m_l',m_{l_1},m_k'}  \threej{l',l_1,k',0,0,0}  \\
-   \sum_{q m_q} \threej{L',k,q,M_L',m_k,m_q} \threej{L',k,q,0,0,0} \threej{L,k',q,M_L,m_k',m_q} \threej{L,k',q,0,0,0} 
+\braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} = \textcolor{red}{ \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') } \\
+ \textcolor{red}{ \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} } \\
+ (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \textcolor{red}{ \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} } \\
+ \frac{4 \sqrt{2}}{ \pi } \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} i^{-k+k'}  \\
+ \threej{ l_p,l_1,k,m_{l_p},m_{l_1},m_k} 
+ \threej{ l_p,l_1,k,0,0,0}  
+ \threej{ l_q',l_1,k',m_{l_q'},m_{l_1},m_k'} 
+ \threej{ l_q',l_1,k',0,0,0} \\
+ \sum_{q m_q} \hat{l}_{1}^{2} \hat{l}_{p} \hat{l}_{q}' \hat{k}^{2} \hat{k}'^{2} \hat{L} \hat{L}' \textcolor{red}{\hat{q}^{2}} 
+ \threej{ L,k',q,M_L,m_k',m_q} 
+ \threej{ L,k',q,0,0,0} 
+ \threej{ L',k,q,M_L',m_k,m_q} 
+ \threej{L',k,q,0,0,0} \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
 \end{multline*}
-In the case that Maarten has simply omitted the LS coupling but than there should \textbf{not} be $(-1)^{l+l'm_j+m_j'}$ as this stems from the 3j LS coupling symbol.
+In the case that Maarten has simply omitted the LS coupling but than there should \textbf{not} be $(-1)^{l+l'm_j+m_j'}$ as this stems from the 3j LS coupling symbol. Maarten also omitted the sums over $l_p$ and $l_q'$ and picked a specific contribution $l,l'$ which do not necessarily correspond with $l,l'$ of the coupled states $\ket{A},\ket{A'}$. 
 \subsection{The matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$}
 Let us now look into the factorized matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$ in the one-body momentum distribution . Note that we implicitly assumed that the operators $\mathcal{O}^{p,q}$ do not change the quantum numbers of the orbital wave functions, $ n (lS) j m_j N L M_L$ (the quantum numbers involved in the radial integrals). More explicitly,
 \begin{align*}
