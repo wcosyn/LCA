@@ -730,6 +730,44 @@ Maarten uses the definition,
  \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
 \end{multline*}
 In the case that Maarten has simply omitted the LS coupling but than there should \textbf{not} be $(-1)^{l+l'm_j+m_j'}$ as this stems from the 3j LS coupling symbol. Maarten also omitted the sums over $l_p$ and $l_q'$ and picked a specific contribution $l,l'$ which do not necessarily correspond with $l,l'$ of the coupled states $\ket{A},\ket{A'}$. 
+\subsection{C.M. momentum integral}
+Let us take a closer a look at how the integral
+\begin{multline}
+\int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
+= N_{NL} N_{N'L'} \nu^{ - \frac{L+L'+3}{2}} \int \text{d} P_{12} \, P_{12}^{2} 
+P_{12}^{L} e^{- \frac{P_{12}^{2}}{2 \nu}} L_{N}^{L+\frac{1}{2}}( P_{12}^{2}/\nu) 
+P_{12}^{L'} e^{- \frac{P_{12}^{2}}{2 \nu}} L_{N'}^{L'+\frac{1}{2}}( P_{12}^{2}/\nu)  \\
+\chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})
+\label{eq:cm_mom_integral}
+\end{multline}
+$N_{NL} = [ 2n! / \Gamma( N + L + 3/2) ]^{1/2}$. Expanding the generalized Laguerre polynomials gives,
+\begin{multline}
+\int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
+= N_{NL} N_{N'L'} \nu^{ - \frac{L+L'+3}{2}}
+\sum_{i=0}^{N} \sum_{j=0}^{N'} a_{NL,i} a_{NL,j} \nu^{-i-j} \\
+ \int \text{d} P_{12} \, P_{12}^{2+L+L'+2i+2j}  e^{- \frac{P_{12}^{2}}{ \nu}}  \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})
+\label{eq:cm_mom_integral}
+\end{multline}
+is calculated in the code. As discussed in (?????) the symbols $\chi_{p,nl_p}^{l_1 k}(p_1,P_{12})$ are calculated in \texttt{density\_ob\_integrand\_cf}. The calculation of the c.m. momentum integral (Eq.~(\ref{eq:cm_mom_integral})) is done in \texttt{density\_ob\_integrand3}. The integrand of (\ref{eq:cm_mom_integral}) can be found in \texttt{density\_ob\_integrand3::integrand}.
+\begin{align*}
+	P_{12}^{2} P_{12}^{\text{index}} e^{-\frac{P_{12}^{2}}{\nu}}  \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) 
+\end{align*}
+Where the ``index'' (see code) is the power of the c.m. momentum (not including the $P_{12}^{2}$ of the Jacobian) $L+L'+2i+2j$.
+\todo[inline]{ERROR: Maarten has extra summations, binomial coefficients, pochhammer symbols etc, of which I have no clue where they are coming from (see \texttt{density\_ob\_integrand3::add} @ line 34). If I read the code correctly it calculates the equation below, but I have no idea where it comes from...
+} 
+\begin{multline*}
+	N_{NL} N_{N'L'} \nu^{ - \frac{L+L'+3}{2}} 
+	\sum_{i=0}^{N} \sum_{j=0}^{N} a_{NL,i} a_{N'L',j} \textcolor{red}{2^{i+j}} \\
+	\textcolor{red}{
+	\sum_{hfi=0}^{i} \sum_{hfj=0}^{j}
+	(-2 \nu)^{-hfi-hfj}	
+	\left( \begin{array}{c} i \\ hfi \end{array} \right)
+	\left( \begin{array}{c} j \\ hfj \end{array} \right)
+	(L+hfi+\frac{3}{2})^{(i-hfi)}
+	(L'+hfj+\frac{3}{2})^{(j-hfj)} } \\
+	\int \text{d} P_{12} \, P_{12}^{2+L+L'+\textcolor{red}{2hfi+2hfj}}  e^{- \frac{P_{12}^{2}}{ \nu}}  \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})
+\end{multline*}
+We introduced the notation $a^{(n)}$ for the rising factorial of Pochhammer function. 
 \subsection{The matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$}
 Let us now look into the factorized matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$ in the one-body momentum distribution . Note that we implicitly assumed that the operators $\mathcal{O}^{p,q}$ do not change the quantum numbers of the orbital wave functions, $ n (lS) j m_j N L M_L$ (the quantum numbers involved in the radial integrals). More explicitly,
 \begin{align*}
