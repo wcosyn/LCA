@@ -49,9 +49,10 @@ void diffRun(int n,int l,double nu){
     double maxdiff = -666;
     for (unsigned i=0;i<=2*n+l;i++){
         double diff = std::abs(a.at(i)-b.at(i));
-        printf("% .2e  -- vs -- % .2e   :: diff = %.2e\n",a.at(i),b.at(i),diff);
-        if (diff > maxdiff)
-            maxdiff = diff;
+        double reldiff = (diff > 0) ? diff/( std::abs(a.at(i))) : 0.00;
+        printf("% .2e  -- vs -- % .2e   :: relative diff = %.2e\n",a.at(i),b.at(i),reldiff);
+        if (reldiff > maxdiff)
+            maxdiff = reldiff;
     }
     printf(" --> maximum difference : % 4e\n",maxdiff);
 }
