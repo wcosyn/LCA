@@ -530,7 +530,7 @@ double WSWF::diff( double energy )
     double l = left[1]/left[0];
     double r = right[1]/right[0];
     double diff = (l-r)/(l+r);
-    while ( status || isinf(diff) ) {
+    while ( status || std::isinf(diff) ) {
         cout << status << " " << diff << endl;
         Rmatchf *= 0.95;
         status = integrate(left, Rmin, Rmatchf, energy);
@@ -656,11 +656,11 @@ double WSWF::getRadialWF( double r)
         diffr = r-(*RadialWF)[i-1][0];
         result = (*RadialWF)[i-1][1] + diffy*diffr/diffx;
     }
-    if( isnan( result ) ) {
+    if( std::isnan( result ) ) {
         cerr << "result is NaN " << endl;
         cerr << r << " " << i << " " << diffx << " " << diffy << "  " << diffr << endl;
     }
-    if( isinf( result ) ) {
+    if( std::isinf( result ) ) {
         cerr << "result is inf " << endl;
         cerr <<  " " << i << " " << diffx << " " << diffy << "  " << diffr << endl;
         cerr << (*RadialWF)[i][0] << " " << r << " " << (*RadialWF)[i-1][0] << endl;
@@ -677,7 +677,7 @@ int WSWF::func (double r, const double y[], double f[], void *params)
     WSWF* wswf = p->wswf;
     f[0] = y[1];
     f[1] = -wswf->k2(r, energy)*y[0];
-    if( isnan(f[0]) || isnan(f[1] ) ) {
+    if( std::isnan(f[0]) || std::isnan(f[1] ) ) {
         cerr << "NaN error in func " << y[0] << " " << y[1] << ": " << f[0] << " " << f[1] <<endl;
         return GSL_FAILURE;
     }
@@ -698,7 +698,7 @@ int WSWF::jac (double r, const double y[], double *dfdy, double dfdr[], void *pa
     gsl_matrix_set (m, 1, 1, 0.0);
     dfdr[0] = 0.0;
     dfdr[1] = -wswf->dkdr(r, energy)*y[0];
-    if( isnan(dfdr[0]) || isnan(dfdr[1] ) ) {
+    if( std::isnan(dfdr[0]) || std::isnan(dfdr[1] ) ) {
         cerr << "NaN error is jac" << endl;
         return GSL_FAILURE;
     }
