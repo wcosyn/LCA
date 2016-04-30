@@ -738,12 +738,12 @@ Let us take a closer a look at how the integral
 P_{12}^{L} e^{- \frac{P_{12}^{2}}{2 \nu}} L_{N}^{L+\frac{1}{2}}( P_{12}^{2}/\nu) 
 P_{12}^{L'} e^{- \frac{P_{12}^{2}}{2 \nu}} L_{N'}^{L'+\frac{1}{2}}( P_{12}^{2}/\nu)  \\
 \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})
-\label{eq:cm_mom_integral}
 \end{multline}
-$N_{NL} = [ 2n! / \Gamma( N + L + 3/2) ]^{1/2}$. Expanding the generalized Laguerre polynomials gives,
+$N_{NL} = [ 2n! / \Gamma( N + L + 3/2) ]^{1/2}$. Expanding the generalized Laguerre polynomials in momentum space (see Sec.~\ref{sec:ft_transforms}, note in particular the phase factor $(-1)^{N}$, critical to the derivation) gives,
+\todo[inline]{TODO: The factor $i^{L}$ is already taken into account in expressions before. Make this more clear, point this out}
 \begin{multline}
 \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
-= N_{NL} N_{N'L'} \nu^{ - \frac{L+L'+3}{2}}
+= N_{NL} N_{N'L'} \nu^{ - \frac{L+L'+3}{2}} (-1)^{N+N'}
 \sum_{i=0}^{N} \sum_{j=0}^{N'} a_{NL,i} a_{NL,j} \nu^{-i-j} \\
  \int \text{d} P_{12} \, P_{12}^{2+L+L'+2i+2j}  e^{- \frac{P_{12}^{2}}{ \nu}}  \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})
 \label{eq:cm_mom_integral}
@@ -754,20 +754,51 @@ is calculated in the code. As discussed in (?????) the symbols $\chi_{p,nl_p}^{l
 \end{align*}
 Where the ``index'' (see code) is the power of the c.m. momentum (not including the $P_{12}^{2}$ of the Jacobian) $L+L'+2i+2j$.
 \todo[inline]{ERROR: Maarten has extra summations, binomial coefficients, pochhammer symbols etc, of which I have no clue where they are coming from (see \texttt{density\_ob\_integrand3::add} @ line 34). If I read the code correctly it calculates the equation below, but I have no idea where it comes from...
+I was NOT able to derive this formula from the expression in appendix C.2 of Maartens thesis
 } 
-\begin{multline*}
+\begin{multline}
 	N_{NL} N_{N'L'} \nu^{ - \frac{L+L'+3}{2}} 
 	\sum_{i=0}^{N} \sum_{j=0}^{N} a_{NL,i} a_{N'L',j} \textcolor{red}{2^{i+j}} \\
 	\textcolor{red}{
-	\sum_{hfi=0}^{i} \sum_{hfj=0}^{j}
-	(-2 \nu)^{-hfi-hfj}	
-	\left( \begin{array}{c} i \\ hfi \end{array} \right)
-	\left( \begin{array}{c} j \\ hfj \end{array} \right)
-	(L+hfi+\frac{3}{2})^{(i-hfi)}
-	(L'+hfj+\frac{3}{2})^{(j-hfj)} } \\
-	\int \text{d} P_{12} \, P_{12}^{2+L+L'+\textcolor{red}{2hfi+2hfj}}  e^{- \frac{P_{12}^{2}}{ \nu}}  \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})
+	\sum_{i'=0}^{i} \sum_{j'=0}^{j}
+	(-2 \nu)^{-i'-j'}	
+	\left( \begin{array}{c} i \\ i' \end{array} \right)
+	\left( \begin{array}{c} j \\ j' \end{array} \right)
+	(L+i'+\frac{3}{2})^{(i-i')}
+	(L'+j'+\frac{3}{2})^{(j-j')} } \\
+	\int \text{d} P_{12} \, P_{12}^{2+L+L'+\textcolor{red}{2i'+2j'}}  e^{- \frac{P_{12}^{2}}{ \nu}}  \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})
+	\label{eq:cm_mom_integral_code_maarten}
+\end{multline}
+We introduced the notation $a^{(n)} = \Gamma(a+n)/\Gamma(a)$ for the rising factorial or Pochhammer function. 
+
+It is easy to see that eqs.~(\ref{eq:cm_mom_integral}) and (\ref{eq:cm_mom_integral_code_maarten}) are equivalent if we can show that,
+\begin{align*}
+(-1)^{N} \sum_{i=0}^{N}  a_{NL,i}  \nu^{-i} P_{12}^{2i} = \sum_{i=0}^{N} a_{NL,i}  2^{i} 
+	\sum_{i'=0}^{i}  (-2 \nu)^{-i'}	
+	\left( \begin{array}{c} i \\ i' \end{array} \right)
+	(L+i'+\frac{3}{2})^{(i-i')}
+	 P_{12}^{2i'} 
+\end{align*}
+Proof:
+\begin{multline*}
+\sum_{i=0}^{N} a_{NL,i}  2^{i} \sum_{i'=0}^{i}  (-2 \nu)^{-i'}\left( \begin{array}{c} i \\ i' \end{array} \right) (L+i'+\frac{3}{2})^{(i-i')} P_{12}^{2i'} \\
+=  \sum_{i=0}^{N} \frac{(-1)^{i}}{i! (N-i)!} \frac{ \Gamma(N+L+3/2) }{ \Gamma(i + L + 3/2)} 2^{i} \sum_{i'=0}^{i}  (-2 \nu)^{-i'} \frac{ i!}{ i'! (i-i')!} \frac{\Gamma(L+i+3/2)}{ \Gamma( L + i' + 3/2)} P_{12}^{2i'} \\
+= \sum_{i=0}^{N} \sum_{i'=0}^{i} \frac{(-1)^{i}}{ (N-i)! i'! (i-i')!} \frac{ \Gamma(N+L+3/2) }{ \Gamma( L + i' + 3/2) } 2^{i}   (-2 \nu)^{-i'} P_{12}^{2i'} \\
 \end{multline*}
-We introduced the notation $a^{(n)}$ for the rising factorial of Pochhammer function. 
+Changing the summation order to $ i' \in [0,N], i \in [i',N]$ gives,
+\begin{multline*}
+\sum_{i'=0}^{N} \frac{(-1)^{i'}}{ i'! (N-i')!} \frac{ \Gamma(N+L+3/2) }{ \Gamma( L + i' + 3/2) } \nu^{-i'} P_{12}^{2i'} \sum_{i=i'}^{N} (-1)^{i} \frac{(N-i')!}{(N-i)! (i-i')!} 2^{i-i'}\\
+= (-1)^{N} \sum_{i'=0}^{N} a_{NL,i'} \nu^{-i'} P_{12}^{2i'} \sum_{i=i'}^{N} (-1)^{N-i} \frac{(N-i')!}{(N-i)! (i-i')!} 2^{i-i'}
+\end{multline*}
+All we have to do now is to prove that 
+\begin{align*}
+	\sum_{i=i'}^{N} (-1)^{N-i} \frac{(N-i')!}{(N-i)! (i-i')!} 2^{i-i'} = 1
+\end{align*}
+to get the equivalence of Eqs.~(\ref{eq:cm_mom_integral}) and (\ref{eq:cm_mom_integral_code_maarten}). Defining $j=N-i$, $j'=N-i'$ gives,
+\begin{align*}
+	\sum_{j=j'}^{0}  \frac{j'!}{j! (j-j')!} (-1)^{j} 2^{j-j'} = \sum_{j=0}^{j'} \left( \begin{array}{c} j' \\ j \end{array} \right) (-1)^{j} 2^{j-j'} = ( -1 + 2 )^{j'} = 1^{N-i} = 1
+\end{align*}
+This equivalence was checked in the code and found to be correct.
 \subsection{The matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$}
 Let us now look into the factorized matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$ in the one-body momentum distribution . Note that we implicitly assumed that the operators $\mathcal{O}^{p,q}$ do not change the quantum numbers of the orbital wave functions, $ n (lS) j m_j N L M_L$ (the quantum numbers involved in the radial integrals). More explicitly,
 \begin{align*}
@@ -840,6 +871,7 @@ Yes, there are 10 terms here above if you take the $\pm$-signs into account. The
 \end{verbatim}
 \texttt{t} is equal to $2 t_1$. A value of \texttt{t=0} means summing over $t_1$ resulting in $\delta_{T T'}\delta_{M_T M_T'}$.
 \section{Fourier transform of HO wave functions}
+\label{sec:ft_transforms}
 The HO Shr\"odinger equation is given by
 \begin{align*}
 \left( -\frac{\hbar^{2}}{2 m_N} \nabla^{2} + \frac{1}{2} m_N \omega^{2} r^{2} - E  \right) \psi(\vec{r}) = 0
