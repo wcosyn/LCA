@@ -282,87 +282,7 @@ It is straightforward to show that,
 	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} | 0,0} = \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} | 1,0} &=  \frac{1}{2} (-2 m_t) 
 \end{align*}
 \end{multicols}
-We now investigate the effect of the insertion of the isospin-projection operator $\hat{\delta}_{m_t}^{[i]}$ in 
-\begin{align*}
-	\braket{ T M_T | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | T' M_T'}
-\end{align*}
-Note that $\hat{\delta}_{m_t}^{[i]}$ and $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ are hermitian but do not commute. Hence the operator $\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[i]}$ is \textbf{not hermitian}.
-\begin{align*}
-	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} \ket { 1, \pm 1 } = \delta_{ \pm 1,2 m_t} \ket{ 1, \pm 1 }
-\end{align*}
-\begin{multline*}
-	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} \ket { 1, 0 } = \frac{1}{\sqrt{2}} \Big( - \ket{ \frac{1}{2}, m_t} \otimes \ket{ \frac{1}{2}, -m_t} \\
-	 + (1-2m_t) \ket{ \frac{1}{2}, m_t + 1} \otimes \ket{ \frac{1}{2},- m_t - 1} \\
-	+  (1+2m_t) \ket{ \frac{1}{2}, m_t -1 } \otimes \ket{ \frac{1}{2}, -m_t + 1} \Big) \\
-\end{multline*}
-\begin{multline*}
-	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} \ket { 0, 0 } = \frac{1}{\sqrt{2}} \Big( - 2m_t \ket{ \frac{1}{2}, m_t} \otimes \ket{ \frac{1}{2}, -m_t} \\
-	 + (2m_t-1) \ket{ \frac{1}{2}, m_t + 1} \otimes \ket{ \frac{1}{2},- m_t - 1} \\
-	+  (2m_t+1) \ket{ \frac{1}{2}, m_t -1 } \otimes \ket{ \frac{1}{2}, -m_t + 1} \Big) \\
-\end{multline*}
-The non-zero matrix elements for $ \braket{ T M_T | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[i]} | T' M_T'}$ are (one can make use of the fact that both $\hat{\delta}_{m_t}^{[i]}$ and $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ are hermitian and let them act on the neighbouring bra or ket),
-\begin{multicols}{2}
-\noindent
-\begin{align*}
-	\braket{ 1, \pm 1 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
-	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &= \frac{1}{2} \\
-	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 0,0} &= \frac{1}{2}2m_t \\
-	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &=-\frac{3}{2}2m_t \\
-	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 0,0} &=-\frac{3}{2}
-\end{align*}
-\begin{align*}
-	\braket{ 1, \pm 1 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
-	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1,0} &= \frac{1}{2} \\
-	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 0,0} &=-\frac{1}{2}2m_t \\
-	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1,0} &= \frac{3}{2}2m_t \\
-	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 0,0} &=-\frac{3}{2}
-\end{align*}
-\end{multicols}
-The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[i]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | T' M_T'}$ are,
-\begin{multicols}{2}
-\noindent
-\begin{align*}
-	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &= \frac{1}{2} \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &=-\frac{3}{2} 2m_t \\
-	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &= \frac{1}{2} 2m_t \\
-	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &=-\frac{3}{2}
-\end{align*}
-\begin{align*}
-	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &= \frac{1}{2} \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &= \frac{3}{2} 2m_t \\
-	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &=-\frac{1}{2} 2m_t \\
-	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &=-\frac{3}{2}
-\end{align*}
-\end{multicols}
 
-The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[i]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[i]} | T' M_T'}$ are,
-\begin{align*}
-	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1, \pm 1} &= \braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1, \pm 1} = \delta_{ \pm 1,2m_t}  \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}| 0,0} = -\frac{1}{2} \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 0,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}| 1,0}=-\frac{1}{2} 2m_t \\
-		\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]}| 0,0} = -\frac{1}{2} \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 0,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]}| 1,0}=\frac{1}{2} 2m_t
-\end{align*}
-Note that the combinations of different isospin-projections are not necessarily zero when the operator $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ is involved,
-\begin{multicols}{2}
-\noindent
-\begin{align*}
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 1,0 } &= 1 \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 0,0 } &= -2m_t \\
-	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 1,0 } &= 2m_t \\
-	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 0,0 } &= -1
-\end{align*}
-\begin{align*}
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 1,0 } &= 1 \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 0,0 } &= 2m_t \\
-	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 1,0 } &=-2m_t \\
-	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 0,0 } &= -1
-\end{align*}
-\end{multicols}
-These matrix element have been checked with a simple python program (\texttt{numpy.kron} ftw for kronecker products). Note that all the matrix elements for $i=1,2$ are the same expect for a minus sign whenever a combination like $ \braket{ 1,0 | \ldots | 0,0}$ or $\braket{0,0| \ldots | 1,0}$ is involved.
-Also note that all the matrix elements do not mix different $M_T, M_T'$, so we effectively have $\delta_{M_T M_T'}$ everywhere.
 \subsection{norm\_ob : public operator\_virtual\_ob}
 Here we take a look at the calculation of the norm $\mathcal{N}$ in \texttt{norm\_ob.cpp}.
 Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring general one body member functions.
@@ -968,3 +888,90 @@ Note that we have applied a somewhat dirty trick we truncated the sum $\sum_{k=0
 \end{align*}
 Which is the expected result except for the phase factor $(-i)^{l} (-1)^{n} = i^{2n+3l}$.
 \end{document}
+
+
+
+
+
+% OBSOLOTE (WRONG) ISOSPIN PROJECTION THING
+We now investigate the effect of the insertion of the isospin-projection operator $\hat{\delta}_{m_t}^{[i]}$ in 
+\begin{align*}
+	\braket{ T M_T | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | T' M_T'}
+\end{align*}
+Note that $\hat{\delta}_{m_t}^{[i]}$ and $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ are hermitian but do not commute. Hence the operator $\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[i]}$ is \textbf{not hermitian}.
+\begin{align*}
+	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} \ket { 1, \pm 1 } = \delta_{ \pm 1,2 m_t} \ket{ 1, \pm 1 }
+\end{align*}
+\begin{multline*}
+	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} \ket { 1, 0 } = \frac{1}{\sqrt{2}} \Big( - \ket{ \frac{1}{2}, m_t} \otimes \ket{ \frac{1}{2}, -m_t} \\
+	 + (1-2m_t) \ket{ \frac{1}{2}, m_t + 1} \otimes \ket{ \frac{1}{2},- m_t - 1} \\
+	+  (1+2m_t) \ket{ \frac{1}{2}, m_t -1 } \otimes \ket{ \frac{1}{2}, -m_t + 1} \Big) \\
+\end{multline*}
+\begin{multline*}
+	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} \ket { 0, 0 } = \frac{1}{\sqrt{2}} \Big( - 2m_t \ket{ \frac{1}{2}, m_t} \otimes \ket{ \frac{1}{2}, -m_t} \\
+	 + (2m_t-1) \ket{ \frac{1}{2}, m_t + 1} \otimes \ket{ \frac{1}{2},- m_t - 1} \\
+	+  (2m_t+1) \ket{ \frac{1}{2}, m_t -1 } \otimes \ket{ \frac{1}{2}, -m_t + 1} \Big) \\
+\end{multline*}
+The non-zero matrix elements for $ \braket{ T M_T | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[i]} | T' M_T'}$ are (one can make use of the fact that both $\hat{\delta}_{m_t}^{[i]}$ and $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ are hermitian and let them act on the neighbouring bra or ket),
+\begin{multicols}{2}
+\noindent
+\begin{align*}
+	\braket{ 1, \pm 1 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
+	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &= \frac{1}{2} \\
+	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 0,0} &= \frac{1}{2}2m_t \\
+	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &=-\frac{3}{2}2m_t \\
+	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 0,0} &=-\frac{3}{2}
+\end{align*}
+\begin{align*}
+	\braket{ 1, \pm 1 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
+	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1,0} &= \frac{1}{2} \\
+	\braket{ 1,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 0,0} &=-\frac{1}{2}2m_t \\
+	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1,0} &= \frac{3}{2}2m_t \\
+	\braket{ 0,0 | \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 0,0} &=-\frac{3}{2}
+\end{align*}
+\end{multicols}
+The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[i]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | T' M_T'}$ are,
+\begin{multicols}{2}
+\noindent
+\begin{align*}
+	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &= \frac{1}{2} \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &=-\frac{3}{2} 2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &= \frac{1}{2} 2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &=-\frac{3}{2}
+\end{align*}
+\begin{align*}
+	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1, \pm 1} &= \delta_{ \pm 1,2m_t}  \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &= \frac{1}{2} \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &= \frac{3}{2} 2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 1,0} &=-\frac{1}{2} 2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} | 0,0} &=-\frac{3}{2}
+\end{align*}
+\end{multicols}
+
+The non-zero matrix elements for $ \braket{ T M_T |  \hat{\delta}_{m_t}^{[i]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[i]} | T' M_T'}$ are,
+\begin{align*}
+	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1, \pm 1} &= \braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1, \pm 1} = \delta_{ \pm 1,2m_t}  \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 1,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}| 0,0} = -\frac{1}{2} \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]} | 0,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[1]}| 1,0}=-\frac{1}{2} 2m_t \\
+		\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 1,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]}| 0,0} = -\frac{1}{2} \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]} | 0,0} &= \braket{ 0,0 | \hat{\delta}_{m_t}^{[2]} \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{m_t}^{[2]}| 1,0}=\frac{1}{2} 2m_t
+\end{align*}
+Note that the combinations of different isospin-projections are not necessarily zero when the operator $ \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2}$ is involved,
+\begin{multicols}{2}
+\noindent
+\begin{align*}
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 1,0 } &= 1 \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 0,0 } &= -2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 1,0 } &= 2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[1]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[1]} | 0,0 } &= -1
+\end{align*}
+\begin{align*}
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 1,0 } &= 1 \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 0,0 } &= 2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 1,0 } &=-2m_t \\
+	\braket{ 0,0 | \hat{\delta}_{m_t}^{[2]}  \hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} \hat{\delta}_{-m_t}^{[2]} | 0,0 } &= -1
+\end{align*}
+\end{multicols}
+These matrix element have been checked with a simple python program (\texttt{numpy.kron} ftw for kronecker products). Note that all the matrix elements for $i=1,2$ are the same expect for a minus sign whenever a combination like $ \braket{ 1,0 | \ldots | 0,0}$ or $\braket{0,0| \ldots | 1,0}$ is involved.
+Also note that all the matrix elements do not mix different $M_T, M_T'$, so we effectively have $\delta_{M_T M_T'}$ everywhere.
