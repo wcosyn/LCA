@@ -6,6 +6,12 @@
 #include <cstdlib>
 #include <cstdio>
 
+/** This is a test file to check Maartens complicated expression
+ *  for the c.m. momentum integral in the one-body mometum distribution.
+ *  against a much simpler one which should be totally equivalent.
+ *  see manual for details
+ * */
+
 std::vector<double> codeMaarten(int NA,int LA, double nu){
     double NormA= ho_norm(  NA, LA);
     double pownu= sqrt(pow( nu, LA+1.5));
