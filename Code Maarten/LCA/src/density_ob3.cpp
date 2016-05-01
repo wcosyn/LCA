@@ -80,17 +80,17 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
      * Works similar as density_rel
      */
     cout << "[Density_ob3] start initialization" << endl;
-    density_ob_integrand3* icc= new density_ob_integrand3( A);
-    density_ob_integrand3* itt= new density_ob_integrand3( A);
-    density_ob_integrand3* iss= new density_ob_integrand3( A);
-    density_ob_integrand3* ict= new density_ob_integrand3( A);
-    density_ob_integrand3* ics= new density_ob_integrand3( A);
-    density_ob_integrand3* ist= new density_ob_integrand3( A);
-    density_ob_integrand3* i0= new density_ob_integrand3( A);
-    density_ob_integrand3* ic= new density_ob_integrand3( A);
-    density_ob_integrand3* it= new density_ob_integrand3( A);
-    density_ob_integrand3* is= new density_ob_integrand3( A);
-    dens_ob_params dop = { 0, nA, lA, nB, lB, t, i0, ic, it, is, icc, ict, itt, iss, ics, ist};
+    density_ob_integrand3* icc = new density_ob_integrand3( A);
+    density_ob_integrand3* itt = new density_ob_integrand3( A);
+    density_ob_integrand3* iss = new density_ob_integrand3( A);
+    density_ob_integrand3* ict = new density_ob_integrand3( A);
+    density_ob_integrand3* ics = new density_ob_integrand3( A);
+    density_ob_integrand3* ist = new density_ob_integrand3( A);
+    density_ob_integrand3* i0  = new density_ob_integrand3( A);
+    density_ob_integrand3* ic  = new density_ob_integrand3( A);
+    density_ob_integrand3* it  = new density_ob_integrand3( A);
+    density_ob_integrand3* is  = new density_ob_integrand3( A);
+    dens_ob_params dop = { 0, nA, lA, nB, lB, t, i0, ic, it, is, icc, ict, itt, iss, ics, ist}; // first param (0) is for momentum
 
 //  cout << "initialize MF " << endl;
     sum_me_coefs( &dop );
@@ -160,8 +160,8 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
             file << "\t" << corr_cs*2/M_PI*sqrt(8)/norm;
             file << "\t" << corr_st*2/M_PI*sqrt(8)/norm;
             file << endl;
-            integral_mf += kstep*k*k*(mf);
-            integral += kstep*k*k*(corr);
+            integral_mf  += kstep*k*k*(mf);
+            integral     += kstep*k*k*(corr);
             kinenergy_mf += kstep*k*k*k*k*(mf);
             kinenergy_co += kstep*k*k*k*k*(corr);
         }
@@ -281,10 +281,9 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
             int MT= coefi->getMT();
             double preifactor=1;
 
-            /** Camille: see manual, section about isospin matrix elements
-              * the conditionals below are equivalent with the expression for
-              * \f$ \langle T M_T | \hat{\delta}_{t}^{[1]} | T' M_T' \rangle \f$
-              * in the manual. (Projection of particle 1 on specific isospin).
+            /** Camille: For explanation of
+             *  if/else magic, see manual,
+             *  section about isospin matrix elements.
               */
             if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
                 if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
