@@ -716,7 +716,7 @@ All we have to do now is to prove that
 \end{align*}
 to get the equivalence of Eqs.~(\ref{eq:cm_mom_integral}) and (\ref{eq:cm_mom_integral_code_maarten}). Defining $j=N-i$, $j'=N-i'$ gives,
 \begin{align*}
-	\sum_{j=j'}^{0}  \frac{j'!}{j! (j-j')!} (-1)^{j} 2^{j-j'} = \sum_{j=0}^{j'} \left( \begin{array}{c} j' \\ j \end{array} \right) (-1)^{j} 2^{j-j'} = ( -1 + 2 )^{j'} = 1^{N-i} = 1
+	\sum_{j=j'}^{0}  \frac{j'!}{j! (j'-j)!} (-1)^{j} 2^{j'-j} = \sum_{j=0}^{j'} \left( \begin{array}{c} j' \\ j \end{array} \right) (-1)^{j} 2^{j'-j} = ( -1 + 2 )^{j'} = 1^{N-i} = 1
 \end{align*}
 This equivalence was checked in the code and found to be correct.
 \subsection{The matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$}
