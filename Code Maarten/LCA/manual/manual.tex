@@ -708,15 +708,65 @@ First of all the modulo 4's you see appearing is because $n$ in $i^n$ can be cha
 		\begin{itemize}
 		\item \texttt{ipower1} is odd \\
 			As mentioned before this means that \texttt{ipower2} necessarily is odd as well. Because $L-L'$ (\texttt{LA-LB}) is even we have that $K'-K$ and $K-K'$ (\texttt{l-la} and \texttt{la-l}) are odd. We see that if the check
-			\texttt{ (ipower1 + ipower2 \% 4 == 0 )} fails the code gives an error. We will now reason that this is in fact always mathematically ensured and does not have be checked. For the current case we have \texttt{ipower1},\texttt{ipower2} $\in [-3,-1,1,3]$. We can, without loss of generality, assume that $L-L' (\texttt{LA-LB}) = 2n \; , \; n \in [-1,0,1]$, $K'-K (\texttt{l-la}) = m \; , \; m \in [-1,1]$. Hence \texttt{ipower1 + ipower2}= $4n$, $n \in [-1,0,1]$. Trivially $4n \% 4$ is always zero.
-			
+			\texttt{ (ipower1 + ipower2 \% 4 == 0 )} fails the code gives an error. We will now reason that this is in fact always mathematically ensured and does not have be checked. For the current case we have \texttt{ipower1},\texttt{ipower2} $\in [-3,-1,1,3]$. We can, without loss of generality, assume that $L-L' (\texttt{LA-LB}) = 2n \; , \; n \in [-1,0,1]$, $K'-K (\texttt{l-la}) = m \; , \; m \in [-1,1]$. Hence \texttt{ipower1 + ipower2}= $4n$, $n \in [-1,0,1]$. Trivially $4n \% 4$ is always zero. This allows us to write $\texttt{ipower2} = 4n - \texttt{ipower1}$, leading to  $i^{\texttt{ipower1}} + i^{\texttt{ipower2}} = i^{\texttt{ipower1}} + i^{4n - \texttt{ipower1}} = i^{\texttt{ipower1}} - i^{\texttt{ipower1}}= 0$. As this multiplicative factor is zero, the iteration is skipped (\texttt{continue;}).
+		\item \texttt{ipower1} is even \\
+			If the code continues (does not skip the current iteration in the for loop) we have not entered the previous if statement (\texttt{power1} being odd) and we can assume \texttt{power1} is even ($\in [-2,0,2]$). This means \texttt{power2} is even as well ($\in [-2,0,2]$).
 			Next we have the check
 			\begin{verbatim}
 			 if( fabs( ipower1) != fabs(ipower2) ) continue;
 			 \end{verbatim}
-			 We will show that this is unnecessary as well. 
+			 We will show that this is unnecessary as well. Without loss of generality we can assume
+			 \begin{align*}
+			 	\texttt{ipower1} &= (2n + 2m) \% 4 \\
+			 	\texttt{ipower2} &= (2n - 2m) \% 4
+			 \end{align*}
+			 With $n,m \in [-1,0,1]$. Larger ranges will be mapped back to $[-1,0,1]$ by the modulo \%4 operator. $|\texttt{ipower1}| \neq |\texttt{ipower2}|$ implies that $\texttt{ipower1} = 0, \texttt{ipower2} = \pm 2$, or $\texttt{ipower1} = \pm 2, \texttt{ipower2} = 0$. It is straightforward to see that $\texttt{ipower1} = 0 \Leftrightarrow \texttt{ipower2} = 0$.
+			 \begin{itemize}
+			 	\item \texttt{ipower1 == 0} \\
+			 		As we have just argued, this implies \texttt{ipower2 == 0} as well. $i^{\texttt{ipower1}} + i^{\texttt{ipower2}} = 1 + 1 = 2$, justifying the \texttt{ifactor *= 2;}
+			 	\item \texttt{ipower1 != 0} (corresponding to the \texttt{else} statement) \\
+			 		We now have $\texttt{ipower1} = \pm 2$, $\texttt{ipower2} = \pm 2$, where the signs of \texttt{ipower1} and \texttt{ipower2} do not have to be the same. $i^{\texttt{ipower1}} + i^{\texttt{ipower2}} = (-1)^{\pm 1} + (-1)^{\pm 1} = -1 -1 = -2$, hence the \texttt{ifactor *=-2;}
+			 \end{itemize}
+		\end{itemize}
+	\item $ T \neq T'$, (\texttt{TA != TB}) \\
+		\todo[inline]{Note that as $T \neq T'$, we have $(-1)^{T+T'} = -1$ (or equivalently $(-1)^{L+L'} = -1$). Meaning that we now should multiply with $(i^{\texttt{ipower1}} - i^{\texttt{ipower2}})$ in stead of $(i^{\texttt{ipower1}} + i^{\texttt{ipower2}})$.}
+		Again using the argument that $L+S+T=$ odd, $S=S'$ and the fact that $T,T' \in [0,1]$ it is easy to see that this time $L$ and $L'$ have \textbf{opposite} parity. This means that $L-L'$ (\texttt{LA-LB}) is always odd.
+		\begin{itemize}
+			\item \texttt{ipower1} is odd \\
+				We necessarily have that \texttt{ipower2} is odd as well. As $L-L'$ (\texttt{LA-LB}) is odd we get that $K'-K$ and $K-K'$ (\texttt{l-la} and \texttt{la-l}) are even. As we have that \texttt{ipower1},\texttt{ipower2} $\in [-3,-1,1,3]$, we can, without loss of generality, assume that $L-L' (\texttt{LA-LB}) = m \; , \; m \in [-1,1]$, $K'-K (\texttt{l-la}) = 2n \; , \; n \in [-1,0,1]$. Hence \texttt{ipower1 + ipower2}= $2m$, $m \in [-1,1]$. Hence,
+				\begin{verbatim}
+					if ( fabs((ipower1+ipower2)%4) == 2 )
+				\end{verbatim}
+				is always true here. $i^{\texttt{ipower1}} - i^{\texttt{ipower2}} = i^{\texttt{ipower1}} - i^{2m - \texttt{ipower1}} = i^{\texttt{ipower1}} - i^{\texttt{ipower1}}= 0$.  Again the iteration is skipped in this case through the \texttt{continue} statement.
+				\item \texttt{ipower1} is even \\
+				If the code continues (does not skip the current iteration in the for loop) we have not entered the previous if statement (\texttt{power1} being odd) and we can assume \texttt{power1} is even ($\in [-2,0,2]$). This means \texttt{power2} is even as well ($\in [-2,0,2]$).
+			Next we have the check
+			\begin{verbatim}
+			 if( fabs( ipower1) == fabs(ipower2) ) continue;
+			 \end{verbatim}
+			 Without loss of generality we can write
+			 \begin{align*}
+			 	\texttt{ipower1} &= (2n+1 + 2m+1) \% 4 \\
+			 	\texttt{ipower2} &= (2n+1 - 2m-1) \% 4
+			 \end{align*}
+			 With $n,m \in [-1,0,1]$. It is an easy exercise to show that $\texttt{ipower1} = \pm \texttt{ipower2}$ implies that either $n$ or $m$ is equal to $-1/2$ which contradicts our starting point. This proves that $ | \texttt{ipower1} | = | \texttt{ipower2} |$ is never true in this case.
+			 \begin{itemize}
+			 	\item \texttt{ipower1 == 0} \\
+			 		As we have just argued, this implies $\texttt{ipower2} == \pm 2$. $i^{\texttt{ipower1}} - i^{\texttt{ipower2}} = 1 + 1 = 2$, justifying the \texttt{ifactor *= 2;}
+			 	\item \texttt{ipower1 != 0} (corresponding to the \texttt{else} statement) \\
+			 		We now have $\texttt{ipower1} = \pm 2$, $\texttt{ipower2} = 0$. $i^{\texttt{ipower1}} - i^{\texttt{ipower2}} = (-1)^{\pm 1} -1 = -2$, hence the \texttt{ifactor *=-2;}
+			 \end{itemize}
 		\end{itemize}
 \end{itemize}
+\todo[inline]{
+\textbf{THE MAIN MESSAGE} \\
+All this spaghetti code above of Maarten is equivalent with the simple one-liner: \\
+$\texttt{ifactor} *= i^{L-L'+K'-K} \left[ 1 + (-1)^{T+T'+K-K'} \right] $ \\
+or \\
+\texttt{ ifactor *= i\^{}(LA-LB+l-la) ( 1 + (-1)\^{}(TA+TB+la-l) )} \\
+\textbf{WHY MAARTEN, WHHYYYYYYYYYY??????????} \\
+TODO: Replace this in the code and test if I get the same results...
+}
 \subsection{C.M. momentum integral}
 \label{ssec:cm_mom_integral}
 Let us take a closer a look at how the integral
