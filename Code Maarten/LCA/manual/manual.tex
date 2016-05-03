@@ -8,7 +8,7 @@
 \usepackage{todonotes}
 \usepackage{bbold}
 \usepackage{multicol}
-
+\usepackage{dsfont}
 
 \def\threej#1{\inthreej(#1)}
 \def\inthreej(#1,#2,#3,#4,#5,#6){\begin{pmatrix}#1 & #2 & #3 \\ #4 & #5 & #6 \end{pmatrix}}
@@ -337,8 +337,8 @@ Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring gen
 \end{itemize}
 
 \subsection{ density\_ob\_integrand3 }
-Here we look at the file \texttt{ density\_ob\_integrand3}.
-
+Here we look at the file \texttt{density\_ob\_integrand3}.
+See section \ref{ssec:cm_mom_integral}.
 \subsection{ density\_ob\_integrand\_cf }
 cf probably stands for correlation function. This class calculates integrals of the form
 \begin{align*}
@@ -414,6 +414,7 @@ It is easy to see that the difference between $\braket{ A | \hat{n}^{[1],1}_{s_1
 \end{align}
 Yes I agree that this is terrible notation but it should make the main message clear.
 \section{One body momentum distribution}
+\label{sec:ob_mom_distr_derivation}
 We will look into one-body momentum distributions in more detail. A matrix element as calculated in the norm (??) is now extended by including the ony-body momentum operator $ \hat{n}_{s,t}^{[1]}(\vec{p}) = \sum_{i} \hat{n}_{s,t}^{[1],i}(\vec{p})$. The square brackets $[1]$ denote that this is a one-body operator. The number right next to that $i$ symbolizes which particle it acts on. $s$ is the spin projection of the nucleon and $t$ the isospin projection. We will calculate the case where the momentum operator acts on ``particle 1'' first and then use the relation derived in Eq.~(\ref{eq:ob_mom_12_relation}) to get the expression for the case where the momentum operator acts on ``particle 2''.
 \begin{align*}
 	\braket{A | \hat{n}_{s,t}^{[1],1}(p) | A'} = \braket { A \equiv n (l S) j m_j N L M_L T M_T | \hat{\mathcal{O}}^{p\dagger} f_{p}^{\dagger} \hat{n}_{s,t}^{[1]}(\vec{p}) f_{q} \hat{ \mathcal{O}}^{q} | A' \equiv n' (l' S') j' m_j' N' L' M_L' T' M_T' }
@@ -650,7 +651,74 @@ Maarten uses the definition,
  \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
 \end{multline*}
 In the case that Maarten has simply omitted the LS coupling but than there should \textbf{not} be $(-1)^{l+l'm_j+m_j'}$ as this stems from the 3j LS coupling symbol. Maarten also omitted the sums over $l_p$ and $l_q'$ and picked a specific contribution $l,l'$ which do not necessarily correspond with $l,l'$ of the coupled states $\ket{A},\ket{A'}$. 
+
+If we now go back to the sum,
+\begin{align*}
+	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} + \braket{ A | \hat{n}_{t_1}^{[1],2}(p_1) | A'} \\
+	&= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} + (-1)^{S+S'+T+T'} \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(p_1) \left[ ( \vec{r}_{12}, \vec{r}_{12}^{\, \prime} ) \rightarrow ( - \vec{r}_{12}, - \vec{r}_{12}^{\, \prime} ) \right] | A'} 
+\end{align*}
+A closer look at the above derivation shows that the effect of $ ( \vec{r}_{12}, \vec{r}_{12}^{\, \prime} ) \rightarrow ( - \vec{r}_{12}, - \vec{r}_{12}^{\, \prime} )]$ translates into a sign switch in $i^{k-k'} \rightarrow i^{k'-k}, i^{K'-K} \rightarrow i^{K-K'}$. Suppose we are looking at a specific term in the summation over $K,K'$. (The dependence on $i^{k-k'}$ has vanished by integration over the solid angle of the one body momentum).
+\begin{align*}
+	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} \left[ i^{K'-K} + (-1)^{S+S'+T+T'} i^{K-K'} \right] \\
+	&= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{K'-K} \left[ 1 + (-1)^{S+S'+T+T'+K-K'} \right]
+\end{align*}
+Using the fact that $ L + S + T $ must be odd we can write $ (-1)^{S+T} $ as $ (-1)(-1)^{L}$.
+\begin{align*}
+	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} = \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{K'-K} \left[ 1 + (-1)^{L+L'+K-K'} \right]
+\end{align*}
+The correlation operators included do not change the total spin $S$, so we necessarily have $S=S'$. Allowing us to write,
+\begin{align*}
+	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} = \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{K'-K} \left[ 1 + (-1)^{T+T'+K-K'} \right]
+\end{align*}
+Let us take a look how this is \textbf{IN A VERY OBFUSCATED WAY} dealt with in Maartens code.
+\begin{verbatim}
+                int ipower1= (LA-LB+l-la)%4;
+                int ipower2= (LA-LB+la-l)%4;
+                double ifactor= preifactor;
+                if( TA == TB ) {
+                    if( GSL_IS_ODD( ipower1 ) ) {
+                        if( (ipower1+ipower2)%4 == 0 ) continue;
+                        else
+                            cerr << __FILE__ << __LINE__ << "IMAG" << endl;
+                    }
+                    if( fabs( ipower1) != fabs(ipower2) ) continue;
+                    if( ipower1 == 0 )
+                        ifactor *= 2;
+                    else
+                        ifactor*= -2;
+                }
+                if( TA != TB ) {
+                    if( GSL_IS_ODD( ipower1 ) ) {
+                        if( fabs((ipower1+ipower2)%4) == 2 ) continue;
+                        else
+                            cerr << __FILE__ << __LINE__ << "IMAG" << endl;
+
+                    }
+                    if( fabs( ipower1) == fabs(ipower2) ) continue;
+                    if( ipower1 == 0 )
+                        ifactor *= 2;
+                    else
+                        ifactor*= -2;
+                }
+\end{verbatim}
+First of all the modulo 4's you see appearing is because $n$ in $i^n$ can be changed by multiples of four for free. The variables \texttt{LA,LB,l,la} correspond to our $L,L',K',K$. Secondly note that as \texttt{ipower1} and \texttt{ipower2} are of the form $a+b$,$a-b$ with $a,b \in \mathds{Z}$ we have that they both have the same parity (even or odd) (The modulo 4 does not change this fact).
+\begin{itemize}
+	\item $T=T'$ (\texttt{TA==TB}) \\
+		As we already have $S=S'$ and $ L + S + T = $ odd, we have that $L,L'$ (\texttt{LA,LB}) must have the same parity. This means that $L-L'$ (\texttt{LA-LB}) is always even.
+		\begin{itemize}
+		\item \texttt{ipower1} is odd \\
+			As mentioned before this means that \texttt{ipower2} necessarily is odd as well. Because $L-L'$ (\texttt{LA-LB}) is even we have that $K'-K$ and $K-K'$ (\texttt{l-la} and \texttt{la-l}) are odd. We see that if the check
+			\texttt{ (ipower1 + ipower2 \% 4 == 0 )} fails the code gives an error. We will now reason that this is in fact always mathematically ensured and does not have be checked. For the current case we have \texttt{ipower1},\texttt{ipower2} $\in [-3,-1,1,3]$. We can, without loss of generality, assume that $L-L' (\texttt{LA-LB}) = 2n \; , \; n \in [-1,0,1]$, $K'-K (\texttt{l-la}) = m \; , \; m \in [-1,1]$. Hence \texttt{ipower1 + ipower2}= $4n$, $n \in [-1,0,1]$. Trivially $4n \% 4$ is always zero.
+			
+			Next we have the check
+			\begin{verbatim}
+			 if( fabs( ipower1) != fabs(ipower2) ) continue;
+			 \end{verbatim}
+			 We will show that this is unnecessary as well. 
+		\end{itemize}
+\end{itemize}
 \subsection{C.M. momentum integral}
+\label{ssec:cm_mom_integral}
 Let us take a closer a look at how the integral
 \begin{multline}
 \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
