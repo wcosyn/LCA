@@ -337,8 +337,11 @@ Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring gen
 \end{itemize}
 
 \subsection{ density\_ob\_integrand3 }
-Here we look at the file \texttt{density\_ob\_integrand3}.
-See section \ref{ssec:cm_mom_integral}.
+Here we look at the file \texttt{density\_ob\_integrand3}. See section \ref{ssec:cm_mom_integral} for more information. The following integral is calculated,
+\begin{align*}
+\int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) 
+\end{align*}
+The symbols $\chi_{p,nl_p}^{l_1 k}(p_1,P_{12})$, $\chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})$ are calculated in \texttt{density\_ob\_integrand\_cf}. Hence this integrand takes two \texttt{density\_ob\_integrand\_cf*} pointers. Additionally it takes the parameters, $n,l_p,k,m',l_q',k',p_1,\nu,\texttt{index}$ (\texttt{nA,lA,la,nB,lB,l,k,nu,index} in the code). \texttt{index} corresponds to the power of $P_{12}$ in the integrand. This is because the $\Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12})$ are expanded in powers of $P_{12}$, again see \ref{ssec:cm_mom_integral} for more details.
 \subsection{ density\_ob\_integrand\_cf }
 cf probably stands for correlation function. This class calculates integrals of the form
 \begin{align*}
