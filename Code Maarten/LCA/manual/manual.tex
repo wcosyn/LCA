@@ -708,6 +708,7 @@ First of all the modulo 4's you see appearing is because $n$ in $i^n$ can be cha
 \begin{itemize}
 	\item $T=T'$ (\texttt{TA==TB}) \\
 		As we already have $S=S'$ and $ L + S + T = $ odd, we have that $L,L'$ (\texttt{LA,LB}) must have the same parity. This means that $L-L'$ (\texttt{LA-LB}) is always even.
+        \todo[inline]{!!! Re-examine this argument, I think the $L$ should actually be the relative momentum $l$, $l + S + T = $ odd. Maybe this can be tied to $L$, to be looked into later}
 		\begin{itemize}
 		\item \texttt{ipower1} is odd \\
 			As mentioned before this means that \texttt{ipower2} necessarily is odd as well. Because $L-L'$ (\texttt{LA-LB}) is even we have that $K'-K$ and $K-K'$ (\texttt{l-la} and \texttt{la-l}) are odd. We see that if the check
