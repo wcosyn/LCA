@@ -20,6 +20,74 @@
 \def\insixj(#1,#2,#3,#4,#5,#6){\begin{Bmatrix}#1 & #2 & #3 \\ #4 & #5 & #6 \end{Bmatrix}} 
 
 \begin{document}
+\section{LCA}
+\subsection{Rewriting Maartens summations, the simple way}
+The LCA summations derived in the previous section are at first glance not the same as found in Sec.~2.2 of \cite{phdthesis_mvanhalst}.
+Here it is shown that these are equivalent.
+In particular the equivalence of the Eqs. found in Camille's PHD thesis and (2.43),(2.45) of \cite{phdthesis_mvanhalst} is derived here. 
+The derivation for the other summations is analogous.
+Starting from Eq.~(2.43) of \cite{phdthesis_mvanhalst} with $\widehat{\Omega}_{ij} = \widehat{\Omega}_{ji}$ and $\hat{l}_{ij} = \hat{l}_{ji}$,
+\begin{align}
+	\widehat{\Omega}^{[2],\text{l}} = \sum_{i<j}^{A} \widehat{\Omega}_{ij} \hat{l}_{ij} + 
+	\sum_{i<j<k}^{A}
+	\left(	
+	\widehat{\Omega}_{ij} \hat{l}_{ik} + 
+	\widehat{\Omega}_{ij} \hat{l}_{jk} +
+	\widehat{\Omega}_{ik} \hat{l}_{ij} +
+	\widehat{\Omega}_{ik} \hat{l}_{jk} +
+	\widehat{\Omega}_{jk} \hat{l}_{ij} +
+	\widehat{\Omega}_{jk} \hat{l}_{ik} 
+	\right) \, .
+	\label{eq:two_body_op_correlation_linear_Maarten}
+\end{align}
+It is useful to note that there are $\frac{A(A-1)}{2} + A(A-1)(A-2) = A(A-1)(A-\frac{3}{2}) = A^{3} - A^{2} - 3\frac{A(A-1)}{2}$ individual terms in this summation. 
+The sum indices $i,j,k$ are reshuffled in such a way that each term contains $\widehat{\Omega}_{ij}$,
+\begin{multline}
+	\widehat{\Omega}^{[2],\text{l}} = \sum_{i<j}^{A} \widehat{\Omega}_{ij} \hat{l}_{ij} + \\
+	\sum_{i<j<k}^{A} \widehat{\Omega}_{ij} \hat{l}_{ik} + 
+	\sum_{i<j<k}^{A} \widehat{\Omega}_{ij} \hat{l}_{jk} +
+	\sum_{i<k<j}^{A} \widehat{\Omega}_{ij} \hat{l}_{ik} +
+	\sum_{i<k<j}^{A} \widehat{\Omega}_{ij} \hat{l}_{jk} +
+	\sum_{k<i<j}^{A} \widehat{\Omega}_{ij} \hat{l}_{ik} +
+	\sum_{k<i<j}^{A} \widehat{\Omega}_{ij} \hat{l}_{jk} \\
+	= \sum_{i<j}^{A} \widehat{\Omega}_{ij} \hat{l}_{ij} + 
+	\left( \sum_{i<j<k}^{A} + \sum_{i<k<j}^{A} + \sum_{k<i<j}^{A} \right) \widehat{\Omega}_{ij} \hat{l}_{ik} + 
+	\left( \sum_{i<j<k}^{A} + \sum_{i<k<j}^{A} + \sum_{k<i<j}^{A} \right) \widehat{\Omega}_{ij} \hat{l}_{jk} \\
+	= \sum_{i<j}^{A} \widehat{\Omega}_{ij}  \left( \hat{l}_{ij} + 
+	\sum_{k \notin\{i,j\}}^{A}
+	\left[ 
+	\hat{l}_{ik} + \hat{l}_{jk} 
+	\right]	
+	\right) \, .
+	\label{eq:two_body_op_correlation_linear_intuitive}
+\end{multline}
+It is easy to see that there are $\frac{A(A-1)}{2}(1 + 2(A-2)) = \frac{A(A-1)}{2} + A(A-1)(A-2)$ distinct terms, exactly the same as the original expression of Eq.~(\ref{eq:two_body_op_correlation_linear_Maarten}).
+Eq.~(\ref{eq:two_body_op_correlation_linear_intuitive}) appears in Eq.~(\ref{eq:LCA_two_body}). The equivalence of the remaining contributions to Eq.~(\ref{eq:LCA_two_body}) are derived in a completely similar fashion.
+\todo[inline]{Remark, can be removed.
+As there are an equal number of distinct terms in the two equivalent summations: Eq.~(\ref{eq:two_body_op_correlation_linear_intuitive}) and Eq.~(\ref{eq:two_body_op_correlation_linear_Maarten}), I see no reason to use the arguably more obfuscated summation of Eq.~(\ref{eq:two_body_op_correlation_linear_Maarten}).
+}
+At the cost of some readability Eq.~(\ref{eq:two_body_op_correlation_linear_intuitive}) can be formulated shorter,
+\begin{align}
+	\widehat{\Omega}^{[2],\text{l}} =
+	\sum_{i<j}^{A} \widehat{\Omega}_{ij}  \left( \hat{l}_{ij} + 
+	\sum_{k \notin\{i,j\}}^{A}
+	\left[ 
+	\hat{l}_{ik} + \hat{l}_{jk} 
+	\right]	
+	\right) = \frac{1}{2}\sum_{i \neq j}^{A} \widehat{\Omega}_{ij}  \left( \hat{l}_{ij} + 
+	\sum_{k \notin\{i,j\}}
+	\left[ 
+	\hat{l}_{ik} + \hat{l}_{jk} 
+	\right]	
+	\right) \notag \\
+	= \sum_{i \neq j}^{A} \widehat{\Omega}_{ij}  \left( \frac{\hat{l}_{ij}}{2} + 
+	\sum_{k \notin\{i,j\}}^{A} \hat{l}_{jk}
+	\right) =
+	\sum_{i \neq j}^{A} \widehat{\Omega}_{ij} 
+	\sum_{k \neq j}^{A} \hat{l}_{jk} ( 1 - \frac{\delta_{ik}}{2}) \, .
+	\label{eq:two_body_op_correlation_linear_short}
+\end{align}
+By going from $ \sum_{i<j}^{A} = \sum_{i \neq j}^{A}$ introduced double counting of some terms was introduced, corrected by the factor $( 1 - \frac{\delta_{ik}}{2})$. Eq.~(\ref{eq:two_body_op_correlation_linear_short}) has a total of $A(A-1)^{2}$ terms, an overhead $\frac{A(A-1)}{2}$ compared to Eq.~(\ref{eq:two_body_op_correlation_linear_intuitive}). The relative increase is $ \frac{A(A-1)^{2}}{A(A-1)(A-\frac{3}{2})} = 1 + \frac{1}{2A-3}$, about $1.048$ for $A=12$ and $1.003$ for $A=208$.
 \section{Momentum distributions}
 \section{Second quantization}
 This section will be somewhat over-elaborated. But it can serve as a recapitulation of second quantization.
@@ -126,7 +194,7 @@ For each $A$ a new object \texttt{Newcoef} is generated and stored in the member
 This class takes the parameters $n_1 l_1 j_1 m_{j_1} m_{t_1} n_2 l_2 j_2 m_{j_2} m_{t_2} N L M_L n l S j m_j T M_T$, and calculates the coefficient given in Eq. (\ref{eq:coef}). It takes also a pointer to a \texttt{RecMosh} object that holds the Moshinsky brakets. The only function in this class is to calculate $C_{\alpha_1 \alpha_2}^{A}$ using the formula,
 \begin{multline}
 	\sum_{J M_J} \sum_{\Lambda} 
-	[ 1 - (-1)^{L+S+T}] \braket{ t_1 m_{t_1} t_2 m_{t_2} | T M_T }
+	[ 1 - (-1)^{l+S+T}] \braket{ t_1 m_{t_1} t_2 m_{t_2} | T M_T }
 	\braket{ j_1 m_{j_1} j_2 m_{j_2} | J M_J}
 	\braket{ j m_j L M_L | J M_J } \\
 	\braket{ n l N L; \Lambda | n_1 l_1 n_2 l_2 ; \Lambda}_{\textrm{SMB}}
@@ -162,6 +230,16 @@ A \texttt{Paircoef} object has all the quantum numbers in a rcm state $A$. In ad
 	\braket{\alpha_1 \alpha_2 | \hat{\mathcal{O}} | \alpha_1 \alpha_2} = \sum_{A} \sum_{\texttt{Paircoef(A).links}}  \texttt{link.strength} \braket {A | \hat{\mathcal{O}} | B }
 \end{align}
 \todo[inline]{\texttt{Paircoef::add(double val)} adds \texttt{val} to private member \texttt{value} but as far as I can see this private member \texttt{value} is NEVER used!}
+Note that the ``linked'' rcm states $\ket{A},\ket{B}$ both stem from the expansion of the same single particle state $\ket{ \alpha_1 \alpha_2}$.
+This means that the linked rcm states will have certain properties.
+For example, the parity of $\ket{ \alpha_1 \alpha_2}$ is given by $(-1)^{l_1 + l_2}$, the parity of a rcm state is $(-1)^{l+L}$, with $l$ the relative angular momentum and $L$ the c.m. angular momentum.
+Conservation of parity means that $l_1 + l_2 = l_A + l_A = l_B + L_B$.
+For example, for operators that do not change the total spin $S$ (this is the case for the operators considered here), we have $S_A = S_B$, it then follows that
+\begin{itemize}
+	\item if $T_A=T_B$ then $l_A$ and $l_B$ have the same even-odd parity because of $l+S+T=$ odd.
+	From $l_A - l_B$ is even it then follows that $L_A - L_B$ is even, or $L_A,L_B$ have the same even-odd parity.
+	\item if $T_A \neq T_B$ then $l_A$ and $l_B$ have opposite even-odd parity. Resulting in the condition that $L_A$ and $L_B$ also must have different even-odd parity. 
+\end{itemize}
 
 \section{Matrix Elements}
 First some theory on the matrix elements. In the calculation of the norm we only have the correlation operator $\hat{\wr}$ between the bras and kets.
