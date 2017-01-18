@@ -21,6 +21,28 @@
 
 \begin{document}
 \section{LCA}
+\section{Definitions}
+\label{sec:def}
+A short (probably incomplete) overview of the quantities used in this manual,
+$\psi_{n l m_{l}} (\vec{r})$ are the $\vec{r}$-space solutions of the harmonic oscillator with parameter $\nu = m_{N} \omega / \hbar $,
+\begin{align}
+\psi_{n l m_{l}}(\vec{r}) &= R_{n l} (r) Y_{l m}(\Omega_{r}) \, , \\
+R_{n l}(r) &= \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu^{l+\frac{3}{2}} \right]^{\frac{1}{2}} r^{l} e^{-\frac{\nu r^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu r^{2}) \, .
+\end{align}
+It is well known that the solutions $\phi_{n l m_{l}} (\vec{p})$  in $\vec{p}$-space are of the exact same form, where compared to the $\vec{r}$-space solution $\vec{r}$ is replaced by $\vec{p}$ and $\nu$ by $\nu' = 1/\nu$.
+However, when taking the explicit Fourier transformation, some (non-neglectable) phase factors appear (see Sec.~\ref{sec:ft_transforms}),
+\begin{align}
+	\phi_{n l m_{l}}(\vec{p}) &= \frac{1}{(2\pi)^{ \frac{3}{2}}}  \int \text{d}^{3} \vec{r} e^{- i \vec{p} \cdot \vec{r}} \psi_{n l m_{l}}(\vec{r}) \\
+	&= i^{-l} (-1)^{n} \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} p^{l} e^{-\frac{\nu' p^{2}}{2}} L_{n}^{l+\frac{1}{2}}(\nu'p^{2})  Y_{l m}(\Omega_p) \\
+	&= i^{-l} (-1)^{n} \Pi_{n l}(p)  Y_{l m}(\Omega_p) \, , \\
+ \Pi_{n l}(p) &= \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} p^{l} e^{-\frac{\nu' p^{2}}{2}} L_{n}^{l+\frac{1}{2}}(\nu'p^{2})
+\end{align}
+Here, the Laguerre polynomials are often expanded as follows,
+\begin{align}
+	L_{n}^{l+\frac{1}{2}}(x) &= \sum_{i=0}^{n} a_{nl,i} x^{i} \, , \notag \\
+	a_{nl,i} &= (-1)^{i} \frac{ \Gamma(n+l+3/2) }{ \Gamma(i+l+3/2)(n-i)! i!}
+	\label{eq:def:laguerre_exp}
+\end{align}
 \subsection{Rewriting Maartens summations, the simple way}
 The LCA summations derived in the previous section are at first glance not the same as found in Sec.~2.2 of \cite{phdthesis_mvanhalst}.
 Here it is shown that these are equivalent.
@@ -218,6 +240,7 @@ It is easy to check that the result indeed depends on $\alpha_1, \alpha_2, A$. N
 This class also defines a \texttt{``key''} to be able to index the coefficients, \texttt{key = ``nlSjm\_j.NLM\_L.TM\_T''}.
 
 \subsection{paircoef.h}
+\label{ssec:paircoef}
 This is a very thin class designed to do some bookkeeping. As outlined in Maartens thesis pg 156, different $\ket{\alpha_1 \alpha_2}$ combinations will sometimes map to the same ``rcm'' states $A = \ket{ nlSjm_j NLM_L TM_T}$. In matrix element calculations,
 \begin{align}
 	\braket{\alpha_1 \alpha_2 | \hat{\mathcal{O}} | \alpha_1 \alpha_2} = \sum_{AB} C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket {A | \hat{\mathcal{O}} | B }
@@ -233,7 +256,7 @@ A \texttt{Paircoef} object has all the quantum numbers in a rcm state $A$. In ad
 Note that the ``linked'' rcm states $\ket{A},\ket{B}$ both stem from the expansion of the same single particle state $\ket{ \alpha_1 \alpha_2}$.
 This means that the linked rcm states will have certain properties.
 For example, the parity of $\ket{ \alpha_1 \alpha_2}$ is given by $(-1)^{l_1 + l_2}$, the parity of a rcm state is $(-1)^{l+L}$, with $l$ the relative angular momentum and $L$ the c.m. angular momentum.
-Conservation of parity means that $l_1 + l_2 = l_A + l_A = l_B + L_B$.
+Conservation of parity means that $(-1)^{l_1 + l_2} = (-1)^{l_A + L_A} = (-1)^{l_B + L_B}$.
 For example, for operators that do not change the total spin $S$ (this is the case for the operators considered here), we have $S_A = S_B$, it then follows that
 \begin{itemize}
 	\item if $T_A=T_B$ then $l_A$ and $l_B$ have the same even-odd parity because of $l+S+T=$ odd.
@@ -559,7 +582,12 @@ For the sake of brevity we define,
 	\braket{ l_p  m_{l_p} S m_S | j m_j } \braket{   \frac{1}{2} s_1 \frac{1}{2} s_2 | S m_S} 
 	\braket{ l_q' m_{l_q}' S' m_S' | j' m_j' } \braket{   \frac{1}{2} s_1 \frac{1}{2} s_2 | S' m_S'} \\
 \end{multline*}
-Writing the wave functions as Fourier transformations $ \psi_{N L M_L}(\vec{R}_{12}) = 1/(2 \pi)^{3/2} \int \text{d}^{3} \vec{P}_{12} e^{ i \vec{P}_{12} \cdot \vec{R}_{12}} \phi_{N L M_L}(\vec{P}_{12})$,
+The c.m. wave functions $\psi_{N L M_L}(\vec{R}_{12})$, $\psi_{N' L' M_L'}(\vec{R}^{\, \prime}_{12})$ are written as their inverse Fourier transformation (see Secs.~\ref{sec:def},\ref{sec:ft_transforms}),
+\begin{align}
+	\psi_{N L M_L}(\vec{R}) &= \frac{1}{(2 \pi)^{\frac{3}{2}}} \int \text{d}^{3} \vec{P} e^{i \vec{P} \cdot \vec{R}} \phi_{N L M_{L}}(\vec{P}) \\
+	&= i^{-L} (-1)^{N} (2 \pi)^{-\frac{3}{2}} \int \text{d}^{3} \vec{P} e^{i \vec{P} \cdot \vec{R}}  \Pi_{N L}(P)  Y_{L M_L}(\Omega_P) \, .
+\end{align}
+The one-body momentum distribution can then be written as,
 \begin{multline*}
 	\braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(\vec{p}_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
    \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) }  f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}') \psi_{ n l_p m_{l_p} }^{\dagger}(\vec{r}_{12}) \psi_{ n' l_q' m_{l_q'} }(\vec{r}_{12}^{\, \prime})  \\
@@ -568,7 +596,7 @@ Writing the wave functions as Fourier transformations $ \psi_{N L M_L}(\vec{R}_{
     \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) } f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}')  \psi_{ n l_p m_{l_p}}^{\dagger}(\vec{r}_{12}) \psi_{ n' l_q' m_{l_q}' }(\vec{r}_{12}^{\, \prime}) \\
    \int \text{d}^{3} \vec{P}_{12} e^{ -i \vec{P}_{12} \cdot (\vec{r}_{12} - \vec{r}_{12}^{\, \prime})} \phi_{N L M_L}^{\dagger}(\vec{P}_{12}) \phi_{N' L' M_L'}(\vec{P}_{12}) 
 \end{multline*}
-Using the plane wave expansion $e^{i \vec{p} \cdot \vec{r}} = 4 \pi \sum_{l m_l} i^{l} j_{l}(p r) Y_{l m_l}^{*}(\Omega_{p}) Y_{l m_l}(\Omega_{r}) = 4 \pi \sum_{l m_l} i^{l} j_{l}(p r) Y_{l m_l}(\Omega_{p}) Y_{l m_l}^{*}(\Omega_{r})$ and the fact that the isotropic harmonic oscillator wavefunctions factorize in $\psi_{n l m_l}(\vec{r}) = R_{n l}(r) Y_{l m_l}(\Omega_{r})$, $\psi_{n l m_l}(\vec{p}) = \Pi_{n l}(p) Y_{l m_l}(\Omega_{p})$.
+Using the plane wave expansion $e^{i \vec{p} \cdot \vec{r}} = 4 \pi \sum_{l m_l} i^{l} j_{l}(p r) Y_{l m_l}^{*}(\Omega_{p}) Y_{l m_l}(\Omega_{r}) = 4 \pi \sum_{l m_l} i^{l} j_{l}(p r) Y_{l m_l}(\Omega_{p}) Y_{l m_l}^{*}(\Omega_{r})$ and the fact that the isotropic harmonic oscillator wavefunctions factorize in $\psi_{n l m_l}(\vec{r}) = R_{n l}(r) Y_{l m_l}(\Omega_{r})$, $\phi_{n l m_l}(\vec{p}) = i^{-l}(-1)^{n} \Pi_{n l}(p) Y_{l m_l}(\Omega_{p})$ (see Secs.~\ref{sec:def},\ref{sec:ft_transforms}).
 \begin{multline*}
 	\braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(\vec{p}_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
   \frac{\sqrt{8}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{R}_{12} \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime}  e^{ i \sqrt{2} \vec{p}_{1} \cdot ( \vec{r}_{12} - \vec{r}_{12}^{\, \prime}) }  f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}') \psi_{ n l_p m_{l_p}}^{\dagger}(\vec{r}_{12}) \psi_{ n' l_q' m_{l_q'}}(\vec{r}_{12}^{\, \prime})  \\
@@ -577,14 +605,16 @@ Using the plane wave expansion $e^{i \vec{p} \cdot \vec{r}} = 4 \pi \sum_{l m_l}
     \frac{\sqrt{8} (4 \pi)^{4}}{(2 \pi)^{3}} \int \text{d}^{3} \vec{r}_{12} \text{d}^{3} \vec{r}_{12}^{\, \prime} f_{p}^{\dagger}(r_{12}) f_{q}(r_{12}')  R_{n l_p}(r_{12}) Y_{l_p m_{l_p}}^{*}(\Omega_{r_{12}}) R_{n' l_q'}(r_{12}') Y_{l_q' m_{l_q'}}(\Omega_{r_{12}'}) \\
    \sum_{k m_k} i^{k} j_{k}( \sqrt{2} p_1 r_{12}) Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k m_k}(\Omega_{r_{12}}) \\
    \sum_{k' m_k'} i^{-k'} j_{k'}( \sqrt{2} p_1 r_{12}') Y_{k' m_k'}(\Omega_{p_1}) Y_{k' m_k'}^{*}(\Omega_{r_{12}'}) \\
+   i^{L-L'} (-1)^{N+N'}
    \int \text{d}^{3} \vec{P}_{12} \Pi_{N L}^{*}(P_{12}) Y_{L M_L}^{*}(\Omega_{P_{12}}) \Pi_{N' L'}(P_{12}) Y_{L' M_L'}(\Omega_{P_{12}})   \\
    \sum_{K m_K} i^{-K} j_{K}(P_{12} r_{12}) Y_{K m_K}^{*}(\Omega_{P_{12}}) Y_{K m_K}(\Omega_{r_{12}}) \\
-   \sum_{K' m_K'} i^{K'} j_{K'}(P_{12} r_{12}') Y_{K' m_K'}(\Omega_{P_{12}}) Y_{K' m_K'}^{*}(\Omega_{r_{12}'}) \\
+   \sum_{K' m_K'} i^{K'} j_{K'}(P_{12} r_{12}') Y_{K' m_K'}(\Omega_{P_{12}}) Y_{K' m_K'}^{*}(\Omega_{r_{12}'}) \, . \\
 \end{multline*}
+Rearranging the integrals results in
 \begin{multline*}
 \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(\vec{p}_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
-64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K m_K} \sum_{K' m_K'} i^{k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}^{*}(P_{12}) \Pi_{N' L'}(P_{12})\\
+64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K m_K} \sum_{K' m_K'} i^{L-L'+k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
+ (-1)^{N+N'}\int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}^{*}(P_{12}) \Pi_{N' L'}(P_{12})\\
  \int \text{d} r_{12}\, r_{12}^{2} f_{p}^{\dagger}(r_{12}) R_{n l_p}(r_{12}) j_{k}( \sqrt{2} p_1 r_{12})  j_{K}(P_{12} r_{12}) \\
 \int \text{d} r_{12}' \, r_{12}^{\prime \, 2} f_{q}(r_{12}')  R_{n' l_q'}(r_{12}') j_{k'}( \sqrt{2} p_1 r_{12}')  j_{K'}(P_{12} r_{12}') \\
  \int \text{d}^{2} \Omega_{r_{12}}  Y_{l_p m_{l_p} }^{*}(\Omega_{r_{12}}) Y_{k m_k}(\Omega_{r_{12}}) Y_{K m_K}(\Omega_{r_{12}}) \\
@@ -615,11 +645,11 @@ and,
 	 \sum_{K M_K} \sqrt{ \frac{(2k+1)(2k'+1)}{4 \pi (2K+1)}} \braket{ k m_k k' m_k' | K M_K} \braket{ k 0 k' 0 | K 0 } Y_{K M_K}^{*}(\Omega) \\
 	 = \sum_{LM_L} \sqrt{ \frac{(2l+1)(2l'+1)}{4 \pi (2L+1)}} \sqrt{ \frac{(2k+1)(2k'+1)}{4 \pi (2L+1)}} \braket{ l m_l l' m_l' | L M} \braket{ l 0 l' 0 | L 0 } \braket{ k m_k k' m_k' | L M_L} \braket{ k 0 k' 0 | L 0 } 
 \end{multline*}
-So we get for the one-body momentum matrix element,
+The one-body momentum matrix element can then be written as,
 \begin{multline*}
 \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(\vec{p}_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
- 64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K M_K} \sum_{K' M_K'} i^{k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}^{*}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k'K'}(p_1,P_{12}) \\
+ 64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K M_K} \sum_{K' M_K'} i^{L-L'+k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
+(-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi_{N L}^{*}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k'K'}(p_1,P_{12}) \\
     \sqrt{ \frac{(2 k + 1)(2 K+1)}{4 \pi (2 l_p +1 )}} \braket{ k m_k K M_K | l_p m_{l_p}} \braket{ k 0 K 0 | l_p 0} \\
     \sqrt{ \frac{(2 k' + 1)(2 K'+1)}{4 \pi (2 l_q' +1 )}} \braket{ k' m_k' K' M_K' | l_q' m_{l_q'}} \braket{ k' 0 K' 0 | l_q' 0} \\
     \sum_{J M_J} \sqrt{ \frac{ (2L+1)(2K+1)}{ 4 \pi (2 J+1)} } \braket{ L M_L K M_K | J M_J} \braket{ L 0 K 0 | J 0 } \\ \sqrt{ \frac{ (2L'+1)(2K'+1)}{ 4 \pi (2 J+1)} } \braket{L' M_L' K' M_K' | J M_J } \braket{ L' 0 K' 0 | J 0 } \\ 
@@ -627,74 +657,76 @@ So we get for the one-body momentum matrix element,
 Introducing the notation $\hat{j} = \sqrt{2 j + 1}$ we get,
 \begin{multline*}
 \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(\vec{p}_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
- \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{k' m_k'} \sum_{K M_K} \sum_{K' M_K'} i^{k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k'K'}(p_1,P_{12}) \\
+ \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{k' m_k'} \sum_{K M_K} \sum_{K' M_K'} i^{L-L'+k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k'K'}(p_1,P_{12}) \\
      \frac{ \hat{k} \hat{k}' \hat{K} \hat{K}' }{ \hat{l}_p \hat{l}_{q}'} \braket{ k m_k K M_K | l_p m_{l_p}} \braket{ k 0 K 0 | l_p 0} \braket{ k' m_k' K' M_K' | l_q' m_{l_q'}} \braket{ k' 0 K' 0 | l_q' 0} \\
     \sum_{J M_J} \frac{ \hat{L} \hat{L}' \hat{K} \hat{K}' }{\hat{J}^{2}} \braket{ L M_L K M_K | J M_J} \braket{ L 0 K 0 | J 0 } \braket{L' M_L' K' M_K' | J M_J } \braket{ L' 0 K' 0 | J 0 } \\ 
 \end{multline*}
 Integration over the ob-momentum angle $\Omega_{p_1}$ gives $ \delta_{k k'} \delta_{m_k m_k'}$,
 \begin{multline*}
 \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
- \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{K M_K} \sum_{K' M_K'} i^{-K+K'} \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k K'}(p_1,P_{12}) \\
+ \frac{ 4 \sqrt{2}}{\pi} \sum_{k m_k} \sum_{K M_K} \sum_{K' M_K'} i^{L-L'-K+K'} \\
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK\dagger}(p_1,P_{12}) \chi_{q,n'l_q'}^{k K'}(p_1,P_{12}) \\
      \frac{ \hat{k}^{2} \hat{K} \hat{K}' }{ \hat{l}_p \hat{l}_{q}'} \braket{ k m_k K M_K | l_p m_{l_p}} \braket{ k 0 K 0 | l_p 0} \braket{ k m_k K' M_K' | l_q' m_{l_q'}} \braket{ k 0 K' 0 | l_q' 0} \\
     \sum_{J M_J} \frac{ \hat{L} \hat{L}' \hat{K} \hat{K}' }{\hat{J}^{2}} \braket{ L M_L K M_K | J M_J} \braket{ L 0 K 0 | J 0 } \braket{L' M_L' K' M_K' | J M_J } \braket{ L' 0 K' 0 | J 0 }
+    \label{eq:ob_mat_el}
 \end{multline*}
 To cross check this result with Maartens (D.37) we must go back a step and make another (debatably less logical) choice for contracting the spherical harmonics (note the subtle difference the complex conjugation choice of the spherical harmonics arising from the plane wave expansion).
 \begin{multline*}
 \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(\vec{p}_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
-64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K m_K} \sum_{K' m_K'} i^{k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{k'K'}(p_1,P_{12}) \\
+64 \sqrt{2} \pi \sum_{k m_k} \sum_{k' m_k'} \sum_{K m_K} \sum_{K' m_K'} i^{L-L'+k-k'-K+K'} Y_{k m_k}^{*}(\Omega_{p_1}) Y_{k' m_k'}(\Omega_{p_1}) \\
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{k'K'}(p_1,P_{12}) \\
  \int \text{d}^{2} \Omega_{r_{12}}  Y_{l_p m_{l_p} }^{*}(\Omega_{r_{12}}) Y_{k m_k}(\Omega_{r_{12}}) Y_{K m_K}^{*}(\Omega_{r_{12}}) \\
  \int \text{d}^{2} \Omega_{r_{12}'}  Y_{ l_q' m_{l_q'} }(\Omega_{r_{12}'})  Y_{k' m_k'}^{*}(\Omega_{r_{12}'}) Y_{K' m_K'}(\Omega_{r_{12}'}) \\
    \int \text{d}^{2} \Omega_{P_{12}}  Y_{L M_L}^{*}(\Omega_{P_{12}})  Y_{L' M_L'}(\Omega_{P_{12}}) Y_{K m_K}(\Omega_{P_{12}}) Y_{K' m_K'}^{*}(\Omega_{P_{12}})
 \end{multline*}
 \begin{multline*}
 \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
-64 \sqrt{2} \pi \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{-K+K'}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
+64 \sqrt{2} \pi \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{L-L'-K+K'}  \\
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
  \int \text{d}^{2} \Omega_{r_{12}}  Y_{l_p m_{l_p} }^{*}(\Omega_{r_{12}}) Y_{k m_k}(\Omega_{r_{12}}) Y_{K m_K}^{*}(\Omega_{r_{12}}) \\
  \int \text{d}^{2} \Omega_{r_{12}'}  Y_{ l_q' m_{l_q'} }(\Omega_{r_{12}'})  Y_{k m_k}^{*}(\Omega_{r_{12}'}) Y_{K' m_K'}(\Omega_{r_{12}'}) \\
    \int \text{d}^{2} \Omega_{P_{12}}  Y_{L M_L}^{*}(\Omega_{P_{12}})  Y_{L' M_L'}(\Omega_{P_{12}}) Y_{K m_K}(\Omega_{P_{12}}) Y_{K' m_K'}^{*}(\Omega_{P_{12}})
 \end{multline*}
 \begin{multline*}
 \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
-\frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{-K+K'}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
+\frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{L-L'-K+K'}  \\
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
  \frac{\hat{l}_{p} \hat{K}}{ \hat{k} } \braket { l_p m_{l_p} K m_K | k m_k } \braket{ l_p 0 K 0 | k 0 }  \\
  \frac{\hat{l}_{q}' \hat{K}'}{\hat{k}} \braket { l_q' m_{l_q'} K' m_K' | k m_k } \braket{ l_q' 0 K' 0 | k 0 } \\
  \sum_{J M_J} \frac{\hat{L} \hat{K}'}{\hat{J}} \frac{ \hat{L}' \hat{K}}{\hat{J}} \braket{ L M_L K' m_K' | J M_J } \braket{ L 0 K' 0 | J M_J}  \braket{ L' M_L' K m_K | J 0} \braket{ L' 0 K 0 | J 0 } 
 \end{multline*}
-We write the CGC coefficients as Wigner-3j symbols,
+The CGC coefficients are written as Wigner-3j symbols,
 \begin{align*}
-	\braket{ j_1 m_1 j_2 m_2 | J M } = (-1)^{j_1 - j_2 + M} \hat{J} \threej{j1,j2,J,m_1,m_2,-M}
+	\braket{ j_1 m_1 j_2 m_2 | J M } = (-1)^{j_1 - j_2 + M} \hat{J} \threej{j1,j2,J,m_1,m_2,-M} \, ,
 \end{align*}
+resulting in,
 \begin{multline*}
 \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2) \\
-\frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{-K+K'}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
+\frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{L-L'-K+K'}  \\
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
  \hat{l}_{p} \hat{l}_{q}' \hat{K} \hat{K}' \hat{k}^{2} \threej{ l_p,K,k,m_{l_p},m_K,m_k} \threej{l_p,K,k,0,0,0}  \threej{ l_q',K',k,m_{l_q'},m_K',m_k} \threej{ l_q',K',k,0,0,0} \\
- \sum_{J M_J}  \hat{K} \hat{L} \hat{K}' \hat{L}' \hat{J}^{2} \threej{ L,K',J,M_L,m_K',M_J} \threej{ L,K',J,0,0,0} \threej{ L',K,J,M_L',m_K,M_J} \threej{L',K,J,0,0,0}
+ \sum_{J M_J}  \hat{K} \hat{L} \hat{K}' \hat{L}' \hat{J}^{2} \threej{ L,K',J,M_L,m_K',M_J} \threej{ L,K',J,0,0,0} \threej{ L',K,J,M_L',m_K,M_J} \threej{L',K,J,0,0,0} \, .
 \end{multline*}
-Where we flipped the signs of the summation indices $M_J$ and $m_k$, this is equivalent with simply rearranging the terms in the sums over $M_J$ and $m_k$.
+The sign of the summation indices $M_J$ and $m_k$ have been flipped here, this is equivalent with simply rearranging the terms in the sums over $M_J$ and $m_k$.
 %$m_{l_p}, m_{l_q'}$ are also summation dummy's restricted to the values $m_j - s_1-s_2$, $m_j'-s_1-s_2$. It is safe to flip the sign of these as well. Their value will then be restricted to $ s_1+s_2 - m_j$, $s_1+s_2 - m_j'$.
 Writing $\mathcal{M}_{AA'}^{p q,l_p l_q'}(s_1,t_1,s_2,t_2)$ explicitly gives,
 \begin{multline*}
 \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} = \sum_{s_2 t_2}  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S',T',j',l',l_q') \\
  (-1)^{M_T + M_T' + m_S + m_S' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \threej{ \frac{1}{2}, \frac{1}{2}, S, s_1,s_2, - m_S} \threej{ \frac{1}{2}, \frac{1}{2}, S', s_1,s_2, - m_S'} \\
  (-1)^{ l_p + l_q' - S - S' + m_j + m_j'} \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S',j',m_{l_q'},m_S',-m_j'} \\
- \frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{-K+K'}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
+ \frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{L-L'-K+K'}  \\
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
  \hat{l}_{p} \hat{l}_{q}' \hat{K} \hat{K}' \hat{k}^{2} \threej{ l_p,K,k,m_{l_p},m_K,m_k} \threej{l_p,K,k,0,0,0}  \threej{ l_q',K',k,m_{l_q'},m_K',m_k} \threej{ l_q',K',k,0,0,0} \\
- \sum_{J M_J}  \hat{K} \hat{L} \hat{K}' \hat{L}' \hat{J}^{2} \threej{ L,K',J,M_L,m_K',M_J} \threej{ L,K',J,0,0,0} \threej{ L',K,J,M_L',m_K,M_J} \threej{L',K,J,0,0,0}
+ \sum_{J M_J}  \hat{K} \hat{L} \hat{K}' \hat{L}' \hat{J}^{2} \threej{ L,K',J,M_L,m_K',M_J} \threej{ L,K',J,0,0,0} \threej{ L',K,J,M_L',m_K,M_J} \threej{L',K,J,0,0,0} \, .
 \end{multline*}
-If we are not interested in a specific spin contribution we get,
+If we are not interested in the spin decomposition of the one-body momentum matrix element, the spin $s_1$ can be summed over,
 \begin{multline*}
 \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} =  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
  \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \\
  (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} \\
- \frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{-K+K'}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
+ \frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{L-L'-K+K'}  \\
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
  \hat{l}_{p} \hat{l}_{q}' \hat{K} \hat{K}' \hat{k}^{2} \threej{ l_p,K,k,m_{l_p},m_K,m_k} \threej{l_p,K,k,0,0,0}  \threej{ l_q',K',k,m_{l_q'},m_K',m_k} \threej{ l_q',K',k,0,0,0} \\
  \sum_{J M_J}  \hat{K} \hat{L} \hat{K}' \hat{L}' \hat{J}^{2} \threej{ L,K',J,M_L,m_K',M_J} \threej{ L,K',J,0,0,0} \threej{ L',K,J,M_L',m_K,M_J} \threej{L',K,J,0,0,0}
 \end{multline*}
@@ -703,8 +735,8 @@ To make the comparison with (D.37) easier we swap variables: $J M_J \rightarrow 
 \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} =  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
  \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \\
  (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} \\
- \frac{4 \sqrt{2}}{ \pi } \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} i^{-k+k'}  \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
+ \frac{4 \sqrt{2}}{ \pi } \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} i^{L-L'-k+k'}  \\
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
  \hat{l}_{p} \hat{l}_{q}' \hat{k} \hat{k}' \hat{l}_{1}^{2} \threej{ l_p,k,l_1,m_{l_p},m_k,m_{l_1}} \threej{l_p,k,l_1,0,0,0}  \threej{ l_q',k',l_1,m_{l_q'},m_k',m_{l_1}} \threej{ l_q',k',l_1,0,0,0} \\
  \sum_{q m_q}  \hat{k} \hat{L} \hat{k}' \hat{L}' \hat{q}^{2} \threej{ L,k',q,M_L,m_k',m_q} \threej{ L,k',q,0,0,0} \threej{ L',k,q,M_L',m_k,m_q} \threej{L',k,q,0,0,0}
 \end{multline*}
@@ -712,14 +744,13 @@ Finally we make use of
 \begin{align*}
 	\threej{a,b,c,m_a,m_b,m_c} \threej{ a,b,c,0,0,0} = \threej{a,c,b,m_a,m_c,m_b} \threej{ a,c,b,0,0,0}
 \end{align*}
-and compare our expression against (D.37). Parts that are not found in (D.37) are colored \textcolor{red}{red}. Parts in (D.37) not appearing here are colored \textcolor{blue}{blue} (I think Maarten intended to write \textcolor{blue}{$L,L'$} in stead of \textcolor{blue}{$L_A,L_B$}).
+and compare our expression against (D.37). Parts that are not found in (D.37) are colored \textcolor{red}{red}.
 Maarten uses the definition,
-\todo[inline]{continue here}
 \begin{multline*}
 \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} = \textcolor{red}{ \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') } \\
  \textcolor{red}{ \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} } \\
  (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \textcolor{red}{ \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} } \\
- \frac{4 \sqrt{2}}{ \pi } \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} i^{-k+k'}  \\
+ \frac{4 \sqrt{2}}{ \pi } \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} i^{L-L'-k+k'}  \\
  \threej{ l_p,l_1,k,m_{l_p},m_{l_1},m_k} 
  \threej{ l_p,l_1,k,0,0,0}  
  \threej{ l_q',l_1,k',m_{l_q'},m_{l_1},m_k'} 
@@ -729,29 +760,49 @@ Maarten uses the definition,
  \threej{ L,k',q,0,0,0} 
  \threej{ L',k,q,M_L',m_k,m_q} 
  \threej{L',k,q,0,0,0} \\
- \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
 \end{multline*}
-In the case that Maarten has simply omitted the LS coupling but than there should \textbf{not} be $(-1)^{l+l'm_j+m_j'}$ as this stems from the 3j LS coupling symbol. Maarten also omitted the sums over $l_p$ and $l_q'$ and picked a specific contribution $l,l'$ which do not necessarily correspond with $l,l'$ of the coupled states $\ket{A},\ket{A'}$. 
+In the case that Maarten has simply omitted the LS coupling but than there should \textbf{not} be $(-1)^{l+l'm_j+m_j'}$ as this stems from the 3j LS coupling symbol. Maarten also omitted the sums over $l_p$ and $l_q'$ and picked a specific contribution $l,l'$ which do not necessarily correspond with $l,l'$ of the coupled states $\ket{A},\ket{A'}$.
+The factor $(-1)^{N+N'}$ is absorbed in the way Maarten calculated the $\Pi_{N L}(P_{12})$. Maartens definition of $\Pi_{N L}(P_{12})$ deviates slightly from our definition.
+This is detailed in Sec.~\ref{ssec:cm_mom_integral}.
 
 If we now go back to the sum,
 \begin{align*}
 	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} + \braket{ A | \hat{n}_{t_1}^{[1],2}(p_1) | A'} \\
 	&= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} + (-1)^{S+S'+T+T'} \braket{ A | \hat{n}^{[1],1}_{s_1,t_1}(p_1) \left[ ( \vec{r}_{12}, \vec{r}_{12}^{\, \prime} ) \rightarrow ( - \vec{r}_{12}, - \vec{r}_{12}^{\, \prime} ) \right] | A'} 
 \end{align*}
-A closer look at the above derivation shows that the effect of $ ( \vec{r}_{12}, \vec{r}_{12}^{\, \prime} ) \rightarrow ( - \vec{r}_{12}, - \vec{r}_{12}^{\, \prime} )]$ translates into a sign switch in $i^{k-k'} \rightarrow i^{k'-k}, i^{K'-K} \rightarrow i^{K-K'}$. Suppose we are looking at a specific term in the summation over $K,K'$. (The dependence on $i^{k-k'}$ has vanished by integration over the solid angle of the one body momentum).
+A closer look at the above derivation shows that the effect of $ ( \vec{r}_{12}, \vec{r}_{12}^{\, \prime} ) \rightarrow ( - \vec{r}_{12}, - \vec{r}_{12}^{\, \prime} )]$ translates into a sign switch in $i^{k-k'} \rightarrow i^{k'-k}, i^{K'-K} \rightarrow i^{K-K'}$.
+The phase factor $i^{L-L'}$ is connected to the c.m. coordinate $R_{12}$ and is not affected.
+Suppose we are looking at a specific term in the summation over $K,K'$. (The dependence on $i^{k-k'}$ has vanished by integration over the solid angle of the one body momentum).
+The factors containing the imaginary unit $i$ is explicitly written here.
 \begin{align*}
-	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} \left[ i^{K'-K} + (-1)^{S+S'+T+T'} i^{K-K'} \right] \\
-	&= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{K'-K} \left[ 1 + (-1)^{S+S'+T+T'+K-K'} \right]
+	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} \left[ i^{L-L'+K'-K} + (-1)^{S+S'+T+T'} i^{L-L'+K-K'} \right] \\
+	&= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{L-L' + K'-K} \left[ 1 + (-1)^{S+S'+T+T'+K-K'} \right]
 \end{align*}
-Using the fact that $ L + S + T $ must be odd we can write $ (-1)^{S+T} $ as $ (-1)(-1)^{L}$.
+The imaginary unit $i$ is pulled out of the matrix element $\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'}$, and written explicitly. It can easily be checked that this means that $\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'}$ is real (that is, if the Condon–Shortley convention for the Clebsch-Gordan coefficients (CGC) is adopted, ensuring that the CGC are real).
+
+As outlined in Sec.~\ref{ssec:paircoef}, $A$ and $A'$ have the same parity,
+\begin{equation}
+	(-1)^{l+L} = (-1)^{l'+L'} \Leftrightarrow (-1)^{l+l'+L+L'} = 1 \Leftrightarrow (-1)^{l \pm l'} = (-1)^{L \pm L'}  \, .
+	\label{eq:parity_phase_id}
+\end{equation}
+
+From the antisymmetry requirement of a fermion wave function it follows that $(-1)^{l+S+T}=-1$, hence,
+\begin{align}
+	(-1)^{S+S'+T+T'} = (-1)^{2}(-1)^{l+l'} = (-1)^{L+L'} \, .
+	\label{eq:antisymm_phase_id}
+\end{align}
+This allows us to rewrite $\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'}$ as,
 \begin{align*}
-	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} = \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{K'-K} \left[ 1 + (-1)^{L+L'+K-K'} \right]
+	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{L-L' + K'-K} \left[ 1 + (-1)^{L+L'+K-K'} \right]
 \end{align*}
-The correlation operators included do not change the total spin $S$, so we necessarily have $S=S'$. Allowing us to write,
+
+An alternative expression can be derived using the fact that the correlation operators do not change the total spin $S$ ($S=S'$),
 \begin{align*}
-	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} = \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{K'-K} \left[ 1 + (-1)^{T+T'+K-K'} \right]
+	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} = \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{L-L'+K'-K} \left[ 1 + (-1)^{T+T'+K-K'} \right]
 \end{align*}
-Let us take a look how this is \textbf{IN A VERY OBFUSCATED WAY} dealt with in Maartens code.
+Let us take a look how this is, \textbf{IN A VERY OBFUSCATED WAY}, dealt with in Maarten's code.
+The powers of $i$, namely $i^{L-L'+K'-K}$ and $i^{L-L'+K-K'}$, are denoted \texttt{ipower1} and \texttt{ipower2} in Maarten's code.
 \begin{verbatim}
                 int ipower1= (LA-LB+l-la)%4;
                 int ipower2= (LA-LB+la-l)%4;
@@ -785,14 +836,26 @@ Let us take a look how this is \textbf{IN A VERY OBFUSCATED WAY} dealt with in M
 First of all the modulo 4's you see appearing is because $n$ in $i^n$ can be changed by multiples of four for free. The variables \texttt{LA,LB,l,la} correspond to our $L,L',K',K$. Secondly note that as \texttt{ipower1} and \texttt{ipower2} are of the form $a+b$,$a-b$ with $a,b \in \mathds{Z}$ we have that they both have the same parity (even or odd) (The modulo 4 does not change this fact).
 \begin{itemize}
 	\item $T=T'$ (\texttt{TA==TB}) \\
-		As we already have $S=S'$ and $ L + S + T = $ odd, we have that $L,L'$ (\texttt{LA,LB}) must have the same parity. This means that $L-L'$ (\texttt{LA-LB}) is always even.
-        \todo[inline]{!!! Re-examine this argument, I think the $L$ should actually be the relative momentum $l$, $l + S + T = $ odd. Maybe this can be tied to $L$, to be looked into later}
+		As we already have $S=S'$ and $ l + S + T = $ odd, we have that $l \pm l'$ or equivalently $L \pm L'$ (\texttt{LA,LB}) is even,
+		\begin{align}
+			\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} = \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{L-L'+K'-K} \left[ 1 + (-1)^{K-K'} \right]
+			\label{eq:phase_id_equalisospin}
+		\end{align}
 		\begin{itemize}
 		\item \texttt{ipower1} is odd \\
-			As mentioned before this means that \texttt{ipower2} necessarily is odd as well. Because $L-L'$ (\texttt{LA-LB}) is even we have that $K'-K$ and $K-K'$ (\texttt{l-la} and \texttt{la-l}) are odd. We see that if the check
-			\texttt{ (ipower1 + ipower2 \% 4 == 0 )} fails the code gives an error. We will now reason that this is in fact always mathematically ensured and does not have be checked. For the current case we have \texttt{ipower1},\texttt{ipower2} $\in [-3,-1,1,3]$. We can, without loss of generality, assume that $L-L' (\texttt{LA-LB}) = 2n \; , \; n \in [-1,0,1]$, $K'-K (\texttt{l-la}) = m \; , \; m \in [-1,1]$. Hence \texttt{ipower1 + ipower2}= $4n$, $n \in [-1,0,1]$. Trivially $4n \% 4$ is always zero. This allows us to write $\texttt{ipower2} = 4n - \texttt{ipower1}$, leading to  $i^{\texttt{ipower1}} + i^{\texttt{ipower2}} = i^{\texttt{ipower1}} + i^{4n - \texttt{ipower1}} = i^{\texttt{ipower1}} - i^{\texttt{ipower1}}= 0$. As this multiplicative factor is zero, the iteration is skipped (\texttt{continue;}).
+			As $L \pm L'$ is even, this implies $K-K'$ is odd, from Eq.~(\ref{eq:phase_id_equalisospin}) it follows that the matrix element is zero.
+			The check \texttt{(ipower1+ipower2) \% 4 == 0} is automatically valid and not necessary,
+			\begin{align}
+				\texttt{ipower1 + ipower2} = 2 ( L - L')
+			\end{align}
+			As $L-L'$ is even, this is always a multiple of 4.
 		\item \texttt{ipower1} is even \\
-			If the code continues (does not skip the current iteration in the for loop) we have not entered the previous if statement (\texttt{power1} being odd) and we can assume \texttt{power1} is even ($\in [-2,0,2]$). This means \texttt{power2} is even as well ($\in [-2,0,2]$).
+			As $L \pm L'$ is even, this implies $K-K'$ is even as well. Eq.~(\ref{eq:phase_id_equalisospin}) then becomes,
+			\begin{align}
+			\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} = \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} 2 i^{L-L'+K'-K} \, ,
+			\end{align}				
+			where it ensured that $L-L'+K'-K$ is even, leading to a real result. If $L-L'+K'-K$ is a multiple of 4 a positive sign appears, otherwise a negative sign will survive.
+			Additionally both \texttt{ipower1} and \texttt{ipower2} are even. Through the modulo 4 they can only equal $-2$,$0$, or $2$.
 			Next we have the check
 			\begin{verbatim}
 			 if( fabs( ipower1) != fabs(ipower2) ) continue;
@@ -811,17 +874,26 @@ First of all the modulo 4's you see appearing is because $n$ in $i^n$ can be cha
 			 \end{itemize}
 		\end{itemize}
 	\item $ T \neq T'$, (\texttt{TA != TB}) \\
-		\todo[inline]{Note that as $T \neq T'$, we have $(-1)^{T+T'} = -1$ (or equivalently $(-1)^{L+L'} = -1$). Meaning that we now should multiply with $(i^{\texttt{ipower1}} - i^{\texttt{ipower2}})$ in stead of $(i^{\texttt{ipower1}} + i^{\texttt{ipower2}})$.}
-		Again using the argument that $L+S+T=$ odd, $S=S'$ and the fact that $T,T' \in [0,1]$ it is easy to see that this time $L$ and $L'$ have \textbf{opposite} parity. This means that $L-L'$ (\texttt{LA-LB}) is always odd.
+		Again using the argument that $l+S+T=$ odd, $S=S'$ and the fact that $T,T' \in [0,1]$ it is easy to see that this time $l \pm l'$ or $L \pm L'$ are odd.
+		\begin{align}
+			\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} = \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{L-L'+K'-K} \left[ 1 - (-1)^{K-K'} \right] \, .
+			\label{eq:phase_id_oppositeisospin}
+		\end{align}			
 		\begin{itemize}
 			\item \texttt{ipower1} is odd \\
-				We necessarily have that \texttt{ipower2} is odd as well. As $L-L'$ (\texttt{LA-LB}) is odd we get that $K'-K$ and $K-K'$ (\texttt{l-la} and \texttt{la-l}) are even. As we have that \texttt{ipower1},\texttt{ipower2} $\in [-3,-1,1,3]$, we can, without loss of generality, assume that $L-L' (\texttt{LA-LB}) = m \; , \; m \in [-1,1]$, $K'-K (\texttt{l-la}) = 2n \; , \; n \in [-1,0,1]$. Hence \texttt{ipower1 + ipower2}= $2m$, $m \in [-1,1]$. Hence,
+				As $L \pm L'$ is odd, this implies that $K'-K$ and $K-K'$ (\texttt{l-la} and \texttt{la-l}) are even. Eq.~(\ref{eq:phase_id_oppositeisospin}) is zero in this case.
+				As we have that \texttt{ipower1},\texttt{ipower2} $\in [-3,-1,1,3]$, we can, without loss of generality, assume that $L-L' (\texttt{LA-LB}) = m \; , \; m \in [-1,1]$, $K'-K (\texttt{l-la}) = 2n \; , \; n \in [-1,0,1]$. Hence \texttt{ipower1 + ipower2}= $2m$, $m \in [-1,1]$. Hence,
 				\begin{verbatim}
 					if ( fabs((ipower1+ipower2)%4) == 2 )
 				\end{verbatim}
 				is always true here. $i^{\texttt{ipower1}} - i^{\texttt{ipower2}} = i^{\texttt{ipower1}} - i^{2m - \texttt{ipower1}} = i^{\texttt{ipower1}} - i^{\texttt{ipower1}}= 0$.  Again the iteration is skipped in this case through the \texttt{continue} statement.
 				\item \texttt{ipower1} is even \\
-				If the code continues (does not skip the current iteration in the for loop) we have not entered the previous if statement (\texttt{power1} being odd) and we can assume \texttt{power1} is even ($\in [-2,0,2]$). This means \texttt{power2} is even as well ($\in [-2,0,2]$).
+				In this case $K-K'$ is odd and Eq.~(\ref{eq:phase_id_oppositeisospin}) becomes
+				\begin{align}
+					\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} = \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} 2 i^{L-L'+K'-K} \, ,
+				\end{align}
+				here it ensured that $L-L'+K'-K$ is even, leading to a real result. If $L-L'+K'-K$ is a multiple of 4 a positive sign appears, otherwise a negative sign will survive.
+				Here we have \texttt{power1}, \texttt{power2} $\in [-2,0,2]$.
 			Next we have the check
 			\begin{verbatim}
 			 if( fabs( ipower1) == fabs(ipower2) ) continue;
@@ -845,7 +917,10 @@ First of all the modulo 4's you see appearing is because $n$ in $i^n$ can be cha
 All this spaghetti code above of Maarten is equivalent with the simple one-liner: \\
 $\texttt{ifactor} *= i^{L-L'+K'-K} \left[ 1 + (-1)^{T+T'+K-K'} \right] $ \\
 or \\
-\texttt{ ifactor *= i\^{}(LA-LB+l-la) ( 1 + (-1)\^{}(TA+TB+la-l) )} \\
+$\texttt{ifactor} *= i^{L-L'+K'-K} \left[ 1 + (-1)^{L+L'+K-K'} \right] $  \\ 
+\textbf{ALL of the if-statements} can be replaced by checking the antisymmetry 
+$(-1)^{l+S+T} = (-1)^{l'+S'+T'} = -1$ , the total spin-conservation $S=S'$ and the parity conservation $(-1)^{l+L}=(-1)^{l'+L'}$
+as those are the only things used to make the above derivation.\\
 \textbf{WHY MAARTEN, WHHYYYYYYYYYY??????????} \\
 TODO: Replace this in the code and test if I get the same results...
 }
@@ -853,16 +928,19 @@ TODO: Replace this in the code and test if I get the same results...
 \label{ssec:cm_mom_integral}
 Let us take a closer a look at how the integral
 \begin{multline}
-\int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
-= N_{NL} N_{N'L'} \nu^{ - \frac{L+L'+3}{2}} \int \text{d} P_{12} \, P_{12}^{2} 
+(-1)^{N+N'}\int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
+= N_{NL} N_{N'L'} (-1)^{N+N'} \nu^{ - \frac{L+L'+3}{2}} \int \text{d} P_{12} \, P_{12}^{2} 
 P_{12}^{L} e^{- \frac{P_{12}^{2}}{2 \nu}} L_{N}^{L+\frac{1}{2}}( P_{12}^{2}/\nu) 
 P_{12}^{L'} e^{- \frac{P_{12}^{2}}{2 \nu}} L_{N'}^{L'+\frac{1}{2}}( P_{12}^{2}/\nu)  \\
-\chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})
+\chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \,
 \end{multline}
-$N_{NL} = [ 2n! / \Gamma( N + L + 3/2) ]^{1/2}$. Expanding the generalized Laguerre polynomials in momentum space (see Sec.~\ref{sec:ft_transforms}, note in particular the phase factor $(-1)^{N}$, critical to the derivation) gives,
-\todo[inline]{TODO: The factor $i^{L}$ is already taken into account in expressions before. Make this more clear, point this out}
+with $N_{NL} = [ 2n! / \Gamma( N + L + 3/2) ]^{1/2}$, is calculated.
+Note in particular the phase factor $(-1)^{N+N'}$, critical to the derivation.
+For the calculation of the above integral Maarten used a ``somewhat more complicated approach'', whereby the symmetry between the coordinate and momentum space of the HO is not exploited.
+The phase factor is hidden in Maarten's more complicated formulation.
+Expanding the generalized Laguerre polynomials in momentum space gives,
 \begin{multline}
-\int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
+(-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
 = N_{NL} N_{N'L'} \nu^{ - \frac{L+L'+3}{2}} (-1)^{N+N'}
 \sum_{i=0}^{N} \sum_{j=0}^{N'} a_{NL,i} a_{NL,j} \nu^{-i-j} \\
  \int \text{d} P_{12} \, P_{12}^{2+L+L'+2i+2j}  e^{- \frac{P_{12}^{2}}{ \nu}}  \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})
@@ -876,6 +954,7 @@ Where the ``index'' (see code) is the power of the c.m. momentum (not including 
 \todo[inline]{ERROR: Maarten has extra summations, binomial coefficients, pochhammer symbols etc, of which I have no clue where they are coming from (see \texttt{density\_ob\_integrand3::add} @ line 34). If I read the code correctly it calculates the equation below, but I have no idea where it comes from...
 I was NOT able to derive this formula from the expression in appendix C.2 of Maartens thesis
 } 
+\texttt{Maarten's expression in the c++ code:}
 \begin{multline}
 	N_{NL} N_{N'L'} \nu^{ - \frac{L+L'+3}{2}} 
 	\sum_{i=0}^{N} \sum_{j=0}^{N} a_{NL,i} a_{N'L',j} \textcolor{red}{2^{i+j}} \\
@@ -893,13 +972,14 @@ We introduced the notation $a^{(n)} = \Gamma(a+n)/\Gamma(a)$ for the rising fact
 
 It is easy to see that eqs.~(\ref{eq:cm_mom_integral}) and (\ref{eq:cm_mom_integral_code_maarten}) are equivalent if we can show that,
 \begin{align*}
+(-1)^{N} \Pi_{NL}(P_{12}) = 
 (-1)^{N} \sum_{i=0}^{N}  a_{NL,i}  \nu^{-i} P_{12}^{2i} = \sum_{i=0}^{N} a_{NL,i}  2^{i} 
 	\sum_{i'=0}^{i}  (-2 \nu)^{-i'}	
 	\left( \begin{array}{c} i \\ i' \end{array} \right)
 	(L+i'+\frac{3}{2})^{(i-i')}
 	 P_{12}^{2i'} 
 \end{align*}
-Proof:
+The proof goes as follows:
 \begin{multline*}
 \sum_{i=0}^{N} a_{NL,i}  2^{i} \sum_{i'=0}^{i}  (-2 \nu)^{-i'}\left( \begin{array}{c} i \\ i' \end{array} \right) (L+i'+\frac{3}{2})^{(i-i')} P_{12}^{2i'} \\
 =  \sum_{i=0}^{N} \frac{(-1)^{i}}{i! (N-i)!} \frac{ \Gamma(N+L+3/2) }{ \Gamma(i + L + 3/2)} 2^{i} \sum_{i'=0}^{i}  (-2 \nu)^{-i'} \frac{ i!}{ i'! (i-i')!} \frac{\Gamma(L+i+3/2)}{ \Gamma( L + i' + 3/2)} P_{12}^{2i'} \\
@@ -1002,7 +1082,7 @@ With $\nu = \frac{m_N \omega}{\hbar}$ (units 1/fm$^{2}$) and writing $E$ in unit
 \end{align*}
 With solutions
 \begin{align*}
-	\psi_{n l m}(r) = \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu^{l+\frac{3}{2}} \right]^{\frac{1}{2}} r^{l} e^{-\frac{\nu r^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu r^{2}) Y_{l m}(\Omega_{r})
+	\psi_{n l m}(\vec{r}) = \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu^{l+\frac{3}{2}} \right]^{\frac{1}{2}} r^{l} e^{-\frac{\nu r^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu r^{2}) Y_{l m}(\Omega_{r})
 \end{align*}
 The HO Shr\"odinger equation in momentum space is obtained by using $\hat{\vec{r}} = i \hbar \vec{\nabla}_{\vec{p}}$,
 \begin{align*}
@@ -1018,7 +1098,7 @@ If we define $\vec{p}$ in units $\hbar$ so that the dimension of $\vec{p}$ becom
 \end{align*}
 This has exactly the same form as the Shr\"odinger equation in $r$-space. The solutions are,
 \begin{align*}
-	\phi_{n l m}(p) = \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} p^{l} e^{-\frac{\nu' p^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu' p^{2}) Y_{l m}(\Omega_{p})
+	\phi_{n l m}(\vec{p}) = \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} p^{l} e^{-\frac{\nu' p^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu' p^{2}) Y_{l m}(\Omega_{p})
 \end{align*}
 If you don't believe in the trick $\hat{\vec{r}} = i \hbar \vec{\nabla}_{p}$, we can also show this in a slightly more elaborate way, starting from the $r$-space Shr\"odinger equation and write (we will now explicitly put the $\hbar$'s in the exponents, this is generally omitted) $\psi_{n l m}(\vec{r})$ as $ \frac{1}{(2\pi \hbar)^{\frac{3}{2}}} \int \textrm{d}^{3} \vec{p} e^{i \vec{p} \cdot \vec{r} / \hbar} \phi_{n l m}(\vec{p})$,
 \begin{align*}
@@ -1082,9 +1162,9 @@ With $\alpha = l+1/2, \sigma = 1/2, \lambda = 1$ we get,
 	 (-1)^{n} \sum_{k=0}^{n} \frac{(-1)^{k}}{k!} \left( \frac{p^{2}}{\nu} \right)^{k} \frac{\Gamma(n+l+3/2)}{(n-k)! \Gamma(k+l+3/2)} \\
 	 = \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu^{l+\frac{3}{2}} \right]^{\frac{1}{2}} (-i)^{l} p^{l}  Y_{l m}(\Omega_p) e^{-\frac{p^{2}}{2 \nu}} \nu^{-l-\frac{3}{2}} (-1)^{n} L_{n}^{l+\frac{1}{2}}(\frac{p^{2}}{\nu})
 \end{multline*}
-Note that we have applied a somewhat dirty trick we truncated the sum $\sum_{k=0}^{\infty} \ldots 1/(n-k)! \ldots$ to $ \sum_{k=0}^{n} \ldots 1/(n-k)! \ldots$. The reasoning is that the factorial of a negative integer diverges to $\pm \infty$. Because the negative integer factorial appears in the denominator for $k>n$ we can truncate the sum to $k=n$. With $\nu' = 1/\nu$ the final solution becomes,
+Note that we have applied a somewhat dirty trick we truncated the sum $\sum_{k=0}^{\infty} \ldots 1/(n-k)! \ldots$ to $ \sum_{k=0}^{n} \ldots 1/(n-k)! \ldots$. The reasoning is that the factorial of a negative integer diverges to $\pm \infty$. Because the negative integer factorial appears in the denominator for $k>n$ we can truncate the sum to $k=n$. With $\nu' = 1/\nu$ and $(-i)^{l}=i^{-l}$ the final solution becomes,
 \begin{align*}
-	\phi_{n l m}(\vec{p}) =  (-i)^{l} (-1)^{n} \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} p^{l}  Y_{l m}(\Omega_p) e^{-\frac{\nu' p^{2}}{2}} L_{n}^{l+\frac{1}{2}}(\nu'p^{2})
+	\phi_{n l m}(\vec{p}) =  i^{-l} (-1)^{n} \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} p^{l}  Y_{l m}(\Omega_p) e^{-\frac{\nu' p^{2}}{2}} L_{n}^{l+\frac{1}{2}}(\nu'p^{2})
 \end{align*}
 Which is the expected result except for the phase factor $(-i)^{l} (-1)^{n} = i^{2n+3l}$.
 \end{document}
@@ -1093,6 +1173,20 @@ Which is the expected result except for the phase factor $(-i)^{l} (-1)^{n} = i^
 
 
 
+
+
+
+
+
+
+
+
+
+
+%
+%
+%
+%
 % OBSOLOTE (WRONG) ISOSPIN PROJECTION THING
 We now investigate the effect of the insertion of the isospin-projection operator $\hat{\delta}_{m_t}^{[i]}$ in 
 \begin{align*}
