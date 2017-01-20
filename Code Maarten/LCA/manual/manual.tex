@@ -9,6 +9,9 @@
 \usepackage{bbold}
 \usepackage{multicol}
 \usepackage{dsfont}
+%\usepackage[bookmarks,colorlinks=true,linkcolor=blue,urlcolor=black,bookmarksopen=true,bookmarksdepth=2]{hyperref}
+\usepackage[bookmarks]{hyperref}
+\setlength{\parindent}{0pt}
 
 \def\threej#1{\inthreej(#1)}
 \def\inthreej(#1,#2,#3,#4,#5,#6){\begin{pmatrix}#1 & #2 & #3 \\ #4 & #5 & #6 \end{pmatrix}}
@@ -20,7 +23,20 @@
 \def\insixj(#1,#2,#3,#4,#5,#6){\begin{Bmatrix}#1 & #2 & #3 \\ #4 & #5 & #6 \end{Bmatrix}} 
 
 \begin{document}
-\section{LCA}
+
+
+\rule{\textwidth}{2pt} \\ [-0.8\baselineskip]
+\rule{\textwidth}{1pt}
+\begin{center}
+{\Huge \textsc{LCA CODE MANUAL}} \\
+\vspace{10pt}
+\textsc{ -- Camille Colle -- }
+\end{center}
+\rule{\textwidth}{1pt} \\ [-0.75\baselineskip]
+\rule{\textwidth}{2pt} \\ [2\baselineskip]
+
+\tableofcontents
+
 \section{Definitions}
 \label{sec:def}
 A short (probably incomplete) overview of the quantities used in this manual,
@@ -43,6 +59,36 @@ Here, the Laguerre polynomials are often expanded as follows,
 	a_{nl,i} &= (-1)^{i} \frac{ \Gamma(n+l+3/2) }{ \Gamma(i+l+3/2)(n-i)! i!}
 	\label{eq:def:laguerre_exp}
 \end{align}
+In the LCA a one-body operator $\widehat{\Omega}^{[1]} = \sum_{i}^{A} \widehat{\Omega}_{i}$ becomes,
+\begin{equation}
+	\widehat{\Omega}^{[1],\,\text{LCA}} = \widehat{\Omega}^{[1]} + \sum_{i,j \neq i}^{A} \left( \hat{l}_{ij}^{\dagger} \widehat{\Omega}_{i} +  \widehat{\Omega}_{i} \hat{l}_{ij} + \hat{l}_{ij}^{\dagger}  \widehat{\Omega}_{i} \hat{l}_{ij} \right) \, .
+	\label{eq:LCA_one_body}
+\end{equation}
+In similar vein, the LCA transforms a two-body operator $\widehat{\Omega}^{[2]} = \sum_{i<j} \widehat{\Omega}_{ij}$ to,
+\begin{multline}
+	\widehat{\Omega}^{[2],\,\text{LCA}} 
+	= \widehat{\Omega}^{[2]} \\ + 
+	\sum_{i<j}^{A} \left[ 
+	\hat{l}_{ij}^{\dagger} \widehat{\Omega}_{ij} +
+	\widehat{\Omega}_{ij} \hat{l}_{ij} +
+	\hat{l}_{ij}^{\dagger} \widehat{\Omega}_{ij} \hat{l}_{ij} + 
+	\sum_{n \notin \{i,j\}}^{A} 
+	(\hat{l}_{in}^{\dagger} + \hat{l}_{jn}^{\dagger} ) \widehat{\Omega}_{ij} +
+	\widehat{\Omega}_{ij} (\hat{l}_{in} + \hat{l}_{jn}) + 
+	\hat{l}_{in}^{\dagger} \widehat{\Omega}_{ij} \hat{l}_{in}
+	 \right] \, .
+	 \label{eq:LCA_two_body}
+\end{multline} 
+
+To preserve normalization the normalisation denominator $ \mathcal{N} = \braket{ \Phi | \widehat{\mathcal{G}}{^\dagger} \mathcal{G} | \Phi }$, should be expanded to the same order in $\hat{l}$ as the numerator. The normalisation factor $\mathcal{N}$ can be calculated by replacing $\widehat{\Omega}_i$ with $\frac{1}{A}$ in Eq.~(\ref{eq:LCA_one_body}) or $\widehat{\Omega}_{ij}$ with $\frac{2}{A(A-1)}$ in Eq.~(\ref{eq:LCA_two_body}),
+\begin{align}
+	\mathcal{N}^{[1]} &=  1 + \frac{2}{A} \sum_{i < j}^{A} \braket{ \alpha_{i} \alpha_{j} | \hat{l}^{\dagger}_{ij} + \hat{l}_{ij} + \hat{l}^{\dagger}_{ij} \hat{l}_{ij} | \alpha_{i} \alpha_{j}}  \, ,
+	\label{eq:LCA_norm_one_body}	
+	\\
+	\mathcal{N}^{[2]} &=  1 + \frac{2(2A-3)}{A(A-1)} \sum_{i < j}^{A} \braket{ \alpha_{i} \alpha_{j} | \hat{l}^{\dagger}_{ij} + \hat{l}_{ij} + \hat{l}^{\dagger}_{ij} \hat{l}_{ij} | \alpha_{i} \alpha_{j}} \, .
+	\label{eq:LCA_norm_two_body}
+\end{align}
+
 \subsection{Rewriting Maartens summations, the simple way}
 The LCA summations derived in the previous section are at first glance not the same as found in Sec.~2.2 of \cite{phdthesis_mvanhalst}.
 Here it is shown that these are equivalent.
@@ -111,7 +157,7 @@ At the cost of some readability Eq.~(\ref{eq:two_body_op_correlation_linear_intu
 \end{align}
 By going from $ \sum_{i<j}^{A} = \sum_{i \neq j}^{A}$ introduced double counting of some terms was introduced, corrected by the factor $( 1 - \frac{\delta_{ik}}{2})$. Eq.~(\ref{eq:two_body_op_correlation_linear_short}) has a total of $A(A-1)^{2}$ terms, an overhead $\frac{A(A-1)}{2}$ compared to Eq.~(\ref{eq:two_body_op_correlation_linear_intuitive}). The relative increase is $ \frac{A(A-1)^{2}}{A(A-1)(A-\frac{3}{2})} = 1 + \frac{1}{2A-3}$, about $1.048$ for $A=12$ and $1.003$ for $A=208$.
 \section{Momentum distributions}
-\section{Second quantization}
+\subsection{Second quantization}
 This section will be somewhat over-elaborated. But it can serve as a recapitulation of second quantization.
 
 The one body momentum distribution operator is defined as,
@@ -216,7 +262,7 @@ For each $A$ a new object \texttt{Newcoef} is generated and stored in the member
 This class takes the parameters $n_1 l_1 j_1 m_{j_1} m_{t_1} n_2 l_2 j_2 m_{j_2} m_{t_2} N L M_L n l S j m_j T M_T$, and calculates the coefficient given in Eq. (\ref{eq:coef}). It takes also a pointer to a \texttt{RecMosh} object that holds the Moshinsky brakets. The only function in this class is to calculate $C_{\alpha_1 \alpha_2}^{A}$ using the formula,
 \begin{multline}
 	\sum_{J M_J} \sum_{\Lambda} 
-	[ 1 - (-1)^{l+S+T}] \braket{ t_1 m_{t_1} t_2 m_{t_2} | T M_T }
+	\frac{1}{\sqrt{2}} [ 1 - (-1)^{l+S+T}] \braket{ t_1 m_{t_1} t_2 m_{t_2} | T M_T }
 	\braket{ j_1 m_{j_1} j_2 m_{j_2} | J M_J}
 	\braket{ j m_j L M_L | J M_J } \\
 	\braket{ n l N L; \Lambda | n_1 l_1 n_2 l_2 ; \Lambda}_{\textrm{SMB}}
@@ -385,18 +431,16 @@ It is straightforward to show that,
 \end{multicols}
 
 \subsection{norm\_ob : public operator\_virtual\_ob}
-Here we take a look at the calculation of the norm $\mathcal{N}$ in \texttt{norm\_ob.cpp}.
+Here we take a look at the calculation of the norm $\mathcal{N}$ (see Eqs.~(\ref{eq:LCA_norm_one_body},(\ref{eq:LCA_norm_two_body})) in \texttt{norm\_ob.cpp}.
 Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring general one body member functions.
 \begin{itemize}
 	\item \texttt{norm\_ob::get\_me( Pair )}.
-		This calculates the matrix element \textbf{meanfield} matrix element sum 
-		\begin{enumerate}
-		\item $\frac{2}{A} \sum_{ A B } C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket {A | B }$ for a pp and/or nn pair(s) (isospin $M_T = \pm 1$)
-		\item $\frac{1}{A} \sum_{ A B} C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket {A | B }$ for a pn pair (isospin $M_T = 0$)
-	\end{enumerate}
-	for a specific pair $\alpha_1 \alpha_2$ passed trough \texttt{Pair}.
-	\todo[inline]{For now I have no clue why/how the factor $\frac{2}{A}$($\frac{1}{A}$) in front of $\sum_{ A B } C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket {A | B }$ ...}		
-		It is possible to filter on relative quantum numbers on $n_A,l_A,n_B,l_B$, selecting specific contributions \texttt{nAs,lAs,nBs,lBs} to the sum. A value of $-1$ for these variables is interpreted as ``all values allowed''. Trough the braket $\braket{ A | B }$ we already have $n_A = n_B := n$, $l_A = l_B := l$.
+		This calculates the matrix element \textbf{meanfield} matrix element sum:
+		\begin{equation}
+		\frac{2}{A} \sum_{ A B } \hat{\delta}_{t_1,n_A,l_A,n_B,l_B} C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket{ A|B} = \frac{2}{A} \sum_{A} \hat{\delta}_{t_1,n_A,l_A} \left| C_{\alpha_1 \alpha_2}^{A} \right|^{2}
+		\end{equation}
+		for a specific pair $\ket{\alpha_1 \alpha_2}$ passed trough \texttt{Pair}.
+		It is possible to filter on relative quantum numbers on $n_A,l_A,n_B,l_B$, represented by the operator $\hat{\delta}_{t_1,n_A,l_A,n_B,l_B}$. It selects specific contributions \texttt{nAs,lAs,nBs,lBs} to the sum. A value of $-1$ for these variables is interpreted as ``all values allowed''. Trough the braket $\braket{ A | B }$ we already have $n_A = n_B := n$, $l_A = l_B := l$.
 		\begin{itemize}
 			\item \texttt{if (nAs > -1 \&\& nBs > -1)}
 				This forces $\texttt{nAs} = \texttt{nBs} = n$. So for $\texttt{nAs} \neq \texttt{nBs}$ we will get $0$.
