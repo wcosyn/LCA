@@ -281,6 +281,9 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
 
             double vali= coefi->getCoef();
             double valj= coefj->getCoef();
+            assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
             if( coefi->getS() != coefj->getS() ) continue;
             if( coefi->getMT() != coefj->getMT() ) continue; // ok, this is correct (see manual)
             int nA= coefi->getn();
@@ -424,6 +427,9 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
 
             double vali= coefi->getCoef();
             double valj= coefj->getCoef();
+            assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
             if( coefi->getS() != coefj->getS() ) continue;
 //      if( coefi->getT() != coefj->getT() ) continue;
             if( coefi->getMT() != coefj->getMT() ) continue;
@@ -576,6 +582,9 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
 
             double vali= coefi->getCoef();
             double valj= coefj->getCoef();
+            assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
             if( coefi->getS() != coefj->getS() ) continue;
 //      if( coefi->getT() != coefj->getT() ) continue;
             if( coefi->getMT() != coefj->getMT() ) continue;
@@ -724,6 +733,9 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
 
             double vali= coefi->getCoef();
             double valj= coefj->getCoef();
+            assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
             if( coefi->getS() != coefj->getS() ) continue;
 //      if( coefi->getT() != coefj->getT() ) continue;
             if( coefi->getMT() != coefj->getMT() ) continue;
@@ -889,17 +901,11 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
     int nBs= dop->nB;
     int lBs= dop->lB;
     int t= dop->t;
-    //  double p= dop->p;
     density_ob_integrand3* integrand = dop->i0;
 
-    /** TESTING BLOCK **/
     assert( (pc1->getl()+pc1->getS()+pc1->getT()) % 2 == 1 ); // antisymmetry requirement
     assert( (pc2->getl()+pc2->getS()+pc2->getT()) % 2 == 1 ); // antisymmetry requirement
     assert( (pc1->getl()+pc1->getL())%2 == (pc2->getl()+pc2->getL())%2 ); // parity conservation
-
-    //printf("t=% d :: (S,T,MT ; S',T',MT') : (% d,% d,% d ; % d,% d,% d) : (LA,LB) = (%3d,%3d)\n",t,pc1->getS(),pc1->getT(),pc1->getMT(),pc2->getS(),pc2->getT(),pc2->getMT(),pc1->getL(),pc2->getL());
-
-    /** END OF TESTING BLOCK **/
 
     if( pc1->getS() != pc2->getS() ) return 0; // ob-momentum operator nor correlation operators change total spin
     //      if( pc1->getT() != pc2->getT() ) return 0;
@@ -1029,7 +1035,9 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
     density_ob_integrand3* integrand_t = dop->it;
     density_ob_integrand3* integrand_s = dop->is;
 
-
+    assert( (pc1->getl()+pc1->getS()+pc1->getT()) % 2 == 1 ); // antisymmetry requirement
+    assert( (pc2->getl()+pc2->getS()+pc2->getT()) % 2 == 1 ); // antisymmetry requirement
+    assert( (pc1->getl()+pc1->getL())%2 == (pc2->getl()+pc2->getL())%2 ); // parity conservation
     if( pc1->getS() != pc2->getS() ) return 0;
 //      if( pc1->getT() != pc2->getT() ) return 0;
     if( pc1->getMT() != pc2->getMT() ) return 0;
@@ -1166,7 +1174,9 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
     density_ob_integrand3* integrand_t = dop->it;
     density_ob_integrand3* integrand_s = dop->is;
 
-
+    assert( (pc1->getl()+pc1->getS()+pc1->getT()) % 2 == 1 ); // antisymmetry requirement
+    assert( (pc2->getl()+pc2->getS()+pc2->getT()) % 2 == 1 ); // antisymmetry requirement
+    assert( (pc1->getl()+pc1->getL())%2 == (pc2->getl()+pc2->getL())%2 ); // parity conservation
     if( pc1->getS() != pc2->getS() ) return 0;
 //      if( pc1->getT() != pc2->getT() ) return 0;
     if( pc1->getMT() != pc2->getMT() ) return 0;
@@ -1301,7 +1311,9 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
     density_ob_integrand3* integrand_cs = dop->ics;
     density_ob_integrand3* integrand_st = dop->ist;
 
-
+    assert( (pc1->getl()+pc1->getS()+pc1->getT()) % 2 == 1 ); // antisymmetry requirement
+    assert( (pc2->getl()+pc2->getS()+pc2->getT()) % 2 == 1 ); // antisymmetry requirement
+    assert( (pc1->getl()+pc1->getL())%2 == (pc2->getl()+pc2->getL())%2 ); // parity conservation
     if( pc1->getS() != pc2->getS() ) return 0;
 //      if( pc1->getT() != pc2->getT() ) return 0;
     if( pc1->getMT() != pc2->getMT() ) return 0;
