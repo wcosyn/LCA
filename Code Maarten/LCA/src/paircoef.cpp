@@ -49,7 +49,7 @@ void Paircoef::get_links( int i, Paircoef** pc, double* val )
         exit(-1);
     }
     std::map< Paircoef*, double>::iterator it= links->begin();
-    for( int c=0; c < i; c++) {
+    for( int c=0; c < i; c++) { // omg, this looks "very efficient" (not)
         it++;
     }
     *pc= it->first;

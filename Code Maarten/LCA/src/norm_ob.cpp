@@ -28,7 +28,7 @@ double norm_ob::get_me( Pair* pair, void* params )
             return 1./A;
         if( t == t1 ) //  t of ob same as t1 of pair (t==t1==t2 because above!)
             return 2./A;
-        return 0;
+        return 0; // t1==t2 != t (e.g. geting neutron contribution from pp-pair = 0)
     }*/
 
     double sum= 0;

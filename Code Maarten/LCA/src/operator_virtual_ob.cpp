@@ -144,8 +144,17 @@ double operator_virtual_ob::sum_me_coefs( void* params )
 //    cout << max_links << endl;
         Paircoef* pc2;
         for( int j= 0; j< max_links; j++ ) {
+            /*
+             * pc2 is set to the "j"-th link in the link map of pc1 (linear search every time, VERY INEFFICIENT) ~ O(link^2)
+             * value here is overwritten with the "link strength" $C_{\alpha_1,\alpha_2}^{A} C_{\alpha_1,\alpha_2}^{B}$.
+             */
             pc1->get_links( j, &pc2, &val );
 
+            /*
+             * norm_ob::get_me multiplies the end result with "val" before returning, very nice and readable (not)...
+             * val =  $C_{\alpha_1,\alpha_2}^{A} C_{\alpha_1,\alpha_2}^{B}$
+             * norm_ob::get_me returns "val*delta_{A,B}"
+             */
             double me=
                 get_me( pc1, pc2, params, val )
                 + get_me( pc2, pc1, params, val );
