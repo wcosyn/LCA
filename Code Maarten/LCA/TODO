@@ -22,3 +22,4 @@
    That is the ones that can be matched to corresponding threej of the form
    (*,*,*,0,0,0)
 
+7. Do checks for nucleus with Z>A, now code runs happily without complaining
