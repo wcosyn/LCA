@@ -37,6 +37,11 @@
 
 \tableofcontents
 
+\section{Code tipz}
+Maartens code contains a lot of ``prints''' so your the output of the test program may be difficult to isolate.
+A possible solution is to use a makeshift filter in the following way. Tag your prints with a marker, for example \texttt{std::cout << "[mymarker] ... " << std::endl;}. When you run your program, you can use something like \texttt{./myprogram | tee fulloutput.log | grep "\textasciicircum[mymarker]" }.
+The file \texttt{fulloutput.log} will contain the full output.
+
 \section{Definitions}
 \label{sec:def}
 A short (probably incomplete) overview of the quantities used in this manual,
