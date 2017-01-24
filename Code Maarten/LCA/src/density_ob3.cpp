@@ -13,6 +13,9 @@ using std::stringstream;
 using std::endl;
 using std::cout;
 using std::cerr;
+#include<iomanip>
+
+#include <cassert> // for testing purposes
 
 density_ob3::density_ob3(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm, int qmax )
     : operator_virtual_ob( nucleus, central, tensor, isospin, norm ),
@@ -53,17 +56,27 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
     file << "# qmax = " << qmax << endl;
     file << "# nAlA = " << nA << lA << endl;
     file << "# nBlB = " << nA << lA << endl;
-    file << "# A= " << nucleus->getA();
-    file << "\t T1= " << t1;
-    file << "\t T2= " << t2;
-    file << "\t A1= " << nucleus->getA1();
-    file << "\t A2= " << nucleus->getA2() << endl;
+    file << "# A    = " << nucleus->getA();
+    file << "    T1 = " << t1;
+    file << "    T2 = " << t2;
+    file << "    A1 = " << nucleus->getA1();
+    file << "    A2 = " << nucleus->getA2() << endl;
     file << "# central = " << bcentral;
-    file << "\t tensor = " << tensor;
-    file << "\t spinisospin = " << spinisospin;
+    file << "    tensor = " << tensor;
+    file << "    spinisospin = " << spinisospin;
     file << endl;
     file << "# norm = " << norm << endl;
-    file << "# k \t mf \t corr \t total \t cen \t ten \t siso \t ce/te \t ce/si \t te/si " << endl;
+    file << "#  " << std::setw( 6) << "k ";
+    file << "   " << std::setw(10) << "mf";
+    file << "   " << std::setw(10) << "corr";
+    file << "   " << std::setw(10) << "total";
+    file << "   " << std::setw(10) << "central";
+    file << "   " << std::setw(10) << "tensor";
+    file << "   " << std::setw(10) << "spin/iso";
+    file << "   " << std::setw(10) << "ce/te";
+    file << "   " << std::setw(10) << "ce/si";
+    file << "   " << std::setw(10) << "te/si ";
+    file << endl;
 
     double integral= 0, integral_mf= 0;
     double kinenergy_mf= 0, kinenergy_co= 0;
@@ -149,16 +162,17 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
 
         #pragma omp critical(write)
         {
-            file << k;
-            file << "\t" << mf;
-            file << "\t" << corr;
-            file << "\t" << mf+ corr;
-            file << "\t" << corr_c*2/M_PI*sqrt(8)/norm;
-            file << "\t" << corr_t*2/M_PI*sqrt(8)/norm;
-            file << "\t" << corr_s*2/M_PI*sqrt(8)/norm;
-            file << "\t" << corr_ct*2/M_PI*sqrt(8)/norm;
-            file << "\t" << corr_cs*2/M_PI*sqrt(8)/norm;
-            file << "\t" << corr_st*2/M_PI*sqrt(8)/norm;
+            file << std::scientific << std::setprecision(3);
+            file << std::setw(10) << k;
+            file << "   " << std::setw(10) << mf;
+            file << "   " << std::setw(10) << corr;
+            file << "   " << std::setw(10) << mf+ corr;
+            file << "   " << std::setw(10) << corr_c*2/M_PI*sqrt(8)/norm;
+            file << "   " << std::setw(10) << corr_t*2/M_PI*sqrt(8)/norm;
+            file << "   " << std::setw(10) << corr_s*2/M_PI*sqrt(8)/norm;
+            file << "   " << std::setw(10) << corr_ct*2/M_PI*sqrt(8)/norm;
+            file << "   " << std::setw(10) << corr_cs*2/M_PI*sqrt(8)/norm;
+            file << "   " << std::setw(10) << corr_st*2/M_PI*sqrt(8)/norm;
             file << endl;
             integral_mf  += kstep*k*k*(mf);
             integral     += kstep*k*k*(corr);
@@ -170,17 +184,18 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
             //      cout << k << " done" << endl;
         }
     }
-    file << "# mf integral is " << integral_mf << endl;
-    file << "# cor integral is " << integral << endl;
-    file << "# tot integral is " << integral+ integral_mf << endl;
+    file << "# mf  integral is: " << integral_mf << endl;
+    file << "# cor integral is: " << integral << endl;
+    file << "# tot integral is: " << integral+ integral_mf << endl;
+    file << "# elapsed time is: " << std::fixed << difftime(time(0),now) << " s " << endl;
     file.close();
-    cout << "[Density_ob3] written to file " << filename.str().c_str() << endl;
-    cout << "[Density_ob3] mf integral is " << integral_mf << endl;
-    cout << "[Density_ob3] cor integral is " << integral << endl;
-    cout << "[Density_ob3] tot integral is " << integral+ integral_mf << endl;
-    cout << "[Density_ob3] kin energy mf is " << kinenergy_mf << endl;
-    cout << "[Density_ob3] kin energy co is " << kinenergy_co << endl;
-    cout << "[Density_ob3] kin energy to is " << kinenergy_mf+ kinenergy_co << endl;
+    cout << "[Density_ob3] written to file:  " << filename.str().c_str() << endl;
+    cout << "[Density_ob3] mf integral is:   " << integral_mf << endl;
+    cout << "[Density_ob3] cor integral is:  " << integral << endl;
+    cout << "[Density_ob3] tot integral is:  " << integral+ integral_mf << endl;
+    cout << "[Density_ob3] kin energy mf is: " << kinenergy_mf << endl;
+    cout << "[Density_ob3] kin energy co is: " << kinenergy_co << endl;
+    cout << "[Density_ob3] kin energy to is: " << kinenergy_mf+ kinenergy_co << endl;
     *intmf= integral_mf;
     *intcorr= integral;
     delete i0;
@@ -977,6 +992,11 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
     //  double p= dop->p;
     density_ob_integrand3* integrand = dop->i0;
 
+    /** TESTING BLOCK **/
+
+    //printf("t=% d :: (S,T,MT ; S',T',MT') : (% d,% d,% d ; % d,% d,% d) : (LA,LB) = (%3d,%3d)\n",t,pc1->getS(),pc1->getT(),pc1->getMT(),pc2->getS(),pc2->getT(),pc2->getMT(),pc1->getL(),pc2->getL());
+
+    /** END OF TESTING BLOCK **/
 
     if( pc1->getS() != pc2->getS() ) return 0; // ob-momentum operator nor correlation operators change total spin
     //      if( pc1->getT() != pc2->getT() ) return 0;
@@ -1021,6 +1041,14 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
      * So or we calculate them both separate for different qmax,
      * of calculate at once with different qmax
      */
+
+    /* this function is called for paircoefficients that originate from
+     * the same pair |\alpha_1,\alpha_2 >.
+     * This means that their will exist certain relations between pc1 and pc2
+     * for example,. they have the same parity
+     * (l_{\alpha_1} + l_{\alpha_2})%2 = (l + L)%2 = (l' + L')%2 => l-l'+L-L' is even
+     * if S==S' and T==T' => l-l' is even => L-L' is even
+     */
     for( int q= 0; q <= qmax; q++ ) {
         for( int l = fabs( LA-q); l <= LA+q; l++ ) {
             for( int la= fabs( LB-q); la <= LB+q; la++ ) {
@@ -1029,31 +1057,43 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
                 double ifactor= preifactor;
                 if( TA == TB ) {
                     if( GSL_IS_ODD( ipower1 ) ) {
+                        // TESTING
+                        //printf("(TA,TB) = (%d,%d) :: (LA,LB,l,la) = (%3d,%3d,%3d,%3d), (LA-LB,l-la) = (% 3d,% 3d), (i1,i2) = (% 3d,% 3d)\n",TA,TB,LA,LB,l,la,LA-LB,l-la,ipower1,ipower2);
+                        assert((LA-LB)%2==0);
+                        //if ( (LA-lA)%2 ==0 || (LB-lB)%2==0)
+                        //printf("[Info] TA==TB,ipower1==odd : (la-lb) mod 2=%d\n",(test_la-test_lb)%2);
+                        assert( ((lA-lB)%2) == 0); // from S=S',T=T' => l,l' have same parity <=> (l-l') is even
                         if( (ipower1+ipower2)%4 == 0 ) continue;
+
                         else
                             cerr << __FILE__ << __LINE__ << "IMAG" << endl;
                     }
-                    if( fabs( ipower1) != fabs(ipower2) ) continue;
+                    //printf("(TA,TB) is (% d,% d), (ipower1,ipower2) is (% d,% d), (a,b) is (% d,% d) \n",TA,TB,ipower1,ipower2,LA-LB,l-la);
+                    //printf("(LA,LB,l,la) = (%3d,%3d,%3d,%3d), (LA-LB,l-la) = (% 3d,% 3d)\n",LA,LB,l,la,LA-LB,l-la);
+                    if( fabs( ipower1) != fabs(ipower2) ) { std::cout << "DOES THIS EVER HAPPEN???" << std::endl; assert(1==0); continue;}
                     if( ipower1 == 0 )
                         ifactor *= 2;
                     else
                         ifactor*= -2;
                 }
                 if( TA != TB ) {
+                    //printf("(TA,TB) = (%d,%d) :: (LA,LB,l,la) = (%3d,%3d,%3d,%3d), (LA-LB,l-la) = (% 3d,% 3d), (i1,i2) = (% 3d,% 3d)\n",TA,TB,LA,LB,l,la,LA-LB,l-la,ipower1,ipower2);
                     if( GSL_IS_ODD( ipower1 ) ) {
                         if( fabs((ipower1+ipower2)%4) == 2 ) continue;
                         else
                             cerr << __FILE__ << __LINE__ << "IMAG" << endl;
 
                     }
-                    if( fabs( ipower1) == fabs(ipower2) ) continue;
+                    //printf("(TA,TB) is (% d,% d), (ipower1,ipower2 is (%d,%d)\n",TA,TB,ipower1,ipower2);
+                    if( fabs( ipower1) == fabs(ipower2) ) { std::cout << "DOES THIS EVER HAPPEN???" << std::endl; assert(1==0); continue;}
+                    //if( fabs( ipower1) == fabs(ipower2) ) continue;
                     if( ipower1 == 0 )
                         ifactor *= 2;
                     else
                         ifactor*= -2;
                 }
                 // SUM DUE TO CORRELATION OPERATORS kA and kB
-                // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTILY AFFECTED BY CORRELATION OPERATOR
+                // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTLY AFFECTED BY CORRELATION OPERATOR
                 // BUT THE ALLOWED k RANGE CAN CHANGE
                 int kA= lA;
                 int kB= lB;
