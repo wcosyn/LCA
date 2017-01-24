@@ -2,8 +2,11 @@
 #include "recmosh.h"
 #include <iostream>
 #include <gsl/gsl_sf_coupling.h>
+#include <cstdio>
+#include "nucleusall.h"
+#include <cassert>
 
-int main(){
+void simpletest(){
     int n1=0;
     int l1=0;
     int two_j1=1;
@@ -57,5 +60,32 @@ int main(){
     std::cout << "[" << __FILE__ << "]" << " from antisymmetry you should get the following two terms have opposite sign " << std::endl;
     std::cout << "[" << __FILE__ << "]" << " coef : " << ncoef1.getCoef() << std::endl;
     std::cout << "[" << __FILE__ << "]" << " coef : " << ncoef2.getCoef() << std::endl;
+}
+
+void nucleustest(){
+    Nucleusall nuc(".",".",20,40);
+
+    int npc = nuc.get_number_of_paircoefs();
+    std::cout << "#[Info] nucleus has " << npc << " paircoefs" << std::endl;
+    for (int i=0;i<npc;i++){
+        Paircoef* pc = nuc.getPaircoef(i);
+        printf("#[Info] [#] (S,T,l,L) : [%4d] (%d,%d,%d %d)\n",i,pc->getS(),pc->getT(),pc->getl(),pc->getL());
+        int nol = pc->get_number_of_links();
+        printf("# > number of links : %d\n",nol);
+        for (int l=0;l<nol;l++){
+            Paircoef* pcl = nullptr;
+            double val = -999;
+            pc->get_links(l,&pcl,&val);
+            printf("#   >   link with (S,T,l,L) : [%4d] (%d,%d,%d,%d) with val = % 6.2e   ",l,pcl->getS(),pcl->getT(),pcl->getl(),pcl->getL(),val);
+            int parity1 = (pc->getl()+pc->getL()) % 2;
+            int parity2 = (pc->getl()+pc->getL()) % 2;
+            printf("  parity :  (%d -- %d)\n",parity1,parity2);
+            assert(parity1==parity2);
+        }
+    }
+}
+
+int main(){
+    nucleustest();
     return 0;
 }
