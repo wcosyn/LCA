@@ -251,24 +251,26 @@ void obmd( Nucleus* nucleus, int t, int nA, int lA, int nB, int lB, bool central
 {
     double norm_mf_sel, norm_corr_sel, intmf, intcorr;
 
-    norm_ob* no = new norm_ob( nucleus, central, tensor, isospin );
+    norm_ob no(nucleus, central, tensor, isospin );
     norm_ob::norm_ob_params nob= {nA, lA, nB, lB, t};
-    norm_mf_sel = no->sum_me_coefs( &nob )/norm*A;
-    norm_corr_sel = no->sum_me_corr( &nob )/norm*A;
+    norm_mf_sel = no.sum_me_coefs( &nob )/norm*A;
+    norm_corr_sel = no.sum_me_corr( &nob )/norm*A;
 
-    cout << "selected normalisation mf\t" << norm_mf_sel << endl;
-    cout << "selected normalisation corr\t" << norm_corr_sel << endl;
+    cout << "[mainop][obmd] given norm is:                  " << norm << endl;
+    cout << "[mainop][obmd] selected normalisation mf:      " << norm_mf_sel << endl;
+    cout << "[mainop][obmd] selected normalisation corr:    " << norm_corr_sel << endl;
+    cout << "[mainop][obmd] selected normalisation mf+corr: " << norm_mf_sel+norm_corr_sel << endl;
 
-    density_ob3* ob;
-    ob= new density_ob3( nucleus, central, tensor, isospin, norm, q  );
-    ob->write( output, name.c_str(), nA, lA, nB, lB, t, &intmf, &intcorr);
+    density_ob3 ob( nucleus, central, tensor, isospin, norm, q  );
+    ob.write( output, name.c_str(), nA, lA, nB, lB, t, &intmf, &intcorr);
 
     // Compare integral and expected integral by norm_ob class
-    cout << "mf\t" << norm_mf_sel << "\t" << intmf << "\t" << intmf/norm_mf_sel << endl;
-    cout << "corr\t" << norm_corr_sel << "\t" << intcorr << "\t" << intcorr/norm_corr_sel << endl;
-
-    delete no;
-    delete ob;
+    cout << "[mainop][obmd] selected normalisation mf:       " << norm_mf_sel << endl;
+    cout << "[mainop][obmd] intmf:                           " << intmf << endl;
+    cout << "[mainop][obmd] intmf/selected normalisation mf: " << intmf/norm_mf_sel << endl;
+    cout << "[mainop][obmd] selected normalisation corr:     " << norm_corr_sel << endl;
+    cout << "[mainop][obmd] intcorr:                         " << intcorr << endl;
+    cout << "[mainop][obmd] intcorr/sel. normalisation corr: " << intcorr/norm_corr_sel << endl;
 }
 
 
@@ -359,14 +361,15 @@ double calculate_tb_norm_2b( int A, int Z )
 
 double calculate_ob_norm( int A, int Z, bool central, bool tensor, bool spinisospin )
 {
-    norm_ob* no = new norm_ob( all_norm, central, tensor, spinisospin );
+    norm_ob no( all_norm, central, tensor, spinisospin );
     norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
-    double norm_mf= no->sum_me_pairs( &nob );
-    double norm_corr= no->sum_me_corr( &nob );
-    cout << "norm\t"  << norm_mf << "\t" << norm_corr << "\t" << (norm_mf+ norm_corr) << "\t" << A*(norm_mf+ norm_corr) << endl;
-    double norm= norm_mf+ norm_corr;
-    delete no;
-    return norm;
+    double norm_mf= no.sum_me_pairs( &nob );
+    double norm_corr= no.sum_me_corr( &nob );
+    cout << "[mainop][calculate_ob_norm] mf norm: "  << norm_mf;
+    cout << "\t corr norm: " << norm_corr;
+    cout << "\t sum: " << (norm_mf+ norm_corr);
+    cout << "\t A*sum: " << A*(norm_mf+ norm_corr) << endl;
+    return norm_mf + norm_corr;
 }
 
 /****************
