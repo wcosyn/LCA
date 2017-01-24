@@ -28,7 +28,8 @@ void ob(int A,int Z,std::string name){
 
 int main(){
     /* the following block for He,Be,C,O,Al took:
-     * 00.111.-1-1-1-1 : real=7m6s user=26m17s
+     * 00.111.-1-1-1-1 : real=7m6s user=26m17s (commit 2676d915ee05807d381aff05c4141b660e3ed3c8)
+     * 00.111.-1-1-1-1 : real=7m8s user=26m17s (commit
      */
     ob(4,2,"He");
     ob(9,4,"Be");

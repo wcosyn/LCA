@@ -64,7 +64,7 @@ def compareplot(filename1,filename2,nucleus):
 if __name__=="__main__":
     newresultfolder = "new_results2017/obnmd/"
     oldresultfolder = "result_1408"
-    for filename in os.listdir(newresultfolder):
+    for filename in filter(lambda x: x.startswith("dens_ob4"),os.listdir(newresultfolder)):
         nucleus  = filename.split(".")[3] # in the naming convention of Maarten nucleus name will be between 3rd and 4th dot
         print("Nucleus is {:s}".format(nucleus))
         compareplot(os.path.join(newresultfolder,filename),os.path.join(oldresultfolder,nucleus,filename),nucleus)

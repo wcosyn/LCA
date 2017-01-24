@@ -843,7 +843,11 @@ From the antisymmetry requirement of a fermion wave function it follows that $(-
 \end{align}
 This allows us to rewrite $\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'}$ as,
 \begin{align*}
-	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{L-L' + K'-K} \left[ 1 + (-1)^{L+L'+K-K'} \right]
+	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{L-L' + K'-K} \left[ 1 + (-1)^{L+L'+K-K'} \right] \, .
+\end{align*}
+Because $L,L',K,K' \in \mathbb{N}$ we can flip the signs in the exponent of (-1), leading to,
+\begin{align*}
+	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{L-L' + K'-K} \left[ 1 + (-1)^{L-L'+K'-K} \right] \, .
 \end{align*}
 
 An alternative expression can be derived using the fact that the correlation operators do not change the total spin $S$ ($S=S'$),
@@ -961,18 +965,40 @@ First of all the modulo 4's you see appearing is because $n$ in $i^n$ can be cha
 			 \end{itemize}
 		\end{itemize}
 \end{itemize}
-\todo[inline]{
-\textbf{THE MAIN MESSAGE} \\
-All this spaghetti code above of Maarten is equivalent with the simple one-liner: \\
-$\texttt{ifactor} *= i^{L-L'+K'-K} \left[ 1 + (-1)^{T+T'+K-K'} \right] $ \\
-or \\
-$\texttt{ifactor} *= i^{L-L'+K'-K} \left[ 1 + (-1)^{L+L'+K-K'} \right] $  \\ 
+\textbf{THE MAIN MESSAGE:}
+
+
+All this spaghetti code above of Maarten is equivalent with the simple one-liner:
+\begin{align*}
+\texttt{ifactor} *= i^{L-L'+K'-K} & \left[ 1 + (-1)^{T+T'+K-K'} \right] \\
+& \text{or} \\
+\texttt{ifactor} *= i^{L-L'+K'-K} & \left[ 1 + (-1)^{L-L'+K'-K} \right]  
+\end{align*}
 \textbf{ALL of the if-statements} can be replaced by checking the antisymmetry 
-$(-1)^{l+S+T} = (-1)^{l'+S'+T'} = -1$ , the total spin-conservation $S=S'$ and the parity conservation $(-1)^{l+L}=(-1)^{l'+L'}$
-as those are the only things used to make the above derivation.\\
+$(-1)^{l+S+T} = (-1)^{l'+S'+T'} = -1$ , the total spin-conservation $S=S'$ and the parity conservation $(-1)^{l+L}=(-1)^{l'+L'}$.
+The implementation is now straightforward, with $a=L-L'+K'-K$ we have
+\begin{itemize}
+	\item if $a$ is odd then the result is 0 
+	\item if $a$ is even and multiple of 4 then result if 2
+	\item if $a$ is even and not a multiple of 4 then the result is -2
+\end{itemize}
+as those are the only things used to make the above derivation.
+\todo[inline]{
 \textbf{WHY MAARTEN, WHHYYYYYYYYYY??????????} \\
-TODO: Replace this in the code and test if I get the same results...
 }
+This factor is now implemented in the code \texttt{density\_ob3::get\_me12\_factor}, the implementation reads,
+\begin{verbatim}
+	int get_me12_factor(int a){
+        if (a & 0b01) { // odd
+        	    return 0;
+        	} else if (a & 0b10) { // multiple of 2 but not of 4
+        	    return -2;
+        	} else { //multiple of 4
+        	    return 2; 
+        	}
+    }
+\end{verbatim}
+
 \subsection{C.M. momentum integral}
 \label{ssec:cm_mom_integral}
 Let us take a closer a look at how the integral

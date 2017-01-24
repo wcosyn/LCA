@@ -330,34 +330,9 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
             for( int q= 0; q <= qmax; q++ ) {
                 for( int l = fabs( LA-q); l <= LA+q; l++ ) {
                     for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                        int ipower1= (LA-LB+l-la)%4;
-                        int ipower2= (LA-LB+la-l)%4;
-                        double ifactor= preifactor;
-                        if( TA == TB ) { // Maarten says term something like TA-TB
-                            if( GSL_IS_ODD( ipower1 ) ) {
-                                if( (ipower1+ipower2)%4 == 0 ) continue;
-                                else
-                                    cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-                            }
-                            if( fabs( ipower1) != fabs(ipower2) ) continue;
-                            if( ipower1 == 0 )
-                                ifactor *= 2;
-                            else
-                                ifactor*= -2;
-                        }
-                        if( TA != TB ) {
-                            if( GSL_IS_ODD( ipower1 ) ) {
-                                if( fabs((ipower1+ipower2)%4) == 2 ) continue;
-                                else
-                                    cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-
-                            }
-                            if( fabs( ipower1) == fabs(ipower2) ) continue;
-                            if( ipower1 == 0 )
-                                ifactor *= 2;
-                            else
-                                ifactor*= -2;
-                        }
+                        double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+                        if (ifactor==0.)
+                            continue;
 
                         // SUM DUE TO CORRELATION OPERATORS kA and kB
                         // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTILY AFFECTED BY CORRELATION OPERATOR
@@ -494,34 +469,9 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
 
                 for( int l = fabs( LA-q); l <= LA+q; l++ ) {
                     for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                        int ipower1= (LA-LB+l-la)%4;
-                        int ipower2= (LA-LB+la-l)%4;
-                        double ifactor= preifactor;
-                        if( TA == TB ) {
-                            if( GSL_IS_ODD( ipower1 ) ) {
-                                if( (ipower1+ipower2)%4 == 0 ) continue;
-                                else
-                                    cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-                            }
-                            if( fabs( ipower1) != fabs(ipower2) ) continue;
-                            if( ipower1 == 0 )
-                                ifactor *= 2;
-                            else
-                                ifactor*= -2;
-                        }
-                        if( TA != TB ) { // this should better be "else" matching " if (TA==TB)
-                            if( GSL_IS_ODD( ipower1 ) ) {
-                                if( fabs((ipower1+ipower2)%4) == 2 ) continue;
-                                else
-                                    cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-                            }
-                            if( fabs( ipower1) == fabs(ipower2) ) continue;
-                            if( ipower1 == 0 )
-                                ifactor *= 2;
-                            else
-                                ifactor*= -2;
-                        }
-
+                        double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+                        if (ifactor==0.)
+                            continue;
 
                         // SUM DUE TO CORRELATION OPERATORS kA and kB
                         // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTLY AFFECTED BY CORRELATION OPERATOR
@@ -670,34 +620,9 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
 
                 for( int l = fabs( LA-q); l <= LA+q; l++ ) {
                     for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                        int ipower1= (LA-LB+l-la)%4;
-                        int ipower2= (LA-LB+la-l)%4;
-                        double ifactor= preifactor;
-                        if( TA == TB ) {
-                            if( GSL_IS_ODD( ipower1 ) ) {
-                                if( (ipower1+ipower2)%4 == 0 ) continue;
-                                else
-                                    cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-                            }
-                            if( fabs( ipower1) != fabs(ipower2) ) continue;
-                            if( ipower1 == 0 )
-                                ifactor *= 2;
-                            else
-                                ifactor*= -2;
-                        }
-                        if( TA != TB ) {
-                            if( GSL_IS_ODD( ipower1 ) ) {
-                                if( fabs((ipower1+ipower2)%4) == 2 ) continue;
-                                else
-                                    cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-
-                            }
-                            if( fabs( ipower1) == fabs(ipower2) ) continue;
-                            if( ipower1 == 0 )
-                                ifactor *= 2;
-                            else
-                                ifactor*= -2;
-                        }
+                        double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+                        if (ifactor==0.)
+                            continue;
 
                         // SUM DUE TO CORRELATION OPERATORS kA and kB
                         // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTILY AFFECTED BY CORRELATION OPERATOR
@@ -853,34 +778,9 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
 
                 for( int l = fabs( LA-q); l <= LA+q; l++ ) {
                     for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                        int ipower1= (LA-LB+l-la)%4;
-                        int ipower2= (LA-LB+la-l)%4;
-                        double ifactor= preifactor;
-                        if( TA == TB ) {
-                            if( GSL_IS_ODD( ipower1 ) ) {
-                                if( (ipower1+ipower2)%4 == 0 ) continue;
-                                else
-                                    cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-                            }
-                            if( fabs( ipower1) != fabs(ipower2) ) continue;
-                            if( ipower1 == 0 )
-                                ifactor *= 2;
-                            else
-                                ifactor*= -2;
-                        }
-                        if( TA != TB ) {
-                            if( GSL_IS_ODD( ipower1 ) ) {
-                                if( fabs((ipower1+ipower2)%4) == 2 ) continue;
-                                else
-                                    cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-
-                            }
-                            if( fabs( ipower1) == fabs(ipower2) ) continue;
-                            if( ipower1 == 0 )
-                                ifactor *= 2;
-                            else
-                                ifactor*= -2;
-                        }
+                        double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+                        if (ifactor==0.)
+                            continue;
 
                         // SUM DUE TO CORRELATION OPERATORS kA and kB
                         // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTILY AFFECTED BY CORRELATION OPERATOR
@@ -993,6 +893,9 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
     density_ob_integrand3* integrand = dop->i0;
 
     /** TESTING BLOCK **/
+    assert( (pc1->getl()+pc1->getS()+pc1->getT()) % 2 == 1 ); // antisymmetry requirement
+    assert( (pc2->getl()+pc2->getS()+pc2->getT()) % 2 == 1 ); // antisymmetry requirement
+    assert( (pc1->getl()+pc1->getL())%2 == (pc2->getl()+pc2->getL())%2 ); // parity conservation
 
     //printf("t=% d :: (S,T,MT ; S',T',MT') : (% d,% d,% d ; % d,% d,% d) : (LA,LB) = (%3d,%3d)\n",t,pc1->getS(),pc1->getT(),pc1->getMT(),pc2->getS(),pc2->getT(),pc2->getMT(),pc1->getL(),pc2->getL());
 
@@ -1052,46 +955,9 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
     for( int q= 0; q <= qmax; q++ ) {
         for( int l = fabs( LA-q); l <= LA+q; l++ ) {
             for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                int ipower1= (LA-LB+l-la)%4;
-                int ipower2= (LA-LB+la-l)%4;
-                double ifactor= preifactor;
-                if( TA == TB ) {
-                    if( GSL_IS_ODD( ipower1 ) ) {
-                        // TESTING
-                        //printf("(TA,TB) = (%d,%d) :: (LA,LB,l,la) = (%3d,%3d,%3d,%3d), (LA-LB,l-la) = (% 3d,% 3d), (i1,i2) = (% 3d,% 3d)\n",TA,TB,LA,LB,l,la,LA-LB,l-la,ipower1,ipower2);
-                        assert((LA-LB)%2==0);
-                        //if ( (LA-lA)%2 ==0 || (LB-lB)%2==0)
-                        //printf("[Info] TA==TB,ipower1==odd : (la-lb) mod 2=%d\n",(test_la-test_lb)%2);
-                        assert( ((lA-lB)%2) == 0); // from S=S',T=T' => l,l' have same parity <=> (l-l') is even
-                        if( (ipower1+ipower2)%4 == 0 ) continue;
-
-                        else
-                            cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-                    }
-                    //printf("(TA,TB) is (% d,% d), (ipower1,ipower2) is (% d,% d), (a,b) is (% d,% d) \n",TA,TB,ipower1,ipower2,LA-LB,l-la);
-                    //printf("(LA,LB,l,la) = (%3d,%3d,%3d,%3d), (LA-LB,l-la) = (% 3d,% 3d)\n",LA,LB,l,la,LA-LB,l-la);
-                    if( fabs( ipower1) != fabs(ipower2) ) { std::cout << "DOES THIS EVER HAPPEN???" << std::endl; assert(1==0); continue;}
-                    if( ipower1 == 0 )
-                        ifactor *= 2;
-                    else
-                        ifactor*= -2;
-                }
-                if( TA != TB ) {
-                    //printf("(TA,TB) = (%d,%d) :: (LA,LB,l,la) = (%3d,%3d,%3d,%3d), (LA-LB,l-la) = (% 3d,% 3d), (i1,i2) = (% 3d,% 3d)\n",TA,TB,LA,LB,l,la,LA-LB,l-la,ipower1,ipower2);
-                    if( GSL_IS_ODD( ipower1 ) ) {
-                        if( fabs((ipower1+ipower2)%4) == 2 ) continue;
-                        else
-                            cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-
-                    }
-                    //printf("(TA,TB) is (% d,% d), (ipower1,ipower2 is (%d,%d)\n",TA,TB,ipower1,ipower2);
-                    if( fabs( ipower1) == fabs(ipower2) ) { std::cout << "DOES THIS EVER HAPPEN???" << std::endl; assert(1==0); continue;}
-                    //if( fabs( ipower1) == fabs(ipower2) ) continue;
-                    if( ipower1 == 0 )
-                        ifactor *= 2;
-                    else
-                        ifactor*= -2;
-                }
+                double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+                if (ifactor==0.)
+                    continue;
                 // SUM DUE TO CORRELATION OPERATORS kA and kB
                 // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTLY AFFECTED BY CORRELATION OPERATOR
                 // BUT THE ALLOWED k RANGE CAN CHANGE
@@ -1206,34 +1072,9 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
 
         for( int l = fabs( LA-q); l <= LA+q; l++ ) {
             for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                int ipower1= (LA-LB+l-la)%4;
-                int ipower2= (LA-LB+la-l)%4;
-                double ifactor= preifactor;
-                if( TA == TB ) {
-                    if( GSL_IS_ODD( ipower1 ) ) {
-                        if( (ipower1+ipower2)%4 == 0 ) continue;
-                        else
-                            cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-                    }
-                    if( fabs( ipower1) != fabs(ipower2) ) continue;
-                    if( ipower1 == 0 )
-                        ifactor *= 2;
-                    else
-                        ifactor*= -2;
-                }
-                if( TA != TB ) {
-                    if( GSL_IS_ODD( ipower1 ) ) {
-                        if( fabs((ipower1+ipower2)%4) == 2 ) continue;
-                        else
-                            cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-
-                    }
-                    if( fabs( ipower1) == fabs(ipower2) ) continue;
-                    if( ipower1 == 0 )
-                        ifactor *= 2;
-                    else
-                        ifactor*= -2;
-                }
+                double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+                if (ifactor==0.)
+                    continue;
                 // SUM DUE TO CORRELATION OPERATORS kA and kB
                 // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTLY AFFECTED BY CORRELATION OPERATOR
                 // BUT THE ALLOWED k RANGE CAN CHANGE
@@ -1369,34 +1210,9 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
 
         for( int l = fabs( LA-q); l <= LA+q; l++ ) {
             for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                int ipower1= (LA-LB+l-la)%4;
-                int ipower2= (LA-LB+la-l)%4;
-                double ifactor= preifactor;
-                if( TA == TB ) {
-                    if( GSL_IS_ODD( ipower1 ) ) {
-                        if( (ipower1+ipower2)%4 == 0 ) continue;
-                        else
-                            cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-                    }
-                    if( fabs( ipower1) != fabs(ipower2) ) continue;
-                    if( ipower1 == 0 )
-                        ifactor *= 2;
-                    else
-                        ifactor*= -2;
-                }
-                if( TA != TB ) {
-                    if( GSL_IS_ODD( ipower1 ) ) {
-                        if( fabs((ipower1+ipower2)%4) == 2 ) continue;
-                        else
-                            cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-
-                    }
-                    if( fabs( ipower1) == fabs(ipower2) ) continue;
-                    if( ipower1 == 0 )
-                        ifactor *= 2;
-                    else
-                        ifactor*= -2;
-                }
+                double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+                if (ifactor==0.)
+                    continue;
                 // SUM DUE TO CORRELATION OPERATORS kA and kB
                 // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTLY AFFECTED BY CORRELATION OPERATOR
                 // BUT THE ALLOWED k RANGE CAN CHANGE
@@ -1536,35 +1352,9 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
 
         for( int l = fabs( LA-q); l <= LA+q; l++ ) {
             for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                int ipower1= (LA-LB+l-la)%4;
-                int ipower2= (LA-LB+la-l)%4;
-                double ifactor= preifactor;
-                if( TA == TB ) {
-                    if( GSL_IS_ODD( ipower1 ) ) {
-                        if( (ipower1+ipower2)%4 == 0 ) continue;
-                        else
-                            cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-                    }
-                    if( fabs( ipower1) != fabs(ipower2) ) continue;
-                    if( ipower1 == 0 )
-                        ifactor *= 2;
-                    else
-                        ifactor*= -2;
-                }
-                if( TA != TB ) {
-                    if( GSL_IS_ODD( ipower1 ) ) {
-                        if( fabs((ipower1+ipower2)%4) == 2 ) continue;
-                        else
-                            cerr << __FILE__ << __LINE__ << "IMAG" << endl;
-
-                    }
-                    if( fabs( ipower1) == fabs(ipower2) ) continue;
-                    if( ipower1 == 0 )
-                        ifactor *= 2;
-                    else
-                        ifactor*= -2;
-                }
-
+                double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+                if (ifactor==0.)
+                    continue;
                 // SUM DUE TO CORRELATION OPERATORS kA and kB
                 // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTILY AFFECTED BY CORRELATION OPERATOR
                 // BUT THE ALLOWED k RANGE CAN CHANGE
@@ -1654,7 +1444,5 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
             }
         }
     }
-
     return 0;
 }
-

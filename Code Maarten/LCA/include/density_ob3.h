@@ -47,6 +47,12 @@ public:
 
     virtual double get_me( Pair* pair, void* params);
     double get_me_proj( Pair* pair, void* params);
+    /**
+     * @brief returns the factor arising from a one-body operator acting on a coupled state
+     * @param a the power in \f$ i^{a}[ 1 - (-1)^{a} ] \f$
+     * @return returns 0 if power is odd, -2 if power is multiple of 2 (but not of 4), and 2 if multiple of 4
+     */
+    int get_me12_factor(int a){ if (a & 0b01) { return 0; } else if (a & 0b10) { return -2; } else { return 2; } }
 
     virtual double get_me_corr_left( Pair* pair, void* params);
     virtual double get_me_corr_right( Pair* pair, void* params);
