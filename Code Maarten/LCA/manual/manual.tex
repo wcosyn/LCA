@@ -1073,7 +1073,7 @@ to get the equivalence of Eqs.~(\ref{eq:cm_mom_integral}) and (\ref{eq:cm_mom_in
 \begin{align*}
 	\sum_{j=j'}^{0}  \frac{j'!}{j! (j'-j)!} (-1)^{j} 2^{j'-j} = \sum_{j=0}^{j'} \left( \begin{array}{c} j' \\ j \end{array} \right) (-1)^{j} 2^{j'-j} = ( -1 + 2 )^{j'} = 1^{N-i} = 1
 \end{align*}
-This equivalence was checked in the code and found to be correct.
+This equivalence was checked in the code and found to be correct. Eq.~(\ref{eq:cm_mom_integral_code_maarten}) has been replaced with Eq.~(\ref{eq:cm_mom_integral}) in the \texttt{c++} code, reducing the number of lines from 30 to 10 and removing the two extra (summation) nested for loops.
 \subsection{The matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$}
 Let us now look into the factorized matrix element $\mathcal{M}_{A A'}^{p,q}(s_1,t_1)$ in the one-body momentum distribution . Note that we implicitly assumed that the operators $\mathcal{O}^{p,q}$ do not change the quantum numbers of the orbital wave functions, $ n (lS) j m_j N L M_L$ (the quantum numbers involved in the radial integrals). More explicitly,
 \begin{align*}
