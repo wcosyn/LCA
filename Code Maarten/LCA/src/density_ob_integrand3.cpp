@@ -35,7 +35,6 @@ void density_ob_integrand3::add( int nA, int lA, int NA, int LA, int nB, int lB,
 {
     string key;
     stringstream strstream;
-
     // The different integrals are saved in map with a string key
     // Create the key
     // The key is independent of NA LA NB and LB.
@@ -66,38 +65,14 @@ void density_ob_integrand3::add( int nA, int lA, int NA, int LA, int nB, int lB,
             key_vector->resize(LA+LB+2*NA+2*NB+1, 0);
         }
     }
-
-
-    double NormA= ho_norm(  NA, LA);
-    double NormB= ho_norm(  NB, LB);
-    double pownu= sqrt(pow( nu, LA+LB+3));
-    for( int i= 0; i<= NA; i++ ) {
-        double anli= laguerre_coeff(  NA, LA, i);
-        for( int j= 0; j<= NB; j++ ) {
-            double anlj= laguerre_coeff(  NB, LB, j);
-            double f= pow(2., i+j)*  anli* anlj;
-            for( int hfi= 0; hfi <= i; hfi++ ) {
-                double binomiali= gsl_sf_choose( i, hfi );
-                double pochhfi;
-                if( hfi == i ) {
-                    pochhfi = 1;
-                } else {
-                    pochhfi= gsl_sf_poch( LA+1.5+hfi, i-hfi );
-                }
-
-                for( int hfj= 0; hfj <= j; hfj++ ) {
-                    double binomialj= gsl_sf_choose( j, hfj );
-                    double pochhfj;
-                    if( hfj == j ) {
-                        pochhfj = 1;
-                    } else {
-                        pochhfj= gsl_sf_poch( LB+1.5+hfj, j-hfj );
-                    }
-
-                    double pow2nu= pow( -2*nu, hfi+hfj);
-                    key_vector->at(LA+LB+2*hfi+2*hfj) += binomialj* binomiali* pochhfj* pochhfi*f* val* NormA* NormB/ pow2nu/ pownu;
-                }
-            }
+    double honorm = ho_norm(NA,LA)*ho_norm(NB,LB);
+    double pownu = sqrt(pow(nu,LA+LB+3));
+    double phase = ((NA+NB) & 0b01)? -1 : 1; // = (-1)^{NA+NB}, -1 if NA+NB is odd, 1 if even
+    for (int i=0; i<=NA;i++){
+        double anli = laguerre_coeff(NA,LA,i);
+        for (int j=0; j<=NB;j++){
+            double anlj = laguerre_coeff(NB,LB,j);
+            key_vector->at(LA+LB+2*i+2*j) += val*phase*honorm*anli*anlj/pow(nu,i+j)/pownu;
         }
     }
 }
