@@ -13,7 +13,7 @@ import os
 # set a bunch of plot parameters#
 #################################
 
-params = {'legend.fontsize' : 20,
+params = {'legend.fontsize' : 16,
 #          'legend.linewidth': 2,
           'axes.linewidth'  : 3.5,
           'axes.labelsize'  : 30,
@@ -44,21 +44,36 @@ def compareplot(filename1,filename2,nucleus):
 
     fig = pl.figure()
     fig.subplots_adjust(left=0.2,bottom=0.2)
+    fig.suptitle("{:s}".format(nucleus))
     ax = fig.add_subplot(111)
-    ax.plot(X2[:,0],X2[:,1],color='white',marker='o',mew=2,mec='green',lw=0,label="{:s} mf new".format(nucleus))
-    ax.plot(X1[:,0],X1[:,1],color='green',lw=2,label="{:s} mf old".format(nucleus))
+    
+    ax.plot([0],[0],mec='black',marker='x',mew=1,ms=8,lw=0,label="new calcs.")
+    
+    ax.plot(X2[:,0],X2[:,3],mec='black',marker='x',mew=1,ms=8,lw=0)
+    ax.plot(X1[:,0],X1[:,3],color='black',lw=2,label="mf+corr")
+    
+    ax.plot(X2[:,0],X2[:,1],mec='green',marker='x',mew=1,ms=8,lw=0)
+    ax.plot(X1[:,0],X1[:,1],color='green',lw=2,label="mf")
 
-    ax.plot(X2[:,0],X2[:,2],color='white',marker='o',mew=2,mec='firebrick',lw=0,label="{:s} corr new".format(nucleus))
-    ax.plot(X1[:,0],X1[:,2],color='firebrick',lw=2,label="{:s} corr old".format(nucleus))
+    ax.plot(X2[:,0],X2[:,2],mec='firebrick',marker='x',mew=1,ms=8,lw=0)
+    ax.plot(X1[:,0],X1[:,2],color='firebrick',lw=2,label="corr")
+
+    ax.plot(X2[:,0],X2[:,4],mec='Goldenrod',marker='x',mew=1,ms=8,lw=0)
+    ax.plot(X1[:,0],X1[:,4],color='Goldenrod',lw=2,ls='dashed',label="central")
+
+    ax.plot(X2[:,0],X2[:,5],mec='blue',marker='x',mew=1,ms=8,lw=0)
+    ax.plot(X1[:,0],X1[:,5],color='blue',lw=2,ls='dashed',dashes=[1,3,2,3],label="tensor")
+    
+    ax.plot(X2[:,0],X2[:,6],mec='teal',marker='x',mew=1,ms=8,lw=0)
+    ax.plot(X1[:,0],X1[:,6],color='teal',lw=2,ls='dashed',dashes=[4,2,6,3],label="spin/iso")
 
     ax.set_xlabel(r"$\mathbf{p \;\; \text{fm}^{-1}}$")
     ax.set_ylabel(r"$\mathbf{n^{[1]}(p) \;\; \text{fm}^{3}}$")
-    ax.legend(frameon=False,numpoints=1)
+    ax.legend(frameon=False,numpoints=1,labelspacing=0)
     ax.set_yscale('log')
     ax.set_ylim((1e-5,ax.get_ylim()[1]))
-
+    
     pl.savefig("obnmd_comparison_{:s}.pdf".format(nucleus))
-
     pl.show()
 
 if __name__=="__main__":
