@@ -35,6 +35,30 @@ pl.rc("font",family="serif")
 
 
 
+def makeplot(filename1,nucleus):
+    X1 = np.loadtxt(filename1,unpack=False)
+
+    fig = pl.figure()
+    fig.subplots_adjust(left=0.2,bottom=0.2)
+    fig.suptitle("{:s}".format(nucleus))
+    ax = fig.add_subplot(111)
+     
+    ax.plot(X1[:,0],X1[:,3],color='black',lw=2,label="mf+corr")
+    ax.plot(X1[:,0],X1[:,1],color='green',lw=2,label="mf")
+    ax.plot(X1[:,0],X1[:,2],color='firebrick',lw=2,label="corr")
+    ax.plot(X1[:,0],X1[:,4],color='Goldenrod',lw=2,ls='dashed',label="central")
+    ax.plot(X1[:,0],X1[:,5],color='blue',lw=2,ls='dashed',dashes=[1,3,2,3],label="tensor")
+    ax.plot(X1[:,0],X1[:,6],color='teal',lw=2,ls='dashed',dashes=[4,2,6,3],label="spin/iso")
+
+    ax.set_xlabel(r"$\mathbf{p \;\; \text{fm}^{-1}}$")
+    ax.set_ylabel(r"$\mathbf{n^{[1]}(p) \;\; \text{fm}^{3}}$")
+    ax.legend(frameon=False,numpoints=1,labelspacing=0)
+    ax.set_yscale('log')
+    ax.set_ylim((1e-5,ax.get_ylim()[1]))
+    
+    pl.savefig("obnmd_{:s}.pdf".format(nucleus))
+    pl.show()
+    
 
 def compareplot(filename1,filename2,nucleus):
 
@@ -76,11 +100,23 @@ def compareplot(filename1,filename2,nucleus):
     pl.savefig("obnmd_comparison_{:s}.pdf".format(nucleus))
     pl.show()
 
-if __name__=="__main__":
+def compareResults():
     newresultfolder = "new_results2017/obnmd/"
     oldresultfolder = "result_1408"
     for filename in filter(lambda x: x.startswith("dens_ob4"),os.listdir(newresultfolder)):
         nucleus  = filename.split(".")[3] # in the naming convention of Maarten nucleus name will be between 3rd and 4th dot
         print("Nucleus is {:s}".format(nucleus))
-        compareplot(os.path.join(newresultfolder,filename),os.path.join(oldresultfolder,nucleus,filename),nucleus)
+        if os.path.isfile(os.path.join(oldresultfolder,nucleus,filename)):
+            compareplot(os.path.join(newresultfolder,filename),os.path.join(oldresultfolder,nucleus,filename),nucleus)
+        else:
+            makeplot(filename)
 
+if __name__=="__main__":
+    if len(sys.argv) > 1: # argument supplied, filename of data
+        filename = sys.argv[1]
+        assert(filename)
+        nucleus  = filename.split(".")[3] # in the naming convention of Maarten nucleus name will be between 3rd and 4th dot
+        print("Nucleus is {:s}".format(nucleus))
+        makeplot(filename,nucleus)
+    else:
+        compareResults()
