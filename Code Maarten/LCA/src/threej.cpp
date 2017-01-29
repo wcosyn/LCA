@@ -14,19 +14,18 @@ using std::cerr;
 using std::fabs;
 #include <utility> // for swap method
 using std::swap;
+#include <cassert>
 
 
-threej threej::threejs= threej( 40 );
+threej threej::threejs= threej( 70 );
 
 threej::threej( int lmax ) : lmax( lmax )
 {
+    assert( lmax <= 70); // if lmax > 70, int overflows in the calculation of cmax...
     cmax= lmax*(274+lmax*(225+lmax*(85+lmax*(15+lmax))))/120 + 1;
-    cout << "cmax " << cmax << endl;
+    cout << "[threej] lmax = " << lmax << ", cmax = " << cmax << endl;
     vector_threej= new vector< double >( cmax, 0 );
     bool_threej= new vector< bool >( cmax, false );
-    cout << vector_threej->size();
-    cout << " " << bool_threej->size();
-    cout << endl;
 }
 
 threej::~threej()
@@ -204,21 +203,31 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
 //  cout << "->" << two_m1 << " " << two_m2 << " " << two_m3 << endl;
 //  cout << "->" << "index " << c << endl;
 
-//#pragma omp critical(getthreej)
+    //#pragma omp critical(getthreej)
     {
         while( c >= cmax ) {
+            /* this while loop is problematic for multithreading
+             * the resizing of the vectors together with the (possible)
+             * simultanious access further down below will cause
+             * seg faults (signal 11) for sure dawg!
+             *
+             * making the loop and access of vector_threej,bool_threej
+             * "omp critical" slows things down considerably :(
+             */
 //#pragma omp critical(getthreej)
             {
                 //    cout << "RESIZE " << c << endl;
                 //    cout << two_j1 << " " << two_j2 << " " << two_j3 << endl;
-                lmax++;
+                lmax++; // lmax should never go > 70 because calculation of cmax will have an int overflow
                 cmax= lmax*(274+lmax*(225+lmax*(85+lmax*(15+lmax))))/120 + 1;
-                cout << cmax << " " << lmax << endl;
-                cout << "max size " << vector_threej->max_size() << " " << bool_threej->max_size() << endl;
+                cout << "[threej] cmax = " << cmax << " , lmax = " << lmax << endl;
+                cout << "[threej] threej::vector_threej->max_size() :" << vector_threej->max_size()  << endl;
+                cout << "[threej] threej::bool_threej->max_size()   :" << bool_threej->max_size() << endl;
                 vector_threej->resize( cmax, 0 );
                 bool_threej->resize( cmax, false );
             }
         }
+    }
 
         if( (*bool_threej)[c] == true ) {
             *res= (*vector_threej)[c]* prefactor* Regge_prefactor;
@@ -229,13 +238,13 @@ void threej::get( int two_j1, int two_j2, int two_j3, int two_m1, int two_m2, in
             double threejval= gsl_sf_coupling_3j( two_j1, two_j2, two_j3, two_m1, two_m2, two_m3);
             //    if( threejval == 0 ) cerr << __FILE__ << __LINE__ << endl;
             *res= threejval* prefactor;
-//#pragma omp critical(getthreej)
+            //#pragma omp critical(getthreej)
             {
                 (*vector_threej)[c]= Regge_prefactor* threejval;
                 (*bool_threej)[c]= true;
             }
         }
-    }
+    //}
 }
 
 int threej::triangle_selection_fails(int two_ja, int two_jb, int two_jc)
