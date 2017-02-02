@@ -2,7 +2,7 @@
 # qmax = 10
 # nAlA = -1-1
 # nBlB = -1-1
-# A    = 16    T1 = 0    T2 = 0    A1 = 16    A2 = 16
+# A    = 16  Z = 8   T1 = 0    T2 = 0    A1 = 16    A2 = 16
 # central = 1    tensor = 1    spinisospin = 1
 # norm = 1.52661
 #      k            mf         corr        total      central       tensor     spin/iso        ce/te        ce/si       te/si 
