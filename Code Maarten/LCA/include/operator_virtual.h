@@ -210,14 +210,20 @@ protected:
 
     /**
      * \brief Central correlation operator matrix element
+     *
+     * @return returns 0 if result is 0, 1 if not
      */
     int get_central_me( int la, int l, int S, int J, int T, double* result );
     /**
      * \brief tensor correlation operator matrix element
+     *
+     * @return returns 0 if result is 0, 1 if not
      */
     int get_tensor_me( int la, int l, int S, int J, int T, double* result );
     /**
      * \brief spint-isospin correlation operator matrix element
+     *
+     * @return returns 0 if result is 0, 1 if not
      */
     int get_spinisospin_me( int la, int l, int S, int J, int T, double* result );
 

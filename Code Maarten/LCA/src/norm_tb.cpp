@@ -30,27 +30,28 @@ double norm_tb::get_me( Pair* pair, void* params )
     for( int c1= 0; c1 < pair->get_number_of_coeff(); c1++ ) {
         Newcoef* coef1;
         double norm1;
-        pair->getCoeff( c1, &coef1, &norm1 );
+        pair->getCoeff( c1, &coef1, &norm1 ); // get the coef @ index c1, set coef1 to point to this, set norm1 to norm of the pair
         for( int c2= 0; c2 < pair->get_number_of_coeff(); c2++ ) {
             Newcoef* coef2;
             double norm2;
-            pair->getCoeff( c2, &coef2, &norm2 );
+            pair->getCoeff( c2, &coef2, &norm2 ); // get the coef @ index c2, set coef1 to point to this, set norm1 to norm of the pair
 
             double val1= norm1* coef1->getCoef();
             double val2= norm2* coef2->getCoef();
-
-            if( coef1->getn() != coef2->getn() ) continue;
-            if( coef1->getl() != coef2->getl() ) continue;
+            // following block is delta <A|B> (n,l,S,j,m_j,T,MT,N,L,M_L)
+            if( coef1->getn()  != coef2->getn()  ) continue;
+            if( coef1->getl()  != coef2->getl()  ) continue;
+            if( coef1->getS()  != coef2->getS()  ) continue;
+            if( coef1->getj()  != coef2->getj()  ) continue;
+            if( coef1->getmj() != coef2->getmj() ) continue;
+            if( coef1->getT()  != coef2->getT()  ) continue;
+            if( coef1->getMT() != coef2->getMT() ) continue;
+            if( coef1->getN()  != coef2->getN()  ) continue;
+            if( coef1->getL()  != coef2->getL()  ) continue;
+            if( coef1->getML() != coef2->getML() ) continue;
+            // selection of nA,lA,S,T (nA==nB,lA==lB through delta above)
             if( nA > -1 && coef1->getn() != nA ) continue;
             if( lA > -1 && coef1->getl() != lA ) continue;
-            if( coef1->getS() != coef2->getS() ) continue;
-            if( coef1->getj() != coef2->getj() ) continue;
-            if( coef1->getmj() != coef2->getmj() ) continue;
-            if( coef1->getT() != coef2->getT() ) continue;
-            if( coef1->getMT() != coef2->getMT() ) continue;
-            if( coef1->getN() != coef2->getN() ) continue;
-            if( coef1->getL() != coef2->getL() ) continue;
-            if( coef1->getML() != coef2->getML() ) continue;
             if( Ss > -1 && coef1->getS() != Ss ) continue;
             if( Ts > -1 && coef1->getT() != Ts ) continue;
             result+= val1* val2* 2./A/(A-1);
@@ -125,12 +126,12 @@ double norm_tb::get_me_corr_left( Pair* pair, void* params)
                     double anli=  laguerre_coeff( n1, l1, i );
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
-                        for( int lambda= 0; lambda < 11; lambda++ ) {
+                        for( int lambda= 0; lambda < 11; lambda++ ) { // magic number 11 is because correlation function is expanded up to power r^10
                             double alambda= get_central_pow( lambda )/ pow( sqrt(nu), lambda );
                             double aa= get_central_exp()/nu;
                             int N= -3-2*i-2*j-lambda-l1-l2;
                             double power= pow( 1.+aa, 0.5*N);
-                            cen_sum-= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power;
+                            cen_sum-= anli* anlj* alambda* hiGamma( 3+2*i+2*j+lambda+l1+l2)* power; // note the minus sign!
                         }
                     }
                 }

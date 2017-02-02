@@ -17,11 +17,9 @@ using std::cout;
 using std::endl;
 using std::cerr;
 
-Nucleus::Nucleus( char* inputdir, char* resultdir,int A, int Z)
-    : Z(Z), A(A)
+Nucleus::Nucleus( char* iinputdir, char* iresultdir,int A, int Z)
+    : inputdir(iinputdir), resultdir(iresultdir), Z(Z), A(A)
 {
-    this->inputdir= inputdir;
-    this->resultdir= resultdir;
     N = A-Z;
 
     /*

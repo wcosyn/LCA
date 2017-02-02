@@ -1,4 +1,5 @@
 #include "recmosh.h"
+#include <iomanip>
 
 using std::map;
 using std::fabs;
@@ -72,10 +73,10 @@ void RecMosh::writeToFile()
     if( updated ) {
         stringstream name;
         name << outputPath << "/recmosh" << n1 << l1 << n2 << l2 << ".dat";
-        cout << "write to " << name.str().c_str() << endl;
+        cout << "[recmosh][RecMosh::writeToFile] write to " << name.str().c_str() << endl;
         ofstream dataFile ( name.str().c_str(), ofstream::out );
         if( !dataFile.is_open() ) {
-            cerr << "File could not be opened! Output written to stdout" << endl;
+            cerr << "[recmosh][RecMosh::writeToFile] File could not be opened! Output written to stdout" << endl;
             dataFile.close();
 
             map<int, double>::iterator it;
@@ -84,9 +85,11 @@ void RecMosh::writeToFile()
             }
         }
         dataFile << 1000*n1 + 100*l1 + 10*n2 + l2  << endl;
+
         map<int, double>::iterator it;
         for( it =coefficients.begin(); it!= coefficients.end(); it++ ) {
-            dataFile << (it)->first << " " << (it)->second <<   endl;
+            dataFile << std::fixed      << std::setw(12) << (it)->first << "   ";
+            dataFile << std::scientific << std::setw(12) << (it)->second << endl;
         }
 
         dataFile.close();
@@ -101,7 +104,7 @@ void RecMosh::loadFile(  )
     name << inputPath << "/recmosh" << n1 << l1 << n2 << l2 << ".dat";
     ifstream dataFile ( name.str().c_str(), ifstream::in );
     if( !dataFile ) {
-        cerr << "File " << name.str() << " not found! " << endl;
+        cerr << "[recmosh][RecMosh::loadFile] File " << name.str() << " not found! " << endl;
         dataFile.close();
     } else {
         int data;
@@ -163,7 +166,7 @@ double RecMosh::getCoefficient( int n, int l, int N, int Lambda, int L )
  */
 double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int n2, int l2, int L)
 {
-    cout << "new recmosh value calculated " << endl;
+    cout << "[recmosh][RecMosh::calculate] new recmosh value calculated " << endl;
 // 	cout << "<(" << n << l << N << Lambda << ")" << L;
 //	cout << "|(0" << l1 << 0 << l2 << ")" << L << "> = " << endl;
     if( L < fabs(l-Lambda) || L > l+Lambda)
@@ -249,7 +252,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
         return sqrt(factor)*sign*sum;
     }
 
-    cerr << " IMPOSSIBLE " << endl;
+    cerr << "[recmosh][RecMosh::calculate] IMPOSSIBLE " << endl;
     return 0;
 }
 

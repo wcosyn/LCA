@@ -23,7 +23,7 @@ threej::threej( int lmax ) : lmax( lmax )
 {
     assert( lmax <= 70); // if lmax > 70, int overflows in the calculation of cmax...
     cmax= lmax*(274+lmax*(225+lmax*(85+lmax*(15+lmax))))/120 + 1;
-    cout << "[threej] lmax = " << lmax << ", cmax = " << cmax << endl;
+    cout << "[threej] lmax = " << lmax << ", cmax = " << cmax << ", size of vector_threej is ~ " << cmax/1024/1024*sizeof(double) << " MB" << endl;
     vector_threej= new vector< double >( cmax, 0 );
     bool_threej= new vector< bool >( cmax, false );
 }

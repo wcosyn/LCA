@@ -56,7 +56,8 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
     file << "# qmax = " << qmax << endl;
     file << "# nAlA = " << nA << lA << endl;
     file << "# nBlB = " << nA << lA << endl;
-    file << "# A    = " << nucleus->getA();
+    file << "# A = " << nucleus->getA();
+    file << "  Z = " << nucleus->getZ();
     file << "    T1 = " << t1;
     file << "    T2 = " << t2;
     file << "    A1 = " << nucleus->getA1();
@@ -105,13 +106,11 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
     density_ob_integrand3* is  = new density_ob_integrand3( A);
     dens_ob_params dop = { 0, nA, lA, nB, lB, t, i0, ic, it, is, icc, ict, itt, iss, ics, ist}; // first param (0) is for momentum
 
-//  cout << "initialize MF " << endl;
+    cout << "[Density_ob3] : initializing MF " << endl; cout.flush();
     sum_me_coefs( &dop );
-//  cout << "initialize corr " << endl;
+    cout << "[Density_ob3] : initialize corr " << endl; cout.flush();
     sum_me_corr( &dop );
-
-
-    cout << "[Density_ob3] initialization done ... " << endl;
+    cout << "[Density_ob3] initialization done ... " << endl; cout.flush();
 
     /*
      * All the to-be-calculated integrals and their prefactors are known

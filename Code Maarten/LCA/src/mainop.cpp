@@ -307,7 +307,7 @@ double calculate_tb_norm( int A, int Z )
 {
     norm_tb* nt = new norm_tb( all_norm, true, true, false );
     norm_tb::norm_tb_params ntp = {-1, -1, -1, -1, -1, -1};
-    double norm_mf=  nt->sum_me( &ntp );
+    double norm_mf=  nt->sum_me( &ntp ); // this returns \sum_{a1,a2} 2/(A*(A-1)) \sum_{AB} C_{a1,a2}^{A} C_{a1,a2}^{B} \delta_{AB}
     double norm_tb= nt->sum_me_corr_coefs( &ntp );
     double norm_tb_3b= nt->sum_me_3b_corr_coefs( &ntp );
 
