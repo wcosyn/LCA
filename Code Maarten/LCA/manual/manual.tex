@@ -50,6 +50,18 @@ $\psi_{n l m_{l}} (\vec{r})$ are the $\vec{r}$-space solutions of the harmonic o
 \psi_{n l m_{l}}(\vec{r}) &= R_{n l} (r) Y_{l m}(\Omega_{r}) \, , \\
 R_{n l}(r) &= \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu^{l+\frac{3}{2}} \right]^{\frac{1}{2}} r^{l} e^{-\frac{\nu r^{2}}{2}} L_{n}^{l+\frac{1}{2}}( \nu r^{2}) \, .
 \end{align}
+$m_N$ is the average nucleon mass, $938.5$ MeV (this appears to be $938.0$ in the code).
+$\hbar \omega$ is parameterized as,
+\begin{align}
+	\hbar \omega = 45 A^{-\frac{1}{3}} - 25 A^{-\frac{2}{3}} \, [\text{MeV}] .
+\end{align}
+$\nu$ in function of the mass number $A$ is displayed in figure~\ref{fig:Adepnu}.
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{figures/Adepnu.pdf}
+\caption{The harmonic-oscillator parameter $\nu$ in function of the mass number $A$.}
+\label{fig:Adepnu}
+\end{figure}
 It is well known that the solutions $\phi_{n l m_{l}} (\vec{p})$  in $\vec{p}$-space are of the exact same form, where compared to the $\vec{r}$-space solution $\vec{r}$ is replaced by $\vec{p}$ and $\nu$ by $\nu' = 1/\nu$.
 However, when taking the explicit Fourier transformation, some (non-neglectable) phase factors appear (see Sec.~\ref{sec:ft_transforms}),
 \begin{align}
@@ -71,17 +83,24 @@ In the LCA a one-body operator $\widehat{\Omega}^{[1]} = \sum_{i}^{A} \widehat{\
 \end{equation}
 In similar vein, the LCA transforms a two-body operator $\widehat{\Omega}^{[2]} = \sum_{i<j} \widehat{\Omega}_{ij}$ to,
 \begin{multline}
-	\widehat{\Omega}^{[2],\,\text{LCA}} 
-	= \widehat{\Omega}^{[2]} \\ + 
-	\sum_{i<j}^{A} \left[ 
+	\widehat{\Omega}^{[2],\,\text{LCA}} = 
+	\widehat{\Omega}^{[2]}
+	+ \sum_{m<n}^{A} \sum_{i<j}^{A} \left(
+		\hat{l}_{mn}^{\dagger} \widehat{\Omega}_{ij} +
+		\widehat{\Omega}_{ij} \hat{l}_{mn} +
+		\hat{l}_{mn}^{\dagger} \widehat{\Omega}_{ij} \hat{l}_{mn}
+	\right) \\ 
+	\times \left[ ( \delta_{mi} + \delta_{ni} + \delta_{mj} + \delta_{nj} ) ( 1 - \delta_{mi} \delta_{nj})( 1 - \delta_{mj} \delta_{ni}) + \delta_{mi} \delta_{nj} + \delta_{mj} \delta_{ni} \right] \\
+	= \widehat{\Omega}^{[2]} + 
+	\sum_{i<j}^{A} \Big[ 
 	\hat{l}_{ij}^{\dagger} \widehat{\Omega}_{ij} +
 	\widehat{\Omega}_{ij} \hat{l}_{ij} +
-	\hat{l}_{ij}^{\dagger} \widehat{\Omega}_{ij} \hat{l}_{ij} + 
-	\sum_{n \notin \{i,j\}}^{A} 
+	\hat{l}_{ij}^{\dagger} \widehat{\Omega}_{ij} \hat{l}_{ij} \\
+	+ \sum_{n \notin \{i,j\}}^{A} 
 	(\hat{l}_{in}^{\dagger} + \hat{l}_{jn}^{\dagger} ) \widehat{\Omega}_{ij} +
 	\widehat{\Omega}_{ij} (\hat{l}_{in} + \hat{l}_{jn}) + 
-	\hat{l}_{in}^{\dagger} \widehat{\Omega}_{ij} \hat{l}_{in}
-	 \right] \, .
+	\hat{l}_{in}^{\dagger} \widehat{\Omega}_{ij} \hat{l}_{in} + \hat{l}_{jn}^{\dagger} \widehat{\Omega}_{ij} \hat{l}_{jn} 
+	 \Big] \, .
 	 \label{eq:LCA_two_body}
 \end{multline} 
 
@@ -161,6 +180,33 @@ At the cost of some readability Eq.~(\ref{eq:two_body_op_correlation_linear_intu
 	\label{eq:two_body_op_correlation_linear_short}
 \end{align}
 By going from $ \sum_{i<j}^{A} = \sum_{i \neq j}^{A}$ introduced double counting of some terms was introduced, corrected by the factor $( 1 - \frac{\delta_{ik}}{2})$. Eq.~(\ref{eq:two_body_op_correlation_linear_short}) has a total of $A(A-1)^{2}$ terms, an overhead $\frac{A(A-1)}{2}$ compared to Eq.~(\ref{eq:two_body_op_correlation_linear_intuitive}). The relative increase is $ \frac{A(A-1)^{2}}{A(A-1)(A-\frac{3}{2})} = 1 + \frac{1}{2A-3}$, about $1.048$ for $A=12$ and $1.003$ for $A=208$.
+\begin{figure}
+\centering
+\includegraphics[scale=0.75]{figures/one_body_with_eq.pdf}
+\caption{
+The diagrammatic representation of the LCA expansion of a one-body operator (Eq.~(\ref{eq:LCA_one_body})).
+Below each diagram is their corresponding expression.
+The black dot represents the particle ``$i$'' on which the operator $\widehat{\Omega}_{i}$ is acting on.
+The dashed lines are the correlation operator $\hat{l}_{ij}$ acting the particle pair ``$ij$''.
+In the LCA, two dashed lines (correlation operators) are required to connect the same pair.
+Disconnected diagrams are not considered in the LCA.
+} 
+\label{fig:LCA_one_body_diagram}
+\end{figure}
+%
+\begin{figure}
+\centering
+\includegraphics[scale=0.75]{figures/two_body_with_eq.pdf}
+\caption{
+The diagrammatic representation of the LCA expansion of a two-body operator (Eq.~(\ref{eq:LCA_one_body})).
+Below each diagram is their corresponding expression.
+The black dots represent the particle pair ``$ij$'' on which the operator $\widehat{\Omega}_{ij}$ is acting on.
+The dashed lines are the correlation operator $\hat{l}_{in}$ acting the particle pair ``$in$''.
+In the LCA, two dashed lines (correlation operators) are required to connect the same pair.
+Disconnected diagram are not considered in the LCA.
+} 
+\label{fig:LCA_two_body_diagram}
+\end{figure}
 \section{Momentum distributions}
 \subsection{Second quantization}
 This section will be somewhat over-elaborated. But it can serve as a recapitulation of second quantization.
@@ -347,7 +393,9 @@ Let us now take a look at the separate cases for $\delta_{NN'} \delta_{LL'} \del
 	\begin{multline*}
 		\braket{ n l |  f_{c}(r_{12}) | n' l'} = N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \int \text{d} r_{12} \, r_{12}^{2} r_{12}^{l} e^{-\nu r_{12}^{2} /2} L_{n}^{l+1/2}(\nu r_{12}^{2}) f_{c}(r_{12}) r_{12}^{l'} e^{-\nu r_{12}^{2} /2} L_{n'}^{l'+1/2}(\nu r_{12}^{2}) \\
 	\end{multline*}
-	The correlation functions $f_{p}(r)$ are expanded as $ \sum_{\lambda} b_{\lambda} r^{\lambda} e^{-b r^{2}}$, expanding the generalized laguerre polynomials as well, $ L_{n}^{l}(r) = \sum_{k} a_{nl,k} r^{k}$,
+	The correlation functions $f_{p}(r)$ are expanded as $ \sum_{\lambda}^{\lambda_{\text{max}}} b_{\lambda} r^{\lambda} e^{-b r^{2}}$.
+	In the current parameterization of the correlation functions it appears that $\lambda_{\text{max}} = 10$ for the central correlation function and $\lambda_{\text{max}}=9$ for the tensor and spin-isospin correlation functions.
+	Expanding the generalized laguerre polynomials as $ L_{n}^{l}(r) = \sum_{k} a_{nl,k} r^{k}$ results in,
 	\begin{multline*}
 		\braket{ n l |  f_{c}(r_{12}) | n' l'} = N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \sum_{kk'\lambda} a_{nl,k} a_{n'l',k'} b_{\lambda}  \int \text{d} r_{12} r_{12}^{2+l+l'} e^{-\nu r_{12}^{2}} ( \nu r_{12}^{2} )^{k} r_{12}^{\lambda} e^{-b r_{12}^{2}} ( \nu r_{12}^{2})^{k'}
 	\end{multline*}
@@ -373,7 +421,7 @@ Let us now take a look at the separate cases for $\delta_{NN'} \delta_{LL'} \del
 		= N_{nl} N_{n'l'} \nu^{\frac{l + l' + 3}{2}} \sum_{kk'\lambda \lambda'} a_{nl,k} a_{n'l',k'} b_{\lambda} b_{\lambda'} \nu^{- \frac{3 + l + l' + \lambda + \lambda'}{2}} \int \text{d} r \, r^{2+l+l'+2k+2k'+\lambda + \lambda'} e^{- ( 2B + 1) r^{2}} \\
 		=  \frac{N_{nl} N_{n'l'}}{2} \sum_{kk'\lambda \lambda'} \nu^{ - \frac{\lambda + \lambda'}{2}} a_{nl,k} a_{n'l',k'} b_{\lambda} b_{\lambda'} \Gamma\left(\frac{K+1}{2}\right) (2B+1)^{-\frac{K+1}{2}}
 	\end{multline*}
-	With $K = 2+l+l'+2k+2k'+\lambda+\lambda'$.
+	With $K = 2+l+l'+2k+2k'+\lambda+\lambda'$ and $B = b/\nu$
 \end{itemize}
 \section{Matrix elements bis}
 
@@ -1104,11 +1152,18 @@ Summarizing we can write,
 	\hat{\mathcal{O}}^{p} \ket{ n (lS) j m_j N L M_L T M_T } = \sum_{l' = |j-1|}^{j+1} \text{O}^{p}(S,T,j,l,l') \ket{ n (l'S) j m_j N L M_L T M_T }
 \end{align*}
 With
-\begin{align*}
+\begin{align}
 	\hat{\mathcal{O}}^{p} = \mathbb{1} & \Rightarrow  \text{O}^{p}(S,T,j,l,l') = \delta_{l l'} \\
 	\hat{\mathcal{O}}^{p} = \vec{\sigma}_{1} \cdot \vec{\sigma_{2}} \vec{ \tau}_{1} \cdot \vec{ \tau}_{2} & \Rightarrow  \text{O}^{p}(S,T,j,l,l') = [ 2S(S+1) - 3 ] [ 2T(T+1) - 3] \delta_{l l'}\\
 	\hat{\mathcal{O}}^{p} =  \hat{S}_{12} &\Rightarrow \text{O}^{p}(S,T,j,l,l') = \text{S}_{12}(S,j,l,l')
-\end{align*}
+\end{align}
+These equations are implemented by
+\begin{verbatim}
+operator_virtual::get_central_me
+operator_virtual::get_tensor_me
+operator_virtual::get_spinisospin_me
+\end{verbatim}
+
 \subsection{Isospin projection part}
 Let us investigate the expression,
 \begin{align*}
@@ -1145,6 +1200,34 @@ Yes, there are 10 terms here above if you take the $\pm$-signs into account. The
             }
 \end{verbatim}
 \texttt{t} is equal to $2 t_1$. A value of \texttt{t=0} means summing over $t_1$ resulting in $\delta_{T T'}\delta_{M_T M_T'}$.
+
+\section{Two-body operators}
+We now turn our attention to 2-body operators.
+\subsection{norm\_tb : public operator\_virtual}
+Here we take a look at the calculation of the 2-body norm (Eq.~(\ref{eq:LCA_norm_two_body}).
+\texttt{norm\_tb::get\_me} seems to return 
+\begin{align*}
+	\frac{2}{A(A-1)}\sum_{AB} C_{\alpha_1,\alpha_2}^{A\,\dagger} C_{\alpha_1,\alpha_2}^{B} \hat{\delta}_{\alpha_1,\alpha_2}^{A,B}
+\end{align*}
+Whereby the $\hat{\delta}$ operator denotes to possibility to isolate the contributions from specific quantum numbers $n_{\alpha_1} l_{\alpha_1} n_{\alpha_2} l_{\alpha_2} S T$. ($S_{A} = S_{B}$ and $T_{A} = T_{B}$).
+The function \texttt{norm\_tb::sum\_me} inherited from \texttt{operator\_virtual::sum\_me} sums the function \texttt{norm\_tb::get\_me} over the pairs resulting in,
+\begin{align*}
+	\frac{2}{A(A-1)} \sum_{\alpha_1,\alpha_2} \sum_{AB} C_{\alpha_1,\alpha_2}^{A\,\dagger} C_{\alpha_1,\alpha_2}^{B} \hat{\delta}_{\alpha_1,\alpha_2}^{A,B}
+\end{align*}
+In the case of $\hat{\delta}_{\alpha_1,\alpha_2}^{A,B} \equiv 1$ this expression is equal to $ \frac{2}{A(A-1)} \frac{A(A-1)}{2} = 1$.
+
+\texttt{norm\_tb::sum\_me\_corr\_coefs} is inherited from \texttt{operator\_virtual::sum\_me\_corr\_coefs}.
+It performs the summation of Eq.~(\ref{eq:LCA_norm_two_body}, iterating over the \texttt{paircoefs} (a \texttt{paircoef} contains information about the states $\ket{\alpha_1,\alpha_2},\ket{A}$, the coefficient $ C_{\alpha_1,\alpha_2}^{A}= \braket{A | \alpha_1,\alpha_2}$ and all the coupled states $\ket{B}$ with non-zero overlap).
+First the iteration is started over all the \texttt{paircoef}s in a nucleus, then a nested iteration is done to access the coupled states (\texttt{paircoef}s) with non-zero overlap.
+The effect of the correlation operators is calculated with the functions,
+\begin{verbatim}
+    norm_tb::get_me_corr_left
+    norm_tb::get_me_corr_right
+    norm_tb::get_me_corr_both
+\end{verbatim}
+representing the correlation-operator terms $\hat{\wr}^{\dagger}$, $\hat{\wr}$ and $\hat{\wr}^{\dagger} \hat{\wr}$.
+\todo[inline]{continue here}
+
 \section{Fourier transform of HO wave functions}
 \label{sec:ft_transforms}
 The HO Shr\"odinger equation is given by
