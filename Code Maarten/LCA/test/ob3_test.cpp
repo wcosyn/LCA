@@ -4,9 +4,16 @@
 #include "nucleuspp.h"
 #include "norm_ob.h"
 #include <string>
+#include <cstdlib>
+#include <cassert>
+#include <sstream>
+#include "threej.h"
+
 
 void ob(int A,int Z,std::string name){
-    Nucleusall nuc(".",".",A,Z);   // inputdir,resultdir,A,Z
+
+    // the inputdir and resultdir are only used for storage of the moshinsky brakets, always, everywhere
+    Nucleusall nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
     //NucleusPP  nucpp(".",".",40,20); // idem
     //NucleusNP  nucnp(".",".",40,20); // idem
 
@@ -26,15 +33,48 @@ void ob(int A,int Z,std::string name){
     dob3.write(".",name.c_str(),-1,-1,-1,-1, t,&mf,&corr); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
-int main(){
+int main(int argc,char* argv[]){
     /* the following block for He,Be,C,O,Al took:
      * 00.111.-1-1-1-1 : real=7m6s user=26m17s :: original version
      * 00.111.-1-1-1-1 : real=7m8s user=26m17s :: with the new density_ob3::get_me12_factor implemented
      */
-    ob(4,2,"He");
-    ob(9,4,"Be");
-    ob(12,6,"C");
-    ob(16,8,"O");
-    ob(27,13,"Al");
-    return 0;
+    if (argc!=4){
+        std::cerr << "[Error] expected three arguments:" << std::endl;
+        std::cerr << "[executable] [A] [Z] [nucleusname]"<< std::endl;
+        std::cerr << std::endl;
+        exit(-1);
+    }
+    ob( atoi(argv[1]), atoi(argv[2]), argv[3]);
+
+    std::unordered_map< threejobj, double > n = threej::threejsmap;
+    unsigned int b = n.bucket_count();
+    unsigned int maxb = 0;
+    std::cout << "[3jmap] threejsmap has " << b << " buckets" << std::endl;
+    for (unsigned int i=0; i<b;i++){
+        std::cout << "[3jmap] bucket #" << i << " has " << n.bucket_size(i) << " elements." << std::endl;
+        if (n.bucket_size(i) > maxb)
+            maxb = n.bucket_size(i);
+    }
+    std::cout << "[3jmap] map size is       : " << n.size() << std::endl;
+    std::cout << "[3jmap] max bucket size is: " << maxb << std::endl;
+    std::cout << "[3jmap] map load factor is: " << n.load_factor() << std::endl;
+
+    /*
+     * if threejlogging is enabled you can use this cout to inspect the logger
+     * */
+    /*
+    std::unordered_map< threejobj, unsigned int > m = threej::my3jlogger.threejmap;
+    unsigned int i=0;
+    for( std::unordered_map< threejobj, unsigned int >::iterator it = m.begin(); it != m.end(); ++it){
+        std::cout << "[3jlogger]"<< "[" << i << "] ";
+        std::cout << " :: " << it->second << " : ";
+        std::cout << " (";
+        std::cout << it->first.two_j1 << ", ";
+        std::cout << it->first.two_j2 << ", ";
+        std::cout << it->first.two_j3 << ", ";
+        std::cout << it->first.two_m1 << ", ";
+        std::cout << it->first.two_m2 << ", ";
+        std::cout << it->first.two_m3 << ")" << std::endl;
+        i++;
+    }*/
 }
