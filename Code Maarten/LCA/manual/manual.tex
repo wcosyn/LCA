@@ -540,6 +540,47 @@ Here we look at the file \texttt{density\_ob\_integrand3}. See section \ref{ssec
 \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) 
 \end{align*}
 The symbols $\chi_{p,nl_p}^{l_1 k}(p_1,P_{12})$, $\chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12})$ are calculated in \texttt{density\_ob\_integrand\_cf}. Hence this integrand takes two \texttt{density\_ob\_integrand\_cf*} pointers. Additionally it takes the parameters, $n,l_p,k,m',l_q',k',p_1,\nu,\texttt{index}$ (\texttt{nA,lA,la,nB,lB,l,k,nu,index} in the code). \texttt{index} corresponds to the power of $P_{12}$ in the integrand. This is because the $\Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12})$ are expanded in powers of $P_{12}$, again see \ref{ssec:cm_mom_integral} for more details.
+
+\subsubsection{Alternative approach}
+Here we will investigate an alternative approach of calculating the following integral,
+\begin{align}
+\int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{k'K'}(p_1,P_{12}) 
+\label{eq:alt_approach_start}
+\end{align}
+We will try to perform the integral over $P_{12}$ instead of keeping it last.
+The $\chi$ symbols are defined as,
+\begin{align*}
+	\chi_{p,nl}^{kK}(p_1,P) = \int \text{d} r\, r^{2} f_{p}(r) R_{n l}(r) j_{k}( \sqrt{2} p_1 r)  j_{K}(P r)
+\end{align*}
+Eq.~(\ref{eq:alt_approach_start}) then becomes,
+\begin{multline*}
+\int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{k'K'}(p_1,P_{12}) = \\
+ \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \\
+ \int \text{d} r\, r^{2} f_{p}(r) R_{n l_p}(r) j_{k}( \sqrt{2} p_1 r)  j_{K}(P_{12} r) 
+ \int \text{d} r' \, r^{\prime 2} f_{q}(r') R_{n l_q}(r') j_{k'}( \sqrt{2} p_1 r')  j_{K'}(P_{12} r') \, .
+\end{multline*}
+Expanding $\Pi_{NL}(P) = N_{NL} P^{L} e^{-\frac{\nu' P^{2}}{2}} \sum_{i=0}^{N} a_{NL,i} P^{i}$ and isolating the integral over $P_{12}$ results in,
+\begin{multline*}
+\int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{k'K'}(p_1,P_{12}) = \\
+ \int \text{d} r\, r^{2} f_{p}(r) R_{n l_p}(r) j_{k}( \sqrt{2} p_1 r)  
+ \int \text{d} r' \, r^{\prime 2} f_{q}(r') R_{n l_q}(r') j_{k'}( \sqrt{2} p_1 r')   \\
+  N_{NL} N_{N'L'} \sum_{i=0}^{N} \sum_{j=0}^{N'} a_{NL,i}  a_{N'L',j} 
+ \int \text{d} P_{12} \, P_{12}^{2+L+L'+i+j} e^{-\nu' P_{12}^{2}} j_{K}(P_{12} r) j_{K'}(P_{12} r')
+\end{multline*}
+With $j_{l}(x) = \frac{\sqrt{\pi}}{2} \sum_{k=0}^{\infty} \frac{(-1)^{k}}{k! \Gamma(k+l+3/2)} \left( \frac{x}{2} \right)^{2k+l}$ this results in,
+\begin{multline*}
+\int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{k'K'}(p_1,P_{12}) = \\
+ \int \text{d} r\, r^{2} f_{p}(r) R_{n l_p}(r) j_{k}( \sqrt{2} p_1 r)  
+ \int \text{d} r' \, r^{\prime 2} f_{q}(r') R_{n l_q}(r') j_{k'}( \sqrt{2} p_1 r')   \\
+  N_{NL} N_{N'L'} \frac{ \pi}{4}  \sum_{i=0}^{N} \sum_{j=0}^{N'} a_{NL,i}  a_{N'L',j} 
+ \sum_{s,s'} \frac{(-1)^{s+s'}}{s! s'! \Gamma(s+K+3/2) \Gamma(s'+K'+3/2)}  \left( \frac{r}{2} \right)^{2s+K} \left( \frac{r'}{2} \right)^{2s'+K'} \\
+  \int \text{d} P_{12} \, P_{12}^{2+L+L'+i+j+2s+2s'+K+K'} e^{-\nu' P^{2}} \\
+  = \int \text{d} r\, r^{2} f_{p}(r) R_{n l_p}(r) j_{k}( \sqrt{2} p_1 r)  
+ \int \text{d} r' \, r^{\prime 2} f_{q}(r') R_{n l_q}(r') j_{k'}( \sqrt{2} p_1 r')   \\
+  N_{NL} N_{N'L'} \frac{ \pi}{4}  \sum_{i=0}^{N} \sum_{j=0}^{N'} a_{NL,i}  a_{N'L',j} 
+ \sum_{s,s'} \frac{(-1)^{s+s'}}{s! s'! \Gamma(s+K+3/2) \Gamma(s'+K'+3/2)}  \left( \frac{r}{2} \right)^{2s+K} \left( \frac{r'}{2} \right)^{2s'+K'} \\
+  \frac{1}{2} \Gamma \left( \frac{3+L+L'+i+j+2s+2s'+K+K'}{2} \right) \nu^{\prime \, \frac{3+L+L'+i+j+2s+2s'+K+K'}{2} }
+\end{multline*}
 \subsection{ density\_ob\_integrand\_cf }
 cf probably stands for correlation function. This class calculates integrals of the form
 \begin{align*}
@@ -1226,7 +1267,8 @@ The effect of the correlation operators is calculated with the functions,
     norm_tb::get_me_corr_both
 \end{verbatim}
 representing the correlation-operator terms $\hat{\wr}^{\dagger}$, $\hat{\wr}$ and $\hat{\wr}^{\dagger} \hat{\wr}$.
-\todo[inline]{continue here}
+
+
 
 \section{Fourier transform of HO wave functions}
 \label{sec:ft_transforms}
@@ -1325,6 +1367,115 @@ Note that we have applied a somewhat dirty trick we truncated the sum $\sum_{k=0
 	\phi_{n l m}(\vec{p}) =  i^{-l} (-1)^{n} \left[ \frac{ 2n!}{\Gamma(n+l+\frac{3}{2})} \nu'^{l+\frac{3}{2}} \right]^{\frac{1}{2}} p^{l}  Y_{l m}(\Omega_p) e^{-\frac{\nu' p^{2}}{2}} L_{n}^{l+\frac{1}{2}}(\nu'p^{2})
 \end{align*}
 Which is the expected result except for the phase factor $(-i)^{l} (-1)^{n} = i^{2n+3l}$.
+
+
+
+\section{Optimizing code}
+
+\subsection{one-body momentum distributions}
+In this section we discuss the performance and optimization of the code for the calculation of one-body momentum distributions.
+
+Using \texttt{valgrind --tool=callgrind} it has been established that for light nuclei the majority of the cpu time is invested into calculating the one-dimensional integrals. For medium to heavy nuclei ($ A \gtrapprox 20$) the load shifts towards the evaluation of the $3j$ coefficients. In Maartens implementation an efficient storage scheme is used, described in \texttt{SIAM J. SCI. COMPUT. 25, No 4 pp 1416,J.Rasch and A.c.h. Yu}.
+This scheme exploits different symmetry properties of the $3j$ symbols.
+The evaluation of each $3j$ symbol requires the calculation of the index used to access the value of the $3j$ coefficient.
+As several symmetry operations are done this can become quite cpu-intensive as the $3j$'s are evaluated a lot (see table~\ref{tab:ob_num_3j_evals}).
+
+\begin{table}
+\centering
+\begin{tabular}{r | r}
+nucleus & \# $3j$ evaluations \\ \hline
+$^{4}$He  &         39 372 \\
+$^{12}$C  &     24 683 830 \\
+$^{27}$Al &  1 728 227 422 \\
+$^{40}$Ca &  1 937 280 216 \\
+$^{56}$Fe & 50 136 361 455
+\end{tabular}
+\caption{The number of $3j$ evaluations in the calculation of the one-body momentum distribution.
+Going much higher in this table is difficult. Logging the number of $3j$ calls slows down the calculations considerably.
+}
+\label{tab:ob_num_3j_evals}
+\end{table}
+
+Here, we discuss the attempt to improve the speed of the one-body momentum distribution calculations.
+As the computation is only $3j$-heavy for heavy nuclei, the testing of the optimizations has to be done for those. This makes this process somewhat slow.
+
+In order to improve computation speed while sacrificing some memory efficiency an \texttt{std::unordered\_map} is used to store the $3j$ coefficients. This is a ``hashmap''. The $3j$s are hashed and mapped to an index in the map.
+In this case it is imperative that the hash keys, given $j_1,j_2,j_3,m_1,m_2,m_3$ of the $3j$ coefficient, can be generated fast, while minimizing hash collisions.
+
+
+
+This issue can be investigated by counting the number of elements in each ``bucket'' of the hash map.
+Elements in the same bucket have the same hash key (and are therefore in hash collision).
+For a perfect hash key the number of elements in each bucket is 0 (empty) or 1.
+With the following hash key\footnote{Several other ``more advanced'' hash-key generation algorithms have been tested but this simple one was found to be the best}, it is established that the number of hash collisions is limited to acceptable amounts,
+\begin{verbatim}
+	(t.two_j1 << 24) ^ (t.two_j2 << 18) ^ (t.two_j3 << 12) ^ (t.two_m1 << 6) ^ t.two_m2;
+\end{verbatim}
+$2 m_3$ is not used as it is guaranteed that $m_1+m_2+m_3=0$ before storing/requesting the $3j$ coefficient.
+Each value of $j_1,j_2,j_3,m_1,m_2$ shifted in multiples of $6$ bits to the left.
+This is done to stay within $32$ bits for the key ($5 \times 6 = 30$).
+It is expected that for $2j_{\text{max}} < 2^{6} = 64$ this hash key will perform well.
+The XOR operator $\hat{}$ is used instead of the $+$ operator solely because of a small, but noticeable, speed gain.
+
+It is established that the memory usage of the hashmap is less than or comparable to that of the previous storage scheme up to $A \approx 60$.
+
+The speed comparison is shown in table~\ref{tab:speed_comp}.
+
+\begin{table}
+\centering
+\begin{tabular}{c | c}
+nucleus & speedup $\frac{\text{old time}}{\text{new time}}$ \\ \hline
+$^{12}$C   & 1.00 \\
+$^{27}$Al  & 1.21 \\
+$^{40}$Ca  & 1.04 \\
+$^{48}$Ca  & 1.06 \\
+$^{56}$Fe  & 1.39 
+\end{tabular}
+\caption{This table shows the speedup of the one-body momentum distributions when the hash map is used to store the $3j$ coefficients.}
+\label{tab:speed_comp}
+\end{table}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.45\textwidth]{figures/threej_map_buckets_12C.pdf}
+\includegraphics[width=0.45\textwidth]{figures/threej_map_buckets_56Fe.pdf}
+\caption{An overview of the hash map ``buckets''. For $^{12}$C the collision rate is $80\%$, for $^{56}$Fe this drops to  $60\%$.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{figures/threej_evals_12C.pdf}
+\includegraphics[width=\textwidth]{figures/threej_evals_56Fe.pdf}
+\caption{The number of $3j$ coefficients in function of how many times they are evaluated. Note that both axes are logarithmic. For example, the first bar in both figures represent the number of $3j$ coefficients that have been evaluated twice.}
+\end{figure}
+
+\subsection{Heavy nuclei}
+
+The one-body momentum distributions for heavy nuclei gets very noisy tails.
+After extensive research it appeared that increasing integration precision
+in \texttt{density\_ob\_integrand\_cf::calculate} softens this problem as shown in
+figure~\ref{fig:ob_bad_tails}.
+
+\todo[inline]{
+The time the code takes to complete is dominated by the highest $l$-value
+of the single-particle orbitals.
+The main reason I have not yet been able to calculate $^{208}$Pb is because the 
+valence shell has $l=6$ (for particle numbers above $112$).
+$^{208}$Pb has 126 neutrons, meaning the $l=6$ is populated, and the computation time
+is multiplied with a considerable factor. 
+}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{figures/ob_Xe124_comparison.pdf}
+\includegraphics[width=0.7\textwidth]{figures/ob_Nd142_comparison.pdf}
+\caption{The one-body momentum distribution before and after (new calcs.) the increased precision of \texttt{density\_ob\_integrand\_cf::calculate}.
+The effect in $^{142}$Xe is almost invisible on the log scale but for $^{142}$Nd the fluctuations in
+the tails become problematic. It is expected that this effect grows worse for increasing mass number $A$.}
+\label{fig:ob_bad_tails}
+\end{figure}
+
 \end{document}
 
 
@@ -1427,3 +1578,6 @@ Note that the combinations of different isospin-projections are not necessarily 
 \end{multicols}
 These matrix element have been checked with a simple python program (\texttt{numpy.kron} ftw for kronecker products). Note that all the matrix elements for $i=1,2$ are the same expect for a minus sign whenever a combination like $ \braket{ 1,0 | \ldots | 0,0}$ or $\braket{0,0| \ldots | 1,0}$ is involved.
 Also note that all the matrix elements do not mix different $M_T, M_T'$, so we effectively have $\delta_{M_T M_T'}$ everywhere.
+
+
+
