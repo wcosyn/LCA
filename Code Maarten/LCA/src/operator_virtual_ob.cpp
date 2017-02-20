@@ -41,7 +41,7 @@ double operator_virtual_ob::sum_me_corr_pairs( void* params )
         sum+= me*pair_norm ;
 
         if( !(i%1000) ) {
-            cout << i << " of the " << max << " done corr pairs" << endl;
+            cout << "[operator_virtual_ob::sum_me_corr_pairs] " << i << " of the " << max << " done corr pairs" << endl;
         }
     }
 
@@ -86,7 +86,7 @@ double operator_virtual_ob::sum_me_corr( void* params )
             sum_i+= me;
         }
         if( !(i%1000) ) {
-            cout << i << " of the " << max << " done " << endl;
+            cout << "[operator_virtual_ob::sum_me_corr] " << i << " of the " << max << " done " << endl;
         }
 
         sum+= sum_i;
@@ -162,7 +162,7 @@ double operator_virtual_ob::sum_me_coefs( void* params )
             sum_i+= me;
         }
         if( !(i%1000) ) {
-            cout << i << " of the " << max << " done mf" << endl;
+            cout << "[operator_virtual_ob::sum_me_coefs] " << i << " of the " << max << " done mf" << endl;
         }
 
         sum+= sum_i;

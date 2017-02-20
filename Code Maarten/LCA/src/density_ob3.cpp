@@ -53,6 +53,7 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
     strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct );
 
     file << "# " <<  buf << endl;
+    file << "# omp_get_max_threads = " << omp_get_max_threads() << endl;
     file << "# qmax = " << qmax << endl;
     file << "# nAlA = " << nA << lA << endl;
     file << "# nBlB = " << nA << lA << endl;
