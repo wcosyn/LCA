@@ -21,7 +21,7 @@ density_ob_integrand_cf::density_ob_integrand_cf( int A, double q, double(*f)(do
     nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
     nu75= pow( nu, 0.75 );
 
-    w= gsl_integration_workspace_alloc( 50000 );
+    w= gsl_integration_workspace_alloc( 200000 );
 }
 
 density_ob_integrand_cf::~density_ob_integrand_cf()
@@ -160,7 +160,7 @@ double density_ob_integrand_cf::calculate( int k, int l, uint i, int intp )
     //int succes = gsl_integration_qag( &F, 0, 10, 1e-8, 1e-4, 10000, 3, w, &result, &abserr );
     // arguments of gsl_integration_qagiu : function, lowerb, epsabs, epsrel, limit, workspace, result, error
     //int succes = gsl_integration_qagiu( &F, 0, 0., 1e-4, 50000, w, &result, &abserr );
-    int succes = gsl_integration_qag( &F, 0, 20, 1e-8, 1e-4, 40000, 6, w, &result, &abserr );
+    int succes = gsl_integration_qag( &F, 0, 20, 1e-8, 1e-4, 200000, 6, w, &result, &abserr );
     if( succes ) {
         cerr << "[density_ob_integrand_cf::calculate] integration failed with code : " << succes << " = " << gsl_strerror(succes) << endl;
         cerr << "[density_ob_integrand_cf::calculate] result, abserr, relerr = " << std::scientific << std::setprecision(2) << result << ", " << abserr << ", " << abserr/result << std::endl;
