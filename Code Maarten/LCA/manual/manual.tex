@@ -1418,6 +1418,7 @@ It is expected that for $2j_{\text{max}} < 2^{6} = 64$ this hash key will perfor
 The XOR operator $\hat{}$ is used instead of the $+$ operator solely because of a small, but noticeable, speed gain.
 
 It is established that the memory usage of the hashmap is less than or comparable to that of the previous storage scheme up to $A \approx 60$.
+For heavy nuclei the memory usage becomes significantly large, for example, $\approx$1 Gb for $^{142}$Nd up to $\approx$3 Gb for $^{208}$Pb. However a large fraction of this is not due to the growing hashmap.
 
 The speed comparison is shown in table~\ref{tab:speed_comp}.
 
@@ -1429,7 +1430,9 @@ $^{12}$C   & 1.00 \\
 $^{27}$Al  & 1.21 \\
 $^{40}$Ca  & 1.04 \\
 $^{48}$Ca  & 1.06 \\
-$^{56}$Fe  & 1.39 
+$^{56}$Fe  & 1.39 \\
+$^{124}$Xe & 2.30 \\
+$^{142}$Nd & 2.81   
 \end{tabular}
 \caption{This table shows the speedup of the one-body momentum distributions when the hash map is used to store the $3j$ coefficients.}
 \label{tab:speed_comp}
@@ -1440,7 +1443,9 @@ $^{56}$Fe  & 1.39
 \centering
 \includegraphics[width=0.45\textwidth]{figures/threej_map_buckets_12C.pdf}
 \includegraphics[width=0.45\textwidth]{figures/threej_map_buckets_56Fe.pdf}
-\caption{An overview of the hash map ``buckets''. For $^{12}$C the collision rate is $80\%$, for $^{56}$Fe this drops to  $60\%$.}
+\includegraphics[width=0.45\textwidth]{figures/threej_map_buckets_124Xe.pdf}
+\includegraphics[width=0.45\textwidth]{figures/threej_map_buckets_142Nd.pdf}
+\caption{An overview of the hash map ``buckets''. For $^{12}$C the collision rate is $80\%$, dropping to $60\%$ for $^{56}$Fe, $54\%$ for $^{124}$Xe and $50\%$ for $^{142}$Nd. Given that the collision rate drops when the mass number is increased, with the bucket sizes remaining small, combined with the fact that the number of buckets drops very fast for increasing bucket size, leads to the conclusion that the chosen hash key performs excellent.}
 \end{figure}
 
 \begin{figure}
