@@ -51,6 +51,7 @@ pl.rc("font",family="serif")
 # make a list of the nuclei you want to plot
 #
 nucs = ["He4","C12","Al27","Ar40","Ca40","Ca48","Fe56","Kr84_8cores_nondiscint","Ag108","Xe124","Nd142nondiscint","W184_16cores","Au197nondiscint","Pb208"]
+nucs = filter(lambda x: not( x in ["Au197nondiscint","Nd142nondiscint"]),nucs)
 filenames = [ "dens_ob4.00.111.{:s}.-1-1-1-1s".format(n) for n in nucs ]
 nucl = map( lambda s: re.search(r"^[A-Z,a-z]+",s).group(0), nucs)
 A    = map( lambda s: int(re.search(r"\d+",s).group(0)), nucs)
