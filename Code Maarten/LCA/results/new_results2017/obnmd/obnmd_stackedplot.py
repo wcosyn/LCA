@@ -18,7 +18,10 @@ import os
 # of the one-body momentum distributions
 # for a variety of nuclei
 #
-
+# launch with -suppressmf to suppress mf
+# above 3.5 inverse fermi
+#
+#
 #################################
 # set a bunch of plot parameters#
 #################################
@@ -49,6 +52,12 @@ pl.rc("font",family="serif")
 
 #
 # make a list of the nuclei you want to plot
+# this will then search for files in the format
+#
+# dens_ob4.00.111.[yournucleus].-1-1-1-1s
+# 
+# the s added add the end means the files are sorted
+#
 #
 nucs = ["He4","C12","Al27","Ar40","Ca40","Ca48","Fe56","Kr84_8cores_nondiscint","Ag108","Xe124","Nd142nondiscint","W184_16cores","Au197nondiscint","Pb208"]
 nucs = filter(lambda x: not( x in ["Au197nondiscint","Nd142nondiscint"]),nucs)
@@ -72,10 +81,14 @@ for i in range(len(nucs)):
         print("#[info] suppressing mf above {:}".format(kmax))
         ki = np.searchsorted(X[:,0],kmax)
         X[ki:,1] = 0.
+    if "-showmf" in sys.argv:
+        print("#[info] plotting mf contribution")
+        ax.plot(X[:,0],X[:,1],'k--',lw=2)
     ax.plot(X[:,0],X[:,1]+X[:,2],label=nuclabels[i],lw=3)
     axk4.plot(X[:,0],(X[:,1]+X[:,2])*X[:,0]**4,label=nuclabels[i],lw=3)
 
 ax.set_yscale("log")
+ax.set_ylim([1e-4,ax.get_ylim()[1]])
 ax.legend(frameon=False,fontsize=16,ncol=2)
 
 axk4.set_yscale("log")

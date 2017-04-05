@@ -7,6 +7,7 @@
 
 
 threej threej::threejs; // static object threejs
+threej::threej_logger threej::my3jlogger;
 std::unordered_map< threejobj, double> threej::threejsmap;
 
 double threej::get(int two_j1,int two_j2, int two_j3, int two_m1,int two_m2, int two_m3){
@@ -16,12 +17,17 @@ double threej::get(int two_j1,int two_j2, int two_j3, int two_m1,int two_m2, int
     threejobj c(two_j1,two_j2,two_j3,two_m1,two_m2,two_m3);
     std::unordered_map<threejobj,double>::const_iterator it = threejsmap.find(c);
     if (it != threejsmap.end()){ // key is in the map
+/*#pragma omp critical(getthreej) // prevent concurrent writes to the shared threejsmap!
+        {
+        my3jlogger.add(c);
+        }*/
         return it->second;
     } else { // key is not in map
         double t = gsl_sf_coupling_3j( two_j1, two_j2, two_j3, two_m1, two_m2, two_m3);
 #pragma omp critical(getthreej) // prevent concurrent writes to the shared threejsmap!
         {
         threejsmap[c] = t;
+//        my3jlogger.add(c);
         }
         return t;
     }

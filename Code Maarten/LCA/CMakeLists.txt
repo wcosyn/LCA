@@ -27,6 +27,7 @@ include_directories("${CMAKE_SOURCE_DIR}/include")
 message("-- [info] CXX FLAGS ARE ${CMAKE_CXX_FLAGS}")
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 add_subdirectory(${CMAKE_SOURCE_DIR}/test)
+add_subdirectory(${CMAKE_SOURCE_DIR}/main)
 
 
 ## Doxygen configuration

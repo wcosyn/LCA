@@ -12,12 +12,13 @@ using std::cout;
 using std::endl;
 using std::cerr;
 #include <omp.h>
+#include <iomanip>
 
 
 density_rel::density_rel(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm, int qmax)
     : operator_virtual( nucleus, central, tensor, isospin, norm ), qmax(qmax)
 {
-    cout << "rel density operator made" << endl;
+    cout << "[density_rel] rel density operator made" << endl;
 }
 
 void density_rel::write( const char* outputdir, const char* name, int nA, int lA, int nB, int lB, int S, int T, double* intmf, double* int2b, double* int3b )
@@ -40,22 +41,33 @@ void density_rel::write( const char* outputdir, const char* name, int nA, int lA
 
     //create heading
     file << "# " <<  buf << endl;
-    file << "# P= k1+k1, k = (k1-k2)/2 " << endl;
+    file << "# P = k1+k2, k = (k1-k2)/2 " << endl;
     file << "# qmax = " << qmax << endl;
-    file << "# nAlAnBlB = " << nA << lA << nB << lB << endl;
-    file << "# ST = " << S << T << endl;
-    file << "# A= " << nucleus->getA();
-    file << "\t T1= " << t1;
-    file << "\t T2= " << t2;
-    file << "\t A1= " << nucleus->getA1();
-    file << "\t A2= " << nucleus->getA2() << endl;
+    file << "# nAlA = " << nA << lA << endl;
+    file << "# nBlB = " << nB << lB << endl;
+    file << "# S, T = " << S  << ", " << T << endl;
+    file << "# A    = " << nucleus->getA();
+    file << "     T1= " << t1;
+    file << "     T2= " << t2;
+    file << "     A1= " << nucleus->getA1();
+    file << "     A2= " << nucleus->getA2() << endl;
     file << "# central = " << central;
-    file << "\t tensor = " << tensor;
-    file << "\t spinisospin = " << spinisospin;
+    file << "    tensor = " << tensor;
+    file << "    spinisospin = " << spinisospin;
     file << endl;
     file << "# norm = " << norm << endl;
-    file << "#k \t mf \t corr \t 3b corr \t total \t central \t tensor \t spiniso \t c-t \t c-s \t t-s" << endl;
-
+    file << "#  " << std::setw( 6) << "k ";
+    file << "   " << std::setw(10) << "mf";
+    file << "   " << std::setw(10) << "corr";
+    file << "   " << std::setw(10) << "3b corr";
+    file << "   " << std::setw(10) << "total";
+    file << "   " << std::setw(10) << "central";
+    file << "   " << std::setw(10) << "tensor";
+    file << "   " << std::setw(10) << "spiniso";
+    file << "   " << std::setw(10) << "ce/te";
+    file << "   " << std::setw(10) << "ce/si";
+    file << "   " << std::setw(10) << "te/si ";
+    file << endl;
     double kstep = 0.1;
 
     /*
@@ -69,7 +81,7 @@ void density_rel::write( const char* outputdir, const char* name, int nA, int lA
      * works similar as density_ob3
      */
 
-    cout << "start initialization" << endl;
+    cout << "[density rel] start initialization" << endl;
     density_rel_integrand2* ic= new density_rel_integrand2( A );
     density_rel_integrand2* it= new density_rel_integrand2( A );
     density_rel_integrand2* is= new density_rel_integrand2( A );
@@ -81,17 +93,17 @@ void density_rel::write( const char* outputdir, const char* name, int nA, int lA
     density_rel_integrand2* its= new density_rel_integrand2( A );
 
     dens_rel_params drp = { 0, nA, lA, nB, lB, S, T, ic, it, is, icc, ict, ics, itt, its, iss };
-    cout << "init mf " << endl;
+    cout << "[density rel] init mf " << endl;
     sum_me( &drp );
-    cout << "init 2b " << endl;
+    cout << "[density rel] init 2b " << endl;
     sum_me_corr_coefs( &drp );
-    cout << "init 3b " << endl;
+    cout << "[density rel] init 3b " << endl;
     sum_me_3b_corr_coefs( &drp );
 //     sum_me_3b_corr( &drp );
 
 
 
-    cout << "initialization done ... " << endl;
+    cout << "[density rel] initialization done ... " << endl;
 
     /*
      * All the to-be-calculated integrals and their prefactors are known
@@ -184,25 +196,26 @@ void density_rel::write( const char* outputdir, const char* name, int nA, int lA
         delete cfs;
         #pragma omp critical(write)
         {
-            file << k;
-            file << "\t" << mf*sqrt(8);
-            file << "\t" << corr*sqrt(8);
-            file << "\t" << corr_3b*sqrt(8);
-            file << "\t" << (mf+corr+corr_3b)*sqrt(8);
-            file << "\t" << corr_3b_c*sqrt(8)*3*2/M_PI*8/norm+ corr_c*sqrt(8);
-            file << "\t" << corr_3b_t*sqrt(8)*3*2/M_PI*8/norm+ corr_t*sqrt(8);
-            file << "\t" << corr_3b_s*sqrt(8)*3*2/M_PI*8/norm+ corr_s*sqrt(8);
-            file << "\t" << corr_3b_ct*sqrt(8)*3*2/M_PI*8/norm+ corr_ct*sqrt(8);
-            file << "\t" << corr_3b_cs*sqrt(8)*3*2/M_PI*8/norm+ corr_cs*sqrt(8);
-            file << "\t" << corr_3b_ts*sqrt(8)*3*2/M_PI*8/norm+ corr_ts*sqrt(8);
+            file << std::scientific << std::setprecision(3);
+            file << std::setw(10) << k;
+            file << "   " << std::setw(10) << mf*sqrt(8);
+            file << "   " << std::setw(10) << corr*sqrt(8);
+            file << "   " << std::setw(10) << corr_3b*sqrt(8);
+            file << "   " << std::setw(10) << (mf+corr+corr_3b)*sqrt(8);
+            file << "   " << std::setw(10) << corr_3b_c*sqrt(8)*3*2/M_PI*8/norm+ corr_c*sqrt(8);
+            file << "   " << std::setw(10) << corr_3b_t*sqrt(8)*3*2/M_PI*8/norm+ corr_t*sqrt(8);
+            file << "   " << std::setw(10) << corr_3b_s*sqrt(8)*3*2/M_PI*8/norm+ corr_s*sqrt(8);
+            file << "   " << std::setw(10) << corr_3b_ct*sqrt(8)*3*2/M_PI*8/norm+ corr_ct*sqrt(8);
+            file << "   " << std::setw(10) << corr_3b_cs*sqrt(8)*3*2/M_PI*8/norm+ corr_cs*sqrt(8);
+            file << "   " << std::setw(10) << corr_3b_ts*sqrt(8)*3*2/M_PI*8/norm+ corr_ts*sqrt(8);
             file << endl;
             integral_mf += kstep*k*k*(mf)*sqrt(8);
-            integral += kstep*k*k*(corr)*sqrt(8);
+            integral    += kstep*k*k*(corr)*sqrt(8);
             integral_3b += kstep*k*k*(corr_3b)*sqrt(8);
         }
 
         if ( !(int_k%10) ) {
-            cout << k << " done by " << omp_get_thread_num() << "/" << omp_get_num_threads() << endl;
+            cout << "[density_rel] " << k << " done by " << omp_get_thread_num() << "/" << omp_get_num_threads() << endl;
         }
     }
 
@@ -210,13 +223,13 @@ void density_rel::write( const char* outputdir, const char* name, int nA, int lA
     file << "# cor integral is " << integral << endl;
     file << "# cor 3b integral is " << integral_3b << endl;
     file << "# tot integral is " << integral+ integral_mf+ integral_3b << endl;
+    file << "# elapsed time is: " << std::fixed << difftime(time(0),now) << " s " << endl;
     file.close();
-    file.close();
-    cout << "written to file " << filename.str().c_str() << endl;
-    cout << "mf integral is " << integral_mf << endl;
-    cout << "corr integral is " << integral << endl;
-    cout << "corr 3b integral is " << integral_3b << endl;
-    cout << "total integral is " << integral+ integral_mf+ integral_3b << endl;
+    cout << "[density_rel] written to file " << filename.str().c_str() << endl;
+    cout << "[density_rel] mf integral is " << integral_mf << endl;
+    cout << "[density_rel] corr integral is " << integral << endl;
+    cout << "[density_rel] corr 3b integral is " << integral_3b << endl;
+    cout << "[density_rel] total integral is " << integral+ integral_mf+ integral_3b << endl;
     *intmf= integral_mf;
     *int2b= integral;
     *int3b= integral_3b;

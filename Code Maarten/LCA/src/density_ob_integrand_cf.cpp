@@ -1,5 +1,7 @@
 #include "density_ob_integrand_cf.h"
 #include <gsl/gsl_errno.h>
+#include <gsl/gsl_sf_bessel.h>
+#include <gsl/gsl_sf_exp.h>
 #include <vector>
 using std::vector;
 #include <map>
@@ -185,6 +187,13 @@ double density_ob_integrand_cf::integrand( double r, void* params )
     double sqrtnu=sqrt(nu);
 
 
+    const double bessel1b = gsl_sf_bessel_jl(l,r*P/sqrtnu);
+    const double bessel2b = gsl_sf_bessel_jl(k,r*q*M_SQRT2/sqrtnu);
+
+    return bessel1b*bessel2b*gsl_pow_uint(r,i+2)* (*f)(r/sqrtnu)* gsl_sf_exp(-0.5*r*r);
+
+
+    /*
     double exp= speedy::speedies.get_neg_exp( 0.5*r*r );
     if( exp== 0) {
         return 0;
@@ -193,6 +202,6 @@ double density_ob_integrand_cf::integrand( double r, void* params )
     double bessel2b= speedy::speedies.get_bessel( k, r*q*M_SQRT2/sqrtnu );
 
 
-    return  bessel1b* bessel2b* gsl_pow_uint(r, i+2)* (*f)(r/sqrtnu)* exp;
+    return  bessel1b* bessel2b* gsl_pow_uint(r, i+2)* (*f)(r/sqrtnu)* exp;*/
 }
 

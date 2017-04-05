@@ -28,6 +28,15 @@ namespace std {
     public:
         size_t operator()(const threejobj &t) const{
             //return (t.two_j1 << 24) + (t.two_j2 << 18) + (t.two_j3 << 12) + (t.two_m1 << 6) + t.two_m2;
+            // lhs^= rhs + 0x9e3779b9 + (lhs << 6) + (lhs >> 2); try this from boost::hash_combine?
+            /*
+            size_t h1 = t.two_j1;
+            size_t h2 = t.two_j2;
+            h1^= t.two_j3 + 0x9e3779b9 + (h1 << 6) + (h1 >> 2);
+            h1^= t.two_m1 + 0x9e3779b9 + (h1 << 6) + (h1 >> 2);
+            h2^= t.two_m2 + 0x9e3779b9 + (h2 << 6) + (h2 >> 2);
+            h1^= h2 + 0x9e3779b9 + (h1 << 6) + (h1 >> 2);
+            return h1;*/
             return (t.two_j1 << 24) ^ (t.two_j2 << 18) ^ (t.two_j3 << 12) ^ (t.two_m1 << 6) ^ t.two_m2; // this is considerably faster (~15% for Fe)
         }
     };
@@ -43,20 +52,20 @@ public:
     int triangle_selection_fails(int two_ja, int two_jb, int two_jc);
     int m_selection_fails(int two_ja, int two_jb, int two_jc,
                           int two_ma, int two_mb, int two_mc);
+
     /** if you want to investigate what 3j's get called and
      *  how many times, you can use something like the logger
      *  below. Remember omp critical block when writing to the map (add)
      */
-    /*
+
     struct threej_logger {
         std::unordered_map< threejobj, unsigned int> threejmap;
-        void add(int two_j1,int two_j2,int two_j3,int two_m1, int two_m2,int two_m3){
-            threejobj c(two_j1,two_j2,two_j3,two_m1,two_m2,two_m3);
+        void add(const threejobj& c){
             threejmap[c]++;
         }
     };
     static threej_logger my3jlogger;
-    */
+
 };
 
 

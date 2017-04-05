@@ -34,10 +34,6 @@ void ob(int A,int Z,std::string name){
 }
 
 int main(int argc,char* argv[]){
-    /* the following block for He,Be,C,O,Al took:
-     * 00.111.-1-1-1-1 : real=7m6s user=26m17s :: original version
-     * 00.111.-1-1-1-1 : real=7m8s user=26m17s :: with the new density_ob3::get_me12_factor implemented
-     */
     if (argc!=4){
         std::cerr << "[Error] expected three arguments:" << std::endl;
         std::cerr << "[executable] [A] [Z] [nucleusname]"<< std::endl;
@@ -62,7 +58,7 @@ int main(int argc,char* argv[]){
     /*
      * if threejlogging is enabled you can use this cout to inspect the logger
      * */
-    /*
+
     std::unordered_map< threejobj, unsigned int > m = threej::my3jlogger.threejmap;
     unsigned int i=0;
     for( std::unordered_map< threejobj, unsigned int >::iterator it = m.begin(); it != m.end(); ++it){
@@ -76,5 +72,5 @@ int main(int argc,char* argv[]){
         std::cout << it->first.two_m2 << ", ";
         std::cout << it->first.two_m3 << ")" << std::endl;
         i++;
-    }*/
+    }
 }

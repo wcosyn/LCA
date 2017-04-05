@@ -202,7 +202,7 @@ void tbmd_td( Nucleus* nucleus, bool central, bool tensor, bool isospin, double 
 
 /*
  * First calculates the expected norm of the selected nucleons,
- * so this can be compared to the integral of the resulted two-body mom distribution.
+ * so this can be compared to the integral of the calculated two-body mom distribution.
  */
 void tbmd_rel( Nucleus* nucleus, int nA, int lA, int nB, int lB, int S, int T, bool central, bool tensor, bool isospin, double norm )
 {
