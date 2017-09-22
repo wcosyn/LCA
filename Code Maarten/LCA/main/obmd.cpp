@@ -19,7 +19,7 @@ void ob(int A,int Z,std::string name){
 
 
     norm_ob no(&nuc);
-    norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
+    norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
     double norm_mf  = no.sum_me_pairs( &nob );
     double norm_corr= no.sum_me_corr( &nob );
     double norm_res = norm_mf+norm_corr;
@@ -41,36 +41,4 @@ int main(int argc,char* argv[]){
         exit(-1);
     }
     ob( atoi(argv[1]), atoi(argv[2]), argv[3]);
-
-    std::unordered_map< threejobj, double > n = threej::threejsmap;
-    unsigned int b = n.bucket_count();
-    unsigned int maxb = 0;
-    std::cout << "[3jmap] threejsmap has " << b << " buckets" << std::endl;
-    for (unsigned int i=0; i<b;i++){
-        std::cout << "[3jmap] bucket #" << i << " has " << n.bucket_size(i) << " elements." << std::endl;
-        if (n.bucket_size(i) > maxb)
-            maxb = n.bucket_size(i);
-    }
-    std::cout << "[3jmap] map size is       : " << n.size() << std::endl;
-    std::cout << "[3jmap] max bucket size is: " << maxb << std::endl;
-    std::cout << "[3jmap] map load factor is: " << n.load_factor() << std::endl;
-
-    /*
-     * if threejlogging is enabled you can use this cout to inspect the logger
-     * */
-
-    std::unordered_map< threejobj, unsigned int > m = threej::my3jlogger.threejmap;
-    unsigned int i=0;
-    for( std::unordered_map< threejobj, unsigned int >::iterator it = m.begin(); it != m.end(); ++it){
-        std::cout << "[3jlogger]"<< "[" << i << "] ";
-        std::cout << " :: " << it->second << " : ";
-        std::cout << " (";
-        std::cout << it->first.two_j1 << ", ";
-        std::cout << it->first.two_j2 << ", ";
-        std::cout << it->first.two_j3 << ", ";
-        std::cout << it->first.two_m1 << ", ";
-        std::cout << it->first.two_m2 << ", ";
-        std::cout << it->first.two_m3 << ")" << std::endl;
-        i++;
-    }
 }
