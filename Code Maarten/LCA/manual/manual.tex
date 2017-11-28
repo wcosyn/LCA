@@ -179,7 +179,7 @@ At the cost of some readability Eq.~(\ref{eq:two_body_op_correlation_linear_intu
 	\sum_{k \neq j}^{A} \hat{l}_{jk} ( 1 - \frac{\delta_{ik}}{2}) \, .
 	\label{eq:two_body_op_correlation_linear_short}
 \end{align}
-By going from $ \sum_{i<j}^{A} = \sum_{i \neq j}^{A}$ introduced double counting of some terms was introduced, corrected by the factor $( 1 - \frac{\delta_{ik}}{2})$. Eq.~(\ref{eq:two_body_op_correlation_linear_short}) has a total of $A(A-1)^{2}$ terms, an overhead $\frac{A(A-1)}{2}$ compared to Eq.~(\ref{eq:two_body_op_correlation_linear_intuitive}). The relative increase is $ \frac{A(A-1)^{2}}{A(A-1)(A-\frac{3}{2})} = 1 + \frac{1}{2A-3}$, about $1.048$ for $A=12$ and $1.003$ for $A=208$.
+The last step introduced double counting of some terms, corrected by the factor $( 1 - \frac{\delta_{ik}}{2})$. Eq.~(\ref{eq:two_body_op_correlation_linear_short}) has a total of $A(A-1)^{2}$ terms, an overhead $\frac{A(A-1)}{2}$ compared to Eq.~(\ref{eq:two_body_op_correlation_linear_intuitive}). The relative increase is $ \frac{A(A-1)^{2}}{A(A-1)(A-\frac{3}{2})} = 1 + \frac{1}{2A-3}$, about $1.048$ for $A=12$ and $1.003$ for $A=208$.
 \begin{figure}
 \centering
 \includegraphics[scale=0.75]{figures/one_body_with_eq.pdf}
@@ -222,7 +222,7 @@ It's action on a multi particle ground state $\ket{\Phi}$,
 The creation and annihilation operators $a_{\mathbf{p}}^{\dagger}$,$a_{\mathbf{p}}$ have only meaning working on particles with definite momentum or the vacuum state $\ket{0}$.
 \begin{align}
 	\braket{ \Phi | a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi} &= \int \textrm{d}^{3} \mathbf{p}_{1} \ldots \textrm{d}^{3} \mathbf{p}_{A} \braket {\Phi | \mathbf{p}_1 \mathbf{p}_2 \ldots \mathbf{p}_{A}} \braket{ \mathbf{p}_{1} \mathbf{p}_{2} \ldots \mathbf{p}_{A} | a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi } \\
-	&= \int \textrm{d}^{A} \mathbf{p}_{1} \ldots \textrm{d}^{3} \mathbf{p}_{A} \braket {\Phi | \mathbf{p}_1 \mathbf{p}_2 \ldots \mathbf{p}_{A}} \braket{ 0 | a_{\mathbf{p}_{1}} a_{\mathbf{p}_{2}} \ldots a_{\mathbf{p}_{A}} a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi } 
+	&= \int \textrm{d}^{3} \mathbf{p}_{1} \ldots \textrm{d}^{3} \mathbf{p}_{A} \braket {\Phi | \mathbf{p}_1 \mathbf{p}_2 \ldots \mathbf{p}_{A}} \braket{ 0 | a_{\mathbf{p}_{1}} a_{\mathbf{p}_{2}} \ldots a_{\mathbf{p}_{A}} a_{\mathbf{p}}^{\dagger} a_{\mathbf{p}} | \Phi } 
 \end{align}
 Using the anticommutation relation $\{ a_{\mathbf{p}} ,a_{\mathbf{q}}^{\dagger} \} = \delta(\mathbf{p}-\mathbf{q})$, we get
 \begin{align}
@@ -307,10 +307,10 @@ The class calculates all the coefficients,
 	C_{\alpha_1 \alpha_2}^{A} = \braket{A \equiv \{ n l S j m_j, N L M_L T M_T\} | \alpha_1 \alpha_2}_{\text{nas}}
 	\label{eq:coef}
 \end{align}
-The main method here is \texttt{Pair::makecoeflist()}. It loops over all possible values of $ A \equiv \{ S,T,n,l,N,M_L,j,m_j \}$. Where in the summation over $\{n,l,N,L\}$ the energy conservation $2n_1 + l_1 + 2n_2 + l_2 = 2n + l + 2N + L$ is taken into account to eliminate one of the summation loops, $L = 2n_1 + l_1 + 2n_2 + l_2 - 2n - l - 2N$. Note that $M_T$ is also fixed by $M_T = m_{t_1} + m_{t_2}$ and no summation over this is performed, as we want to keep the contribution from different pairs seperated.
+The main method here is \texttt{Pair::makecoeflist()}. It loops over all possible values of $ A \equiv \{ S,T,n,l,N,M_L,j,m_j \}$. Where in the summation over $\{n,l,N,L\}$ the energy conservation $2n_1 + l_1 + 2n_2 + l_2 = 2n + l + 2N + L$ is taken into account to eliminate one of the summation loops, $L = 2n_1 + l_1 + 2n_2 + l_2 - 2n - l - 2N$. Note that $M_T$ is also fixed by $M_T = m_{t_1} + m_{t_2}$ and no summation over this is performed, as we want to keep the contribution from different pairs separated.
 For each $A$ a new object \texttt{Newcoef} is generated and stored in the member \texttt{std::vector<NewCoef*> coeflist}.
 \subsection{newcoef.h}
-This class takes the parameters $n_1 l_1 j_1 m_{j_1} m_{t_1} n_2 l_2 j_2 m_{j_2} m_{t_2} N L M_L n l S j m_j T M_T$, and calculates the coefficient given in Eq. (\ref{eq:coef}). It takes also a pointer to a \texttt{RecMosh} object that holds the Moshinsky brakets. The only function in this class is to calculate $C_{\alpha_1 \alpha_2}^{A}$ using the formula,
+This class takes the parameters $n_1 l_1 j_1 m_{j_1} m_{t_1} n_2 l_2 j_2 m_{j_2} m_{t_2} N L M_L n l S j m_j T M_T$, and calculates the coefficient given in Eq. (\ref{eq:coef}). It takes also a pointer to a \texttt{RecMosh} object that holds the Moshinsky brackets. The only function in this class is to calculate $C_{\alpha_1 \alpha_2}^{A}$ using the formula,
 \begin{multline}
 	\sum_{J M_J} \sum_{\Lambda} 
 	\frac{1}{\sqrt{2}} [ 1 - (-1)^{l+S+T}] \braket{ t_1 m_{t_1} t_2 m_{t_2} | T M_T }
@@ -427,7 +427,7 @@ Let us now take a look at the separate cases for $\delta_{NN'} \delta_{LL'} \del
 
 Let us take a look at
 \begin{align*}
-	\braket{ S | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | S'} = 4 \braket{ S | \hat{ \vec{s}}_{1} \cdot \hat{ \vec{s}}_{2} | S'} = 4 \braket{ S | \hat{\vec{S}}^{\, 2} - \hat{\vec{s}}_{1}^{\,2} - \hat{\vec{s}}_{2}^{\,2} | S'} = 2 ( S(S+1) - \frac{3}{4} - \frac{3}{4} ) \delta_{SS'} = \delta_{SS'} (2 S(S+1) - 3)
+	\braket{ S | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | S'} = 2 \braket{ S | \hat{ \vec{s}}_{1} \cdot \hat{ \vec{s}}_{2} | S'} = 4 \braket{ S | \hat{\vec{S}}^{\, 2} - \hat{\vec{s}}_{1}^{\,2} - \hat{\vec{s}}_{2}^{\,2} | S'} = 2 ( S(S+1) - \frac{3}{4} - \frac{3}{4} ) \delta_{SS'} = \delta_{SS'} (2 S(S+1) - 3)
 \end{align*}
 As we have 2 spin $1/2$ particles S can be either $0,1$ resulting in $\braket{ 1 | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | 1} = 1$, $\braket{ 0 | \hat{ \vec{\sigma}}_{1} \cdot \hat{ \vec{\sigma}}_{2} | 0} = -3$.
 \todo[inline]{ Note that in the Maartens code the expression is modified to $4S-3$, which is equivalent for $S \in \{0,1\} $.} As this is independent of the spin projection $M_S$ we have,
@@ -453,7 +453,9 @@ we get
 	\hat{\vec{\tau}}_{1} \cdot \hat{\vec{\tau}}_{2} = 4 \hat{t}_{1,0} \hat{t}_{2,0} + 2 \hat{t}_{1}^{+} \hat{t}_{2}^{-} + 2 \hat{t}_{1}^{-} \hat{t}_{2}^{+} 
 \end{align*}
 
-Defining the isospin-projection operator acting on particle ``$i$'' of the nucleon pair $ \hat{\delta}_{m_t}^{[1]} = ( 1 + (2 m_t) \hat{t}_{i,0})/2$ we get,
+Defining the isospin-projection operator acting on particle ``$i$'' of the 
+nucleon pair $ \hat{\delta}_{m_t}^{[i]} = ( 1 + (2 m_t) \hat{t}_{i,0})/2$ we 
+get,
 \begin{multicols}{2}
 \noindent
 \begin{align*}
@@ -484,7 +486,9 @@ It is straightforward to show that,
 \end{multicols}
 
 \subsection{norm\_ob : public operator\_virtual\_ob}
-Here we take a look at the calculation of the norm $\mathcal{N}$ (see Eqs.~(\ref{eq:LCA_norm_one_body},(\ref{eq:LCA_norm_two_body})) in \texttt{norm\_ob.cpp}.
+Here we take a look at the calculation of the norm $\mathcal{N}$ (see 
+Eqs.~(\ref{eq:LCA_norm_one_body}),(\ref{eq:LCA_norm_two_body})) in 
+\texttt{norm\_ob.cpp}.
 Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring general one body member functions.
 \begin{itemize}
 	\item \texttt{norm\_ob::get\_me( Pair )}.
@@ -493,7 +497,7 @@ Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring gen
 		\frac{2}{A} \sum_{ A B } \hat{\delta}_{t_1,n_A,l_A,n_B,l_B} C_{\alpha_1 \alpha_2}^{A \dagger} C_{\alpha_1 \alpha_2}^{B} \braket{ A|B} = \frac{2}{A} \sum_{A} \hat{\delta}_{t_1,n_A,l_A} \left| C_{\alpha_1 \alpha_2}^{A} \right|^{2}
 		\end{equation}
 		for a specific pair $\ket{\alpha_1 \alpha_2}$ passed trough \texttt{Pair}.
-		It is possible to filter on relative quantum numbers on $n_A,l_A,n_B,l_B$, represented by the operator $\hat{\delta}_{t_1,n_A,l_A,n_B,l_B}$. It selects specific contributions \texttt{nAs,lAs,nBs,lBs} to the sum. A value of $-1$ for these variables is interpreted as ``all values allowed''. Trough the braket $\braket{ A | B }$ we already have $n_A = n_B := n$, $l_A = l_B := l$.
+		It is possible to filter on relative quantum numbers on $n_A,l_A,n_B,l_B$, represented by the operator $\hat{\delta}_{t_1,n_A,l_A,n_B,l_B}$. It selects specific contributions \texttt{nAs,lAs,nBs,lBs} to the sum. A value of $-1$ for these variables is interpreted as ``all values allowed''. Trough the bracket $\braket{ A | B }$ we already have $n_A = n_B := n$, $l_A = l_B := l$.
 		\begin{itemize}
 			\item \texttt{if (nAs > -1 \&\& nBs > -1)}
 				This forces $\texttt{nAs} = \texttt{nBs} = n$. So for $\texttt{nAs} \neq \texttt{nBs}$ we will get $0$.
@@ -612,7 +616,7 @@ For a one body operator sandwiched between antisymmetric $A$-particle states $\k
 \begin{align*}
 	\sum_{i=1}^{A} \braket{ \alpha_1 \alpha_2 \ldots \alpha_A | \hat{\mathcal{O}}_{i} | \alpha_1 \alpha_2 \ldots \alpha_A} = A \braket{ \alpha_1 \alpha_2 \ldots \alpha_A | \hat{\mathcal{O}}_{1} | \alpha_1 \alpha_2 \ldots \alpha_A}
 \end{align*}
-In particle for two particles,
+In particular for two particles,
 \begin{align*}
 	\sum_{i=1}^{2} \braket{ \alpha_1 \alpha_2 | \hat{\mathcal{O}}_{i} | \alpha_1 \alpha_2} = 2 \braket{ \alpha_1 \alpha_2 | \hat{\mathcal{O}}_{1} | \alpha_1 \alpha_2}
 \end{align*}
@@ -1480,6 +1484,15 @@ The effect in $^{142}$Xe is almost invisible on the log scale but for $^{142}$Nd
 the tails become problematic. It is expected that this effect grows worse for increasing mass number $A$.}
 \label{fig:ob_bad_tails}
 \end{figure}
+
+\begin{thebibliography}{10}
+
+\bibitem{phdthesis_mvanhalst}
+M.~Vanhalst
+\newblock PhD thesis
+
+\end{thebibliography}
+
 
 \end{document}
 

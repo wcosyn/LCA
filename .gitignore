@@ -9,6 +9,8 @@
 #
 *.aux
 *.log
+*.out 
+*.toc
 # ignore compiled python modules
 #
 *.pyc
@@ -16,3 +18,8 @@
 # ignore .orig files from indentation
 # using astyle
 *.orig
+
+Code Maarten/LCA/bin
+Code Maarten/LCA/lib
+Code Maarten/LCA/doc
+
