@@ -10,16 +10,17 @@
 #include "threej.h"
 
 
-void ob(int A,int Z,std::string name){
+void ob(int A,int Z,std::string name, int isospin){
 
     // the inputdir and resultdir are only used for storage of the moshinsky brakets, always, everywhere
-    Nucleusall nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
-    //NucleusPP  nucpp(".",".",40,20); // idem
-    //NucleusNP  nucnp(".",".",40,20); // idem
+    //Nucleusall nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
+
+    NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
+    //NucleusNP  nucnp("../data/mosh","../data/mosh",A,Z); // idem
 
 
     norm_ob no(&nuc);
-    norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
+    norm_ob::norm_ob_params nob= {-1, -1, -1, -1, isospin}; // nA,lA,nB,lB,t
     double norm_mf  = no.sum_me_pairs( &nob );
     double norm_corr= no.sum_me_corr( &nob );
     double norm_res = norm_mf+norm_corr;
@@ -29,16 +30,16 @@ void ob(int A,int Z,std::string name){
      * note that this equation is incorrect/incomplete, see manual
      */
     double mf,corr;
-    int t = 0; // 1 for proton, -1 for neutron, 0 for both
+    int t = isospin; // 1 for proton, -1 for neutron, 0 for both
     dob3.write(".",name.c_str(),-1,-1,-1,-1, t,&mf,&corr); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
 int main(int argc,char* argv[]){
-    if (argc!=4){
-        std::cerr << "[Error] expected three arguments:" << std::endl;
-        std::cerr << "[executable] [A] [Z] [nucleusname]"<< std::endl;
+    if (argc!=5){
+        std::cerr << "[Error] expected four arguments:" << std::endl;
+        std::cerr << "[executable] [A] [Z] [nucleusname] [proton/neutron/all]"<< std::endl;
         std::cerr << std::endl;
         exit(-1);
     }
-    ob( atoi(argv[1]), atoi(argv[2]), argv[3]);
+    ob( atoi(argv[1]), atoi(argv[2]), argv[3], atoi(argv[4]));
 }
