@@ -2,6 +2,7 @@
 #include "nucleusall.h"
 #include "nucleusnp.h"
 #include "nucleuspp.h"
+#include "nucleusnn.h"
 #include "norm_ob.h"
 #include <string>
 #include <cstdlib>
@@ -13,10 +14,11 @@
 void ob(int A,int Z,std::string name, int isospin){
 
     // the inputdir and resultdir are only used for storage of the moshinsky brakets, always, everywhere
-    //Nucleusall nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
+    Nucleusall nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
 
-    NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
-    //NucleusNP  nucnp("../data/mosh","../data/mosh",A,Z); // idem
+    //NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
+    // NucleusNP  nuc("../data/mosh","../data/mosh",A,Z); // idem
+    // NucleusNN  nuc("../data/mosh","../data/mosh",A,Z); // idem
 
 
     norm_ob no(&nuc);
