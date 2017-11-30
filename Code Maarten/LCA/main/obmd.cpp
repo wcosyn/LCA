@@ -11,37 +11,63 @@
 #include "threej.h"
 
 
-void ob(int A,int Z,std::string name, int isospin){
+void ob(int A,int Z,std::string name, int isospin, Nucleus *nuc){
 
-    // the inputdir and resultdir are only used for storage of the moshinsky brakets, always, everywhere
-    Nucleusall nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
 
     //NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
     // NucleusNP  nuc("../data/mosh","../data/mosh",A,Z); // idem
     // NucleusNN  nuc("../data/mosh","../data/mosh",A,Z); // idem
 
-
-    norm_ob no(&nuc);
-    norm_ob::norm_ob_params nob= {-1, -1, -1, -1, isospin}; // nA,lA,nB,lB,t
+    Nucleusall nucall("../data/mosh","../data/mosh",A,Z);
+    norm_ob no(&nucall);
+    norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
     double norm_mf  = no.sum_me_pairs( &nob );
     double norm_corr= no.sum_me_corr( &nob );
-    double norm_res = norm_mf+norm_corr;
+    double norm_all = norm_mf+norm_corr;
 
-    density_ob3 dob3(&nuc,true,true,true,norm_res,10); // nuc, central,tensor,isospin,norm,qmax (default=7)
+    density_ob3 dob3(nuc,true,true,true,norm_all,10); // nuc, central,tensor,nucl,norm,qmax (default=7)
     /* qmax is the maximum value of q in the sum in Eq. D.37 in Maartens thesis
      * note that this equation is incorrect/incomplete, see manual
      */
     double mf,corr;
-    int t = isospin; // 1 for proton, -1 for neutron, 0 for both
-    dob3.write(".",name.c_str(),-1,-1,-1,-1, t,&mf,&corr); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
+    dob3.write(".",name.c_str(),-1,-1,-1,-1, isospin,&mf,&corr); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
 int main(int argc,char* argv[]){
-    if (argc!=5){
-        std::cerr << "[Error] expected four arguments:" << std::endl;
-        std::cerr << "[executable] [A] [Z] [nucleusname] [proton/neutron/all]"<< std::endl;
+    if (argc!=6){
+        std::cerr << "[Error] expected five arguments:" << std::endl;
+        std::cerr << "[executable] [A] [Z] [nucleusname] [p/n/all] [pp/nn/np/pn/all]"<< std::endl;
         std::cerr << std::endl;
         exit(-1);
     }
-    ob( atoi(argv[1]), atoi(argv[2]), argv[3], atoi(argv[4]));
+    std::string isospin = argv[4];
+    int nucl=0;
+    if(!isospin.compare("p")) { nucl=1;}
+    else if(!isospin.compare("n")) { nucl=-1;}
+    else if(!isospin.compare("all")) {nucl=0;}
+    else {std::cerr << "Invalid fourth arguments (isospin): select either p, n or all " << isospin << std::endl; exit(-1); assert(1==0);} 
+
+    std::string pairs = argv[5];
+    int A=atoi(argv[1]);
+    int Z=atoi(argv[2]);
+    std::string nucl_name=argv[3];
+
+    // the inputdir and resultdir are only used for storage of the moshinsky brakets, always, everywhere
+    if(!pairs.compare("all")){
+        Nucleusall nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
+        ob( A, Z, nucl_name,nucl, &nuc);
+    }
+    else if(!pairs.compare("pp")){
+        NucleusPP nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
+        ob( A, Z, nucl_name,nucl, &nuc);
+    }
+    else if(!pairs.compare("nn")){
+        NucleusNN nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
+        ob( A, Z, nucl_name,nucl, &nuc);
+    }
+    else if(!pairs.compare("np")||!pairs.compare("pn")){
+        NucleusNP nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
+        ob( A, Z, nucl_name,nucl, &nuc);
+    }
+    else {std::cerr << "Invalid fifth argument (pairs): select either pp, nn, pn(=np) or all " << pairs << std::endl; exit(-1); assert(1==0);} 
 }
