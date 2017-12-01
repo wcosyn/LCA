@@ -52,6 +52,70 @@ int main(int argc,char* argv[]){
     int Z=atoi(argv[2]);
     std::string nucl_name=argv[3];
 
+    if(!pairs.compare("all")&&!isospin.compare("all")){
+        NucleusPP  nucpp("../data/mosh","../data/mosh",A,Z); // idem
+        NucleusNP  nucnp("../data/mosh","../data/mosh",A,Z); // idem
+        NucleusNN  nucnn("../data/mosh","../data/mosh",A,Z); // idem
+
+        Nucleusall nucall("../data/mosh","../data/mosh",A,Z);
+
+        norm_ob no(&nucall);
+        norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
+        double norm_mf  = no.sum_me_pairs( &nob );
+        double norm_corr= no.sum_me_corr( &nob );
+        std::cout << "all all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        nob.t=-1;
+        norm_mf  = no.sum_me_pairs( &nob );
+        norm_corr= no.sum_me_corr( &nob );
+        std::cout << "all n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        nob.t=1;
+        norm_mf  = no.sum_me_pairs( &nob );
+        norm_corr= no.sum_me_corr( &nob );
+        std::cout << "all p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        
+        norm_ob nopp(&nucpp);
+        nob.t=0;
+        norm_mf  = nopp.sum_me_pairs( &nob );
+        norm_corr= nopp.sum_me_corr( &nob );
+        std::cout << "pp all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        nob.t=-1;
+        norm_mf  = nopp.sum_me_pairs( &nob );
+        norm_corr= nopp.sum_me_corr( &nob );
+        std::cout << "pp n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        nob.t=1;
+        norm_mf  = nopp.sum_me_pairs( &nob );
+        norm_corr= nopp.sum_me_corr( &nob );
+        std::cout << "pp p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+
+        norm_ob nonn(&nucnn);
+        nob.t=0;
+        norm_mf  = nonn.sum_me_pairs( &nob );
+        norm_corr= nonn.sum_me_corr( &nob );
+        std::cout << "nn all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        nob.t=-1;
+        norm_mf  = nonn.sum_me_pairs( &nob );
+        norm_corr= nonn.sum_me_corr( &nob );
+        std::cout << "nn n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        nob.t=1;
+        norm_mf  = nonn.sum_me_pairs( &nob );
+        norm_corr= nonn.sum_me_corr( &nob );
+        std::cout << "nn p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+
+        norm_ob nonp(&nucnp);
+        nob.t=0;
+        norm_mf  = nonp.sum_me_pairs( &nob );
+        norm_corr= nonp.sum_me_corr( &nob );
+        std::cout << "np all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        nob.t=-1;
+        norm_mf  = nonp.sum_me_pairs( &nob );
+        norm_corr= nonp.sum_me_corr( &nob );
+        std::cout << "np n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        nob.t=1;
+        norm_mf  = nonp.sum_me_pairs( &nob );
+        norm_corr= nonp.sum_me_corr( &nob );
+        std::cout << "np p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+    }
+
     // the inputdir and resultdir are only used for storage of the moshinsky brakets, always, everywhere
     if(!pairs.compare("all")){
         Nucleusall nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
