@@ -370,6 +370,7 @@ void Nucleus::makepairs()
     vector< Shell* >* shells2= getShells2();
 
     #pragma omp parallel for collapse(2)
+    //loops run over closed filled shells!!
     for( int i1= 0; i1 <= shell1_max; i1++ ) {
         for( int i2= 0; i2 <= shell2_max; i2++ ) {
             if( t1==t2 ) {
@@ -446,7 +447,7 @@ void Nucleus::makepairs()
                     pair->setfnorm( factor1*factor2 );
 //          pair->setfnorm( 1 );
 
-                    double sum = pair->getSum();
+                    double sum = pair->getSum(); //WIM: check what this does...
                     // Fermi test
                     //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl;
                     if( sum < 1e-4 || factor1*factor2 == 0 ) delete pair;
@@ -713,7 +714,7 @@ void Nucleus::printPairsPerShell()
         file << "\t" << totalPairs;
         int i= 0;
         double sum= 0;
-        while( sum < 0.999*totalPairs ) {
+        while( sum < 0.999*totalPairs ) { //loop over relative l contributions until we're almost at the complete set
             double result = (*it)->getRelPair( i );
             file << "\t" << result;
             sum+= result;
