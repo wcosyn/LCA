@@ -63,6 +63,7 @@ in nucleus::makepairs it's also not clear to me the different cases (sometimes s
 17. recmosh output: in one instance a lot more zero elements  
 What is stored in the Maprecmosh map (check indices).  How to deal with storing/readingin this in one file?
 Strange issues when putting some (i thought) small values to zero (all output became zero in the files)
-it seems maarten's original files have the most zero elements
-then the ones coming from the norm program
-the ones from the obmd have the least... (check 0202.dat)
+Something I don't understand yet: the recmosh files get extra zero valued entries once heavier nuclei are calculated (for instance the 0202.dat file when you reach Ag)
+or the 0002.dat file when you go from Al to calculated
+
+18. can the links be stored somehow for any nucleus?
