@@ -1,4 +1,5 @@
 #include "density_rel.h"
+#include "wavefunctionp.h"
 
 #include <algorithm>
 using std::min;

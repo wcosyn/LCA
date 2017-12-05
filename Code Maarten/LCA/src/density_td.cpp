@@ -1,4 +1,5 @@
 #include "density_td.h"
+#include "wavefunctionp.h"
 
 #include <omp.h>
 #include <sstream>

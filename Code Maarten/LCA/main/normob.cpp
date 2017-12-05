@@ -64,7 +64,7 @@ bool normsRun(){
     double previousResults[12] = {1.128,1.327,1.384,1.435,1.527,1.545,1.637,1.629,1.638,1.704,1.745,1.741};
     bool allpass = true;
     for (int i=0;i<12;i++){
-        Nucleusall nuc(".",".",A[i],Z[i]);
+        Nucleusall nuc("../data/mosh","../data/mosh",A[i],Z[i]);
         norm_ob no(&nuc);
         norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
         double norm_mf  = no.sum_me_pairs( &nob );
@@ -86,6 +86,15 @@ bool normsRun(){
 }
 
 int main(){
+
+    // Nucleusall nuc("../data/mosh","../data/mosh",40,18);
+    // norm_ob no(&nuc);
+    // norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
+    // double norm_mf  = no.sum_me_pairs( &nob );
+    // double norm_corr= no.sum_me_corr( &nob );
+    // double norm_res = norm_mf+norm_corr;
+    // std::cout << norm_mf << " " << norm_corr << std::endl;
+
     bool succes = normsRun();
     printf("[norm] normsRun() ");
     if (succes){

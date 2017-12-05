@@ -10,7 +10,7 @@ using std::ofstream;
 using std::ifstream;
 using std::stringstream;
 
-MapRecMosh RecMosh::maprecmosh = MapRecMosh();
+MapRecMosh RecMosh::maprecmosh = MapRecMosh(); //initialise static object (empty map)
 
 RecMosh::RecMosh(int n1, int l1, int n2, int l2, char* inputPath, char* outputPath)
     : n1(n1),
@@ -28,7 +28,9 @@ RecMosh::RecMosh(int n1, int l1, int n2, int l2, char* inputPath, char* outputPa
     // if n1*10+l1 > n2*10+l2 wordt in getCoefficient de
     // waarde uit n2l2 n1l2 genomen en de juiste voorfactor berekend
 
-// used is 1, so when it is not used any more, it is still saved, so when a next pair or nucleus needs it, it is still loaded, otherwise it again loads the file from input, and updates written out to output are not used anymore.
+// used is 1, so when it is not used any more, it is still saved, 
+//so when a next pair or nucleus needs it, it is still loaded, 
+//otherwise it again loads the file from input, and updates written out to output are not used anymore.
 // Warning, need to be sure that everything gets deleted and written out at the end !!
     used=1;
     updated= false;
@@ -125,7 +127,7 @@ double RecMosh::getCoefficient( int n, int l, int N, int Lambda, int L )
     if( 2*n+l+2*N+Lambda != 2*n1+l1+2*n2+l2) {
         return 0;
     }
-
+    //only coefficients with N Lambda >= nl are computed and stored, so make use of permutation relations
     if( 10*n+l > 10*N+Lambda ) {
         double val = maprecmosh.get( n1, l1, n2, l2, inputPath, outputPath )->getCoefficient( N, Lambda, n, l, L);
         if( (l1+L)%2 ) return -1*val;
@@ -149,6 +151,7 @@ double RecMosh::getCoefficient( int n, int l, int N, int Lambda, int L )
     it = coefficients.find(key);
     if( it == coefficients.end()) {
         double result = calculate(n,l,N,Lambda,n1,l1,n2,l2,L);
+        //if(abs(result)<1.E-10) result=0.;
         coefficients[key] = result;
         //if( fabs(result) < 1e-10 ) return 0;
         return result;
@@ -177,6 +180,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
 //	cerr << " calculating missing coeff. " << endl;
 //	cerr << n << l << N << Lambda << "|" << n1 << l1 << n2 << l2 << "; " << L << endl ;
     updated= true;
+    // n1 not zero -> Eq. A.15 Phd thesis M. Vanhalst
     if( n1 > 0 ) {
 // 		cout << "n1>0" << endl;
         double factor = 1./sqrt((n1)*(n1+l1+0.5));
@@ -198,6 +202,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
             }
         }
         return factor*sum;
+    //n1 zero but n2 not zero, see PhD Vanhalst p131 after A.15    
     } else if( n2 > 0 ) {
 // 		cout << "n2>0" << endl;
         double factor = 1./sqrt((n2)*(n2+l2+0.5));
@@ -219,6 +224,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
             }
         }
         return factor*sum;
+    //n1 and n2 zero -> Eq. A.12 PhD thesis M. Vanhalst    
     } else if( n1 == 0 && n2 == 0) {
         double factor = gsl_sf_fact(l1) * gsl_sf_fact(l2)/ gsl_sf_fact(2*l1) / gsl_sf_fact(2*l2);
         factor *= (2*l+1)*(2*Lambda+1)/pow(2.,l+Lambda);
@@ -339,11 +345,12 @@ RecMosh* MapRecMosh::get( int n1, int l1, int n2, int l2, char* inputPath, char*
     int key=  n1*1e3+ l1*1e2+ n2*10+ l2;
     map< int, RecMosh* >::iterator it;
     it= maprecmosh.find( key );
+    //it's already in the map
     if( it != maprecmosh.end() ) {
         //it->second->use();
         return it->second;
     }
-
+    //not in the map so create a new RecMosh object
     RecMosh* newrecmosh= new RecMosh( n1, l1, n2, l2, inputPath, outputPath );
     maprecmosh[ key]= newrecmosh;
     return newrecmosh;

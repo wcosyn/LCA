@@ -30,7 +30,7 @@ Wim
 
 1. check partially filled shells functionality: Pair::setfnorm(factor) is referred to in manual
 
-2. take out char* arguments and make them strings
+2. take out char* arguments and make them strings (RecMosh)
 
 3. modify nucleusall such that bookkeeping is done of which pairs (or links) originate from which isospin combination
 
@@ -45,12 +45,21 @@ Now it is very inefficient as basically the program has to start from scratch ea
 
 8. recmosh files had a whole lot of numbers <10E-10, maybe put them zero
 
-9. check what the sum is in the pair class [see nucleus.cpp::450]
+9. check what the sum is in the pair class [see nucleus.cpp::450], also [getSum in pair.h::100]
 check what getRelPair returns [nucleus.cpp::675]
 
 10. Nucleus::makepaircoeffs -> make sense of it  :: Partially done
 Check how links are dealt with ("add" functions), now link is stored bidirectionally, but matrix elements aren't necessarily?
 
 11. how does the norm for pairs work?  pair.getcoeff return sqrt of the norm (?)
+in nucleus::makepairs it's also not clear to me the different cases (sometimes sqrt sometimes not)
 
 12. shells class, remove pointers 
+
+14. add sanity check to see that the recmosh object in pair & newcoef is for the correct quantum numbers.
+
+16. why double pointers in Pair::getCoeff, make norm pointer a ref
+
+17. recmosh output: in one instance a lot more zero elements (failing so far to recreate this, come from the norm program).  
+What is stored in the Maprecmosh map (check indices).  How to deal with storing/readingin this in one file?
+Strange issues when putting some (i thought) small values to zero (all output became zero in the files)

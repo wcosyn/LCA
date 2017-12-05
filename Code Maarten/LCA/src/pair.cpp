@@ -104,12 +104,6 @@ double Pair::getRelPair( int l )
 
 double Pair::getcoef( int n, int l, int S, int j, int mj, int T, int MT, int N, int L, int ML )
 {
-    /* WTF Maarten???? vvv
-    double result = 0;
-    Newcoef* coef = new Newcoef( n1, l1, two_j1, two_mj1, two_t1, n2, l2, two_j2, two_mj2, two_t2, mosh, N, L, ML, n, l, S, j, mj, T, MT );
-    result = coef->getCoef();
-    delete coef;
-    return result;*/
     Newcoef coef(n1,l1,two_j1,two_mj1,two_t1,n2,l2,two_j2,two_mj2,two_t2,mosh,N,l,ML,n,l,S,j,mj,T,MT);
     return coef.getCoef();
 }
