@@ -60,6 +60,9 @@ in nucleus::makepairs it's also not clear to me the different cases (sometimes s
 
 16. why double pointers in Pair::getCoeff, make norm pointer a ref
 
-17. recmosh output: in one instance a lot more zero elements (failing so far to recreate this, come from the norm program).  
+17. recmosh output: in one instance a lot more zero elements  
 What is stored in the Maprecmosh map (check indices).  How to deal with storing/readingin this in one file?
 Strange issues when putting some (i thought) small values to zero (all output became zero in the files)
+it seems maarten's original files have the most zero elements
+then the ones coming from the norm program
+the ones from the obmd have the least... (check 0202.dat)

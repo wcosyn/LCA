@@ -22,7 +22,7 @@ private:
     int N; /*!< coupled state HO com quantum number N */
     int L; /*!< coupled state HO com OAM quantum number */
     int ML;/*!< coupled state HO com OAM 3-component quantum number */
-    int n; /*!< coupled state HO relative quantum number N */
+    int n; /*!< coupled state HO relative quantum number n */
     int l;/*!< coupled state HO relative OAM quantum number */
     int S; /*!< coupled state total spin */
     int j; /*!< coupled state spin coupled j=l+S (relative OAM + total spin) */
@@ -34,50 +34,114 @@ private:
     double coeff; /*!< transformation coefficient */
     std::string key; /*!< key for sorting based on all the coupled quantum numbers (see constructor)*/
 public:
+    /**
+     * @brief Constructor
+     * 
+     * @param n1 first particle HO qn n
+     * @param l1 first particle HO OAM qn
+     * @param two_j1 first particle spin qn 2*j
+     * @param two_mj1 first particle spin 3-component 2*m_j
+     * @param two_t1 first particle isospin 3-component 2*m_t [-1 n, +1 p]
+     * @param n2 second particle HO qn n
+     * @param l2 second particle HO OAM qn
+     * @param two_j2 second particle spin qn 2*j
+     * @param two_mj2 second particle spin 3-component 2*m_j
+     * @param two_t2 second particle isospin 3-component 2*m_t [-1 n, +1 p]
+     * @param[in] mosh pointer to a RecMosh object that holds all the Moshinsky brackets needed for the decomposition in coupled states 
+     * @param N coupled state HO com quantum number N 
+     * @param L coupled state HO com OAM quantum number
+     * @param ML coupled state HO com OAM 3-component quantum number
+     * @param n coupled state HO relative quantum number n
+     * @param l coupled state HO relative OAM quantum number
+     * @param S coupled state total spin 
+     * @param j coupled state spin coupled j=l+S (relative OAM + total spin) 
+     * @param mj coupled state 3-componet of j
+     * @param T coupled state total isospin
+     * @param MT coupled state totla isospin 3-component
+     */
     Newcoef( int n1, int l1, int two_j1, int two_mj1, int two_t1,
              int n2, int l2, int two_j2, int two_mj2, int two_t2,
              RecMosh* mosh,
              int N, int L, int ML, int n, int l, int S, int j, int mj, int T, int MT);
+    /**
+     * @brief Destructor
+     * 
+     */
     ~Newcoef();
-    // Return the calculate coefficients
+    /**
+     * @brief returns calculated coefficient in the decomposition
+     */
     double getCoef() {
         return coeff;
     }
+    /**
+     * @brief returns HO center of mass qn N
+     */
     int getN()       {
         return N;
     }
+    /**
+     * @brief returns coupled state HO center of mass OAM qn
+     */
     int getL()       {
         return L;
     }
+    /**
+     * @brief returns coupled state HO center of mass OAM 3-component
+     */
     int getML()      {
         return ML;
     }
+    /**
+     * @brief returns coupled state HO relative qn n
+     */
     int getn()       {
         return n;
     }
+    /**
+     * @brief returns coupled state HO relative OAM qn 
+     */
     int getl()       {
         return l;
     }
+    /**
+     * @brief returns coupled state total spin
+     */
     int getS()       {
         return S;
     }
+    /**
+     * @brief returns coupled state j=l+S qn
+     */
     int getj()       {
         return j;
     }
+    /**
+     * @brief returns coupled state j=l+S qn 3-component
+     */
     int getmj()      {
         return mj;
     }
+    /**
+     * @brief returns coupled state total isospin
+     */
     int getT()       {
         return T;
     }
+    /**
+     * @brief returns coupled state total isospin 3-component
+     */
     int getMT()      {
         return MT;
     }
 //  int gettwo_t1() { return two_t1;};
 //  int gettwo_t2() { return two_t2;};
 
-    // gives string of the rel and cm qn, which can be used to sort/compare
-    // coefs
+    /**
+     * @brief gives string of the rel and cm qn, which can be used to sort/compare coefficients
+     * 
+     * @return std::string string with the key in it
+     */
     std::string getkey() {
         return key;
     }
