@@ -12,7 +12,7 @@
 class MapRecMosh;
 
 /**
- * @brief Class of the moshinsky brakets calculated in a recursive way
+ * @brief Class of the moshinskybrackets calculated in a recursive way
  * To get one, use the createRecMosh function
  * When no longer needed, do not forget to remove using the
  * remove function  (of the recmosh class, not the maprecmosh!!)
@@ -109,7 +109,7 @@ private:
 public:
     /**
      * @brief returns the appropriate recmosh
-     * Use this function if a mosh braket is needed
+     * Use this function if a moshbracket is needed
      * 
      * @param n1 HO n quantum number of first nucleon 
      * @param l1 HO OAM quantum number of first nucleon 

@@ -43,14 +43,14 @@ Now it is very inefficient as basically the program has to start from scratch ea
 
 7. storage of moshinskys: make binary, one file
 
-9. check what the sum is in the pair class [see nucleus.cpp::450], also [getSum in pair.h::100]
+9. check what the sum is in the pair class [see nucleus.cpp::450], also [getSum in pair.h::100].  Is this close to 1 always?->check!
 check what getRelPair returns [nucleus.cpp::675]
 
-10. Nucleus::makepaircoeffs -> make sense of it  :: Partially done
+10. Nucleus::makepaircoeffs -> make sense of it  ::  done, but need to check Paircoef class for further implementation
 Check how links are dealt with ("add" functions), now link is stored bidirectionally, but matrix elements aren't necessarily?
 
-11. how does the norm for pairs work?  pair.getcoeff return sqrt of the norm (?)
-in nucleus::makepairs it's also not clear to me the different cases (sometimes sqrt sometimes not)
+11. check in nucleus if getRelpairs gives the expected results... (A(A-1)/2 for all) etc
+check print functions in nucleus, check if l451 the sumcheck for pairs is ever triggered..
 
 12. shells class, remove pointers 
 
@@ -61,3 +61,9 @@ in nucleus::makepairs it's also not clear to me the different cases (sometimes s
 18. can the links be stored somehow for any nucleus?
 
 19. naming variables, Lambda is sometimes used for coupled l, or sometimes for com OAM -> make uniform!!
+
+20. create pointer to mosh object in pair and newcoef in the constructor itself instead of passing as a parameter...
+
+21. streamline moshinsky inputdir/outputdir (the same), differentiate output mosh and other things
+
+22. add copy constructors?

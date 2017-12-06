@@ -17,7 +17,7 @@ void tbmd_rel(int A,int Z,std::string name )
     WavefunctionP::mapwfspinisospinp.setpstep( 0.05 );
 
 
-    // the inputdir and resultdir are only used for storage of the moshinsky brakets, always, everywhere
+    // the inputdir and resultdir are only used for storage of the moshinskybrackets, always, everywhere
     Nucleusall nucleus("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
 
     int nA=-1;

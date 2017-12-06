@@ -72,7 +72,7 @@ Nucleus::~Nucleus()
     cout << "Nucleus deleted" << endl;
 }
 
-/**
+/*
  * If t1=t2=-1 (so n), it calculates the tripelts nnn.
  * If t1=t2=1  it calculates the tripelts ppp.
  * If t1 != t2, it calculates the tripelts pnp and pnn.
@@ -93,7 +93,7 @@ void Nucleus::maketriplets()
     }
 }
 
-/**
+/*
  * Note: This will calculate the all normalised anti-sym triples |t1t2t3>_nas
  * So, if you act on it with an operator \Omega(1,2) on a triple |ppn>_nas or
  * |nnp>_nas the operator will work on pp and pn pairs .
@@ -343,13 +343,11 @@ void Nucleus::get_shell_max( int A, int* shell_max, int* max )
 
 
 /**
- * Note: This will calculate the all normalised anti-sym pairs \f$ |t1t2>_nas
+ * \brief Note: This will calculate the all normalised anti-sym pairs \f$ |t1t2>_nas
  * \f$ For the sum over all combinations, it is assumed \f$ \alpha_1 < \alpha_2
  * \f$ where \f$ \alpha = nljm_j \f$ If a single nucleon shell is not fully
  * occupied an according norm factor is calculated.  The isospin of first and
  * second particle are given by getT1(), getT2().
- *
- * @param t3 isospin of third particle
  */
 void Nucleus::makepairs()
 {
@@ -447,10 +445,10 @@ void Nucleus::makepairs()
                     pair->setfnorm( factor1*factor2 );
 //          pair->setfnorm( 1 );
 
-                    double sum = pair->getSum(); //WIM: check what this does...
+                    double sum = pair->getSum(); //WIM: check what this does... -> 
                     // Fermi test
                     //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl;
-                    if( sum < 1e-4 || factor1*factor2 == 0 ) delete pair;
+                    if( sum < 1e-4 || factor1*factor2 == 0 ) delete pair;  //does this ever happen?  maybe with shell with only one nucleon in it?  Or impossible combinations
                     else if( sum < 0.99 ) cerr << "CHECK " << __FILE__ << ":" << __LINE__ << endl;
                     else {
                         #pragma omp critical(pairs_push_back)
@@ -505,13 +503,13 @@ void Nucleus::makepaircoefs()
             Paircoef* pci= iti->second;
 
             // Add value of the matrix element of a paircoef with itself, e.g. \f$ | C_{\alpha_1,\alpha_2}^{A} |^{2} \f$
-            pci->add(vali*vali);
+            pci->add(vali*vali); //add to diagonal link strength
 
             // Add all the links of a Paircoef with the other Paircoefs generated
             // from this Pair.
             // A link is only added to one of the two Paircoefs involved.
             // Hence the sum from ci+1.
-            for( int cj= ci+1; cj < maxc; cj++ ) {
+            for( int cj= ci+1; cj < maxc; cj++ ) { //we loop over the coupling coefficients of the pair under consideration (upper triangle)
                 Newcoef* coefj;
                 double normj;
                 pair->getCoeff( cj, &coefj, &normj );
@@ -525,7 +523,7 @@ void Nucleus::makepaircoefs()
                 }
                 Paircoef* pcj= itj->second;
 
-                pci->add( pcj, vali*valj );
+                pci->add( pcj, vali*valj ); //add to off-diagonal link strength for coupled states, with the endpoint of the link also included
             }
         }
     }

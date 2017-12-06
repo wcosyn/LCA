@@ -164,7 +164,7 @@ double RecMosh::getCoefficient( int n, int l, int N, int Lambda, int L )
 }
 
 /*
- * The moshinsky braket is calculated in a recursive way,
+ * The moshinskybracket is calculated in a recursive way,
  * See thesis appendix for the expression
  */
 double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int n2, int l2, int L)

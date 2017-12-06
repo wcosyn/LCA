@@ -104,8 +104,8 @@ int main(){
         printf("[FAIL]\n");
     }
 
-    // RecMosh *dd=RecMosh::createRecMosh(0,1,0,1,"../data/mosh","../data/mosh");
-    // std::cout << dd->getCoefficient(0,1,0,1,2) << std::endl;
+    // RecMosh *dd=RecMosh::createRecMosh(0,2,0,2,"../data/mosh","../data/mosh");
+    // std::cout << dd->getCoefficient(0,1,0,3,2) << std::endl;
     
     /*
     int A=12;

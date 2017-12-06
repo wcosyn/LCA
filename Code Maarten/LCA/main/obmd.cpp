@@ -116,7 +116,7 @@ int main(int argc,char* argv[]){
         std::cout << "np p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
     }
 
-    // the inputdir and resultdir are only used for storage of the moshinsky brakets, always, everywhere
+    // the inputdir and resultdir are only used for storage of the moshinskybrackets, always, everywhere
     if(!pairs.compare("all")){
         Nucleusall nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
         ob( A, Z, nucl_name,nucl, &nuc);

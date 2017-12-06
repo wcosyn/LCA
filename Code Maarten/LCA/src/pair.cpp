@@ -11,24 +11,12 @@ Pair::Pair( RecMosh* mosh,
             int n2, int l2, int two_j2, int two_mj2, int two_t2 )
     : n1( n1), l1( l1), two_j1( two_j1), two_mj1( two_mj1), two_t1( two_t1),
       n2( n2), l2( l2), two_j2( two_j2), two_mj2( two_mj2), two_t2( two_t2),
-      mosh( mosh), coeflistmade( false)
+      mosh( mosh), coeflistmade( false),number_of_coeff(0)
 {
-    // Let the moshinsky braket know it is being used.
+    // Let the moshinsky bracket know it is being used.
     mosh->use();
     norm = 1.;
 }
-/**
- * REMOVABLE vvvvvvvvvvvvvvv
-Pair::Pair( RecMosh* mosh, int A, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2 )
-    : n1( n1), l1( l1), two_j1( two_j1), two_mj1( two_mj1), two_t1( two_t1),
-      n2( n2), l2( l2), two_j2( two_j2), two_mj2( two_mj2), two_t2( two_t2),
-      mosh( mosh), A( A), coeflistmade( false)
-{
-  // Let the moshinsky braket know it is being used.
-    mosh->use();
-    norm = 1.;
-} * REMOVABLE ^^^^^^^^^^^^^
-*/
 
 
 Pair::~Pair()
@@ -63,11 +51,10 @@ double Pair::getRelPair( int n, int l, int S )
     if( coeflistmade == false) makecoeflist();
     double result = 0;
     for( u_int i = 0; i < coeflist.size(); i++ ) {
-        Newcoef* coef = coeflist[i];
-        if( coef->getl() != l && l >  -1 ) continue;
-        if( coef->getn() != n && n > -1 ) continue;
-        if( coef->getS() != S && S > -1 ) continue;
-        double value = coef->getCoef();
+        if( coeflist[i]->getl() != l && l >  -1 ) continue;
+        if( coeflist[i]->getn() != n && n > -1 ) continue;
+        if( coeflist[i]->getS() != S && S > -1 ) continue;
+        double value = coeflist[i]->getCoef();
         result += value*value;
     }
     return norm* result;
@@ -78,12 +65,11 @@ double Pair::getRelPair( int n, int l, int S, int L )
     if( coeflistmade == false) makecoeflist();
     double result = 0;
     for( u_int i = 0; i < coeflist.size(); i++ ) {
-        Newcoef* coef = coeflist[i];
-        if( coef->getl() != l && l >  -1 ) continue;
-        if( coef->getn() != n && n > -1 ) continue;
-        if( coef->getS() != S && S > -1 ) continue;
-        if( coef->getL() != L && L > -1 ) continue;
-        double value = coef->getCoef();
+        if( coeflist[i]->getl() != l && l >  -1 ) continue;
+        if( coeflist[i]->getn() != n && n > -1 ) continue;
+        if( coeflist[i]->getS() != S && S > -1 ) continue;
+        if( coeflist[i]->getL() != L && L > -1 ) continue;
+        double value = coeflist[i]->getCoef();
         result += value*value;
     }
     return norm* result;
@@ -161,7 +147,8 @@ void Pair::makecoeflist()
                                                             */
 
                                         // Create coef
-                                        Newcoef* coeff = new Newcoef( n1, l1, two_j1, two_mj1, two_t1, n2, l2, two_j2, two_mj2, two_t2, mosh, N, L, ML, n, l, S, j, mj, T, MT);
+                                        Newcoef* coeff = new Newcoef( n1, l1, two_j1, two_mj1, two_t1, n2, l2, two_j2, two_mj2, two_t2,
+                                                                     mosh, N, L, ML, n, l, S, j, mj, T, MT);
 
                                         double val = coeff->getCoef();
                                         if( val*val > 1e-6 ) {
