@@ -11,6 +11,7 @@
 *.log
 *.out 
 *.toc
+*.backup
 # ignore compiled python modules
 #
 *.pyc
@@ -23,3 +24,5 @@ Code Maarten/LCA/bin
 Code Maarten/LCA/lib
 Code Maarten/LCA/doc
 
+Code Maarten/LCA/data
+Code Maarten/LCA/results/test_wim

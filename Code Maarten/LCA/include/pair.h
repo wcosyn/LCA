@@ -12,10 +12,6 @@
  class Pair
 {
 public:
-    /*
-     * Constructor: 
-     */
-    //Pair( RecMosh* mosh, int A, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2 ); // <--REMOVABLE
     /**
      * @brief Constructor: creates a pair with given quantum numbers.
      * two_t1 and two_t2, -1 or 1, determine if particle is n or p.

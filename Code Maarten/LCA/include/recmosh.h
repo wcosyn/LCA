@@ -17,8 +17,15 @@ class MapRecMosh;
  * When no longer needed, do not forget to remove using the
  * remove function  (of the recmosh class, not the maprecmosh!!)
  * 
- */
-class RecMosh
+ * The way it works: details.
+ * - Pointers to RecMosh objects are obtained by using the createRecMosh function
+ * - createRecMosh looks up the pointer in the RecMosh::maprecmosh map. If it is already in the map the pointer is returned.
+ * - If it is not in the map, the RecMosh::RecMosh constructor is called and the new pointer is added to the RecMosh::maprecmosh map.
+ * - When the RecMosh::RecMosh constructor is called, the moshinsky brackets for that certain n1l1n2l2 combination are read in from a file if it exists
+ * - When a Moshinsky bracket is needed the RecMosh::getCoefficient function is used.  
+ *  If the bracket is present in the coefficients map it is read in, if not calculated and added to the map.
+ * 
+ */class RecMosh
 {
     friend class MapRecMosh;
 private:
@@ -53,11 +60,11 @@ private:
      * @param n2  HO quantum number n of second nucleon
      * @param l2 HO OAM quantum number of second nucleon
      * @param L coupled spin: l+Lambda = l1+l2=L
-     * @return double Moshinsky bracket
+     * @return value of Moshinsky bracket
      */
     double calculate( int n, int l, int N, int Lambda, int n1, int l1, int n2, int l2, int L);
     /**
-     * @brief Calculates the matrix element of r_1^2 contained in the recursive relation for Moshinsky Brackets (Eq A.15, PhD Vanhalst)
+     * @brief Calculates the matrix element of r_1^2 contained in the recursive relation for Moshinsky Brackets (Eq A.15, Table A.1 PhD Vanhalst)
      * 
      * @param n HO relative n bra state
      * @param l HO relative OAM  bra state
@@ -69,7 +76,7 @@ private:
      * @param Lambdaa HO com OAM ket state
      * @param L coupled OAM value (l+Lambda)
      * @param f controls the sign of the matrix elements: f=1 for recursion in n_1, f=2 for recursion in n_2
-     * @return double 
+     * @return value of the matrix element (See table A.1 PhD vanhalst)
      */
     double getMatrixElement( int n, int l, int N, int Lambda, int na, int la, int Na, int Lambdaa, int L, int f);
     /**
@@ -110,7 +117,7 @@ public:
      * @param l2 HO OAM quantum number of second nucleon 
      * @param inputPath read in stored Moshinsky brackets from this folder
      * @param outputPath write out newly created Moshinsky brackets to this folder
-     * @return RecMosh* pointer to a RecMosh object (obtained from the MapRecMosh)
+     * @return RecMosh* pointer to a RecMosh object (obtained from the RecMosh::maprecmosh map)
      */
     static RecMosh* createRecMosh( int n1, int l1, int n2, int l2, char* inputPath, char* outputPath);
     /**
@@ -128,7 +135,7 @@ public:
      * @param N HO center of mass N quantum number
      * @param Lambda HO center of mass OAM quantum number
      * @param L coupled spin of l and Lambda
-     * @return double value of the Moshinksy bracket
+     * @return value of the Moshinksy bracket
      */
     double getCoefficient( int n, int l, int N, int Lambda, int L );
 

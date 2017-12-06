@@ -1,5 +1,6 @@
 #include "norm_ob.h"
 #include "nucleusall.h"
+#include "recmosh.h"
 
 int testUnit(Nucleusall& nuc){
     norm_ob nob(&nuc);
@@ -102,6 +103,10 @@ int main(){
     } else {
         printf("[FAIL]\n");
     }
+
+    // RecMosh *dd=RecMosh::createRecMosh(0,1,0,1,"../data/mosh","../data/mosh");
+    // std::cout << dd->getCoefficient(0,1,0,1,2) << std::endl;
+    
     /*
     int A=12;
     int Z=6;

@@ -172,6 +172,9 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
     cout << "[recmosh][RecMosh::calculate] new recmosh value calculated " << endl;
 // 	cout << "<(" << n << l << N << Lambda << ")" << L;
 //	cout << "|(0" << l1 << 0 << l2 << ")" << L << "> = " << endl;
+
+    //these are all in principle checked before...
+    // tested norms with this commented out and indeed is ok, but no noticeable speed gain, so I leave them in to be sure...
     if( L < fabs(l-Lambda) || L > l+Lambda)
         return 0;
     if( L < fabs(l1-l2) || L > l1+l2 )
@@ -179,7 +182,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
     if( 2*n+l + 2*N+Lambda != 2*n1+l1+2*n2+l2) return 0;
 //	cerr << " calculating missing coeff. " << endl;
 //	cerr << n << l << N << Lambda << "|" << n1 << l1 << n2 << l2 << "; " << L << endl ;
-    updated= true;
+    maprecmosh.get(n1,l1,n2,l2,inputPath,outputPath)->updated= true;
     // n1 not zero -> Eq. A.15 Phd thesis M. Vanhalst
     if( n1 > 0 ) {
 // 		cout << "n1>0" << endl;
@@ -192,7 +195,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
                 for( int Na = N-1; Na <=N; Na++ ) {
                     if( Na<0) continue;
                     for( int Lambdaa = Lambda-1; Lambdaa <= Lambda+1; Lambdaa++) {
-                        if( Lambdaa<0) continue;
+                        if( Lambdaa<0||L<fabs(la-Lambdaa)||L>la+Lambdaa) continue;
                         double me = getMatrixElement(n,l,N,Lambda,na,la,Na,Lambdaa, L, 1);
                         double moshbr = maprecmosh.get( n1-1, l1, n2, l2, inputPath, outputPath)->getCoefficient( na, la, Na, Lambdaa, L);
                         // double moshbr = calculate(na,la,Na,Lambdaa,n1-1,l1,n2,l2,L);
@@ -214,7 +217,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
                 for( int Na = N-1; Na <=N; Na++ ) {
                     if( Na<0) continue;
                     for( int Lambdaa = Lambda-1; Lambdaa <= Lambda+1; Lambdaa++) {
-                        if( Lambdaa<0) continue;
+                        if( Lambdaa<0||L<fabs(la-Lambdaa)||L>la+Lambdaa) continue;
                         double me = getMatrixElement(n,l,N,Lambda,na,la,Na,Lambdaa, L, 2);
                         double moshbr = maprecmosh.get( n1, l1, n2-1, l2, inputPath, outputPath)->getCoefficient( na, la, Na, Lambdaa, L);
                         //double moshbr = calculate(na,la,Na,Lambdaa,n1,l1,n2-1,l2,L);
@@ -255,6 +258,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
         }
 // 		cout << "<(" << n << l << N << Lambda << ")" << L;
 // 		cout << "|(0" << l1 << 0 << l2 << ")" << L << "> = " << sqrt(factor)*sign*sum << endl;
+        if(fabs(sum)<1.E-09) sum=0.;
         return sqrt(factor)*sign*sum;
     }
 
