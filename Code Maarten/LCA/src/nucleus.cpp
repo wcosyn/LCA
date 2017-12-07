@@ -391,7 +391,7 @@ void Nucleus::makepairs()
             // create mosh brackets for pair caclulations
             #pragma omp critical(recmosh)
             {
-                mosh = RecMosh::createRecMosh( n1, l1, n2, l2, inputdir, resultdir  );
+                mosh = RecMosh::createRecMosh( n1, l1, n2, l2, inputdir, inputdir  );
             }
 
             for( int two_mj1 = -twoj1; two_mj1 < twoj1+1; two_mj1+=2 ) {
@@ -522,8 +522,11 @@ void Nucleus::makepaircoefs()
                     itj = paircoefs->find(keyj);
                 }
                 Paircoef* pcj= itj->second;
-
-                pci->add( pcj, vali*valj ); //add to off-diagonal link strength for coupled states, with the endpoint of the link also included
+                
+                //add to off-diagonal link strength for coupled states, with the endpoint of the link also included
+                //we do not store 2 times the value (bidirectional) since matrix elements are in general not symmetric for coupled states
+                //see operator_virtual_ob::sum_me_corr function for use
+                pci->add( pcj, vali*valj ); 
             }
         }
     }
@@ -694,21 +697,21 @@ void Nucleus::printPairsPerShell()
     if( pairsMade == false ) makepairs();
 
     stringstream filename;
-    filename << resultdir << "/PairsPerShell." << A << "." << getT1() << "." << getT2();
+    filename << resultdir << "/PairsPerShell." << A << "." << Z << "." << getT1() << "." << getT2();
     ofstream file( filename.str().c_str() );
     file << "# " << A << " " << Z << endl;
     file << "# T1 " << getT1() << " \t A1 " << getA1() << endl;
     file << "# T2 " << getT2() << " \t A2 " << getA2() << endl;
-    file << "# n_1 \t l_1 \t j_1 \t mj1";
-    file << " \t n_2 \t l_2 \t j_2 \t mj2";
+    file << "# n_1 \t l_1 \t 2*j_1 \t 2*mj1 \t 2*mt1";
+    file << " \t n_2 \t l_2 \t 2*j_2 \t 2*mj2 \t 2*mt1";
     file << "\t all \t l=0 \t 1 \t 2 \t 3 \t ...";
     file << endl;
 
     vector< Pair*>::iterator it;
     for( it= pairs->begin(); it!= pairs->end(); it++ ) {
         double totalPairs= (*it)->getRelPair( -1 );
-        file << (*it)->getn1() << "\t" << (*it)->getl1() << "\t" << (*it)->gettwo_j1() << "\t" << (*it)->gettwo_mj1() ;
-        file << "\t" << (*it)->getn2() << "\t" << (*it)->getl2() << "\t" << (*it)->gettwo_j2() << "\t" << (*it)->gettwo_mj2() ;
+        file << (*it)->getn1() << "\t" << (*it)->getl1() << "\t" << (*it)->gettwo_j1() << "\t" << (*it)->gettwo_mj1() << "\t" << (*it)->gettwo_t1();
+        file << "\t" << (*it)->getn2() << "\t" << (*it)->getl2() << "\t" << (*it)->gettwo_j2() << "\t" << (*it)->gettwo_mj2() << "\t" << (*it)->gettwo_t2();
         file << "\t" << totalPairs;
         int i= 0;
         double sum= 0;
@@ -725,7 +728,7 @@ void Nucleus::printPairsPerShell()
 void Nucleus::printPairs()
 {
     stringstream filename;
-    filename << resultdir << "/Pairs." << A << "." << getT1() << "." << getT2();
+    filename << resultdir << "/Pairs." << A << "." << Z << "." << getT1() << "." << getT2();
     ofstream file( filename.str().c_str() );
 
     file << "# " << A << " " << Z << endl;

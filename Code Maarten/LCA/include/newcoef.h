@@ -55,7 +55,7 @@ public:
      * @param l coupled state HO relative OAM quantum number
      * @param S coupled state total spin 
      * @param j coupled state spin coupled j=l+S (relative OAM + total spin) 
-     * @param mj coupled state 3-componet of j
+     * @param mj coupled state 3-component of j
      * @param T coupled state total isospin
      * @param MT coupled state totla isospin 3-component
      */

@@ -1,15 +1,20 @@
-#include "nucleusnn.h"
+#include "nucleusall.h"
 #include <cstdio>
 #include <complex>
 
-int main()
+
+int main(int argc,char* argv[])
 {
-    int A=12;
-    int Z=6;
-    NucleusNN nuc("../../input/","../../input",A,Z);
+    int A=atoi(argv[1]);
+    int Z=atoi(argv[2]);
+    Nucleusall nuc("../data/mosh",".",A,Z);
     int np = nuc.get_number_of_pairs(); // force makepairs() to be called
     printf("[Info]: number of pairs: %d\n",np);
     
+    nuc.printPairs();
+
+    nuc.printPairsPerShell();
+
     ///////////////////
     ///   PAIRS     ///
     ///////////////////
@@ -25,12 +30,12 @@ int main()
         double norm;
         double coefsum = 0.;
         for (int pi=0; pi< pair->get_number_of_coeff(); pi++){
-            pair->getCoeff(pi,&coef,&norm);
+            pair->getCoeff(pi,&coef,&norm); //careful, norm is here the sqrt of the probability!!
             printf(" | N L M_L n l S j mj T MT >  : | % d  % d  % d  % d  % d  % d  % d  % d  % d  % d > \n",
                 coef->getN(),coef->getL(),coef->getML(),coef->getn(),coef->getl(),coef->getS(),coef->getj(),
                 coef->getmj(),coef->getT(),coef->getMT());
             printf(" Coefficient : %f, norm %.2f \n",coef->getCoef(),norm);
-            coefsum += std::norm(coef->getCoef());
+            coefsum += std::norm(coef->getCoef()); //magnitude squared!!!
         }
         printf("COEFSUM = %.10f \n\n",coefsum);
     }

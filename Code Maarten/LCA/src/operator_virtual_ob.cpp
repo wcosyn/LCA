@@ -27,7 +27,7 @@ double operator_virtual_ob::sum_me_corr_pairs( void* params )
     #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:sum) //num_threads(1)
     for( int i= 0; i < max; i++ ) {
         Pair* pair= nucleus->getPair(i);
-        double pair_norm= pair->getfnorm();
+        double pair_norm= pair->getfnorm();  //probability! so ok for diagonal matrix elements here...
         if( pair_norm == 0 ) {
             cerr << "CHECK SHOULDN'T HAPPEN " << __FILE__ << __LINE__ << endl;
             continue;
@@ -63,7 +63,7 @@ double operator_virtual_ob::sum_me_corr( void* params )
         Paircoef* pc1= nucleus->getPaircoef(i);
         double val= pc1->get_value();
 
-        // is left= right?
+        // is left== right?
         double sum_i=
             get_me_corr_left( pc1, pc1, params, val )
             + get_me_corr_both( pc1, pc1, params, val )
@@ -121,7 +121,7 @@ double operator_virtual_ob::sum_me_pairs( void* params )
         sum+= pair_norm* me ;
     }
 
-    return sum/ (A-1.)/ norm;
+    return sum/ (A-1.)/ norm; //factor A-1 is because we compute a one-body operator as a two-body one
 }
 
 double operator_virtual_ob::sum_me_coefs( void* params )
@@ -167,7 +167,7 @@ double operator_virtual_ob::sum_me_coefs( void* params )
 
         sum+= sum_i;
     }
-    return sum/ (A-1.)/norm;
+    return sum/ (A-1.)/norm; //factor A-1 is because we compute a one-body operator as a two-body one
 }
 
 int operator_virtual_ob::get_central_me( int la, int l, int S, int J, int T, double* result )
@@ -206,7 +206,7 @@ int operator_virtual_ob::get_tensor_me( int la, int l, int S, int J, int T, doub
             Smatrix= 6.*sqrt(J*(J+1))/(2*J+1.)*fT;
         } else if( la == J+1 ) {
             Smatrix= -2.*(J+2)/(2*J+1.)*fT;
-        } else return 1; // Camille: shouldn't this be "return 0"???????
+        } else return 0; // Camille: shouldn't this be "return 0"???????
     } else return 0;
 
     *result = Smatrix;

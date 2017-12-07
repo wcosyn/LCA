@@ -307,10 +307,24 @@ The class calculates all the coefficients,
 	C_{\alpha_1 \alpha_2}^{A} = \braket{A \equiv \{ n l S j m_j, N L M_L T M_T\} | \alpha_1 \alpha_2}_{\text{nas}}
 	\label{eq:coef}
 \end{align}
-The main method here is \texttt{Pair::makecoeflist()}. It loops over all possible values of $ A \equiv \{ S,T,n,l,N,M_L,j,m_j \}$. Where in the summation over $\{n,l,N,L\}$ the energy conservation $2n_1 + l_1 + 2n_2 + l_2 = 2n + l + 2N + L$ is taken into account to eliminate one of the summation loops, $L = 2n_1 + l_1 + 2n_2 + l_2 - 2n - l - 2N$. Note that $M_T$ is also fixed by $M_T = m_{t_1} + m_{t_2}$ and no summation over this is performed, as we want to keep the contribution from different pairs separated.
+The main method here is \texttt{Pair::makecoeflist()}. It loops over all 
+possible values of $ A \equiv \{ S,T,n,l,N,M_L,j,m_j \}$. Where in the 
+summation over $\{n,l,N,L\}$ the energy conservation $2n_1 + l_1 + 2n_2 + l_2 = 
+2n + l + 2N + L$ is taken into account to eliminate one of the summation loops, 
+$L = 2n_1 + l_1 + 2n_2 + l_2 - 2n - l - 2N$. Note that $M_T$ is also fixed by 
+$M_T = m_{t_1} + m_{t_2}$ and no summation over this is performed, as we want to 
+keep the contribution from different pairs separated.
 For each $A$ a new object \texttt{Newcoef} is generated and stored in the member \texttt{std::vector<NewCoef*> coeflist}.
 \subsection{newcoef.h}
-This class takes the parameters $n_1 l_1 j_1 m_{j_1} m_{t_1} n_2 l_2 j_2 m_{j_2} m_{t_2} N L M_L n l S j m_j T M_T$, and calculates the coefficient given in Eq. (\ref{eq:coef}). It takes also a pointer to a \texttt{RecMosh} object that holds the Moshinsky brackets. The only function in this class is to calculate $C_{\alpha_1 \alpha_2}^{A}$ using the formula,
+This class takes the parameters $n_1 l_1 j_1 m_{j_1} m_{t_1} n_2 l_2 j_2 
+m_{j_2} m_{t_2} N L M_L n l S j m_j T M_T$, and calculates the coefficient given 
+in Eq. (\ref{eq:coef}). It takes also a pointer to a \texttt{RecMosh} object 
+that holds the Moshinsky brackets.  The class looks similar to the later 
+Paircoef, but contrary to that one the Newcoef class still explicitly refers to 
+the original uncoupled pair and has the coupling coefficient to it.
+
+The only function in this class is to 
+calculate $C_{\alpha_1 \alpha_2}^{A}$ using the formula,
 \begin{multline}
 	\sum_{J M_J} \sum_{\Lambda} 
 	\frac{1}{\sqrt{2}} [ 1 - (-1)^{l+S+T}] \braket{ t_1 m_{t_1} t_2 m_{t_2} | T M_T }
@@ -349,8 +363,13 @@ A \texttt{Paircoef} object has all the quantum numbers in a rcm state $A$. In ad
 \begin{align}
 	\braket{\alpha_1 \alpha_2 | \hat{\mathcal{O}} | \alpha_1 \alpha_2} = \sum_{A} \sum_{\texttt{Paircoef(A).links}}  \texttt{link.strength} \braket {A | \hat{\mathcal{O}} | B }
 \end{align}
-\todo[inline]{\texttt{Paircoef::add(double val)} adds \texttt{val} to private member \texttt{value} but as far as I can see this private member \texttt{value} is NEVER used!}
-Note that the ``linked'' rcm states $\ket{A},\ket{B}$ both stem from the expansion of the same single particle state $\ket{ \alpha_1 \alpha_2}$.
+Contrary to the Newcoef class, paircoef does not have information on the 
+original pair quantum numbers.  It only stores the linkstrenghts to other 
+coupled states.  This is all we need to compute matrix elemnts as shown in the 
+last formula.
+
+Note that the ``linked'' rcm states $\ket{A},\ket{B}$ both stem from the 
+expansion of the same single particle state $\ket{ \alpha_1 \alpha_2}$.
 This means that the linked rcm states will have certain properties.
 For example, the parity of $\ket{ \alpha_1 \alpha_2}$ is given by $(-1)^{l_1 + l_2}$, the parity of a rcm state is $(-1)^{l+L}$, with $l$ the relative angular momentum and $L$ the c.m. angular momentum.
 Conservation of parity means that $(-1)^{l_1 + l_2} = (-1)^{l_A + L_A} = (-1)^{l_B + L_B}$.
