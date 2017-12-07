@@ -75,18 +75,20 @@ Tripletcoef::get_links
 24. in the correlation functions in the operator_virtual_ob, why all the superfluous parameters, 
     and why passing the result by pointer (this is for if statements in child classes)
 
+28. obmd in double loops move lookups of the first one after first forloop
+
+29. make namespace for the correlation functions file
+
 ++++CHECKS++++
 
-1. check partially filled shells functionality: Pair::setfnorm(factor) is referred to in manual
+25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...
+everything looks symmetric (correlation functions in the two l arguments...)
+RESTRICTION on n too strict??? Not diagonal with correlation function??  I think there is a mistake there..
 
-9. check what the sum is in the pair class [see nucleus.cpp::450], also [getSum in pair.h::100].  Is this close to 1 always?->check!
-check what getRelPair returns [nucleus.cpp::675]
+26. what is the comment statement in norm_ob.h:  "Note that this does not correspond with an isospin projection of a particle or particle pair!" (isospin selection)
 
-11. check in nucleus if getRelpairs gives the expected results... (A(A-1)/2 for all) etc
-check print functions in nucleus, check if l451 the sumcheck for pairs is ever triggered..
-
-25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal...
-
+27. PRIORITY check isospin selection in the norm_ob class!!! (is the naive assumption ok, replace with alternative used in the obmd calculations)
+-> this has consequences for how matrix elements of the correlations operator etc are handled (factors 4T-3) etc. How is this handled in the obmd claculations...
 
 
 +++DONE+++
@@ -97,3 +99,11 @@ Check how links are dealt with in the operators, now link is stored bidirectiona
 
 26. figure out factor /A-1 at the end in operator_virtual_ob::sum_me_pairs and operator_virtual_ob::sum_me_coefs, why not 2/A-1?? [because O(1)+O(2) is computed?]
 for the norm there is a factor 2 in the relevant get_me function. -> YES  // should i change this to make it more uniform??
+
+1. check partially filled shells functionality: Pair::setfnorm(factor) is referred to in manual -> everything seems ok with how it is dealt in the links and operator_virtual_ob class
+
+9. check what the sum is in the pair class [see nucleus.cpp::450], also [getSum in pair.h::100].  Is this close to 1 always?->check! -> seems that way
+check what getRelPair returns [nucleus.cpp::675]  -> done and annotated in manual
+
+11. check in nucleus if getRelpairs gives the expected results... (A(A-1)/2 for all) etc
+check print functions in nucleus, check if l451 the sumcheck for pairs is ever triggered.. -> yes, when a partially filled shell has only one nucleon in it

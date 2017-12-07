@@ -16,6 +16,7 @@ operator_virtual_ob::operator_virtual_ob( Nucleus* nucleus, bool central, bool t
     nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
 }
 
+//correlated over pairs
 double operator_virtual_ob::sum_me_corr_pairs( void* params )
 {
     double sum= 0;
@@ -27,12 +28,12 @@ double operator_virtual_ob::sum_me_corr_pairs( void* params )
     #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:sum) //num_threads(1)
     for( int i= 0; i < max; i++ ) {
         Pair* pair= nucleus->getPair(i);
-        double pair_norm= pair->getfnorm();  //probability! so ok for diagonal matrix elements here...
+        double pair_norm= pair->getfnorm();  //probability! so ok for diagonal matrix elements here... partially filled shells taken into account
         if( pair_norm == 0 ) {
             cerr << "CHECK SHOULDN'T HAPPEN " << __FILE__ << __LINE__ << endl;
             continue;
         }
-
+        //symmetries in left & right taken care of in the derived class when applicable
         double me=
             get_me_corr_left( pair, params )
             + get_me_corr_right( pair, params )
@@ -48,7 +49,7 @@ double operator_virtual_ob::sum_me_corr_pairs( void* params )
     return sum/ norm;
 }
 
-
+//correlated over paircoefs
 double operator_virtual_ob::sum_me_corr( void* params )
 {
     double sum= 0;
@@ -61,7 +62,7 @@ double operator_virtual_ob::sum_me_corr( void* params )
     #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:sum) //num_threads(1)
     for( int i= 0; i < max; i++ ) {
         Paircoef* pc1= nucleus->getPaircoef(i);
-        double val= pc1->get_value();
+        double val= pc1->get_value(); //normalisation of partially filled shells taken into account in the linkstrength val
 
         // is left== right?
         double sum_i=
@@ -72,7 +73,7 @@ double operator_virtual_ob::sum_me_corr( void* params )
         int max_links= pc1->get_number_of_links();
         Paircoef* pc2;
         for( int j= 0; j< max_links; j++ ) {
-            pc1->get_links( j, &pc2, &val );
+            pc1->get_links( j, &pc2, &val ); //normalisation of partially filled shells taken into account in the linkstrength val
 
             // Sometimes is left pc1, pc2 ) == right( pc2, pc1 )
             double me=
@@ -94,6 +95,7 @@ double operator_virtual_ob::sum_me_corr( void* params )
     return sum/ norm;
 }
 
+//mean-field pairs
 double operator_virtual_ob::sum_me_pairs( void* params )
 {
     double sum= 0;
@@ -110,7 +112,7 @@ double operator_virtual_ob::sum_me_pairs( void* params )
     for( int i= 0; i < max; i++ ) {
         Pair* pair= nucleus->getPair(i);
 
-        double pair_norm= pair->getfnorm();
+        double pair_norm= pair->getfnorm(); // take normalisation of partially filled shell into account.  Diagonal matrix element so fnorm is ok.
         if( pair_norm == 0 ) {
             continue;
         }
@@ -121,9 +123,10 @@ double operator_virtual_ob::sum_me_pairs( void* params )
         sum+= pair_norm* me ;
     }
 
-    return sum/ (A-1.)/ norm; //factor A-1 is because we compute a one-body operator as a two-body one
+    return sum/ (A-1.)/ norm; //factor A-1 is because we compute a one-body operator as a two-body one: O(1)+O(2)
 }
 
+//mean-field paircoefs
 double operator_virtual_ob::sum_me_coefs( void* params )
 {
     double sum= 0;
@@ -138,7 +141,7 @@ double operator_virtual_ob::sum_me_coefs( void* params )
         Paircoef* pc1= nucleus->getPaircoef(i);
 
         double val=  pc1->get_value();
-        double sum_i= get_me( pc1, pc1, params, val );
+        double sum_i= get_me( pc1, pc1, params, val ); //normalisation of partially filled shells taken into account in the linkstrength val
 
         int max_links= pc1->get_number_of_links();
 //    cout << max_links << endl;
@@ -156,8 +159,8 @@ double operator_virtual_ob::sum_me_coefs( void* params )
              * norm_ob::get_me returns "val*delta_{A,B}"
              */
             double me=
-                get_me( pc1, pc2, params, val )
-                + get_me( pc2, pc1, params, val );
+                get_me( pc1, pc2, params, val ) //normalisation of partially filled shells taken into account in the linkstrength val
+                + get_me( pc2, pc1, params, val ); //normalisation of partially filled shells taken into account in the linkstrength val
 
             sum_i+= me;
         }
@@ -167,7 +170,7 @@ double operator_virtual_ob::sum_me_coefs( void* params )
 
         sum+= sum_i;
     }
-    return sum/ (A-1.)/norm; //factor A-1 is because we compute a one-body operator as a two-body one
+    return sum/ (A-1.)/norm; //factor A-1 is because we compute a one-body operator as a two-body one: O(1)+O(2)
 }
 
 int operator_virtual_ob::get_central_me( int la, int l, int S, int J, int T, double* result )

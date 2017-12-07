@@ -11,6 +11,7 @@ using std::endl;
 norm_ob::norm_ob(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm )
     : operator_virtual_ob( nucleus, central, tensor, isospin, norm ) { }
 
+
 double norm_ob::get_me( Pair* pair, void* params )
 {
     struct norm_ob_params* nob= (struct norm_ob_params*) params;
@@ -106,9 +107,10 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
     int lAs= nob->lA;
     int nBs= nob->nB;
     int lBs= nob->lB;
+    
     // If diagonal is left = right,
     // so it is not necessary to calculate right
-
+    // see norm_ob::get_me_corr_right l239 below
     if( nAs == nBs && lAs == lBs )
         return 0;
 
@@ -124,7 +126,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
             Newcoef* coefj;
             double normj;
             pair->getCoeff( cj, &coefj, &normj );
-            // The correlation operator keeps S j m_j unchanged
+            // The correlation operator keeps S j m_j M_T N L M_L unchanged
 
             if( coefi->getS()  != coefj->getS()  ) continue;
             if( coefi->getj()  != coefj->getj()  ) continue;
@@ -148,7 +150,6 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
 
 
             if( t != 0 ) {
-                MT= coefi->getMT();
                 if( t == -1*MT )
                     continue;
                 if( MT == 0 )

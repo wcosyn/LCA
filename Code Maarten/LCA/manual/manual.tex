@@ -366,7 +366,8 @@ A \texttt{Paircoef} object has all the quantum numbers in a rcm state $A$. In ad
 Contrary to the Newcoef class, paircoef does not have information on the 
 original pair quantum numbers.  It only stores the linkstrenghts to other 
 coupled states.  This is all we need to compute matrix elemnts as shown in the 
-last formula.
+last formula.  Partially filled shells are taken into account in the link 
+strenghts of this class!
 
 Note that the ``linked'' rcm states $\ket{A},\ket{B}$ both stem from the 
 expansion of the same single particle state $\ket{ \alpha_1 \alpha_2}$.
@@ -379,6 +380,31 @@ For example, for operators that do not change the total spin $S$ (this is the ca
 	From $l_A - l_B$ is even it then follows that $L_A - L_B$ is even, or $L_A,L_B$ have the same even-odd parity.
 	\item if $T_A \neq T_B$ then $l_A$ and $l_B$ have opposite even-odd parity. Resulting in the condition that $L_A$ and $L_B$ also must have different even-odd parity. 
 \end{itemize}
+\section{Normalisation}
+Since it sometimes is a bit of a headache keeping track of certain 
+normalisations in various parts of the code.  Here is a (partial, so far have 
+checked one-body operators and the nucleus/pair related classes) overview:
+\begin{itemize}
+ \item A \texttt{Pair} object has a \texttt{fnorm} attribute, this is <1 
+for a pair where at least one of the nucleons originates from a partially 
+filled shell.
+\item The various \texttt{Pair:getRelPair()} functions are normalized to the 
+above mentioned norm.
+\item In the \texttt{Nucleus} classes, the map with the coupled states and link 
+strenghts has the normalisations for partially filled shells taken into account 
+in the value of the links.  So if one computes matrix elements by iterating 
+over Paircoefs, everything should be ok norm-wise.
+\item If one iterates over the pairs vector in a \texttt{Nucleus} object, 
+partially filled shells are not automatically taken care of and one should 
+weigh the sum with the fnorm attribute of each pair!
+\item The various \texttt{Nucleus::getRellPair} functions are normalized to the 
+total number of pairs possible in that certain nucleus ($A(A-1)/2$ for 
+\texttt{Nucleusall}, $NZ$ for \texttt{Nucleusnp} etc.).  Normalisations of 
+partially filled shells are accounted for by the calls to the 
+\texttt{Pair:getRelPair()} functions.
+\end{itemize}
+
+
 
 \section{Matrix Elements}
 First some theory on the matrix elements. In the calculation of the norm we only have the correlation operator $\hat{\wr}$ between the bras and kets.
@@ -547,13 +573,25 @@ Note that this class inherits from \texttt{operator\_virtual\_ob}, declaring gen
 	\end{itemize}
 	\todo[inline,caption={}]{
 	\textbf{Open shellness not taken into account here. Must be done somewhere else (higher up)...} \\	
-	For closed shell nuclei everything seems fine. For open shells however we get some strange results. For example $^{27}$Al with $13$ protons and $14$ neutrons has an open $1d\frac{5}{2}$ proton shell. Open-shell nuclei are treated as closed shell but the pairs in the open shells get a weight factor. This weight factor however is \textbf{not} present in the method \texttt{norm::ob\_get\_me(pair,...)}. Hence as $A = 27$ but the closed shell equivalent with $A=28$ causes the number of pairs to be $28\cdot 27 /2$ instead of $ 27 \cdot 26 /2$. We get
+	For closed shell nuclei everything seems fine. For open shells however 
+we get some strange results. For example $^{27}$Al with $13$ protons and $14$ 
+neutrons has an open $1d\frac{5}{2}$ proton shell. Open-shell nuclei are treated 
+as closed shell but the pairs in the open shells get a weight factor. This 
+weight factor however is \textbf{not} present in the method 
+\texttt{norm::ob\_get\_me(pair,...)}. Hence as $A = 27$ but the closed shell 
+equivalent with $A=28$ causes the number of pairs to be $28\cdot 27 /2$ instead 
+of $ 27 \cdot 26 /2$. We get
 	\begin{itemize}
 	\item $ \frac{ 28 \cdot 27}{2} \frac{2}{27} = 28$ ( \texttt{norm\_ob::norm\_ob\_params.t = 0}) 
 	\item $ \frac{ 14 \cdot 13}{2} \frac{2}{27} + \frac{14 \cdot 14 }{27} = \frac{378}{27} = 14 $ (\texttt{norm\_ob::norm\_ob\_params.t~=~1}) \\
 	\item $ \frac{14 \cdot 14 }{27} + \frac{ 14 \cdot 13}{2} \frac{2}{27} = \frac{378}{27} = 14 $ (\texttt{norm\_ob::norm\_ob\_params.t~=-~1}) \\
 	\end{itemize}
-	}
+	
+	WIM: Yes $\rightarrow$ all the normalisations are accounted for in the 
+linkstrenghts (summation over paircoefs) or in the 
+\texttt{operator\_virtual\_ob::sum\_me\_pairs} function for the summation over 
+pairs!
+		}
 	\item \texttt{norm\_ob::get\_me\_corr\_right( Pair )}.
 \end{itemize}
 

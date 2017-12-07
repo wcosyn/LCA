@@ -12,7 +12,8 @@
  * Different uncoupled pairs can have the same coupled states in their expansion.  
  * This class stores the links between these and the total link strength (using Paircoef::add( double val) and Paircoef::add(Paircoef* pc, double val) ).
  * Contrary to the Newcoef class this class doesn't care anymore from which uncoupled pair the coupled state originated! 
- * All the needed information to compute matrix elements in included in the link strenghts
+ * All the needed information to compute matrix elements in included in the link strenghts.  
+ * The normalisation of the originating shells is taken into account in the linkstrengths!
  * 
  */
 class Paircoef

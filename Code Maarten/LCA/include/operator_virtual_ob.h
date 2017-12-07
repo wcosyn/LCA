@@ -16,7 +16,7 @@ public:
     /**
      * @brief Constructor
      * 
-     * @param nucleus pointer to a nucleus object that has all the uncoupled pairs and/or coupled states + linkstrenghts needed to compute the matrix elements
+     * @param nucleus holds all the pairs [Nucleus::pairs] and/or coupled states with linkstrengths [Nucleus::paircoefs]
      * @param central turn on/off the central correlations.
      * @param tensor turn on/off the tensor correlations.
      * @param isospin turn on/off the spin-isospin correlations.

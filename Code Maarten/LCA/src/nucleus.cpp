@@ -448,7 +448,7 @@ void Nucleus::makepairs()
                     double sum = pair->getSum(); //WIM: check what this does... -> 
                     // Fermi test
                     //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl;
-                    if( sum < 1e-4 || factor1*factor2 == 0 ) delete pair;  //does this ever happen?  maybe with shell with only one nucleon in it?  Or impossible combinations
+                    if( sum < 1e-4 || factor1*factor2 == 0 ) { delete pair;}  //This happens for a pair that comes from the same shell with only 1 nucleon in it for instance 
                     else if( sum < 0.99 ) cerr << "CHECK " << __FILE__ << ":" << __LINE__ << endl;
                     else {
                         #pragma omp critical(pairs_push_back)
@@ -704,7 +704,7 @@ void Nucleus::printPairsPerShell()
     file << "# T2 " << getT2() << " \t A2 " << getA2() << endl;
     file << "# n_1 \t l_1 \t 2*j_1 \t 2*mj1 \t 2*mt1";
     file << " \t n_2 \t l_2 \t 2*j_2 \t 2*mj2 \t 2*mt1";
-    file << "\t all \t l=0 \t 1 \t 2 \t 3 \t ...";
+    file << "\t NORM \t all \t l=0 \t 1 \t 2 \t 3 \t ... ";
     file << endl;
 
     vector< Pair*>::iterator it;
@@ -721,7 +721,7 @@ void Nucleus::printPairsPerShell()
             sum+= result;
             i++;
         }
-        file << endl;
+        file  << endl;
     }
     file.close();
 }
