@@ -188,7 +188,7 @@ double hiGamma( int two_n)
 
 double laguerre_coeff( double nu, int n, int l, int i)
 {
-    double result = binomial( n+l+0.5 , n-i ) / hiGamma( 2*i+2);
+    double result = binomial( n+l+0.5 , n-i ) / hiGamma( 2*i+2);  //remember hiGamma(2n)=(n-1)!  (!!!!)
     result*= pow( nu, i );
 
     if(i%2) {
@@ -212,16 +212,16 @@ double nothing( double r )
     return 1;
 }
 
-double exponent(double x)
-{
-    gsl_sf_result exp;
-    int status = gsl_sf_exp_e( x, &exp);
-    if (status) {
-        if(status == GSL_EUNDRFLW) {
-            return 0;
-        } else cerr << "gsl_sf_exp failed, gsl_errno = " << status;
-        cerr << ": " << x << endl;
-    }
-    return exp.val;
-}
+// double exponent(double x)
+// {
+//     gsl_sf_result exp;
+//     int status = gsl_sf_exp_e( x, &exp);
+//     if (status) {
+//         if(status == GSL_EUNDRFLW) {
+//             return 0;
+//         } else cerr << "gsl_sf_exp failed, gsl_errno = " << status;
+//         cerr << ": " << x << endl;
+//     }
+//     return exp.val;
+// }
 

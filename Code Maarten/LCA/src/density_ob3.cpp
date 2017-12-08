@@ -119,7 +119,7 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
      * And write it out to file
      */
 
-    double kstep= 0.10;
+    double kstep= 0.10; //fm^-1
     #pragma omp parallel for schedule( dynamic, 1 )
     for( int int_k= 0; int_k< 50; int_k++ ) {
 //    cout << int_k << endl;
@@ -141,7 +141,11 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
         else
         */
         {
-            mf= i0->get( cf0, cf0 )*2/M_PI*sqrt(8)/norm/(A-1);
+            // factor 1/(A-1) because a one-body operator is calculated as 2-body
+            // this was taken care of in operator_virtual_ob::sum_me_coefs but that result isn't used here!!
+            //rest of the factors is the 4\sqrt{2}/\pi in the master formula (Eq 53 LCA manual) 
+            // + the normalisation supplied with the object (denominator matrix element)            
+            mf= i0->get( cf0, cf0 )*2/M_PI*sqrt(8)/norm/(A-1);  // we take info from the density_ob_integrand3 objects
         }
 
         double corr_c= ( ic->get( cf0, cfc )+ icc->get( cfc, cfc ));
@@ -176,8 +180,8 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
             file << endl;
             integral_mf  += kstep*k*k*(mf);
             integral     += kstep*k*k*(corr);
-            kinenergy_mf += kstep*k*k*k*k*(mf);
-            kinenergy_co += kstep*k*k*k*k*(corr);
+            kinenergy_mf += kstep*k*k*k*k*(mf); //does not include mass denominator!!!
+            kinenergy_co += kstep*k*k*k*k*(corr); //does not include mass denominator!!!
         }
         if ( !(int_k%10) ) {
             cout << k << " done by " << omp_get_thread_num() << "/" << omp_get_num_threads() << endl;
@@ -272,19 +276,19 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
             Newcoef* coefi;
-            double normi;
+            double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( ci, &coefi, &normi );
 
             Newcoef* coefj;
-            double normj;
+            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
 
-            double vali= coefi->getCoef();
-            double valj= coefj->getCoef();
+            double vali= coefi->getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj= coefj->getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
             assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
             assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
             assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
-            if( coefi->getS() != coefj->getS() ) continue;
+            if( coefi->getS() != coefj->getS() ) continue; //only correct when the obmd is summed over spin
             if( coefi->getMT() != coefj->getMT() ) continue; // ok, this is correct (see manual)
             int nA= coefi->getn();
             int nB= coefj->getn();
@@ -331,9 +335,9 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
              * In general, projected mf needs a higher qmax than correlated part,
              */
             for( int q= 0; q <= qmax; q++ ) {
-                for( int l = fabs( LA-q); l <= LA+q; l++ ) {
-                    for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                        double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+                for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                    for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                        double ifactor= preifactor*get_me12_factor(LA-LB+l-la); //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
                         if (ifactor==0.)
                             continue;
 
@@ -343,21 +347,24 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
                         //for( int kA= jA-1; kA <= jA+1; kA++ )
                         //{
                         //if( kA < 0 ) continue;
-                        int kA= lA;
-                        int kB= lB;
+                        int kA= lA; // kA->lp, kB->l'q  in master formula
+                        int kB= lB; //lp=l, l'q=l' due to no correlation functions! [first summations on line 1 in master formula]
 
-                        for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
+                        //k->l1 in master formula
+                        for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) { //due to the last two factors in threej1 below
 
                             double sum= 0;
-                            for( int MS= -S; MS <= S; MS++ ) {
+                            for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                                 int mkA= mjA-MS;
                                 int mkB= mjB-MS;
-                                if( MLA+ mkA != MLB+ mkB ) continue;
+                                //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
+                                if( MLA+ mkA != MLB+ mkB ) continue;  
+                                //third line master formule (LCA manual Eq(53))
                                 double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                            * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                            * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                                 if( cg == 0 ) continue;
-                                double threej1=   threej::threejs.get( 2*LA, 2*l , 2*q, 0, 0, 0 )
+                                double threej1=   threej::threejs.get( 2*LA, 2*l , 2*q, 0, 0, 0 ) //part of line 5&6 master formula
                                                 * threej::threejs.get( 2*LB, 2*la, 2*q, 0, 0, 0 )
                                                 * threej::threejs.get( 2*kB, 2*l , 2*k, 0, 0, 0 )
                                                 * threej::threejs.get( 2*kA, 2*la, 2*k, 0, 0, 0 );
@@ -365,10 +372,11 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
                                     continue;
                                 }
                                 for( int mq= -q; mq<= q; mq++ ) {
+                                    //restrictions due to 3j symbols
                                     int ml= -mq-MLA;
                                     int mla= -mq-MLB;
                                     int mk= -ml-mkB;
-                                    double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q, 2*MLA, 2*ml , 2*mq)
+                                    double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q, 2*MLA, 2*ml , 2*mq) //remaining 3j-symbols line 5&6 master formula
                                                     * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
                                                     * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
                                                     * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
@@ -377,13 +385,15 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
                                     }
                                     double sqrts= sqrt( (2*LA+1)* (2*LB+1) * (2*kA+1)* (2*kB+1) )* (2*l+1)* (2*la+1)* (2*q+1)*( 2*k+1);
                                     sum+= threej2* threej1*cg* sqrts;
-                                }
-                            }
+                                }// m_q
+                            } //m_S
                             if( fabs(sum)< 1e-10 ) {
                                 continue;
                             }
                             #pragma omp critical(add)
                             {
+                                //Here the normalisation is accounted for!
+                                //the prefactor is added to a particular integral (last line master formula Eq 53 LCA manual)
                                 integrand->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm* vali*valj*sum*ifactor );
                             }
                         } // k
@@ -418,11 +428,11 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef* coefi;
-        double normi;
+        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
         pair->getCoeff( ci, &coefi, &normi );
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
             Newcoef* coefj;
-            double normj;
+            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
 
             double vali= coefi->getCoef();
@@ -572,12 +582,12 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef* coefi;
-        double normi;
+        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
         pair->getCoeff( ci, &coefi, &normi );
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
 
             Newcoef* coefj;
-            double normj;
+            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
 
             double vali= coefi->getCoef();
@@ -724,11 +734,11 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
             Newcoef* coefi;
-            double normi;
+            double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( ci, &coefi, &normi );
 
             Newcoef* coefj;
-            double normj;
+            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
 
             double vali= coefi->getCoef();

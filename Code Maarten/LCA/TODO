@@ -35,6 +35,7 @@ But might be more difficult to implement?  Check on T1 for the different cases (
 
 4. PRIORITY modify calculation of matrix elements such that all isospin combinations are being calculated in one go.
 Now it is very inefficient as basically the program has to start from scratch each time and does almost the same thing all over (but with different linear combinations)
+-> we will have to change the way the outputs work (at least for the norm) -> see how it is handled for the obmd's
 
 18. can the links be stored somehow for any nucleus? Is it worth the effort/reusability?
 
@@ -79,17 +80,37 @@ Tripletcoef::get_links
 
 29. make namespace for the correlation functions file
 
+30. correlation integrals in norm_ob -> write some small extra functions (everything seems so similar every time?)
+
+32. in double corr norm matrix element if statements on doubles! + l478 substitute by -N // same in the paircoeff version (+ result at the end can be shorter)
+
+33. void params in the operators -> can this be replaced by template class?
+
 ++++CHECKS++++
 
 25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...
 everything looks symmetric (correlation functions in the two l arguments...)
-RESTRICTION on n too strict??? Not diagonal with correlation function??  I think there is a mistake there..
+
 
 26. what is the comment statement in norm_ob.h:  "Note that this does not correspond with an isospin projection of a particle or particle pair!" (isospin selection)
 
 27. PRIORITY check isospin selection in the norm_ob class!!! (is the naive assumption ok, replace with alternative used in the obmd calculations)
 -> this has consequences for how matrix elements of the correlations operator etc are handled (factors 4T-3) etc. How is this handled in the obmd claculations...
+-> Looks ok, everything still remains diagonal in T and MT -> (NOOO, see LCA manual p31 or p11, not diagonal in T!!!!)
+-> Asymmetry is there in mom distribution results, but norms seem symmetric (np(p), np(n))
 
+28. Nucleus::makepaircoefs: I think normi is always equal to normj (same pair) 
+    so we could just replace this by the normf of the pair and reduce the confusing norm business!
+
+31. in double corr matrix element, order of k,l1//k,l2 (l414)
+
+34. units momentum distribution and intermediate results there 
+
+35. density_ob3::write -> get rid of all the news (and deletes)
+
+36. normalisations obmd::write at the end
+
+37. !!!!PRIORITY in density_ob3. Integrand->add, I think there might be mistakes with the relative l qn passed.  They should be the kA,kB parameters!
 
 +++DONE+++
 
@@ -107,3 +128,5 @@ check what getRelPair returns [nucleus.cpp::675]  -> done and annotated in manua
 
 11. check in nucleus if getRelpairs gives the expected results... (A(A-1)/2 for all) etc
 check print functions in nucleus, check if l451 the sumcheck for pairs is ever triggered.. -> yes, when a partially filled shell has only one nucleon in it
+
+xx. RESTRICTION on n too strict in norm functions??? Not diagonal with correlation function??  I think there is a mistake there.. -> fixed

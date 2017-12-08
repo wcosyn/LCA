@@ -104,7 +104,12 @@ In similar vein, the LCA transforms a two-body operator $\widehat{\Omega}^{[2]} 
 	 \label{eq:LCA_two_body}
 \end{multline} 
 
-To preserve normalization the normalisation denominator $ \mathcal{N} = \braket{ \Phi | \widehat{\mathcal{G}}{^\dagger} \mathcal{G} | \Phi }$, should be expanded to the same order in $\hat{l}$ as the numerator. The normalisation factor $\mathcal{N}$ can be calculated by replacing $\widehat{\Omega}_i$ with $\frac{1}{A}$ in Eq.~(\ref{eq:LCA_one_body}) or $\widehat{\Omega}_{ij}$ with $\frac{2}{A(A-1)}$ in Eq.~(\ref{eq:LCA_two_body}),
+To preserve normalisation the normalisation denominator $ \mathcal{N} = 
+\braket{ \Phi | \widehat{\mathcal{G}}{^\dagger} \mathcal{G} | \Phi }$, should be 
+expanded to the same order in $\hat{l}$ as the numerator. The normalisation 
+factor $\mathcal{N}$ can be calculated by replacing $\widehat{\Omega}_i$ with 
+$\frac{1}{A}$ in Eq.~(\ref{eq:LCA_one_body}) or $\widehat{\Omega}_{ij}$ with 
+$\frac{2}{A(A-1)}$ in Eq.~(\ref{eq:LCA_two_body}),
 \begin{align}
 	\mathcal{N}^{[1]} &=  1 + \frac{2}{A} \sum_{i < j}^{A} \braket{ \alpha_{i} \alpha_{j} | \hat{l}^{\dagger}_{ij} + \hat{l}_{ij} + \hat{l}^{\dagger}_{ij} \hat{l}_{ij} | \alpha_{i} \alpha_{j}}  \, ,
 	\label{eq:LCA_norm_one_body}	
@@ -385,11 +390,17 @@ Since it sometimes is a bit of a headache keeping track of certain
 normalisations in various parts of the code.  Here is a (partial, so far have 
 checked one-body operators and the nucleus/pair related classes) overview:
 \begin{itemize}
- \item A \texttt{Pair} object has a \texttt{fnorm} attribute, this is <1 
+ \item A \texttt{Pair} object has a \texttt{fnorm} attribute, this is $<1$ 
 for a pair where at least one of the nucleons originates from a partially 
-filled shell.
+filled shell.  This is a \textbf{probability} so should only be used to 
+multiply diagonal matrix elements for instance.  If used for a pair bra or ket, 
+take the square root of this number!!!!
 \item The various \texttt{Pair:getRelPair()} functions are normalized to the 
-above mentioned norm.
+above mentioned norm.  Ok, since we are dealing with diagonal contributions.
+\item For a Pair object, when getting the expension coefficients to the coupled 
+states using \texttt{Pair::getCoeff}, the third argument of the function 
+returns the \textbf{square root} of the \texttt{fnorm} variable.  So this is a 
+number that can be used to multiply the pair bra or ket.
 \item In the \texttt{Nucleus} classes, the map with the coupled states and link 
 strenghts has the normalisations for partially filled shells taken into account 
 in the value of the links.  So if one computes matrix elements by iterating 
@@ -402,6 +413,13 @@ total number of pairs possible in that certain nucleus ($A(A-1)/2$ for
 \texttt{Nucleusall}, $NZ$ for \texttt{Nucleusnp} etc.).  Normalisations of 
 partially filled shells are accounted for by the calls to the 
 \texttt{Pair:getRelPair()} functions.
+\item For the normalisation, when iterating over pairs, the partially filled 
+normalisations are accounted for in the \texttt{sum\_xxx} functions provided in 
+the base class \texttt{operator\_virtual\_ob}.
+\item For the OBMD, since it doesn't use the  \texttt{operator\_virtual\_ob} 
+sum functions, the normalisations are accounted for at the end of all the 
+\text{get\_me\_xxx} functions when calling the com integrands 
+\texttt{density\_ob\_integrand3::add} functions.
 \end{itemize}
 
 
@@ -525,8 +543,10 @@ It is straightforward to show that,
 \end{align*}
 \begin{align*}
 	\braket{ 1, \pm 1 | \hat{\delta}_{m_t}^{[2]} | 1, \pm 1} &= \delta_{\pm 1,2m_t}  \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} | 1,0} = \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} | 0,0} &=  \frac{1}{2} \\
-	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} | 0,0} = \braket{ 0,0 | \hat{\delta}_{m_t}^{[1]} | 1,0} &=  \frac{1}{2} (-2 m_t) 
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} | 1,0} = \braket{ 0,0 | 
+\hat{\delta}_{m_t}^{[2]} | 0,0} &=  \frac{1}{2} \\
+	\braket{ 1,0 | \hat{\delta}_{m_t}^{[2]} | 0,0} = \braket{ 0,0 | 
+\hat{\delta}_{m_t}^{[2]} | 1,0} &=  \frac{1}{2} (-2 m_t) 
 \end{align*}
 \end{multicols}
 
@@ -977,7 +997,8 @@ If we are not interested in the spin decomposition of the one-body momentum matr
 \begin{multline*}
 \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} =  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
  \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \\
- (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} \\
+ (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}'\sum_{m_S} \threej{ 
+l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} \\
  \frac{4 \sqrt{2}}{ \pi } \sum_{k m_k} \sum_{K m_K} \sum_{K' m_K'} i^{L-L'-K+K'}  \\
  (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{kK}(p_1,P_{12}) \chi_{p,n'l_q'}^{kK'}(p_1,P_{12}) \\
  \hat{l}_{p} \hat{l}_{q}' \hat{K} \hat{K}' \hat{k}^{2} \threej{ l_p,K,k,m_{l_p},m_K,m_k} \threej{l_p,K,k,0,0,0}  \threej{ l_q',K',k,m_{l_q'},m_K',m_k} \threej{ l_q',K',k,0,0,0} \\
@@ -987,7 +1008,8 @@ To make the comparison with (D.37) easier we swap variables: $J M_J \rightarrow 
 \begin{multline*}
 \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} =  \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') \\
  \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} \\
- (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} \\
+ (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \sum_{m_S} \threej{ 
+l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} \\
  \frac{4 \sqrt{2}}{ \pi } \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} i^{L-L'-k+k'}  \\
  (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
  \hat{l}_{p} \hat{l}_{q}' \hat{k} \hat{k}' \hat{l}_{1}^{2} \threej{ l_p,k,l_1,m_{l_p},m_k,m_{l_1}} \threej{l_p,k,l_1,0,0,0}  \threej{ l_q',k',l_1,m_{l_q'},m_k',m_{l_1}} \threej{ l_q',k',l_1,0,0,0} \\
@@ -999,10 +1021,11 @@ Finally we make use of
 \end{align*}
 and compare our expression against (D.37). Parts that are not found in (D.37) are colored \textcolor{red}{red}.
 Maarten uses the definition,
-\begin{multline*}
+\begin{multline}
 \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'} = \sum_{s_1} \braket{ A | \hat{n}_{s_1,t_1}^{[1],1}(p_1) | A'} = \textcolor{red}{ \sum_{l_p = |j-1|}^{j+1} \sum_{l_q' = |j' - 1|}^{j'+1} \text{O}^{p\dagger}(S,T,j,l,l_p) \text{O}^{q}(S,T',j',l',l_q') } \\
  \textcolor{red}{ \sum_{t_2} (-1)^{M_T + M_T' } \threej{ \frac{1}{2}, \frac{1}{2}, T, t_1,t_2, - M_T} \threej{ \frac{1}{2}, \frac{1}{2}, T', t_1,t_2, - M_T'} } \\
- (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \textcolor{red}{ \threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} } \\
+ (-1)^{ l_p + l_q'+ m_j + m_j'}  \hat{j} \hat{j}' \textcolor{red}{\sum_{m_S}
+\threej{ l_p,S,j,m_{l_p},m_S,-m_j} \threej{l_q',S,j',m_{l_q'},m_S,-m_j'} } \\
  \frac{4 \sqrt{2}}{ \pi } \sum_{l_1 m_{l_1}} \sum_{k m_k} \sum_{k' m_k'} i^{L-L'-k+k'}  \\
  \threej{ l_p,l_1,k,m_{l_p},m_{l_1},m_k} 
  \threej{ l_p,l_1,k,0,0,0}  
@@ -1013,8 +1036,10 @@ Maarten uses the definition,
  \threej{ L,k',q,0,0,0} 
  \threej{ L',k,q,M_L',m_k,m_q} 
  \threej{L',k,q,0,0,0} \\
- (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 k'}(p_1,P_{12}) \\
-\end{multline*}
+ (-1)^{N+N'} \int \text{d} P_{12} \, P_{12}^{2} \Pi^{*}_{N L}(P_{12}) \Pi_{N' 
+L'}(P_{12}) \chi_{p,nl_p}^{l_1 k}(p_1,P_{12}) \chi_{p,n'l_q'}^{l_1 
+k'}(p_1,P_{12})
+\end{multline}
 In the case that Maarten has simply omitted the LS coupling but than there should \textbf{not} be $(-1)^{l+l'm_j+m_j'}$ as this stems from the 3j LS coupling symbol. Maarten also omitted the sums over $l_p$ and $l_q'$ and picked a specific contribution $l,l'$ which do not necessarily correspond with $l,l'$ of the coupled states $\ket{A},\ket{A'}$.
 The factor $(-1)^{N+N'}$ is absorbed in the way Maarten calculated the $\Pi_{N L}(P_{12})$. Maartens definition of $\Pi_{N L}(P_{12})$ deviates slightly from our definition.
 This is detailed in Sec.~\ref{ssec:cm_mom_integral}.
@@ -1050,9 +1075,9 @@ This allows us to rewrite $\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'}$ a
 	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{L-L' + K'-K} \left[ 1 + (-1)^{L+L'+K-K'} \right] \, .
 \end{align*}
 Because $L,L',K,K' \in \mathbb{N}$ we can flip the signs in the exponent of (-1), leading to,
-\begin{align*}
+\begin{align}
 	\braket{ A | \hat{n}_{t_1}^{[1]}(p_1) | A'}_{K,K'} &= \braket{ A | \hat{n}_{t_1}^{[1],1}(p_1) | A'}_{K,K'} i^{L-L' + K'-K} \left[ 1 + (-1)^{L-L'+K'-K} \right] \, .
-\end{align*}
+\end{align}
 
 An alternative expression can be derived using the fact that the correlation operators do not change the total spin $S$ ($S=S'$),
 \begin{align*}

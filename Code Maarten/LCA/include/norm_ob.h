@@ -4,7 +4,10 @@
 #include "operator_virtual_ob.h"
 
 /**
- * \brief Calculates the norm for a one-body operator. See appendix D2 of PhD thesis Vanhalst for information about the formulas.
+ * \brief Calculates the norm for a one-body operator. 
+ * 
+ * - See appendix D2 of PhD thesis Vanhalst for information about the formulas.
+ * - Everywhere a void* pointer is passed to one of the virtual functions, a pointer to a norm_ob::norm_ob_params is expected
  */
 class norm_ob : public operator_virtual_ob
 {

@@ -35,16 +35,16 @@ double norm_ob::get_me( Pair* pair, void* params )
     double sum= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef* coefi;
-        double normi;
+        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
         pair->getCoeff( ci, &coefi, &normi );
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
             Newcoef* coefj;
-            double normj;
+            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
             // The correlation operator keeps S j m_j unchanged
 
-            double vali = coefi->getCoef(); // < a_1 a_2 | A >
-            double valj = coefj->getCoef(); // < a_1 a_2 | B >
+            double vali = coefi->getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj = coefj->getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
             
             // the following block is delta in
             // n l S j m_j N L M_L T M_T, which characterizes a
@@ -120,13 +120,15 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
     double sum= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef* coefi;
-        double normi;
+        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
         pair->getCoeff( ci, &coefi, &normi );
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
             Newcoef* coefj;
-            double normj;
+            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
-            // The correlation operator keeps S j m_j M_T N L M_L unchanged
+            // The correlation operator keeps S j m_j T M_T N L M_L unchanged
+            // any correlation function can give overlap between different n
+            // tensor can give overlap between different l
 
             if( coefi->getS()  != coefj->getS()  ) continue;
             if( coefi->getj()  != coefj->getj()  ) continue;
@@ -141,8 +143,8 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
             int n1= coefi->getn();
             int n2= coefj->getn();
             if( nAs > -1 && n1 != nAs ) continue;
-            if( nBs > -1 && n1 != nBs ) continue;
-            if( lAs > -1 && l2 != lAs ) continue;
+            if( nBs > -1 && n2 != nBs ) continue;
+            if( lAs > -1 && l1 != lAs ) continue;
             if( lBs > -1 && l2 != lBs ) continue;
             int MT= coefi->getMT();
             double vali= coefi->getCoef();
@@ -155,11 +157,12 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                 if( MT == 0 )
                     vali*= 0.5;
             }
-
+            //if we got up to here we know they are diagonal now
             int S= coefi->getS();
             int j= coefi->getj();
             int T= coefi->getT();
             double cen, ten, iso;
+            //see app D.2 PhD Vanhalst for details
             if( bcentral && get_central_me( l1, l2, S, j, T, &cen ) ) {
                 double cen_sum= 0;
                 double norm= ho_norm( n1, l1)* ho_norm( n2, l2 );
@@ -168,7 +171,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
-                            double alambda= get_central_pow( lambda )/ pow(nu, 0.5*lambda );
+                            double alambda= get_central_pow( lambda )/ pow(nu, 0.5*lambda );  // division because dimensionless variable x in D.19
                             double B = get_central_exp()/nu;
                             int K    = 2+l1+l2+lambda+2*i+2*j;
                             cen_sum -= anli*anlj*alambda*hiGamma(K+1)*pow(1+B, -0.5*(K+1) ); // note the minus sign (central corr op has minus sign in front)
@@ -193,7 +196,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 10; lambda++ ) {
-                            double alambda= get_tensor_pow( lambda )/ pow(nu, 0.5*lambda );
+                            double alambda= get_tensor_pow( lambda )/ pow(nu, 0.5*lambda ); // division because dimensionless variable x in D.19
                             double B = get_tensor_exp()/nu;
                             int K    = 2+l1+l2+lambda+2*i+2*j;
                             ten_sum+= anli* anlj* alambda* hiGamma( K+1)*pow(1+B,-0.5*(K+1));
@@ -210,7 +213,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
-                            double alambda= get_spinisospin_pow( lambda )/ pow(nu, 0.5*lambda );
+                            double alambda= get_spinisospin_pow( lambda )/ pow(nu, 0.5*lambda ); // division because dimensionless variable x in D.19
                             double B = get_spinisospin_exp()/nu;
                             int K    = 2+l1+l2+lambda+2*i+2*j;
                             iso_sum+= anli* anlj* alambda* hiGamma( K+1)*pow(1+B,-0.5*(K+1));
@@ -248,13 +251,15 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef* coefi;
-        double normi;
+        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
         pair->getCoeff( ci, &coefi, &normi );
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
             Newcoef* coefj;
-            double normj;
+            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
-            // The correlation operator keeps S j m_j unchanged
+            // The correlation operator keeps S j m_j T M_T N L M_L unchanged
+            // any correlation function can give overlap between different n
+            // tensor can give overlap between different l
 
             if( coefi->getS()  != coefj->getS()  ) continue;
             if( coefi->getj()  != coefj->getj()  ) continue;
@@ -269,18 +274,15 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
             int n1= coefi->getn();
             int n2= coefj->getn();
             if( nAs > -1 && n1 != nAs ) continue;
-            if( nBs > -1 && n1 != nBs ) continue;
-            if( lAs > -1 && l2 != lAs ) continue;
+            if( nBs > -1 && n2 != nBs ) continue;
+            if( lAs > -1 && l1 != lAs ) continue;
             if( lBs > -1 && l2 != lBs ) continue;
-//      int T1= coefi->getT();
-//      int T2= coefj->getT();
             int MT= coefi->getMT();
             double vali= coefi->getCoef();
             double valj= coefj->getCoef();
 
 
             if( t != 0 ) {
-                MT= coefi->getMT();
                 if( t == -1*MT )
                     continue;
                 if( MT == 0 )
@@ -291,6 +293,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
             int j= coefi->getj();
             int T= coefi->getT();
             double cen, ten, iso;
+            //see app D.2 PhD Vanhalst for details
             if( bcentral && get_central_me( l2, l1, S, j, T, &cen ) ) { // note: l2,l1,... here, l1,l2 in get_me_corr_right
                 double cen_sum= 0;
                 double norm= ho_norm( n1, l1)* ho_norm( n2, l2 );
@@ -299,7 +302,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
-                            double alambda= get_central_pow( lambda )/ pow(nu, 0.5*lambda );
+                            double alambda= get_central_pow( lambda )/ pow(nu, 0.5*lambda );// division because dimensionless variable x in D.19
                             double B = get_central_exp()/nu;
                             int K    = 2+l1+l2+lambda+2*i+2*j;
                             cen_sum -= anli*anlj*alambda*hiGamma(K+1)*pow(1+B, -0.5*(K+1) );
@@ -316,7 +319,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 10; lambda++ ) {
-                            double alambda= get_tensor_pow( lambda )/ pow(nu, 0.5*lambda );
+                            double alambda= get_tensor_pow( lambda )/ pow(nu, 0.5*lambda );// division because dimensionless variable x in D.19
                             double B = get_tensor_exp()/nu;
                             int K    = 2+l1+l2+lambda+2*i+2*j;
                             ten_sum+= anli* anlj* alambda* hiGamma( K+1)*pow(1+B,-0.5*(K+1));
@@ -333,7 +336,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                     for( int j= 0; j < n2+1; j++ ) {
                         double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
-                            double alambda= get_spinisospin_pow( lambda )/ pow(nu , 0.5*lambda );
+                            double alambda= get_spinisospin_pow( lambda )/ pow(nu , 0.5*lambda );// division because dimensionless variable x in D.19
                             double B = get_spinisospin_exp()/nu;
                             int K    = 2+l1+l2+lambda+2*i+2*j;
                             iso_sum+= anli* anlj* alambda* hiGamma( K+1)*pow(1+B,-0.5*(K+1));
@@ -359,13 +362,15 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
     double result= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef* coefi;
-        double normi;
+        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
         pair->getCoeff( ci, &coefi, &normi );
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
             Newcoef* coefj;
-            double normj;
+            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
-            // The correlation operator keeps S j m_j unchanged
+            // The correlation operator keeps S j m_j T M_T N L M_L unchanged
+            // any correlation function can give overlap between different n
+            // tensor can give overlap between different l
 
             if( coefi->getS() != coefj->getS() ) continue;
             if( coefi->getj() != coefj->getj() ) continue;
@@ -376,21 +381,18 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
             if( coefi->getL() != coefj->getL() ) continue;
             if( coefi->getML() != coefj->getML() ) continue;
             int MT= coefi->getMT();
-//      int T1= coefi->getT();
-//      int T2= coefj->getT();
             int l1= coefi->getl();
             int l2= coefj->getl();
             int n1= coefi->getn();
             int n2= coefj->getn();
             if( nAs > -1 && n1 != nAs ) continue;
-            if( nBs > -1 && n1 != nBs ) continue;
-            if( lAs > -1 && l2 != lAs ) continue;
+            if( nBs > -1 && n2 != nBs ) continue;
+            if( lAs > -1 && l1 != lAs ) continue;
             if( lBs > -1 && l2 != lBs ) continue;
             double vali= coefi->getCoef();
             double valj= coefj->getCoef();
 
             if( t != 0 ) {
-                MT= coefi->getMT();
                 if( t == -1*MT )
                     continue;
                 if( MT == 0 )
@@ -399,6 +401,8 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
             int S= coefi->getS();
             int j= coefi->getj();
             int T= coefi->getT();
+
+            //see app D.2 PhD Vanhalst for details/formulas of the remainder
             double expc= get_central_exp()/nu;
             double expt= get_tensor_exp()/nu;
             double exps= get_spinisospin_exp()/nu;
@@ -425,7 +429,7 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
                                 double prefactor_sum= 0;
                                 if( bcentral && mec1 && mec2 ) {
                                     double power= pow(1+ 2*expc, 0.5*N);
-                                    double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                    double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai ); // division because dimensionless variable x in D.19
                                     double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                                     prefactor_sum+= mec1* mec2* alambdai* alambdaj* power;
                                 }
@@ -493,7 +497,7 @@ double norm_ob::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double val )
     int lBs= nob->lB;
     int t= nob->t;
 
-
+    //has to be diagonal in all quantum numbers
     if( pc1->getS() != pc2->getS() ) return 0;
     if( pc1->getj() != pc2->getj() ) return 0;
     if( pc1->getmj() != pc2->getmj() ) return 0;
@@ -540,6 +544,9 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
 
     double sum= 0;
 
+    // The correlation operator keeps S j m_j T M_T N L M_L unchanged
+    // any correlation function can give overlap between different n
+    // tensor can give overlap between different l
     if( pc1->getS()  != pc2->getS()  ) return 0;
     if( pc1->getj()  != pc2->getj()  ) return 0;
     if( pc1->getmj() != pc2->getmj() ) return 0;
@@ -553,13 +560,12 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
     int n1= pc1->getn();
     int n2= pc2->getn();
     if( nAs > -1 && n1 != nAs ) return 0;
-    if( nBs > -1 && n1 != nBs ) return 0;
-    if( lAs > -1 && l2 != lAs ) return 0;
+    if( nBs > -1 && n2 != nBs ) return 0;
+    if( lAs > -1 && l1 != lAs ) return 0;
     if( lBs > -1 && l2 != lBs ) return 0;
     int MT= pc1->getMT();
 
     if( t != 0 ) {
-        MT= pc2->getMT();
         if( t == -1*MT )
             return 0;
         if( MT == 0 )
@@ -578,7 +584,7 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
             for( int j= 0; j < n2+1; j++ ) {
                 double anlj=  laguerre_coeff( n2, l2, j );
                 for( int lambda= 0; lambda < 11; lambda++ ) {
-                    double alambda= get_central_pow( lambda )/ pow( sqrt(nu), lambda );
+                    double alambda= get_central_pow( lambda )/ pow( sqrt(nu), lambda ); // division because dimensionless variable x in D.19
                     double aa= get_central_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
@@ -598,7 +604,7 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
             for( int j= 0; j < n2+1; j++ ) {
                 double anlj=  laguerre_coeff( n2, l2, j );
                 for( int lambda= 0; lambda < 10; lambda++ ) {
-                    double alambda= get_tensor_pow( lambda )/ pow( sqrt(nu), lambda );
+                    double alambda= get_tensor_pow( lambda )/ pow( sqrt(nu), lambda ); // division because dimensionless variable x in D.19
                     double aa= get_tensor_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
@@ -616,7 +622,7 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
             for( int j= 0; j < n2+1; j++ ) {
                 double anlj=  laguerre_coeff( n2, l2, j );
                 for( int lambda= 0; lambda < 11; lambda++ ) {
-                    double alambda= get_spinisospin_pow( lambda )/ pow( sqrt(nu), lambda );
+                    double alambda= get_spinisospin_pow( lambda )/ pow( sqrt(nu), lambda ); // division because dimensionless variable x in D.19
                     double aa= get_spinisospin_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
@@ -648,6 +654,9 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
     int t= nob->t;
 
     double sum= 0;
+    // The correlation operator keeps S j m_j T M_T N L M_L unchanged
+    // any correlation function can give overlap between different n
+    // tensor can give overlap between different l
     if( pc1->getS() != pc2->getS() ) return 0;
     if( pc1->getj() != pc2->getj() ) return 0;
     if( pc1->getmj() != pc2->getmj() ) return 0;
@@ -661,15 +670,12 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
     int n1= pc1->getn();
     int n2= pc2->getn();
     if( nAs > -1 && n1 != nAs ) return 0;
-    if( nBs > -1 && n1 != nBs ) return 0;
-    if( lAs > -1 && l2 != lAs ) return 0;
+    if( nBs > -1 && n2 != nBs ) return 0;
+    if( lAs > -1 && l1 != lAs ) return 0;
     if( lBs > -1 && l2 != lBs ) return 0;
-//      int T1= pc1->getT();
-//      int T2= pc2->getT();
     int MT= pc1->getMT();
 
     if( t != 0 ) {
-        MT= pc1->getMT();
         if( t == -1*MT )
             return 0;
         if( MT == 0 )
@@ -688,7 +694,7 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
             for( int j= 0; j < n2+1; j++ ) {
                 double anlj=  laguerre_coeff( n2, l2, j );
                 for( int lambda= 0; lambda < 11; lambda++ ) {
-                    double alambda= get_central_pow( lambda )/ pow( sqrt(nu), lambda );
+                    double alambda= get_central_pow( lambda )/ pow( sqrt(nu), lambda ); // division because dimensionless variable x in D.19
                     double aa= get_central_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
@@ -706,8 +712,7 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
             for( int j= 0; j < n2+1; j++ ) {
                 double anlj=  laguerre_coeff( n2, l2, j );
                 for( int lambda= 0; lambda < 10; lambda++ ) {
-                    double alambda= get_tensor_pow( lambda )/ pow( sqrt(nu), lambda );
-
+                    double alambda= get_tensor_pow( lambda )/ pow( sqrt(nu), lambda ); // division because dimensionless variable x in D.19
                     double aa= get_tensor_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
@@ -725,7 +730,7 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
             for( int j= 0; j < n2+1; j++ ) {
                 double anlj=  laguerre_coeff( n2, l2, j );
                 for( int lambda= 0; lambda < 11; lambda++ ) {
-                    double alambda= get_spinisospin_pow( lambda )/ pow( sqrt(nu), lambda );
+                    double alambda= get_spinisospin_pow( lambda )/ pow( sqrt(nu), lambda ); // division because dimensionless variable x in D.19
                     double aa= get_spinisospin_exp()/nu;
                     int N= -3-2*i-2*j-lambda-l1-l2;
                     double power= pow( 1.+aa, 0.5*N);
@@ -749,6 +754,9 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
     int t= nob->t;
 
     double result= 0;
+    // The correlation operator keeps S j m_j T M_T N L M_L unchanged
+    // any correlation function can give overlap between different n
+    // tensor can give overlap between different l
     if( pc1->getS() != pc2->getS() ) return 0;
     if( pc1->getj() != pc2->getj() ) return 0;
     if( pc1->getmj() != pc2->getmj() ) return 0;
@@ -757,9 +765,6 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
     if( pc1->getN() != pc2->getN() ) return 0;
     if( pc1->getL() != pc2->getL() ) return 0;
     if( pc1->getML() != pc2->getML() ) return 0;
-    int MT= pc1->getMT();
-//      int T1= pc1->getT();
-//      int T2= pc2->getT();
     int l1= pc1->getl();
     int l2= pc2->getl();
     int n1= pc1->getn();
@@ -768,9 +773,9 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
     if( nBs > -1 && n1 != nBs ) return 0;
     if( lAs > -1 && l2 != lAs ) return 0;
     if( lBs > -1 && l2 != lBs ) return 0;
+    int MT= pc1->getMT();
 
     if( t != 0 ) {
-        MT= pc1->getMT();
         if( t == -1*MT )
             return 0;
         if( MT == 0 )
