@@ -108,8 +108,6 @@ everything looks symmetric (correlation functions in the two l arguments...)
 
 35. density_ob3::write -> get rid of all the news (and deletes)
 
-36. normalisations obmd::write at the end
-
 37. !!!!PRIORITY in density_ob3. Integrand->add, I think there might be mistakes with the relative l qn passed.  They should be the kA,kB parameters!
 
 +++DONE+++
@@ -130,3 +128,5 @@ check what getRelPair returns [nucleus.cpp::675]  -> done and annotated in manua
 check print functions in nucleus, check if l451 the sumcheck for pairs is ever triggered.. -> yes, when a partially filled shell has only one nucleon in it
 
 xx. RESTRICTION on n too strict in norm functions??? Not diagonal with correlation function??  I think there is a mistake there.. -> fixed
+
+36. normalisations obmd::write at the end -> ok with master formula
