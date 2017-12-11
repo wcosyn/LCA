@@ -86,6 +86,8 @@ Tripletcoef::get_links
 
 33. void params in the operators -> can this be replaced by template class?
 
+42.  make com integral computation dimensionless argument?  add function should be changed, integral too
+
 ++++CHECKS++++
 
 25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...
@@ -102,13 +104,26 @@ everything looks symmetric (correlation functions in the two l arguments...)
 28. Nucleus::makepaircoefs: I think normi is always equal to normj (same pair) 
     so we could just replace this by the normf of the pair and reduce the confusing norm business!
 
-31. in double corr matrix element, order of k,l1//k,l2 (l414)
+31. PRIORITY normob in double corr matrix element, order of k,l1//k,l2 (l414) [also other corr functions]
+SIMILAR QUESTION/PROBLEM in the corr matrix elements of the obmd calculations!!!
+-> crosscheck with the order in all the integrand_cc->add calls!!!
 
 34. units momentum distribution and intermediate results there 
 
 35. density_ob3::write -> get rid of all the news (and deletes)
 
 37. !!!!PRIORITY in density_ob3. Integrand->add, I think there might be mistakes with the relative l qn passed.  They should be the kA,kB parameters!
+
+38. In density_ob3::get_me_corr_both why is there a prefactor *=2.  The sums over coefficients run over all??
+
+39. in obmd:corrpair methods left/right/both-> isospin projection t==0 case seems missing??
+
+41. parameter passing between density_ob3 and the integral classes!!!
+
+++++COMMENTING+++++
+40. dimensions integrals in density_ob_integrand3
+
+
 
 +++DONE+++
 

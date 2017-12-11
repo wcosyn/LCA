@@ -31,7 +31,7 @@ private:
     int MT; /*!< coupled state totla isospin 3-component */
     int n1, l1, two_j1, two_mj1, two_t1; /*!< first nucleon quantum numbers */
     int n2, l2, two_j2, two_mj2, two_t2; /*!< second nucleon quantum numbers */
-    double coeff; /*!< transformation coefficient */
+    double coeff; /*!< [] transformation coefficient, dimensionless */
     std::string key; /*!< key for sorting based on all the coupled quantum numbers (see constructor)*/
 public:
     /**
@@ -69,7 +69,7 @@ public:
      */
     ~Newcoef();
     /**
-     * @brief returns calculated coefficient in the decomposition
+     * @brief returns calculated coefficient in the decomposition, dimensionless.  See Eq 2.14 PhD Vanhalst
      */
     double getCoef() {
         return coeff;
@@ -138,7 +138,7 @@ public:
 //  int gettwo_t2() { return two_t2;};
 
     /**
-     * @brief gives string of the rel and cm qn, which can be used to sort/compare coefficients
+     * @brief gives string of the rel and cm qn, which can be used to sort/compare coefficients.  Key constructed as nlSjmj.NLML.TMT
      * 
      * @return std::string string with the key in it
      */

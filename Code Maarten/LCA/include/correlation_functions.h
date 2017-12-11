@@ -34,7 +34,7 @@ double binomial( double n, int k);
  * @param n lower index Laguerre polynomial
  * @param l upper index generalized polynomial minus 1/2
  * @param k power in the expansion (0<=k<=n)
- * @return double coefficient of the generalized Laguerre polynomial
+ * @return [fm^{-2i}] double coefficient of the generalized Laguerre polynomial
  */
 double laguerre_coeff( double nu, int n, int l, int k);
 
@@ -45,7 +45,7 @@ double laguerre_coeff( double nu, int n, int l, int k);
  * @param n lower index Laguerre polynomial
  * @param l upper index generalized polynomial minus 1/2
  * @param k power in the expansion (0<=k<=n)
- * @return double coefficient of the generalized Laguerre polynomial
+ * @return [] double coefficient of the generalized Laguerre polynomial
  */
 double laguerre_coeff(  int n, int l, int k);
 
@@ -55,7 +55,7 @@ double laguerre_coeff(  int n, int l, int k);
  * @param nu HO parameter
  * @param n Laguerre polynomial main index
  * @param l generalized Laguerre polynomial upper index minus 1/2
- * @return double HO radial wf normalisation
+ * @return [fm^{-l+3/2}] double HO radial wf normalisation
  */
 double ho_norm( double nu, int n, int l);
 /**
@@ -63,27 +63,33 @@ double ho_norm( double nu, int n, int l);
  * 
  * @param n Laguerre polynomial main index
  * @param l generalized Laguerre polynomial upper index minus 1/2
- * @return double HO radial wf normalisation
+ * @return [] double HO radial wf normalisation
  */
 double ho_norm( int n, int l);
 
 /**
  * @brief returns the b coefficient for the fit of the central correlation function: see Eq C.2 PhD Vanhalst
+ * 
+ * \return [fm^-2] b coefficient in exponential for central correlation fit
  */
 double get_central_exp();
 /**
  * @brief returns the fit coefficient \f$a_\lambda \f$ for the central correlation function.  See Eq. C.2 + Table C.1 PhD Vanhalst
  * 
  * @param lambda index of the coefficient (powers of r)
- * @return double coefficienta \f$a_\lambda \f$
+ * @return double [fm^-lambda] coefficienta \f$a_\lambda \f$
  */
 double get_central_pow(int lambda);
 /**
  * @brief returns the b coefficient for the fit of the tensor correlation function PIEPER: see Eq C.2 PhD Vanhalst
+ * 
+ * \return [fm^-2] b coefficient in exponential for tensor correlation fit
  */
 double get_tensor_exp();
 /**
  * @brief returns the b coefficient for the fit of the tensor correlation function GFMC: see Eq C.2 PhD Vanhalst
+ * 
+ * \return [fm^-2] b coefficient in exponential for tensor correlation fit
  */
 double get_tensor_exp2();
 /**
@@ -94,19 +100,21 @@ double get_tensor_exp3();
  * @brief returns the fit coefficient \f$a_\lambda \f$ for the tensor correlation function PIEPER.  See Eq. C.2 + Table C.1 PhD Vanhalst
  * 
  * @param lambda index of the coefficient (powers of r)
- * @return double coefficienta \f$a_\lambda \f$
+ * @return [fm^-lambda] double coefficient \f$a_\lambda \f$
  */
 double get_tensor_pow(int lambda);
 
 /**
  * @brief returns the b coefficient for the fit of the spin-isospin correlation function: see Eq C.2 PhD Vanhalst
+ * 
+ * \return [fm^-2] b coefficient in exponential for spin-isospin correlation fit
  */
 double get_spinisospin_exp();
 /**
  * @brief returns the fit coefficient \f$a_\lambda \f$ for the spin-isospin correlation function.  See Eq. C.2 + Table C.1 PhD Vanhalst
  * 
  * @param lambda index of the coefficient (powers of r)
- * @return double coefficienta \f$a_\lambda \f$
+ * @return [fm^-lambda] double coefficienta \f$a_\lambda \f$
  */
 double get_spinisospin_pow(int lambda);
 
@@ -117,7 +125,7 @@ double get_spinisospin_pow(int lambda);
  * @param l HO l quantum number
  * @param r [fm] radial argument
  * @param A number of nucleons A, controls the HO parameter nu
- * @return double radial wave function value at r, see Eq. D.17 PhD Vanhalst
+ * @return [fm^{-3/2}] double radial wave function value at r, see Eq. D.17 PhD Vanhalst
  */
 double uncorrelatedradialwf(int n, int l, double r, int A);
 
@@ -129,21 +137,21 @@ double nothing( double r );
  * @brief returns the central correlation function using Eq. C.2 PhD Vanhalst
  * 
  * @param r [fm]
- * @return double central correlation function at r
+ * @return [] double central correlation function at r
  */
 double min_central_fit( double r );
 /**
  * @brief returns the tensor correlation function using Eq. C.2 PhD Vanhalst
  * 
  * @param r [fm]
- * @return double central correlation function at r
+ * @return [] double central correlation function at r
  */
 double tensor_fit( double r );
 /**
  * @brief returns the spin-isospin correlation function using Eq. C.2 PhD Vanhalst
  * 
  * @param r [fm]
- * @return double spin-isospin correlation function at r
+ * @return [] double spin-isospin correlation function at r
  */
 double spinisospin_fit( double r );
 

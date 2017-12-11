@@ -143,7 +143,7 @@ double spinisospin_fit( double r )
 double uncorrelatedradialwf(int n, int l, double r, int A)
 {
     double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
-    double nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
+    double nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm = fm^-2
 
     gsl_sf_result exp;
     int status = gsl_sf_exp_e(-0.5*nu*r*r, &exp);

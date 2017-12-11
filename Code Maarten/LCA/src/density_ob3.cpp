@@ -271,7 +271,7 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
 //  double p= dop->p;
 
     density_ob_integrand3* integrand = dop->i0;
-    double pair_norm= pair->getfnorm();
+    double pair_norm= pair->getfnorm(); // probability <1 for partially filled shell
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
@@ -315,7 +315,7 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
                     if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
                 }
             }
-            if( t == 0 && TA != TB ) // operators don't change isospin. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+            if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
                 continue;
 
             int NA= coefi->getN();
@@ -337,7 +337,9 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
             for( int q= 0; q <= qmax; q++ ) {
                 for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
                     for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
-                        double ifactor= preifactor*get_me12_factor(LA-LB+l-la); //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
+                        //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
+                        //see also Sec. 9 "One body operators acting on coupled states" in LCA manual
+                        double ifactor= preifactor*get_me12_factor(LA-LB+l-la); 
                         if (ifactor==0.)
                             continue;
 
@@ -364,9 +366,9 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
                                            * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                            * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                                 if( cg == 0 ) continue;
-                                double threej1=   threej::threejs.get( 2*LA, 2*l , 2*q, 0, 0, 0 ) //part of line 5&6 master formula
+                                double threej1=   threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0) //part of line 5&6 master formula
                                                 * threej::threejs.get( 2*LB, 2*la, 2*q, 0, 0, 0 )
-                                                * threej::threejs.get( 2*kB, 2*l , 2*k, 0, 0, 0 )
+                                                * threej::threejs.get( 2*kB, 2*l, 2*k, 0, 0, 0 )
                                                 * threej::threejs.get( 2*kA, 2*la, 2*k, 0, 0, 0 );
                                 if ( threej1 == 0 ) {
                                     continue;
@@ -400,8 +402,8 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
                     } // la
                 } // l
             } // q
-        } // cj
-    } // ci
+        } // coefj
+    } // coefi
     return 0;
 }
 
@@ -424,7 +426,7 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
     density_ob_integrand3* integrand_c = dop->ic;
     density_ob_integrand3* integrand_t = dop->it;
     density_ob_integrand3* integrand_s = dop->is;
-    double pair_norm= pair->getfnorm();
+    double pair_norm= pair->getfnorm(); // probability <1 for partially filled shell
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef* coefi;
@@ -435,14 +437,14 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
             double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
 
-            double vali= coefi->getCoef();
-            double valj= coefj->getCoef();
+            double vali= coefi->getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj= coefj->getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
             assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
             assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
             assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
-            if( coefi->getS() != coefj->getS() ) continue;
-//      if( coefi->getT() != coefj->getT() ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
+            if( coefi->getS() != coefj->getS() ) continue; //only correct when the obmd is summed over spin
+//      if( coefi->getT() != coefj->getT() ) continue; // projection isospin operator not diagonal in T!!!
+            if( coefi->getMT() != coefj->getMT() ) continue; //all operators diagonal in MT
             int nA= coefi->getn();
             int nB= coefj->getn();
             int lA= coefi->getl();
@@ -468,23 +470,29 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
             double preifactor=1;
 
 
-            if( t != 0 ) {
-                if( t == -MT  )
+            /** Camille: For explanation of
+             *  if/else magic, see manual,
+             *  section about isospin matrix elements.
+              */
+            if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
                     continue;
                 if( MT == 0 ) {
                     preifactor*= 0.5;
-                    if( TA != TB ) preifactor *= t;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
                 }
             }
-            if( t == 0 && TA != TB ) {
+            if( t == 0 && TA != TB ) { // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
                 continue;
             }
 
 
             for( int q= 0; q <= qmax; q++ ) {
 
-                for( int l = fabs( LA-q); l <= LA+q; l++ ) {
-                    for( int la= fabs( LB-q); la <= LB+q; la++ ) {
+                for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                    for( int la= fabs( LB-q); la <= LB+q; la++ ) {  //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                        //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
+                        //see also Sec. 9 "One body operators acting on coupled states" in LCA manual
                         double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
                         if (ifactor==0.)
                             continue;
@@ -495,26 +503,29 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                         /** Camille: sum of kA and kB is due do the tensor operator (see manual)
                          * */
                         for( int kA= jA-1; kA <= jA+1; kA++ ) {
-                            if( kA < 0 ) continue;
-                            int kB= lB;
+                            if( kA < 0 ) continue; // kA->lp, kB->l'q  in master formula
+                            int kB= lB; //l'q=l' due to no correlation functions acting on the ket! [first summations on line 1 in master formula]
 
                             double mec1, met1, mes1;
                             get_central_me( kA, lA, S, jA, TA, &mec1 );
                             get_tensor_me( kA, lA, S, jA, TA, &met1 );
                             get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
 
+                            //k->l1 in master formula
                             for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
 
                                 double sum= 0;
-                                for( int MS= -S; MS <= S; MS++ ) {
+                                for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                                     int mkA= mjA-MS;
                                     int mkB= mjB-MS;
+                                    //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
                                     if( MLA+ mkA != MLB+ mkB ) continue;
+                                    //third line master formule (LCA manual Eq(53))
                                     double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                                * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                                * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                                     if( cg == 0 ) continue;
-                                    double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0)
+                                    double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0) //part of line 5&6 master formula
                                                     * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0 )
                                                     * threej::threejs.get( 2*kB, 2*l, 2*k,0, 0, 0 )
                                                     * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0 );
@@ -522,10 +533,11 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                                         continue;
                                     }
                                     for( int mq= -q; mq<= q; mq++ ) {
+                                        //restrictions due to 3j symbols
                                         int ml= -mq-MLA;
                                         int mla= -mq-MLB;
                                         int mk= -ml-mkB;
-                                        double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
+                                        double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq) //remaining 3j-symbols line 5&6 master formula
                                                         * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
                                                         * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
                                                         * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
@@ -534,13 +546,15 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                                         }
                                         double sqrts= sqrt( (2*LA+1)* (2*LB+1) * (2*kA+1)* (2*kB+1) )* (2*l+1)* (2*la+1)* (2*q+1)*( 2*k+1);
                                         sum+= threej2* threej1*cg* sqrts;
-                                    }
-                                }
+                                    } // m_q
+                                } //m_S
                                 if( fabs(sum)< 1e-10 ) {
                                     continue;
                                 }
                                 #pragma omp critical(add)
                                 {
+                                    //Here the normalisation is accounted for!
+                                    //the prefactor is added to a particular integral (last line master formula Eq 53 LCA manual)
                                     if( bcentral && mec1 ) {
                                         integrand_c->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm*mec1*vali*valj*sum*ifactor*factor_right );
                                     }
@@ -551,13 +565,13 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                                         integrand_s->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm*mes1*vali*valj*sum*ifactor*factor_right );
                                     }
                                 }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+                            } //k
+                        } //kA
+                    } //la
+                }//l
+            }//q
+        }//coefj
+    }//coefi
     return 0;
 }
 
@@ -578,7 +592,7 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
     density_ob_integrand3* integrand_c = dop->ic;
     density_ob_integrand3* integrand_t = dop->it;
     density_ob_integrand3* integrand_s = dop->is;
-    double pair_norm= pair->getfnorm();
+    double pair_norm= pair->getfnorm();// probability <1 for partially filled shell
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef* coefi;
@@ -590,17 +604,18 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
             double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
 
-            double vali= coefi->getCoef();
-            double valj= coefj->getCoef();
+            double vali= coefi->getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj= coefj->getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
             assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
             assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
             assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
-            if( coefi->getS() != coefj->getS() ) continue;
-//      if( coefi->getT() != coefj->getT() ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
+            if( coefi->getS() != coefj->getS() ) continue; //only correct when the obmd is summed over spin
+//      if( coefi->getT() != coefj->getT() ) continue; // projection isospin operator not diagonal in T!!!
+            if( coefi->getMT() != coefj->getMT() ) continue; //all operators diagonal in MT
             int TA= coefi->getT();
             int TB= coefj->getT();
-            if( t == 0 && TA != TB ) {
+            // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+            if( t == 0 && TA != TB ) { 
                 continue;
             }
 
@@ -626,19 +641,25 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
             int MT= coefi->getMT();
             double preifactor= 1;
 
-            if( t != 0 ) {
-                if( t == -MT  )
+             /** Camille: For explanation of
+             *  if/else magic, see manual,
+             *  section about isospin matrix elements.
+              */
+           if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
                     continue;
                 if( MT == 0 ) {
                     preifactor*= 0.5;
-                    if( TA != TB ) preifactor *= t;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
                 }
             }
 
             for( int q= 0; q <= qmax; q++ ) {
 
-                for( int l = fabs( LA-q); l <= LA+q; l++ ) {
-                    for( int la= fabs( LB-q); la <= LB+q; la++ ) {
+                for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                    for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                        //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
+                        //see also Sec. 9 "One body operators acting on coupled states" in LCA manual
                         double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
                         if (ifactor==0.)
                             continue;
@@ -646,6 +667,8 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
                         // SUM DUE TO CORRELATION OPERATORS kA and kB
                         // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTILY AFFECTED BY CORRELATION OPERATOR
                         // BUT THE ALLOWED k RANGE CAN CHANGE
+                        // kA->lp, kB->l'q  in master formula
+                        //lp=l due to no correlation functions acting on the bra! [first summations on line 1 in master formula]
                         int kA= lA;
                         for( int kB= jB-1; kB <= jB+1; kB++ ) {
                             if( kB < 0 ) continue;
@@ -655,18 +678,21 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
                             get_tensor_me( kB, lB, S, jB, TB, &met2 );
                             get_spinisospin_me( kB, lB, S, jB, TB, &mes2 );
 
+                            //k->l1 in master formula
                             for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
 
                                 double sum= 0;
-                                for( int MS= -S; MS <= S; MS++ ) {
+                                for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                                     int mkA= mjA-MS;
                                     int mkB= mjB-MS;
+                                    //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
                                     if( MLA+ mkA != MLB+ mkB ) continue;
+                                    //third line master formule (LCA manual Eq(53))
                                     double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                                * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                                * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                                     if( cg == 0 ) continue;
-                                    double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0)
+                                    double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0) //part of line 5&6 master formula
                                                     * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0 )
                                                     * threej::threejs.get( 2*kB, 2*l, 2*k,0, 0, 0 )
                                                     * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0 );
@@ -674,10 +700,11 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
                                         continue;
                                     }
                                     for( int mq= -q; mq<= q; mq++ ) {
+                                        //restrictions due to 3j symbols
                                         int ml= -mq-MLA;
                                         int mla= -mq-MLB;
                                         int mk= -ml-mkB;
-                                        double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
+                                        double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq) //remaining 3j-symbols line 5&6 master formula
                                                         * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
                                                         * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
                                                         * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
@@ -686,13 +713,15 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
                                         }
                                         double sqrts= sqrt( (2*LA+1)* (2*LB+1) * (2*kA+1)* (2*kB+1) )* (2*l+1)* (2*la+1)* (2*q+1)*( 2*k+1);
                                         sum+= threej2* threej1*cg* sqrts;
-                                    }
-                                }
+                                    } //m_q
+                                }//m_S
                                 if( fabs(sum)< 1e-10 ) {
                                     continue;
                                 }
                                 #pragma omp critical(add)
                                 {
+                                    //Here the normalisation is accounted for!
+                                    //the prefactor is added to a particular integral (last line master formula Eq 53 LCA manual)
                                     if( bcentral && mec2 ) {
                                         integrand_c->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k, pair_norm*mec2*vali*valj*sum*ifactor );
                                     }
@@ -703,13 +732,13 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
                                         integrand_s->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k, pair_norm*mes2*vali*valj*sum*ifactor );
                                     }
                                 }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+                            } //k
+                        } //kB
+                    } //la
+                } //l
+            } //q
+        }//coefj
+    }//coefi
     return 0;
 }
 
@@ -729,7 +758,7 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
     density_ob_integrand3* integrand_ct = dop->ict;
     density_ob_integrand3* integrand_cs = dop->ics;
     density_ob_integrand3* integrand_st = dop->ist;
-    double pair_norm= pair->getfnorm();
+    double pair_norm= pair->getfnorm(); // probability <1 for partially filled shell
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
@@ -741,14 +770,14 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
             double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
             pair->getCoeff( cj, &coefj, &normj );
 
-            double vali= coefi->getCoef();
-            double valj= coefj->getCoef();
+            double vali= coefi->getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj= coefj->getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
             assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
             assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
             assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
-            if( coefi->getS() != coefj->getS() ) continue;
-//      if( coefi->getT() != coefj->getT() ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
+            if( coefi->getS() != coefj->getS() ) continue; //only correct when the obmd is summed over spin
+//      if( coefi->getT() != coefj->getT() ) continue; // projection isospin operator not diagonal in T!!!
+            if( coefi->getMT() != coefj->getMT() ) continue; //all operators diagonal in MT
             int nA= coefi->getn();
             int nB= coefj->getn();
             int lA= coefi->getl();
@@ -761,7 +790,7 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
             int TB= coefj->getT();
             int MT= coefi->getMT();
             double preifactor= 1;
-            // Adapt prefactor if cj sum starts at ci
+            // Adapt prefactor if cj sum starts at ci  WIM: IS THIS NEEDED???
 
             preifactor*=2;
             if( ci == cj ) {
@@ -769,15 +798,19 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
             }
 
 
-            if( t != 0 ) {
-                if( t == -MT  )
+             /** Camille: For explanation of
+             *  if/else magic, see manual,
+             *  section about isospin matrix elements.
+              */
+            if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
                     continue;
-                if( MT == 0 ) {
+                if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
                     preifactor*= 0.5;
                     if( TA != TB ) preifactor *= t;
                 }
             }
-
+            // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
             if( t == 0 && TA != TB ) {
                 continue;
             }
@@ -798,15 +831,19 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
 
             for( int q= 0; q <= qmax; q++ ) {
 
-                for( int l = fabs( LA-q); l <= LA+q; l++ ) {
-                    for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                        double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+                for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                    for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                        //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
+                        //see also Sec. 9 "One body operators acting on coupled states" in LCA manual
+                       double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
                         if (ifactor==0.)
                             continue;
 
                         // SUM DUE TO CORRELATION OPERATORS kA and kB
                         // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTILY AFFECTED BY CORRELATION OPERATOR
                         // BUT THE ALLOWED k RANGE CAN CHANGE
+                        // kA->lp, kB->l'q  in master formula
+                        //loop ranges because tensor can change the l value (but within 1 of the j value)
                         for( int kA= jA-1; kA <= jA+1; kA++ ) {
                             if( kA < 0 ) continue;
                             for( int kB= jB-1; kB <= jB+1; kB++ ) {
@@ -820,18 +857,21 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
                                 get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
                                 get_spinisospin_me( kB, lB, S, jB, TB, &mes2 );
 
+                                //k->l1 in master formula
                                 for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
 
                                     double sum= 0;
-                                    for( int MS= -S; MS <= S; MS++ ) {
+                                    for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                                         int mkA= mjA-MS;
                                         int mkB= mjB-MS;
+                                        //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
                                         if( MLA+ mkA != MLB+ mkB ) continue;
+                                        //third line master formule (LCA manual Eq(53))
                                         double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                                    * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                                    * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                                         if( cg == 0 ) continue;
-                                        double threej1=   threej::threejs.get( 2*LA, 2*l , 2*q,0, 0, 0)
+                                        double threej1=   threej::threejs.get( 2*LA, 2*l , 2*q,0, 0, 0) //part of line 5&6 master formula
                                                         * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0)
                                                         * threej::threejs.get( 2*kB, 2*l , 2*k,0, 0, 0)
                                                         * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0);
@@ -839,6 +879,7 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
                                             continue;
                                         }
                                         for( int mq= -q; mq<= q; mq++ ) {
+                                            //restrictions due to 3j symbols
                                             int ml= -mq-MLA;
                                             int mla= -mq-MLB;
                                             int mk= -ml-mkB;
@@ -847,7 +888,7 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
                                              *  which means we can flip the signs of the the j's here with no sign change
                                              *  as the sum of the first three must be even
                                              */
-                                            double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
+                                            double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq) //remaining 3j-symbols line 5&6 master formula
                                                             * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
                                                             * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
                                                             * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
@@ -856,14 +897,16 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
                                             }
                                             double sqrts= sqrt( (2*LA+1)* (2*LB+1) * (2*kA+1)* (2*kB+1) )* (2*l+1)* (2*la+1)* (2*q+1)*( 2*k+1);
                                             sum+= threej2* threej1*cg* sqrts;
-                                        }
-                                    }
+                                        } //m_q
+                                    } //m_S
                                     if( fabs(sum)< 1e-10 ) {
                                         continue;
                                     }
 
                                     #pragma omp critical(add)
                                     {
+                                        //Here the normalisation is accounted for!
+                                        //the prefactor is added to a particular integral (last line master formula Eq 53 LCA manual)
                                         if( bcentral && mec1 && mec2) {
                                             integrand_cc->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm* mec1*mec2*vali*valj*sum*ifactor );
                                         }
@@ -892,14 +935,14 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
                                                 integrand_st->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k ,pair_norm* met1*mes2*vali*valj*sum*ifactor );
                                         }
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+                                } //k
+                            }//kB
+                        }//kA
+                    }//la
+                }//l
+            }//q
+        }//coefj
+    }//coefi
     return 0;
 }
 
@@ -917,9 +960,11 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
     assert( (pc2->getl()+pc2->getS()+pc2->getT()) % 2 == 1 ); // antisymmetry requirement
     assert( (pc1->getl()+pc1->getL())%2 == (pc2->getl()+pc2->getL())%2 ); // parity conservation
 
-    if( pc1->getS() != pc2->getS() ) return 0; // ob-momentum operator nor correlation operators change total spin
+    // ob-momentum operator nor correlation operators change total spin
+    // only applicable when obmd is summed over spin particle
+    if( pc1->getS() != pc2->getS() ) return 0; 
     //      if( pc1->getT() != pc2->getT() ) return 0;
-    if( pc1->getMT() != pc2->getMT() ) return 0;
+    if( pc1->getMT() != pc2->getMT() ) return 0; //no operator or projection changes MT
     int nA= pc1->getn();
     int nB= pc2->getn();
     int lA= pc1->getl();
@@ -933,14 +978,19 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
     int MT= pc1->getMT();
     double preifactor=val;
 
-    if( t != 0 ) {
-        if( t == -MT  )
+    /** Camille: For explanation of
+     *  if/else magic, see manual,
+    *  section about isospin matrix elements.
+     */
+    if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+        if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
             return 0;
-        if( MT == 0 ) {
+        if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
             preifactor*= 0.5;
             if( TA != TB ) preifactor *= t;
         }
     }
+    // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
     if( t == 0 && TA != TB )
         return 0;
 
@@ -963,35 +1013,40 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
 
     /* this function is called for paircoefficients that originate from
      * the same pair |\alpha_1,\alpha_2 >.
-     * This means that their will exist certain relations between pc1 and pc2
+     * This means that there will exist certain relations between pc1 and pc2
      * for example,. they have the same parity
      * (l_{\alpha_1} + l_{\alpha_2})%2 = (l + L)%2 = (l' + L')%2 => l-l'+L-L' is even
      * if S==S' and T==T' => l-l' is even => L-L' is even
      */
     for( int q= 0; q <= qmax; q++ ) {
-        for( int l = fabs( LA-q); l <= LA+q; l++ ) {
-            for( int la= fabs( LB-q); la <= LB+q; la++ ) {
+        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
+                //see also Sec. 9 "One body operators acting on coupled states" in LCA manual                        
                 double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
                 if (ifactor==0.)
                     continue;
                 // SUM DUE TO CORRELATION OPERATORS kA and kB
                 // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTLY AFFECTED BY CORRELATION OPERATOR
                 // BUT THE ALLOWED k RANGE CAN CHANGE
-                int kA= lA;
-                int kB= lB;
+                int kA= lA;// kA->lp, kB->l'q  in master formula
+                int kB= lB;//lp=l, l'q=l' due to no correlation functions! [first summations on line 1 in master formula]
 
+                //k->l1 in master formula
                 for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
 
                     double sum= 0;
-                    for( int MS= -S; MS <= S; MS++ ) {
+                    for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                         int mkA= mjA-MS;
                         int mkB= mjB-MS;
+                        //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
                         if( MLA+ mkA != MLB+ mkB ) continue;
+                        //third line master formule (LCA manual Eq(53))
                         double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                    * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                    * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                         if( cg == 0 ) continue;
-                        double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0)
+                        double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0) //part of line 5&6 master formula
                                         * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0 )
                                         * threej::threejs.get( 2*kB, 2*l, 2*k,0, 0, 0 )
                                         * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0 );
@@ -999,10 +1054,11 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
                             continue;
                         }
                         for( int mq= -q; mq<= q; mq++ ) {
+                            //restrictions due to 3j symbols
                             int ml= -mq-MLA;
                             int mla= -mq-MLB;
                             int mk= -ml-mkB;
-                            double threej2=   threej::threejs.get( 2*LA, 2*l,  2*q, 2*MLA, 2*ml , 2*mq)
+                            double threej2=   threej::threejs.get( 2*LA, 2*l,  2*q, 2*MLA, 2*ml , 2*mq) //remaining 3j-symbols line 5&6 master formula
                                             * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
                                             * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
                                             * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
@@ -1011,8 +1067,8 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
                             }
                             double sqrts= sqrt( (2*LA+1)* (2*LB+1) * (2*kA+1)* (2*kB+1) )* (2*l+1)* (2*la+1)* (2*q+1)*( 2*k+1);
                             sum+= threej2* threej1*cg* sqrts;
-                        }
-                    }
+                        } //m_q
+                    } //m_S
                     if( fabs(sum)< 1e-10 ) {
                         continue;
                     }
@@ -1020,10 +1076,10 @@ double density_ob3::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double v
                     {
                         integrand->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, sum*ifactor );
                     }
-                }
-            }
-        }
-    }
+                } //k
+            } //la
+        } //l
+    }//q
     return 0;
 }
 
@@ -1048,9 +1104,9 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
     assert( (pc1->getl()+pc1->getS()+pc1->getT()) % 2 == 1 ); // antisymmetry requirement
     assert( (pc2->getl()+pc2->getS()+pc2->getT()) % 2 == 1 ); // antisymmetry requirement
     assert( (pc1->getl()+pc1->getL())%2 == (pc2->getl()+pc2->getL())%2 ); // parity conservation
-    if( pc1->getS() != pc2->getS() ) return 0;
+    if( pc1->getS() != pc2->getS() ) return 0; //only correct when the obmd is summed over spin
 //      if( pc1->getT() != pc2->getT() ) return 0;
-    if( pc1->getMT() != pc2->getMT() ) return 0;
+    if( pc1->getMT() != pc2->getMT() ) return 0; //all operators diagonal in MT
     int nA= pc1->getn();
     int nB= pc2->getn();
     int lA= pc1->getl();
@@ -1076,26 +1132,30 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
     double preifactor=val;
 
 
-    if( t != 0 ) {
-        if( t == -MT  )
+    if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+        if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
             return 0;
         if( MT == 0 ) {
             preifactor*= 0.5;
-            if( TA != TB ) preifactor *= t;
+            if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
         }
     }
-
+    //t ==0 case missing???
 
     for( int q= 0; q <= qmax; q++ ) {
 
-        for( int l = fabs( LA-q); l <= LA+q; l++ ) {
-            for( int la= fabs( LB-q); la <= LB+q; la++ ) {
+        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
+                //see also Sec. 9 "One body operators acting on coupled states" in LCA manual
                 double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
                 if (ifactor==0.)
                     continue;
                 // SUM DUE TO CORRELATION OPERATORS kA and kB
                 // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTLY AFFECTED BY CORRELATION OPERATOR
                 // BUT THE ALLOWED k RANGE CAN CHANGE
+                // kA->lp, kB->l'q  in master formula
+                //lp=l due to no correlation functions acting on the bra! [first summations on line 1 in master formula]
                 for( int kB= jB-1; kB <= jB+1; kB++ ) {
                     if( kB < 0 ) continue;
                     int kA= lA;
@@ -1105,18 +1165,21 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
                     get_tensor_me( kB, lB, S, jB, TB, &met1 );
                     get_spinisospin_me( kB, lA, S, jB, TB, &mes1 );
 
+                    //k->l1 in master formula
                     for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
 
                         double sum= 0;
-                        for( int MS= -S; MS <= S; MS++ ) {
+                        for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                             int mkA= mjA-MS;
                             int mkB= mjB-MS;
+                            //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
                             if( MLA+ mkA != MLB+ mkB ) continue;
+                            //third line master formule (LCA manual Eq(53))
                             double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                        * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                        * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                             if( cg == 0 ) continue;
-                            double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0)
+                            double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0) //part of line 5&6 master formula
                                             * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0 )
                                             * threej::threejs.get( 2*kB, 2*l, 2*k,0, 0, 0 )
                                             * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0 );
@@ -1124,10 +1187,11 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
                                 continue;
                             }
                             for( int mq= -q; mq<= q; mq++ ) {
+                                //restrictions due to 3j symbols
                                 int ml= -mq-MLA;
                                 int mla= -mq-MLB;
                                 int mk= -ml-mkB;
-                                double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
+                                double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq) //remaining 3j-symbols line 5&6 master formula
                                                 * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
                                                 * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
                                                 * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
@@ -1136,8 +1200,8 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
                                 }
                                 double sqrts= sqrt( (2*LA+1)* (2*LB+1) * (2*kA+1)* (2*kB+1) )* (2*l+1)* (2*la+1)* (2*q+1)*( 2*k+1);
                                 sum+= threej2* threej1*cg* sqrts;
-                            }
-                        }
+                            } //m_q
+                        } //m_S
                         if( fabs(sum)< 1e-10 ) {
                             continue;
                         }
@@ -1155,12 +1219,11 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
                             }
                         }
 
-                    }
-                }
-
-            }
-        }
-    }
+                    }//k
+                }//kB
+            }//la
+        }//l
+    }//q
 
     return 0;
 }
@@ -1187,9 +1250,9 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
     assert( (pc1->getl()+pc1->getS()+pc1->getT()) % 2 == 1 ); // antisymmetry requirement
     assert( (pc2->getl()+pc2->getS()+pc2->getT()) % 2 == 1 ); // antisymmetry requirement
     assert( (pc1->getl()+pc1->getL())%2 == (pc2->getl()+pc2->getL())%2 ); // parity conservation
-    if( pc1->getS() != pc2->getS() ) return 0;
-//      if( pc1->getT() != pc2->getT() ) return 0;
-    if( pc1->getMT() != pc2->getMT() ) return 0;
+    if( pc1->getS() != pc2->getS() ) return 0; //only correct when the obmd is summed over spin
+//      if( pc1->getT() != pc2->getT() ) return 0; // projection isospin operator not diagonal in T!!!
+    if( pc1->getMT() != pc2->getMT() ) return 0; //all operators diagonal in MT
     int nA= pc1->getn();
     int nB= pc2->getn();
     int lA= pc1->getl();
@@ -1216,47 +1279,57 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
 
 
 
-    if( t != 0 ) {
-        if( t == -MT  )
+    /** Camille: For explanation of
+     *  if/else magic, see manual,
+     *  section about isospin matrix elements.
+    */
+    if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+        if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
             return 0;
         if( MT == 0 ) {
             preifactor*= 0.5;
-            if( TA != TB ) preifactor *= t;
+            if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
         }
     }
-
+    //t==0 case missing??
 
     for( int q= 0; q <= qmax; q++ ) {
 
-        for( int l = fabs( LA-q); l <= LA+q; l++ ) {
-            for( int la= fabs( LB-q); la <= LB+q; la++ ) {
+        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+                //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
+                //see also Sec. 9 "One body operators acting on coupled states" in LCA manual
                 double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
                 if (ifactor==0.)
                     continue;
                 // SUM DUE TO CORRELATION OPERATORS kA and kB
                 // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTLY AFFECTED BY CORRELATION OPERATOR
                 // BUT THE ALLOWED k RANGE CAN CHANGE
+                // kA->lp, kB->l'q  in master formula
                 for( int kA= jA-1; kA <= jA+1; kA++ ) {
                     if( kA < 0 ) continue;
-                    int kB= lB;
+                    int kB= lB; //l'q=l' due to no correlation functions acting on the ket! [first summations on line 1 in master formula]
 
                     double mec1, met1, mes1;
                     get_central_me( kA, lA, S, jA, TA, &mec1 );
                     get_tensor_me( kA, lA, S, jA, TA, &met1 );
                     get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
 
+                    //k->l1 in master formula
                     for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
 
                         double sum= 0;
-                        for( int MS= -S; MS <= S; MS++ ) {
+                        for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                             int mkA= mjA-MS;
                             int mkB= mjB-MS;
+                            //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
                             if( MLA+ mkA != MLB+ mkB ) continue;
+                            //third line master formule (LCA manual Eq(53))
                             double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                        * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                        * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                             if( cg == 0 ) continue;
-                            double threej1=   threej::threejs.get( 2*LA, 2*l , 2*q,0, 0, 0)
+                            double threej1=   threej::threejs.get( 2*LA, 2*l , 2*q,0, 0, 0) //part of line 5&6 master formula
                                             * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0 )
                                             * threej::threejs.get( 2*kB, 2*l , 2*k,0, 0, 0 )
                                             * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0 );
@@ -1264,10 +1337,11 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
                                 continue;
                             }
                             for( int mq= -q; mq<= q; mq++ ) {
+                                //restrictions due to 3j symbols
                                 int ml= -mq-MLA;
                                 int mla= -mq-MLB;
                                 int mk= -ml-mkB;
-                                double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
+                                double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq) //remaining 3j-symbols line 5&6 master formula
                                                 * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
                                                 * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
                                                 * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
@@ -1276,8 +1350,8 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
                                 }
                                 double sqrts= sqrt( (2*LA+1)* (2*LB+1) * (2*kA+1)* (2*kB+1) )* (2*l+1)* (2*la+1)* (2*q+1)*( 2*k+1);
                                 sum+= threej2* threej1*cg* sqrts;
-                            }
-                        }
+                            } //mq
+                        } //mS
                         if( fabs(sum)< 1e-10 ) {
                             continue;
                         }
@@ -1295,12 +1369,12 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
                             }
                         }
 
-                    }
-                }
+                    }//k
+                }//kA
 
-            }
-        }
-    }
+            }//la
+        }//l
+    }//q
 
     return 0;
 }
@@ -1324,9 +1398,9 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
     assert( (pc1->getl()+pc1->getS()+pc1->getT()) % 2 == 1 ); // antisymmetry requirement
     assert( (pc2->getl()+pc2->getS()+pc2->getT()) % 2 == 1 ); // antisymmetry requirement
     assert( (pc1->getl()+pc1->getL())%2 == (pc2->getl()+pc2->getL())%2 ); // parity conservation
-    if( pc1->getS() != pc2->getS() ) return 0;
-//      if( pc1->getT() != pc2->getT() ) return 0;
-    if( pc1->getMT() != pc2->getMT() ) return 0;
+    if( pc1->getS() != pc2->getS() ) return 0; //only correct when the obmd is summed over spin
+//      if( pc1->getT() != pc2->getT() ) return 0;// projection isospin operator not diagonal in T!!!    if( pc1->getMT() != pc2->getMT() ) return 0;
+    if( pc1->getMT() != pc2->getMT() ) return 0; //all operators diagonal in MT
     int nA= pc1->getn();
     int nB= pc2->getn();
     int lA= pc1->getl();
@@ -1343,15 +1417,20 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
 
 
 
-    if( t != 0 ) {
-        if( t == -MT  )
+    /** Camille: For explanation of
+     *  if/else magic, see manual,
+     *  section about isospin matrix elements.
+    */
+    if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+        if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
             return 0;
-        if( MT == 0 ) {
+        if( MT == 0 ) { 
             preifactor*= 0.5;
-            if( TA != TB ) preifactor *= t;
+            if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
         }
     }
 
+    // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
     if( t == 0 && TA != TB ) {
         return 0;
     }
@@ -1372,14 +1451,18 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
 
     for( int q= 0; q <= qmax; q++ ) {
 
-        for( int l = fabs( LA-q); l <= LA+q; l++ ) {
-            for( int la= fabs( LB-q); la <= LB+q; la++ ) {
-                double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
+        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+            //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
+            //see also Sec. 9 "One body operators acting on coupled states" in LCA manual
+            double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
                 if (ifactor==0.)
                     continue;
                 // SUM DUE TO CORRELATION OPERATORS kA and kB
                 // NOTE THAT THE INTEGRATION IS IN NO WAY DIRECTILY AFFECTED BY CORRELATION OPERATOR
                 // BUT THE ALLOWED k RANGE CAN CHANGE
+                // kA->lp, kB->l'q  in master formula
+                //loop ranges because tensor can change the l value (but within 1 of the j value)
                 for( int kA= jA-1; kA <= jA+1; kA++ ) {
                     if( kA < 0 ) continue;
                     for( int kB= jB-1; kB <= jB+1; kB++ ) {
@@ -1393,18 +1476,21 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
                         get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
                         get_spinisospin_me( kB, lB, S, jB, TB, &mes2 );
 
+                        //k->l1 in master formula
                         for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
 
                             double sum= 0;
-                            for( int MS= -S; MS <= S; MS++ ) {
+                            for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                                 int mkA= mjA-MS;
                                 int mkB= mjB-MS;
+                                //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
                                 if( MLA+ mkA != MLB+ mkB ) continue;
+                                //third line master formule (LCA manual Eq(53))
                                 double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                            * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                            * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
                                 if( cg == 0 ) continue;
-                                double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0)
+                                double threej1= threej::threejs.get( 2*LA, 2*l, 2*q, 0, 0, 0) //part of line 5&6 master formula
                                                 * threej::threejs.get( 2*LB, 2*la, 2*q,0, 0, 0 )
                                                 * threej::threejs.get( 2*kB, 2*l, 2*k,0, 0, 0 )
                                                 * threej::threejs.get( 2*kA, 2*la, 2*k,0, 0, 0 );
@@ -1412,10 +1498,11 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
                                     continue;
                                 }
                                 for( int mq= -q; mq<= q; mq++ ) {
+                                    //restrictions due to 3j symbols
                                     int ml= -mq-MLA;
                                     int mla= -mq-MLB;
                                     int mk= -ml-mkB;
-                                    double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq)
+                                    double threej2=   threej::threejs.get( 2*LA, 2*l , 2*q,-2*MLA,-2*ml ,-2*mq) //remaining 3j-symbols line 5&6 master formula
                                                     * threej::threejs.get( 2*LB, 2*la, 2*q, 2*MLB, 2*mla, 2*mq )
                                                     * threej::threejs.get( 2*kB, 2*l , 2*k, 2*mkB, 2*ml , 2*mk )
                                                     * threej::threejs.get( 2*kA, 2*la, 2*k,-2*mkA,-2*mla,-2*mk );
@@ -1460,11 +1547,11 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
                                         integrand_st->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k ,met1*mes2*sum*ifactor );
                                 }
                             }
-                        }
-                    }
-                }
-            }
-        }
-    }
+                        }//k
+                    }//kB
+                }//kA
+            }//la
+        }//l
+    }//q
     return 0;
 }

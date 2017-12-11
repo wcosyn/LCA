@@ -20,8 +20,8 @@ density_ob_integrand_cf::density_ob_integrand_cf( int A, double q, double(*f)(do
     pmax= 10;
     max= int(pmax/pstep);
     double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
-    nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
-    nu75= pow( nu, 0.75 );
+    nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm = fm^-2
+    nu75= pow( nu, 0.75 ); // fm^-3/2
 
     w= gsl_integration_workspace_alloc( 200000 );
 }
@@ -88,6 +88,7 @@ double density_ob_integrand_cf::get_value( int k, int l, int nA, int lA, int int
     vector< vector<double>* >* values = it2->second;
 
     int imax = values_set->size()-1;
+    //reserve more memory if needed
     while ( imax < 2*nA+lA ) {
         values->push_back( new vector< double> ( max, 0 ) );
         values_set->push_back( new vector< bool> ( max, false ) );
@@ -107,12 +108,12 @@ double density_ob_integrand_cf::get_value( int k, int l, int nA, int lA, int int
         /*
          * index= total power of R, R^lA * \sum_i R^(2i)
          */
-        int index= lA+2*i;
-        double anli= laguerre_coeff( nA, lA, i );
+        int index= lA+2*i; 
+        double anli= laguerre_coeff( nA, lA, i ); //[]
         bool set= values_set->at(index)->at(intp);
         if( set == false ) {
 //      cout << q << " calc " << k << l << index << intp << " " << this << endl;
-            double newvalue= calculate( k, l, index, intp);
+            double newvalue= calculate( k, l, index, intp); //[] dimensionless!
             values->at(index)->at(intp)= newvalue;
             values_set->at(index)->at(intp)= true;
             result+= anli* newvalue;
@@ -121,8 +122,8 @@ double density_ob_integrand_cf::get_value( int k, int l, int nA, int lA, int int
             result += anli* values->at(index)->at(intp);
         }
     }
-    double N= ho_norm( nA, lA ) / nu75;
-    return N*result;
+    double N= ho_norm( nA, lA ) / nu75;  //normalisation + dimension factor of the integrand [fm^{3/2}]
+    return N*result; // [fm^{3/2}] result of the complete chi integral
 }
 
 /*
@@ -134,7 +135,8 @@ double density_ob_integrand_cf::get_value( int k, int l, int nA, int lA, double 
 //  cout << nA << lA << l << k << endl;
 
 
-    int intp= (int)(floor(p/pstep));
+    int intp= (int)(floor(p/pstep)); //index in grid
+    //interpolate first order.
     double y0, y1;
     y0= get_value( k, l, nA, lA, intp );
     y1= get_value( k, l, nA, lA, intp+1 );
@@ -170,7 +172,7 @@ double density_ob_integrand_cf::calculate( int k, int l, uint i, int intp )
         cerr << "[ "  << i << ", " << k << ", " << l << ", " << q << ", " << p << "]" << std::endl;
         cerr << std::endl;
     }
-    return result;
+    return result; //dimensionless
 }
 
 
@@ -180,17 +182,17 @@ double density_ob_integrand_cf::integrand( double r, void* params )
     int k = (p->k);
     int l = (p->l);
     uint i = (p->i);
-    double nu= (p->nu);
-    double P = (p->P);
-    double q = (p->q);
-    double(*f)(double)= (p->f);
-    double sqrtnu=sqrt(nu);
+    double nu= (p->nu); // [fm^-2]
+    double P = (p->P); //[fm^-1]
+    double q = (p->q);// [fm^-1]
+    double(*f)(double)= (p->f); //correlation function
+    double sqrtnu=sqrt(nu);  //[fm^-1]
 
 
-    const double bessel1b = gsl_sf_bessel_jl(l,r*P/sqrtnu);
-    const double bessel2b = gsl_sf_bessel_jl(k,r*q*M_SQRT2/sqrtnu);
+    const double bessel1b = gsl_sf_bessel_jl(l,r*P/sqrtnu); //dimensionless
+    const double bessel2b = gsl_sf_bessel_jl(k,r*q*M_SQRT2/sqrtnu); //dimensionless
 
-    return bessel1b*bessel2b*gsl_pow_uint(r,i+2)* (*f)(r/sqrtnu)* gsl_sf_exp(-0.5*r*r);
+    return bessel1b*bessel2b*gsl_pow_uint(r,i+2)* (*f)(r/sqrtnu)* gsl_sf_exp(-0.5*r*r); //dimensionless!
 
 
     /*

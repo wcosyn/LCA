@@ -94,13 +94,13 @@ public:
      * @param N HO center of mass quantum number N in the coupled state
      * @param L HO center of mass OAM in the coupled state
      * @param ML HO center of mass OAM spin projection in the coupled state
-     * @return double return the transforamtion coefficient
+     * @return [] double return the transformation coefficient, dimensionless
      */
     double getcoef( int n, int l, int S, int j, int mj, int T, int MT, int N, int L, int ML );
     /**
      * @brief returns \f$\sum_A |C_{\alpha_1 \alpha_2}^A|^2\f$, sum over all coefficients.  Should be close to 1 if the expansion has converged
      * 
-     * @return double returns \f$\sum_A |C_{\alpha_1 \alpha_2}^A|^2\f$ 
+     * @return [] double returns \f$\sum_A |C_{\alpha_1 \alpha_2}^A|^2\f$, dimensionless
      */
     double getSum( ) {
         if( coeflistmade == false) makecoeflist();

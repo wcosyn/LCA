@@ -19,7 +19,7 @@ density_ob_integrand3::density_ob_integrand3( int A )
     : A(A)
 {
     double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
-    nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
+    nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm = fm^-2
 }
 
 density_ob_integrand3::~density_ob_integrand3()
@@ -51,28 +51,29 @@ void density_ob_integrand3::add( int nA, int lA, int NA, int LA, int nB, int lB,
     vector< double >* key_vector;
     if( it1 == mapintegrals.end() ) {
         // Key doesnt exist yet. Create new structure and save in container mapintegrals
-
+        // LA+LB+2*NA+2*NB+1 is maximum power in P
         doi3_struct key_struct { nA, lA, la, nB, lB, l, k, new vector<double>( LA+LB+2*NA+2*NB+1,0) };
 
         mapintegrals[key]= key_struct;
         key_vector= key_struct.pow_values;
 
-    } else {
+    } else { 
         key_vector= it1->second.pow_values;
         int indexmax= key_vector->size()-1;
-
+        //resize the integral values vector if it's not big enough (why wouldn't it be?)
         if( indexmax < LA+LB+2*NA+2*NB ) {
             key_vector->resize(LA+LB+2*NA+2*NB+1, 0);
         }
     }
-    double honorm = ho_norm(NA,LA)*ho_norm(NB,LB);
-    double pownu = sqrt(pow(nu,LA+LB+3));
+    //Calculation prefactor integral, see Eq. 63 LCA manual, second line
+    double honorm = ho_norm(NA,LA)*ho_norm(NB,LB); //normalisation factors of the HO wf, dimensionless!
+    double pownu = sqrt(pow(nu,LA+LB+3)); // [fm^{(LA+LB+3)}]
     double phase = ((NA+NB) & 0b01)? -1 : 1; // = (-1)^{NA+NB}, -1 if NA+NB is odd, 1 if even
     for (int i=0; i<=NA;i++){
         double anli = laguerre_coeff(NA,LA,i);
         for (int j=0; j<=NB;j++){
             double anlj = laguerre_coeff(NB,LB,j);
-            key_vector->at(LA+LB+2*i+2*j) += val*phase*honorm*anli*anlj/pow(nu,i+j)/pownu;
+            key_vector->at(LA+LB+2*i+2*j) += val*phase*honorm*anli*anlj/pow(nu,i+j)/pownu; //[fm^{(LA+LB+2i+2j+3)}]=[fm^{(index+3)}]
         }
     }
 }
@@ -94,21 +95,22 @@ double density_ob_integrand3::get( density_ob_integrand_cf* doic1, density_ob_in
         int k= integral.k;
         vector< double >* key_vector = integral.pow_values;
 
-        for( size_t i= 0;  i< key_vector->size(); i++ ) {
-            double val= key_vector->at(i);
+        for( size_t i= 0;  i< key_vector->size(); i++ ) { //loop over powers of P
+            double val= key_vector->at(i); //[fm^{(i+3)}]
             if( val == 0 ) {
 //        cerr << "val == 0 " << endl;
                 continue;
             }
-            double result= calculate( n1, l1, k1, n2, l2, k2, k, i, doic1, doic2);
-            sum+= result* val;
+            double result= calculate( n1, l1, k1, n2, l2, k2, k, i, doic1, doic2); //[fm^-i]
+            sum+= result* val; //[fm^3]
         }
     }
-    return sum;
+    return sum;//[fm^3]
 }
 
 
-double density_ob_integrand3::calculate( int nA, int lA, int la, int nB, int lB, int l, int k, uint index , density_ob_integrand_cf* doic1, density_ob_integrand_cf* doic2 )
+double density_ob_integrand3::calculate( int nA, int lA, int la, int nB, int lB, int l, int k, uint index,
+                                    density_ob_integrand_cf* doic1, density_ob_integrand_cf* doic2 )
 {
 
     gsl_integration_workspace* w = gsl_integration_workspace_alloc( 10000 );
@@ -116,7 +118,7 @@ double density_ob_integrand3::calculate( int nA, int lA, int la, int nB, int lB,
     struct params_int2 params= { nA, lA, la, nB, lB, l, k, index, nu, doic1, doic2 };
     F.function = &integrand;
     F.params = &params;
-    double abserr, result;
+    double abserr, result; //[fm^-index]
 //  int succes = gsl_integration_qagiu( &F, 0, 1e-7, 1e-3, 20000,  w, &result, &abserr );
     int succes = gsl_integration_qag( &F, 0, 10, 1e-8, 1e-3, 10000, 1, w, &result, &abserr );
 //  size_t neval;
@@ -128,7 +130,7 @@ double density_ob_integrand3::calculate( int nA, int lA, int la, int nB, int lB,
         cerr << nA << lA << la << nB << lB << l << k << " " << index << "\t" << result << "\t" << abserr << endl;
     }
     gsl_integration_workspace_free(w);
-    return result;
+    return result; //[fm^-index]
 }
 
 double density_ob_integrand3::integrand( double P, void* params )
@@ -153,10 +155,10 @@ double density_ob_integrand3::integrand( double P, void* params )
         return 0;
     }
 
-    double res1= doic1->get_value( k, la, nA, lA, P);
-    double res2= doic2->get_value( k, l, nB, lB, P);
+    double res1= doic1->get_value( k, la, nA, lA, P); //[fm^3/2] chi integral
+    double res2= doic2->get_value( k, l, nB, lB, P); //[fm^3/2] 2nd chi integral
 
-    return P*P* gsl_pow_uint(P, index) *res1*res2* exp;
+    return P*P* gsl_pow_uint(P, index) *res1*res2* exp; //[fm^{1-index}]
 }
 
 

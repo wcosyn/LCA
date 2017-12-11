@@ -5,7 +5,7 @@
 
 /*
  * class which contain regularly used functions like the bessel functions.
- * These functions are calculated up to 60 and saved in an vector.
+ * These functions are calculated up to 60 and saved in a vector.
  * This saves a lot of computing time.
  * - lmax: maximum bessel function j_l
  * - delta: interval between 2 consecutive calculated points

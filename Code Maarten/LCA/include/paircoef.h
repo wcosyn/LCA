@@ -126,8 +126,8 @@ public:
      * This link is only added for one of the two Paircoefs, otherwise it would be counted twice.
      * 
      * @param pc pointer to the other coupled state (Paircoef object) th
-     * @param val value that needs to be added to the link strength.  
-     *  This is the product of the two expansion coefficients \f$C^A_{\alpha_i\alpha_j}\f$ times a normalisation factor for partially occupied shells.
+     * @param val [] value that needs to be added to the link strength.  
+     *  This is the product of the two expansion coefficients \f$C^A_{\alpha_i\alpha_j}\f$ times a normalisation factor for partially occupied shells.  Dimensionless.
      * 
      * @see Nucleus::makepaircoefs()
      */
@@ -137,8 +137,8 @@ public:
     /**
      * @brief update the value for the loop linkstrength in the graph.  
      * 
-     * @param val Value of the loop linkstrength that needs to be added.  
-     *  This is the square of the expansion coefficients \f$C^A_{\alpha_i\alpha_j}\f$ times a normalisation factor for partially occupied shells.
+     * @param val [] Value of the loop linkstrength that needs to be added.  
+     *  This is the square of the expansion coefficients \f$C^A_{\alpha_i\alpha_j}\f$ times a normalisation factor for partially occupied shells.  Dimensionless.
      */
     void add( double val);
     /**
@@ -146,7 +146,7 @@ public:
      */
     int get_number_of_links();
     /**
-     * @brief returns the loop linkstrength for this coupled state
+     * @brief [] returns the loop linkstrength for this coupled state, dimensionless
      */
     double get_value() {
         return value;
@@ -156,7 +156,7 @@ public:
      * 
      * @param i element in the map
      * @param pc first element of the map at that index (pointer to a coupled state object)
-     * @param val second element of the map at that index (total linkstrength between the base object and the coupled state from the first index)
+     * @param val [] second element of the map at that index (total linkstrength between the base object and the coupled state from the first index), dimensionless
      */
     void get_links( int i, Paircoef** pc, double* val );
 };
