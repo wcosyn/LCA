@@ -22,7 +22,7 @@ using std::endl;
 using std::cerr;
 #include <omp.h>
 
-
+// static public variables
 MapWavefunctionP WavefunctionP::mapwfp = MapWavefunctionP( nothing );
 MapWavefunctionP WavefunctionP::mapwfcentralp = MapWavefunctionP( min_central_fit );
 MapWavefunctionP WavefunctionP::mapwftensorp = MapWavefunctionP( tensor_fit );
@@ -35,7 +35,7 @@ WavefunctionP::WavefunctionP( int n, int l, int A, double pstep,double(*f)(doubl
     : n( n ), l( l ), A( A ), pstep( pstep )
 {
     this->f=f;
-    max= int(10./pstep);
+    max= int(10./pstep); //gridsize
     // l-2 < k < l+2
     values= vector< vector< double > >( 5,  vector< double >( max, 0 ) );
     values_set= vector< vector< bool > >( 5,  vector< bool >( max, false ) );
@@ -54,16 +54,16 @@ double WavefunctionP::getwf( int k, int intp )
         exit(-1);
     }
 
-    double pmax= 10.;
-    if( intp >= pmax/pstep ) return 0;
+    // double pmax= 10.;
+    if( intp >= max ) return 0;
 
     bool set;
 //  #pragma omp critical(values_set)
 //  {
-    set = values_set[k-l+2][ intp ] ;
+    set = values_set[k-l+2][ intp ] ; //see if value has been calculated before
 //  }
 
-    if( set  == false ) {
+    if( set  == false ) { //calculated it
         double newwf;
 //    #pragma omp critical(calculate)
 //    {
@@ -75,7 +75,7 @@ double WavefunctionP::getwf( int k, int intp )
 //      if( set  == false )
 //      {
 //        cout << "calc " << n << l << k << " " << intp << endl;
-        newwf = calculate( k, intp );
+        newwf = calculate( k, intp ); 
 //      }
 //      else
 //      #pragma omp critical(values)
@@ -94,6 +94,25 @@ double WavefunctionP::getwf( int k, int intp )
     return wf;
 }
 
+double WavefunctionP::getwf( int k, double p )
+{
+    if( k > l+2 || k < l-2 ) {
+        cerr << "k=" << k << " not in range for l=" << l << endl;
+        exit(-1);
+    }
+    //intepolate
+    int intp= (int)(floor(p/pstep));
+    double y0, y1;
+    y0= getwf( k, intp );
+    y1= getwf( k, intp+1 );
+    double dy= y1-y0;
+    double dp= p- intp*pstep;
+
+    double res= y0+ dy*dp/pstep;
+    return res;
+
+}
+
 void WavefunctionP::calculate_all()
 {
     for( int i= 0; i<5; i++ ) {
@@ -108,32 +127,14 @@ void WavefunctionP::calculate_all()
     }
 }
 
-double WavefunctionP::getwf( int k, double p )
-{
-    if( k > l+2 || k < l-2 ) {
-        cerr << "k=" << k << " not in range for l=" << l << endl;
-        exit(-1);
-    }
-
-    int intp= (int)(floor(p/pstep));
-    double y0, y1;
-    y0= getwf( k, intp );
-    y1= getwf( k, intp+1 );
-    double dy= y1-y0;
-    double dp= p- intp*pstep;
-
-    double res= y0+ dy*dp/pstep;
-    return res;
-
-}
-
 
 
 double WavefunctionP::calculate( int k, int intp )
 {
     double result;
 
-
+    // correlation functions that use that expansion of Eq C.2 PhD Vanhalst
+    //integrals can be calculated analytically
     if( f == min_central_fit )
         result= wf_central_p3( n, l, k, intp*pstep);
     else if( f == nothing )
@@ -159,8 +160,7 @@ double WavefunctionP::calculate( int k, int intp )
 
 
 //  if( intp == 0 ) cerr << "calculate " << n << " " << l << " " << k << endl;
-        double pmax= 10;
-        if( intp >= pmax/pstep ) return 0;
+        if( intp >= max ) return 0;
         double p= pstep* intp;
         gsl_integration_workspace* w= gsl_integration_workspace_alloc( 20000 );
         gsl_function F ;
@@ -209,7 +209,7 @@ double WavefunctionP::integrand( double r, void* params )
 
     double mom = (p->mom);
 
-    double radial = (*f)(r)* uncorrelatedradialwf( n, l, r, A);
+    double radial = (*f)(r)* uncorrelatedradialwf( n, l, r, A);// [fm^{-3/2}] corr functions times Eq D.17 PhD Vanhalst
     gsl_sf_result bessel;
     int status = gsl_sf_bessel_jl_e(k, r*mom, &bessel );
     if( status ) {
@@ -222,8 +222,145 @@ double WavefunctionP::integrand( double r, void* params )
         }
     }
 
-    return bessel.val* radial* r*r/ sqrt(0.5*M_PI);
+    return bessel.val* radial* r*r/ sqrt(0.5*M_PI); //[fm^{1/2}]
 }
+
+
+double WavefunctionP::wf_central_p( int n, int l, int k, double p )
+{
+//  return wf_central_p3( n, l, k, p);
+    return mapwfcentralp.get(n, l, k, p );
+}
+
+double WavefunctionP::wf_central_p3( int n, int l, int k, double p )
+{
+    double nu= mapwfcentralp.getNu();
+    double N= ho_norm( nu , n, l ); //[fm^{-l-3/2}]
+    double sum= 0;
+    double e= 0.5*nu+get_central_exp(); //[fm^-2]
+    for( int i= 0; i < n+1; i++ ) { //sum over laguerre coefficients
+        double anli = laguerre_coeff( nu, n, l, i ); //[fm^{-2i}]
+        double power = pow(p,k); //[fm^-k]
+        for( int lambda= 0; lambda < 11; lambda++ ) { //sum over correlation function expansion
+            double alambda= get_central_pow( lambda ); //[fm^-lambda]
+            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k); //[fm^{3+2i+k+l+lambda}]
+            gsl_sf_result hyperg;
+            double a= 0.5*(3+2*i+k+l+lambda);
+            double b= 1.5+k;
+            int status = gsl_sf_hyperg_1F1_e ( a,  b, -1.*p*p/4/e, &hyperg);
+            if (status) {
+                if( status == GSL_EUNDRFLW ) {
+                    continue;
+                }
+                cerr << "failed, gsl_errno = " << status << endl;
+            }
+            sum+= (-1)*alambda*anli*f*power* hyperg.val; //factor -1 because of central correlation!! //fm^{3+l}
+        }
+    }
+    return N*sum/sqrt(0.5*M_PI); //[fm^{3/2}]
+}
+
+double WavefunctionP::wf_spinisospin_p( int n, int l, int k, double p )
+{
+//  return wf_spinisospin_p3( n, l, k, p );
+    return WavefunctionP::mapwfspinisospinp.get(n, l, k, p );
+}
+
+double WavefunctionP::wf_spinisospin_p3( int n, int l, int k, double p )
+{
+    double nu= mapwfspinisospinp.getNu();
+    double N= ho_norm( nu,  n, l );//[fm^{-l-3/2}]
+    double sum= 0;
+    double e= 0.5*nu+get_spinisospin_exp();//[fm^-2]
+    for( int i= 0; i < n+1; i++ ) {//sum over laguerre coefficients
+        double anli = laguerre_coeff( nu, n, l, i );//[fm^{-2i}]
+        double power = pow(p,k);//[fm^-k]
+        for( int lambda= 0; lambda < 10; lambda++ ) {//sum over correlation function expansion
+            double alambda= get_spinisospin_pow( lambda );//[fm^-lambda]
+            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k); //[fm^{3+2i+k+l+lambda}]
+            gsl_sf_result hyperg;
+            double a= 0.5*(3+2*i+k+l+lambda);
+            double b= 1.5+k;
+            int status = gsl_sf_hyperg_1F1_e ( a,  b, -1.*p*p/4/e, &hyperg);
+            if (status) {
+                if( status == GSL_EUNDRFLW ) {
+                    continue;
+                }
+                cerr << "failed, gsl_errno = " << status << endl;
+            }
+            sum+= alambda*anli*f*power* hyperg.val; //fm^{3+l}
+        }
+    }
+    return N*sum/sqrt(0.5*M_PI);//[fm^{3/2}]
+}
+
+double WavefunctionP::wf_tensor_p( int n, int l, int k, double p )
+{
+//  return wf_tensor_p3( n, l, k, p );
+    return WavefunctionP::mapwftensorp.get(n, l, k, p );
+}
+
+double WavefunctionP::wf_tensor_p3( int n, int l, int k, double p )
+{
+    double nu= mapwftensorp.getNu();
+    double N= ho_norm( nu,  n, l );//[fm^{-l-3/2}]
+    double sum= 0;
+    double e= 0.5*nu+get_tensor_exp();//[fm^-2]
+    for( int i= 0; i < n+1; i++ ) {
+        double anli = laguerre_coeff( nu, n, l, i );//sum over laguerre coefficients
+        double power = pow(p,k);//[fm^-k]
+        for( int lambda= 0; lambda < 10; lambda++ ) {//sum over correlation function expansion
+            double alambda= get_tensor_pow( lambda );  //[fm^-lambda]
+            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k);//[fm^{3+2i+k+l+lambda}]
+            gsl_sf_result hyperg;
+            double a= 0.5*(3+2*i+k+l+lambda);
+            double b= 1.5+k;
+            int status = gsl_sf_hyperg_1F1_e ( a,  b, -1.*p*p/4/e, &hyperg);
+            if (status) {
+                if( status == GSL_EUNDRFLW ) {
+                    continue;
+                }
+                cerr << "failed, gsl_errno = " << status << endl;
+            }
+            sum+= alambda*anli*f*power* hyperg.val;//[fm^{3+l}]
+        }
+    }
+    return N*sum/sqrt(0.5*M_PI);//[fm^{3/2}]
+}
+
+double WavefunctionP::wf_p( int n, int l, int k, double p )
+{
+//  return wf_p3( n, l, k, p );
+    return WavefunctionP::mapwfp.get(n, l, k, p );
+}
+
+double WavefunctionP::wf_p3( int n, int l, int k, double p )
+{
+    double nu= mapwfp.getNu();
+    double N= ho_norm( nu, n, l );//[fm^{-l-3/2}]
+    double sum= 0;
+    for( int i= 0; i < n+1; i++ ) {//[fm^-2]
+        double anli = laguerre_coeff( nu, n, l, i );//sum over laguerre coefficients
+        double f = pow( 2., -2-k)* pow(0.5*nu,0.5*(-3-2*i-k-l))*sqrt(M_PI)* hiGamma( 3+2*i+k+l)/hiGamma(3+2*k);//[fm^{3+2i+k+l}]
+        double power = pow(p,k);
+        gsl_sf_result hyperg;
+        double a= 0.5*(3+2*i+k+l);
+        double b= 1.5+k;
+        int status = gsl_sf_hyperg_1F1_e ( a,  b, -1.*p*p/2./nu, &hyperg);
+        if (status) {
+            if( status == GSL_EUNDRFLW ) {
+                continue;
+            }
+            cerr << "failed, gsl_errno = " << status << endl;
+        }
+        sum+= anli*f*power* hyperg.val;//fm^{3+l}
+    }
+    return N*sum/sqrt(0.5*M_PI);//[fm^{3/2}]
+}
+
+
+
+
 
 /*
  * Map Wave function saves the calculated wave functions,
@@ -237,18 +374,21 @@ WavefunctionP* MapWavefunctionP::get( int n, int l)
     #pragma omp critical(mapwf)
     {
         int nmax= vectorwfp.size()-1;
+        //we don't have n yet -> create pointers to WavefunctionP objects until we reach n
         while ( n > nmax ) {
             vectorwfp.push_back( vector<WavefunctionP*>( 1, new WavefunctionP(nmax+1, 0, A, pstep, f) ) );
             nmax++;
         }
         vectorl = &vectorwfp[n];
         int lmax= vectorl->size()-1;
+        //we now have n, but not l yet, so create pointers until we reach l
         while ( l > lmax ) {
 //    cout << "create l" << n << lmax+1 << endl;
             vectorl->push_back( new WavefunctionP(n, lmax+1, A, pstep, f ) );
             lmax++;
         }
     }
+    //pointer to the WavefunctionP object for n and l
     return (*vectorl)[l];
 }
 
@@ -308,6 +448,21 @@ int MapWavefunctionP::setpstep( double pstep )
     pstepSet = true;
     return 1;
 }
+
+void MapWavefunctionP::setA( int A )
+{
+    this->A = A;
+    double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
+    nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
+}
+
+MapWavefunctionP::MapWavefunctionP( double(*f)(double) )
+{
+    pstepSet= false;
+    this->f=f;
+
+}
+
 
 /*
  * central: 0 : GD
@@ -373,150 +528,4 @@ void MapWavefunctionP::set_function( int function )
 
 }
 */
-
-void MapWavefunctionP::setA( int A )
-{
-    this->A = A;
-    double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
-    nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
-}
-
-MapWavefunctionP::MapWavefunctionP( double(*f)(double) )
-{
-    pstepSet= false;
-    this->f=f;
-
-}
-
-double WavefunctionP::wf_central_p( int n, int l, int k, double p )
-{
-//  return wf_central_p3( n, l, k, p);
-    return mapwfcentralp.get(n, l, k, p );
-}
-
-double WavefunctionP::wf_central_p3( int n, int l, int k, double p )
-{
-    double nu= mapwfcentralp.getNu();
-    double N= ho_norm( nu , n, l );
-    double sum= 0;
-    double e= 0.5*nu+get_central_exp();
-    for( int i= 0; i < n+1; i++ ) {
-        double anli = laguerre_coeff( nu, n, l, i );
-        double power = pow(p,k);
-        for( int lambda= 0; lambda < 11; lambda++ ) {
-            double alambda= get_central_pow( lambda );
-            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k);
-            gsl_sf_result hyperg;
-            double a= 0.5*(3+2*i+k+l+lambda);
-            double b= 1.5+k;
-            int status = gsl_sf_hyperg_1F1_e ( a,  b, -1.*p*p/4/e, &hyperg);
-            if (status) {
-                if( status == GSL_EUNDRFLW ) {
-                    continue;
-                }
-                cerr << "failed, gsl_errno = " << status << endl;
-            }
-            sum+= (-1)*alambda*anli*f*power* hyperg.val;
-        }
-    }
-    return N*sum/sqrt(0.5*M_PI);
-}
-
-double WavefunctionP::wf_spinisospin_p( int n, int l, int k, double p )
-{
-//  return wf_spinisospin_p3( n, l, k, p );
-    return WavefunctionP::mapwfspinisospinp.get(n, l, k, p );
-}
-
-double WavefunctionP::wf_spinisospin_p3( int n, int l, int k, double p )
-{
-    double nu= mapwfspinisospinp.getNu();
-    double N= ho_norm( nu,  n, l );
-    double sum= 0;
-    double e= 0.5*nu+get_spinisospin_exp();
-    for( int i= 0; i < n+1; i++ ) {
-        double anli = laguerre_coeff( nu, n, l, i );
-        double power = pow(p,k);
-        for( int lambda= 0; lambda < 10; lambda++ ) {
-            double alambda= get_spinisospin_pow( lambda );
-            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k);
-            gsl_sf_result hyperg;
-            double a= 0.5*(3+2*i+k+l+lambda);
-            double b= 1.5+k;
-            int status = gsl_sf_hyperg_1F1_e ( a,  b, -1.*p*p/4/e, &hyperg);
-            if (status) {
-                if( status == GSL_EUNDRFLW ) {
-                    continue;
-                }
-                cerr << "failed, gsl_errno = " << status << endl;
-            }
-            sum+= alambda*anli*f*power* hyperg.val;
-        }
-    }
-    return N*sum/sqrt(0.5*M_PI);
-}
-
-double WavefunctionP::wf_tensor_p( int n, int l, int k, double p )
-{
-//  return wf_tensor_p3( n, l, k, p );
-    return WavefunctionP::mapwftensorp.get(n, l, k, p );
-}
-
-double WavefunctionP::wf_tensor_p3( int n, int l, int k, double p )
-{
-    double nu= mapwftensorp.getNu();
-    double N= ho_norm( nu,  n, l );
-    double sum= 0;
-    double e= 0.5*nu+get_tensor_exp();
-    for( int i= 0; i < n+1; i++ ) {
-        double anli = laguerre_coeff( nu, n, l, i );
-        double power = pow(p,k);
-        for( int lambda= 0; lambda < 10; lambda++ ) {
-            double alambda= get_tensor_pow( lambda );
-            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k);
-            gsl_sf_result hyperg;
-            double a= 0.5*(3+2*i+k+l+lambda);
-            double b= 1.5+k;
-            int status = gsl_sf_hyperg_1F1_e ( a,  b, -1.*p*p/4/e, &hyperg);
-            if (status) {
-                if( status == GSL_EUNDRFLW ) {
-                    continue;
-                }
-                cerr << "failed, gsl_errno = " << status << endl;
-            }
-            sum+= alambda*anli*f*power* hyperg.val;
-        }
-    }
-    return N*sum/sqrt(0.5*M_PI);
-}
-
-double WavefunctionP::wf_p( int n, int l, int k, double p )
-{
-//  return wf_p3( n, l, k, p );
-    return WavefunctionP::mapwfp.get(n, l, k, p );
-}
-
-double WavefunctionP::wf_p3( int n, int l, int k, double p )
-{
-    double nu= mapwfp.getNu();
-    double N= ho_norm( nu, n, l );
-    double sum= 0;
-    for( int i= 0; i < n+1; i++ ) {
-        double anli = laguerre_coeff( nu, n, l, i );
-        double f = pow( 2., -2-k)* pow(0.5*nu,0.5*(-3-2*i-k-l))*sqrt(M_PI)* hiGamma( 3+2*i+k+l)/hiGamma(3+2*k);
-        double power = pow(p,k);
-        gsl_sf_result hyperg;
-        double a= 0.5*(3+2*i+k+l);
-        double b= 1.5+k;
-        int status = gsl_sf_hyperg_1F1_e ( a,  b, -1.*p*p/2./nu, &hyperg);
-        if (status) {
-            if( status == GSL_EUNDRFLW ) {
-                continue;
-            }
-            cerr << "failed, gsl_errno = " << status << endl;
-        }
-        sum+= anli*f*power* hyperg.val;
-    }
-    return N*sum/sqrt(0.5*M_PI);
-}
 

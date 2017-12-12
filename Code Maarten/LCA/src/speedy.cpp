@@ -12,7 +12,7 @@ using std::cerr;
 #include <cmath>
 #include "correlation_functions.h"
 
-
+//static public variable
 speedy speedy::speedies= speedy( 35, 0.0015 );
 
 
@@ -25,7 +25,7 @@ speedy::speedy( int lmax, double delta)
     imax= floor( rmax/delta );
     rmax= (imax-1)*delta;
 //  bessel = vector<double> ( (lmax+1)*imax, 0 );
-    bessel.reserve( (lmax+1)*3*imax );
+    bessel.reserve( (lmax+1)*3*imax ); //bessels up to 3 times rmax
 //  cout << bessel.size() << endl;
     for( int i= 0; i < 3*imax; i++ ) {
         double array[lmax+1];
@@ -81,7 +81,8 @@ double speedy::get_bessel( int l, double r )
 {
     if( r > 3*rmax  ) {
         return gsl_sf_bessel_jl( l, r );
-        return 0;
+        cerr << "get_bessel r too large " << r << endl;
+        exit(-1);        
     }
     if( l > lmax ) {
         cerr << "[Speedy] l < lmax " << l << endl;

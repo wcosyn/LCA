@@ -1,5 +1,8 @@
 #include "norm_ob.h"
 #include "nucleusall.h"
+#include "nucleuspp.h"
+#include "nucleusnp.h"
+#include "nucleusnn.h"
 #include "recmosh.h"
 
 int testUnit(Nucleusall& nuc){
@@ -66,13 +69,162 @@ bool normsRun(){
     bool allpass = true;
     for (int i=0;i<12;i++){
         Nucleusall nuc("../data/mosh","../data/mosh",A[i],Z[i]);
+        NucleusPP  nucpp("../data/mosh","../data/mosh",A[i],Z[i]); 
+        NucleusNP  nucnp("../data/mosh","../data/mosh",A[i],Z[i]); 
+        NucleusNN  nucnn("../data/mosh","../data/mosh",A[i],Z[i]); 
+
+        
+        norm_ob nopp(&nucpp);
+        norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
+        nob.t=0;
+        double norm_mf  = nopp.sum_me_pairs( &nob );
+        double norm_corr= nopp.sum_me_corr( &nob );
+        std::cout << "pp all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        bool pass = ( fabs(norm_mf-double(Z[i]*(Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK pp(all)mf]  \n");
+        } else {
+            printf("[FAIL  pp(all)mf]\n");
+        }
+        nob.t=-1;
+        norm_mf  = nopp.sum_me_pairs( &nob );
+        norm_corr= nopp.sum_me_corr( &nob );
+        std::cout << "pp n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-0) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK pp(n)mf]  \n");
+        } else {
+            printf("[FAIL  pp(n)mf]\n");
+        }
+        nob.t=1;
+        norm_mf  = nopp.sum_me_pairs( &nob );
+        norm_corr= nopp.sum_me_corr( &nob );
+        std::cout << "pp p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-double(Z[i]*(Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK pp(p)mf]  \n");
+        } else {
+            printf("[FAIL  pp(p)mf]\n");
+        }
+
+        norm_ob nonn(&nucnn);
+        nob.t=0;
+        norm_mf  = nonn.sum_me_pairs( &nob );
+        norm_corr= nonn.sum_me_corr( &nob );
+        std::cout << "nn all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-double((A[i]-Z[i])*(A[i]-Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK nn(all)mf]  \n");
+        } else {
+            printf("[FAIL  nn(all)mf]\n");
+        }
+
+        nob.t=-1;
+        norm_mf  = nonn.sum_me_pairs( &nob );
+        norm_corr= nonn.sum_me_corr( &nob );
+        std::cout << "nn n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-double((A[i]-Z[i])*(A[i]-Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK nn(n)mf]  \n");
+        } else {
+            printf("[FAIL  nn(n)mf]\n");
+        }
+
+        nob.t=1;
+        norm_mf  = nonn.sum_me_pairs( &nob );
+        norm_corr= nonn.sum_me_corr( &nob );
+        std::cout << "nn p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-0.) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK nn(p)mf]  \n");
+        } else {
+            printf("[FAIL  nn(p)mf]\n");
+        }
+
+        norm_ob nonp(&nucnp);
+        nob.t=0;
+        norm_mf  = nonp.sum_me_pairs( &nob );
+        norm_corr= nonp.sum_me_corr( &nob );
+        std::cout << "np all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-double((Z[i])*(A[i]-Z[i]))*2/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK np(all)mf]  \n");
+        } else {
+            printf("[FAIL  np(all)mf]\n");
+        }
+
+        nob.t=-1;
+        norm_mf  = nonp.sum_me_pairs( &nob );
+        norm_corr= nonp.sum_me_corr( &nob );
+        std::cout << "np n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK np(n)mf]  \n");
+        } else {
+            printf("[FAIL  np(n)mf]\n");
+        }
+
+        nob.t=1;
+        norm_mf  = nonp.sum_me_pairs( &nob );
+        norm_corr= nonp.sum_me_corr( &nob );
+        std::cout << "np p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK np(p)mf]  \n");
+        } else {
+            printf("[FAIL  np(p)mf]\n");
+        }
+    
         norm_ob no(&nuc);
-        norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
-        double norm_mf  = no.sum_me_pairs( &nob );
-        double norm_corr= no.sum_me_corr( &nob );
+        nob.t=0;
+        norm_mf  = no.sum_me_pairs( &nob );
+        norm_corr= no.sum_me_corr( &nob );
         double norm_res = norm_mf+norm_corr;
+        std::cout << "all all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-1.) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK all(all)mf]  \n");
+        } else {
+            printf("[FAIL all(all)mf]\n");
+        }
+
+        nob.t=-1;
+        norm_mf  = no.sum_me_pairs( &nob );
+        norm_corr= no.sum_me_corr( &nob );
+        std::cout << "all n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-(double(A[i]-Z[i])/A[i])) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK all(n)mf]  \n");
+        } else {
+            printf("[FAIL all(n)mf]\n");
+        }
+
+        nob.t=1;
+        norm_mf  = no.sum_me_pairs( &nob );
+        norm_corr= no.sum_me_corr( &nob );
+        std::cout << "all p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+        pass = ( fabs(norm_mf-(double(Z[i])/A[i])) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        allpass = allpass && pass;
+        if (pass){
+            printf("[OK all(p)mf]  \n");
+        } else {
+            printf("[FAIL all(p)mf]\n");
+        }
+    
+    
         printf("[norm]  %3d  %3d  %5.3f    [diff] : %.2e ",A[i],Z[i],norm_res,norm_res-previousResults[i]);
-        bool pass = ( fabs(norm_res-previousResults[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        pass = ( fabs(norm_res-previousResults[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
         allpass = allpass && pass;
         if (pass){
             printf("[OK]  \n");
@@ -86,7 +238,7 @@ bool normsRun(){
     return allpass;
 }
 
-int main(){
+int main(int argc,char* argv[]){
 
     // Nucleusall nuc("../data/mosh","../data/mosh",40,18);
     // norm_ob no(&nuc);
@@ -107,15 +259,13 @@ int main(){
     // RecMosh *dd=RecMosh::createRecMosh(0,2,0,2,"../data/mosh","../data/mosh");
     // std::cout << dd->getCoefficient(0,1,0,3,2) << std::endl;
     
-    /*
-    int A=12;
-    int Z=6;
-    Nucleusall nuc("../../input/","../../input",A,Z);
-    printf("[Info]: A,N,Z  is %d,%d,%d\n",nuc.getA(),nuc.getN(),nuc.getZ());
-    int np = nuc.get_number_of_pairs(); // force makepairs() to be called
-    printf("[Info]: number of pairs: %d\n",np);
+
+    // Nucleusall nuc("../data/mosh","../data/mosh",atoi(argv[1]),atoi(argv[2]));
+    // printf("[Info]: A,N,Z  is %d,%d,%d\n",nuc.getA(),nuc.getN(),nuc.getZ());
+    // int np = nuc.get_number_of_pairs(); // force makepairs() to be called
+    // printf("[Info]: number of pairs: %d\n",np);
     
-    testCentral(nuc);
-    */
+    // testCentral(nuc);
+
     return 0;
 }

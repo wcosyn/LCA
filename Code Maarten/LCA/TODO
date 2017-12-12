@@ -88,6 +88,10 @@ Tripletcoef::get_links
 
 42.  make com integral computation dimensionless argument?  add function should be changed, integral too
 
+43. Wavefunctionp grid sizes should be max+1!!
+
+45. MapWavefunctionP checks for A and pstepset, if changed everything should be cleared etc.
+
 ++++CHECKS++++
 
 25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...
@@ -118,10 +122,13 @@ SIMILAR QUESTION/PROBLEM in the corr matrix elements of the obmd calculations!!!
 
 39. in obmd:corrpair methods left/right/both-> isospin projection t==0 case seems missing??
 
-41. parameter passing between density_ob3 and the integral classes!!!
+44. check Eq C.6 PhD Vanhalst by comparing to explicit calculation, I get k+1 arguments instead of k+3/2 plus an overall factor of 2/sqrt(\pi).  
+Also make the computation of these integrals more dimensionless
 
+45. Compare the calculations that iterate over pairs with the one over paircoefs.  Should yield identical results!
+
+46. segfaults in the beginning.... valgrind, profiling
 ++++COMMENTING+++++
-40. dimensions integrals in density_ob_integrand3
 
 
 
@@ -145,3 +152,7 @@ check print functions in nucleus, check if l451 the sumcheck for pairs is ever t
 xx. RESTRICTION on n too strict in norm functions??? Not diagonal with correlation function??  I think there is a mistake there.. -> fixed
 
 36. normalisations obmd::write at the end -> ok with master formula
+
+40. dimensions integrals in density_ob_integrand3 ->done!
+
+41. parameter passing between density_ob3 and the integral classes!!! -> looks ok

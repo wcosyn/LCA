@@ -449,7 +449,7 @@ void Nucleus::makepairs()
                     // Fermi test
                     //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl;
                     if( sum < 1e-4 || factor1*factor2 == 0 ) { delete pair;}  //This happens for a pair that comes from the same shell with only 1 nucleon in it for instance 
-                    else if( sum < 0.99 ) cerr << "CHECK " << __FILE__ << ":" << __LINE__ << endl;
+                    else if( sum < 0.99 ) cerr << "CHECK " << sum << " " << __FILE__ << ":" << __LINE__ << endl;
                     else {
                         #pragma omp critical(pairs_push_back)
                         {

@@ -34,7 +34,7 @@ double binomial( double n, int k);
  * @param n lower index Laguerre polynomial
  * @param l upper index generalized polynomial minus 1/2
  * @param k power in the expansion (0<=k<=n)
- * @return [fm^{-2i}] double coefficient of the generalized Laguerre polynomial
+ * @return [fm^{-2k}] double coefficient of the generalized Laguerre polynomial
  */
 double laguerre_coeff( double nu, int n, int l, int k);
 
