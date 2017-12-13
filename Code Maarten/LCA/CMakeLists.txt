@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.6.0 FATAL_ERROR)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 project(NuclearMomentumDistributions)
 
 set (NuclearMomentumDistributions_VERSION_MAJOR 1)
@@ -8,6 +11,17 @@ set (nmd_version "${NuclearMomentumDistributions_VERSION_MAJOR}.${NuclearMomentu
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 #set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 
+
+#set defaults
+if(NOT CMAKE_BUILD_TYPE)
+set(CMAKE_BUILD_TYPE Release)
+endif()
+
+if(NOT STATIC_BUILD)
+  set(STATIC_BUILD no)
+endif()
+
+
 MESSAGE(" -- [info] c++ ${CMAKE_CXX_COMPILER}")
 MESSAGE(" -- [info] c ${CMAKE_C_COMPILER}")
 MESSAGE(" -- [info] Type ${CMAKE_BUILD_TYPE}")
@@ -15,12 +29,32 @@ MESSAGE(" -- [info] Type ${CMAKE_BUILD_TYPE}")
 find_package(GSL REQUIRED)
 find_package(Doxygen)
 
+
+set(RELEASE_FLAGS -Wall -Wextra -Wunused)
+set(DEBUG_FLAGS ${RELEASE_FLAGS})
+set(PROFILE_FLAGS ${RELEASE_FLAGS})
+
+if (CMAKE_COMPILER_IS_GNUCXX)
+MESSAGE("--- Found GNU compiler collection")   
+  set(RELEASE_FLAGS ${RELEASE_FLAGS} -O3 -march=native -mtune=native -pipe -fopenmp)
+  set(DEBUG_FLAGS ${DEBUG_FLAGS} -g)
+  set(PROFILE_FLAGS ${PROFILE_FLAGS} -pg)
+endif (CMAKE_COMPILER_IS_GNUCXX)
+
+  
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused -std=c++11 -fopenmp")
-set(LIBS "${LIBS}${GSL_LIBRARIES}" nmd)
+set(LIBS "${LIBS}${GSL_LIBRARIES}")
 
-# make sure our executables will find dynimcal library:
-set( CMAKE_INSTALL_RPATH "${CMAKE_SOURCE_DIR}/lib")
+# make sure our executables will find dynamical library:
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+set(CMAKE_INSTALL_RPATH "${CMAKE_SOURCE_DIR}/lib")
+set(CMAKE_INSTALL_NAME_DIR "${CMAKE_SOURCE_DIR}/lib")
+set(CMAKE_BUILD_WITH_INSTALL_RPATH 1)
 
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) #to create compile_commands.json file used in VS code
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 
 include_directories("${CMAKE_SOURCE_DIR}/include")
