@@ -28,21 +28,26 @@ MESSAGE(" -- [info] Type ${CMAKE_BUILD_TYPE}")
 
 find_package(GSL REQUIRED)
 find_package(Doxygen)
-
+find_package(OpenMP REQUIRED)
 
 set(RELEASE_FLAGS -Wall -Wextra -Wunused)
 set(DEBUG_FLAGS ${RELEASE_FLAGS})
 set(PROFILE_FLAGS ${RELEASE_FLAGS})
 
 if (CMAKE_COMPILER_IS_GNUCXX)
-MESSAGE("--- Found GNU compiler collection")   
-  set(RELEASE_FLAGS ${RELEASE_FLAGS} -O3 -march=native -mtune=native -pipe -fopenmp)
-  set(DEBUG_FLAGS ${DEBUG_FLAGS} -g)
-  set(PROFILE_FLAGS ${PROFILE_FLAGS} -pg)
+MESSAGE("--- Found GNU compiler collection")
+  set(RELEASE_FLAGS ${RELEASE_FLAGS} -march=native -mtune=native -pipe -fopenmp)
+  # set(DEBUG_FLAGS ${DEBUG_FLAGS} -g )
+  set(PROFILE_FLAGS ${PROFILE_FLAGS} -g -O3)
 endif (CMAKE_COMPILER_IS_GNUCXX)
 
-  
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused -std=c++11 -fopenmp")
+# if(${CMAKE_BUILD_TYPE} MATCHES "Profile")
+#   MESSAGE ("----profiling")
+#   SET( CMAKE_EXE_LINKER_FLAGS  ${CMAKE_EXE_LINKER_FLAGS} -pg)
+# endif(${CMAKE_BUILD_TYPE} MATCHES "Profile")
+
+
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wunused -std=c++11 -fopenmp")
 set(LIBS "${LIBS}${GSL_LIBRARIES}")
 
 # make sure our executables will find dynamical library:

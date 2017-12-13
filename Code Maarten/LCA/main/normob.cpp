@@ -61,7 +61,7 @@ int testCentral(Nucleusall& nuc){
 /* check for the results agains
  * table in Journal of Physics G: Particles and Nuclei 42 (2015) 055104
  */
-bool normsRun(){
+bool normsRun(bool coef, bool pairs, int max){
     int A[12] = {2,4,9,12,16,27,40,48,56,108,197,208};
     int Z[12] = {1,2,4,6,8,13,20,20,26,47,79,82};
     // previousResults are the results calculated by Maarten with this code
@@ -80,7 +80,9 @@ bool normsRun(){
 
 
     bool allpass = true;
-    for (int i=0;i<12;i++){
+    for (int i=0;i<max;i++){
+        double norm_mf=0.,norm_corr=0.;
+        bool pass=0;
         Nucleusall nuc("../data/mosh","../data/mosh",A[i],Z[i]);
         NucleusPP  nucpp("../data/mosh","../data/mosh",A[i],Z[i]); 
         NucleusNP  nucnp("../data/mosh","../data/mosh",A[i],Z[i]); 
@@ -90,41 +92,44 @@ bool normsRun(){
         norm_ob nopp(&nucpp);
         norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
         nob.t=0;
-        double norm_mf  = nopp.sum_me_pairs( &nob );
-        double norm_corr= nopp.sum_me_corr_pairs( &nob );
-        std::cout << "pp all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        bool pass = ( fabs(norm_mf-double(Z[i]*(Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK pp(all)mf]  \n");
-        } else {
-            printf("[FAIL  pp(all)mf]\n");
+        if(pairs){
+            norm_mf  = nopp.sum_me_pairs( &nob );
+            norm_corr= nopp.sum_me_corr_pairs( &nob );
+            std::cout << "pp all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-double(Z[i]*(Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK pp(all)mf]  \n");
+            } else {
+                printf("[FAIL  pp(all)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
-        pass = ( fabs(norm_mf+norm_corr-prevpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
+        if(coef){
+            norm_mf  = nopp.sum_me_coefs( &nob );
+            norm_corr= nopp.sum_me_corr( &nob );
+            std::cout << "2pp all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-double(Z[i]*(Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK pp(all)mf]  \n");
+            } else {
+                printf("[FAIL  pp(all)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
-        norm_mf  = nopp.sum_me_coefs( &nob );
-        norm_corr= nopp.sum_me_corr( &nob );
-        std::cout << "2pp all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-double(Z[i]*(Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK pp(all)mf]  \n");
-        } else {
-            printf("[FAIL  pp(all)mf]\n");
-        }
-        pass = ( fabs(norm_mf+norm_corr-prevpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
-        }
-        
 
         // nob.t=-1;
         // norm_mf  = nopp.sum_me_pairs( &nob );
@@ -151,41 +156,44 @@ bool normsRun(){
 
         norm_ob nonn(&nucnn);
         nob.t=0;
-        norm_mf  = nonn.sum_me_pairs( &nob );
-        norm_corr= nonn.sum_me_corr_pairs( &nob );
-        std::cout << "nn all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-double((A[i]-Z[i])*(A[i]-Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK nn(all)mf]  \n");
-        } else {
-            printf("[FAIL  nn(all)mf]\n");
+        if(pairs){
+            norm_mf  = nonn.sum_me_pairs( &nob );
+            norm_corr= nonn.sum_me_corr_pairs( &nob );
+            std::cout << "nn all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-double((A[i]-Z[i])*(A[i]-Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK nn(all)mf]  \n");
+            } else {
+                printf("[FAIL  nn(all)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevnn[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
-        pass = ( fabs(norm_mf+norm_corr-prevnn[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
+        if(coef){
+            norm_mf  = nonn.sum_me_coefs( &nob );
+            norm_corr= nonn.sum_me_corr( &nob );
+            std::cout << "2nn all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-double((A[i]-Z[i])*(A[i]-Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK nn(all)mf]  \n");
+            } else {
+                printf("[FAIL  nn(all)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevnn[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
-        norm_mf  = nonn.sum_me_coefs( &nob );
-        norm_corr= nonn.sum_me_corr( &nob );
-        std::cout << "2nn all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-double((A[i]-Z[i])*(A[i]-Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK nn(all)mf]  \n");
-        } else {
-            printf("[FAIL  nn(all)mf]\n");
-        }
-        pass = ( fabs(norm_mf+norm_corr-prevnn[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
-        }
-
         // nob.t=-1;
         // norm_mf  = nonn.sum_me_pairs( &nob );
         // norm_corr= nonn.sum_me_corr_pairs( &nob );
@@ -212,214 +220,241 @@ bool normsRun(){
 
         norm_ob nonp(&nucnp);
         nob.t=0;
-        norm_mf  = nonp.sum_me_pairs( &nob );
-        norm_corr= nonp.sum_me_corr_pairs( &nob );
-        std::cout << "np all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-double((Z[i])*(A[i]-Z[i]))*2/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK np(all)mf]  \n");
-        } else {
-            printf("[FAIL  np(all)mf]\n");
+        if(pairs){
+            norm_mf  = nonp.sum_me_pairs( &nob );
+            norm_corr= nonp.sum_me_corr_pairs( &nob );
+            std::cout << "np all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-double((Z[i])*(A[i]-Z[i]))*2/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK np(all)mf]  \n");
+            } else {
+                printf("[FAIL  np(all)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevnp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
-        pass = ( fabs(norm_mf+norm_corr-prevnp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
-        }
-        norm_mf  = nonp.sum_me_coefs( &nob );
-        norm_corr= nonp.sum_me_corr( &nob );
-        std::cout << "2np all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-double((Z[i])*(A[i]-Z[i]))*2/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK np(all)mf]  \n");
-        } else {
-            printf("[FAIL  np(all)mf]\n");
-        }
-        pass = ( fabs(norm_mf+norm_corr-prevnp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
+        if(coef){
+            norm_mf  = nonp.sum_me_coefs( &nob );
+            norm_corr= nonp.sum_me_corr( &nob );
+            std::cout << "2np all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-double((Z[i])*(A[i]-Z[i]))*2/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK np(all)mf]  \n");
+            } else {
+                printf("[FAIL  np(all)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevnp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
 
         nob.t=-1;
-        norm_mf  = nonp.sum_me_pairs( &nob );
-        norm_corr= nonp.sum_me_corr_pairs( &nob );
-        std::cout << "np n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK np(n)mf]  \n");
-        } else {
-            printf("[FAIL  np(n)mf]\n");
+        if(pairs){
+            norm_mf  = nonp.sum_me_pairs( &nob );
+            norm_corr= nonp.sum_me_corr_pairs( &nob );
+            std::cout << "np n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK np(n)mf]  \n");
+            } else {
+                printf("[FAIL  np(n)mf]\n");
+            }
         }
-        norm_mf  = nonp.sum_me_coefs( &nob );
-        norm_corr= nonp.sum_me_corr( &nob );
-        std::cout << "2np n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK np(n)mf]  \n");
-        } else {
-            printf("[FAIL  np(n)mf]\n");
+        if(coef){
+            norm_mf  = nonp.sum_me_coefs( &nob );
+            norm_corr= nonp.sum_me_corr( &nob );
+            std::cout << "2np n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK np(n)mf]  \n");
+            } else {
+                printf("[FAIL  np(n)mf]\n");
+            }
         }
 
+        
         nob.t=1;
-        norm_mf  = nonp.sum_me_pairs( &nob );
-        norm_corr= nonp.sum_me_corr_pairs( &nob );
-        std::cout << "np p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK np(p)mf]  \n");
-        } else {
-            printf("[FAIL  np(p)mf]\n");
+        if(pairs){
+            norm_mf  = nonp.sum_me_pairs( &nob );
+            norm_corr= nonp.sum_me_corr_pairs( &nob );
+            std::cout << "np p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK np(p)mf]  \n");
+            } else {
+                printf("[FAIL  np(p)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevnpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
-        pass = ( fabs(norm_mf+norm_corr-prevnpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
+
+        if(coef){
+            norm_mf  = nonp.sum_me_coefs( &nob );
+            norm_corr= nonp.sum_me_corr( &nob );
+            std::cout << "2np p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK np(p)mf]  \n");
+            } else {
+                printf("[FAIL  np(p)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevnpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
-        norm_mf  = nonp.sum_me_coefs( &nob );
-        norm_corr= nonp.sum_me_corr( &nob );
-        std::cout << "2np p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK np(p)mf]  \n");
-        } else {
-            printf("[FAIL  np(p)mf]\n");
-        }
-        pass = ( fabs(norm_mf+norm_corr-prevnpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
-        }
-    
+
         norm_ob no(&nuc);
 
         nob.t=-1;
-        norm_mf  = no.sum_me_pairs( &nob );
-        norm_corr= no.sum_me_corr_pairs( &nob );
-        std::cout << "all n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-(double(A[i]-Z[i])/A[i])) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK all(n)mf]  \n");
-        } else {
-            printf("[FAIL all(n)mf]\n");
+        if(pairs){
+            norm_mf  = no.sum_me_pairs( &nob );
+            norm_corr= no.sum_me_corr_pairs( &nob );
+            std::cout << "all n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-(double(A[i]-Z[i])/A[i])) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK all(n)mf]  \n");
+            } else {
+                printf("[FAIL all(n)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevalln[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
-        pass = ( fabs(norm_mf+norm_corr-prevalln[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
-        }
-        norm_mf  = no.sum_me_coefs( &nob );
-        norm_corr= no.sum_me_corr( &nob );
-        std::cout << "2all n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-(double(A[i]-Z[i])/A[i])) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK all(n)mf]  \n");
-        } else {
-            printf("[FAIL all(n)mf]\n");
-        }
-        pass = ( fabs(norm_mf+norm_corr-prevalln[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
+
+        if(coef){
+            norm_mf  = no.sum_me_coefs( &nob );
+            norm_corr= no.sum_me_corr( &nob );
+            std::cout << "2all n " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-(double(A[i]-Z[i])/A[i])) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK all(n)mf]  \n");
+            } else {
+                printf("[FAIL all(n)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevalln[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
 
         nob.t=1;
-        norm_mf  = no.sum_me_pairs( &nob );
-        norm_corr= no.sum_me_corr_pairs( &nob );
-        std::cout << "all p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-(double(Z[i])/A[i])) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK all(p)mf]  \n");
-        } else {
-            printf("[FAIL all(p)mf]\n");
-        }
-        pass = ( fabs(norm_mf+norm_corr-prevallp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
-        }
-        norm_mf  = no.sum_me_coefs( &nob );
-        norm_corr= no.sum_me_corr( &nob );
-        std::cout << "2all p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-(double(Z[i])/A[i])) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK all(p)mf]  \n");
-        } else {
-            printf("[FAIL all(p)mf]\n");
-        }
-        pass = ( fabs(norm_mf+norm_corr-prevallp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
-        }
-    
-    
-        nob.t=0;
-        norm_mf  = no.sum_me_pairs( &nob );
-        norm_corr= no.sum_me_corr_pairs( &nob );
-        double norm_res = norm_mf+norm_corr;
-        std::cout << "all all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-1.) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK all(all)mf]  \n");
-        } else {
-            printf("[FAIL all(all)mf]\n");
-        }
-        printf("[norm]  %3d  %3d  %5.3f    [diff] : %.2e ",A[i],Z[i],norm_res,norm_res-previousResults[i]);
-        pass = ( fabs(norm_res-previousResults[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
-        }
-        norm_mf  = no.sum_me_coefs( &nob );
-        norm_corr= no.sum_me_corr( &nob );
-        norm_res = norm_mf+norm_corr;
-        std::cout << "2all all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
-        pass = ( fabs(norm_mf-1.) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK all(all)mf]  \n");
-        } else {
-            printf("[FAIL all(all)mf]\n");
-        }
-        printf("[norm]  %3d  %3d  %5.3f    [diff] : %.2e ",A[i],Z[i],norm_res,norm_res-previousResults[i]);
-        pass = ( fabs(norm_res-previousResults[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
-        allpass = allpass && pass;
-        if (pass){
-            printf("[OK]  \n");
-        } else {
-            printf("[FAIL]\n");
+        if(pairs){
+            norm_mf  = no.sum_me_pairs( &nob );
+            norm_corr= no.sum_me_corr_pairs( &nob );
+            std::cout << "all p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-(double(Z[i])/A[i])) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK all(p)mf]  \n");
+            } else {
+                printf("[FAIL all(p)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevallp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
         }
 
+        if(coef){
+            norm_mf  = no.sum_me_coefs( &nob );
+            norm_corr= no.sum_me_corr( &nob );
+            std::cout << "2all p " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-(double(Z[i])/A[i])) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK all(p)mf]  \n");
+            } else {
+                printf("[FAIL all(p)mf]\n");
+            }
+            pass = ( fabs(norm_mf+norm_corr-prevallp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
+        }    
+    
+        nob.t=0;
+        if(pairs){
+            norm_mf  = no.sum_me_pairs( &nob );
+            norm_corr= no.sum_me_corr_pairs( &nob );
+            double norm_res = norm_mf+norm_corr;
+            std::cout << "all all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-1.) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK all(all)mf]  \n");
+            } else {
+                printf("[FAIL all(all)mf]\n");
+            }
+            printf("[norm]  %3d  %3d  %5.3f    [diff] : %.2e ",A[i],Z[i],norm_res,norm_res-previousResults[i]);
+            pass = ( fabs(norm_res-previousResults[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
+        }
+
+        if(coef){
+            norm_mf  = no.sum_me_coefs( &nob );
+            norm_corr= no.sum_me_corr( &nob );
+            double norm_res = norm_mf+norm_corr;
+            std::cout << "2all all " << norm_mf << " " << norm_corr << " " << norm_mf+norm_corr <<std::endl;
+            pass = ( fabs(norm_mf-1.) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK all(all)mf]  \n");
+            } else {
+                printf("[FAIL all(all)mf]\n");
+            }
+            printf("[norm]  %3d  %3d  %5.3f    [diff] : %.2e ",A[i],Z[i],norm_res,norm_res-previousResults[i]);
+            pass = ( fabs(norm_res-previousResults[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+            allpass = allpass && pass;
+            if (pass){
+                printf("[OK]  \n");
+            } else {
+                printf("[FAIL]\n");
+            }
+        }
 
     }
     if (allpass){
@@ -439,7 +474,7 @@ int main(int argc,char* argv[]){
     // double norm_res = norm_mf+norm_corr;
     // std::cout << norm_mf << " " << norm_corr << std::endl;
 
-    bool succes = normsRun();
+    bool succes = normsRun(bool(atoi(argv[1])),bool(atoi(argv[2])),atoi(argv[3]));
     printf("[norm] normsRun() ");
     if (succes){
         printf("[OK]  \n");
