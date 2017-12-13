@@ -42,7 +42,7 @@ Now it is very inefficient as basically the program has to start from scratch ea
 
 23. replace those functions iterating over map elements by C++11 functionality (basically look up all the it++ loops)
 Worst offenders are probably
-Paircoef::get_links
+Paircoef::get_links -> done [delete old one, still used in some test programs]
 Nucleus::getPaircoef
 Nucleus::getTripletcoef
 Tripletcoef::get_links
@@ -93,7 +93,6 @@ Tripletcoef::get_links
 
 45. MapWavefunctionP checks for A and pstepset, if changed everything should be cleared etc.
 
-48. add static builds, debug and profiling flag options in cmake
 
 ++++CHECKS++++
 
@@ -125,12 +124,13 @@ SIMILAR QUESTION/PROBLEM in the corr matrix elements of the obmd calculations!!!
 
 39. in obmd:corrpair methods left/right/both-> isospin projection t==0 case seems missing??
 
-44. check Eq C.6 PhD Vanhalst by comparing to explicit calculation, I get k+1 arguments instead of k+3/2 plus an overall factor of 2/sqrt(\pi).  
+44. check Eq C.6 PhD Vanhalst by comparing to explicit calculation, -> I get k+1 arguments instead of k+3/2 plus an overall factor of 2/sqrt(\pi).  
 Also make the computation of these integrals more dimensionless
 
-45. Compare the calculations that iterate over pairs with the one over paircoefs.  Should yield identical results!
+45. Compare the calculations that iterate over pairs with the one over paircoefs.  Should yield identical results! -> ok for norms
 
-47. segfaults in the beginning.... valgrind, profiling
+47. random segfaults in the beginning.... valgrind, profiling
+
 ++++COMMENTING+++++
 
 
@@ -159,3 +159,5 @@ xx. RESTRICTION on n too strict in norm functions??? Not diagonal with correlati
 40. dimensions integrals in density_ob_integrand3 ->done!
 
 41. parameter passing between density_ob3 and the integral classes!!! -> looks ok
+
+48. add static builds, debug and profiling flag options in cmake -> done 13/12/17

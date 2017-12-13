@@ -161,8 +161,16 @@ double operator_virtual::sum_me_corr_coefs( void* params )
 
         int max_links= pc1->get_number_of_links();
         Paircoef* pc2;
-        for( int j= 0; j< max_links; j++ ) {
-            pc1->get_links( j, &pc2, &val );
+        for( std::map< Paircoef*, double >::iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
+            /*
+             * pc2 is set to the "j"-th link in the link map of pc1 (linear search every time, VERY INEFFICIENT) ~ O(link^2)
+             * value here is overwritten with the "link strength" $C_{\alpha_1,\alpha_2}^{A} C_{\alpha_1,\alpha_2}^{B}$.
+             */
+            pc2=it->first;
+            val=it->second;
+
+        // for( int j= 0; j< max_links; j++ ) {
+        //     pc1->get_links( j, &pc2, &val );
 
             // Sometimes is left pc1, pc2 ) == right( pc2, pc1 )
             double me=

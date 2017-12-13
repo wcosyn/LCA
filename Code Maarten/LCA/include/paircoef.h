@@ -159,6 +159,9 @@ public:
      * @param val [] second element of the map at that index (total linkstrength between the base object and the coupled state from the first index), dimensionless
      */
     void get_links( int i, Paircoef** pc, double* val );
+
+    std::map< Paircoef*, double >& getLinksmap()
+    { return *links;}
 };
 
 #endif

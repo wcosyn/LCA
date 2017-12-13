@@ -177,6 +177,14 @@ public:
     void printPairsPerShell();
 
     /**
+     * @brief returns the map with all the paircoefs
+     * 
+     * @return const std::map<std::string, Paircoef*>& reference to the map 
+     */
+    std::map<std::string, Paircoef*>& getPaircoefs()
+    { return *paircoefs;}
+
+    /**
      * \brief Gives isospin of first particletype.
      * -1= neutron, 1= proton
      *  e.g. 1 for NucleusPP
