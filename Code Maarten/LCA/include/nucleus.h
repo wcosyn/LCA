@@ -181,7 +181,7 @@ public:
      * 
      * @return const std::map<std::string, Paircoef*>& reference to the map 
      */
-    std::map<std::string, Paircoef*>& getPaircoefs()
+    const std::map<std::string, Paircoef*>& getPaircoefs() const
     { return *paircoefs;}
 
     /**

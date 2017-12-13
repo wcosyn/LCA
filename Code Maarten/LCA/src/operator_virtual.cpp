@@ -147,9 +147,17 @@ double operator_virtual::sum_me_corr_coefs( void* params )
      * Sum over all paircoefs in the nucleus,
      * and sum over the links between the paircoefs
      */
+    //this construction is because we cannot use iterator together with omp, so we make array with all the pointers to the values and loop over that
+    Paircoef* loop_array[nucleus->getPaircoefs().size()];
+    int index=0;
+    for (const auto& value : nucleus->getPaircoefs()){
+        loop_array[index]=value.second;
+        index++;
+    }
+
     #pragma omp parallel for schedule( dynamic, 5 ) reduction(+:sum) //num_threads(1)
-    for( int i= 0; i < max; i++ ) {
-        Paircoef* pc1= nucleus->getPaircoef(i);
+    for( int i= 0; i < nucleus->getPaircoefs().size() ; i++ ) {
+        Paircoef* pc1= loop_array[i];
         double val= pc1->get_value();
 
         // is left= right?
@@ -161,7 +169,7 @@ double operator_virtual::sum_me_corr_coefs( void* params )
 
         int max_links= pc1->get_number_of_links();
         Paircoef* pc2;
-        for( std::map< Paircoef*, double >::iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
+        for( std::map< Paircoef*, double >::const_iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
             /*
              * pc2 is set to the "j"-th link in the link map of pc1 (linear search every time, VERY INEFFICIENT) ~ O(link^2)
              * value here is overwritten with the "link strength" $C_{\alpha_1,\alpha_2}^{A} C_{\alpha_1,\alpha_2}^{B}$.

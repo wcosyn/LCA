@@ -40,12 +40,6 @@ Now it is very inefficient as basically the program has to start from scratch ea
 
 18. can the links be stored somehow for any nucleus? Is it worth the effort/reusability?
 
-23. replace those functions iterating over map elements by C++11 functionality (basically look up all the it++ loops)
-Worst offenders are probably
-Paircoef::get_links -> done [delete old one, still used in some test programs]
-Nucleus::getPaircoef -> difficult because conflicting with the omp shit
-Nucleus::getTripletcoef
-Tripletcoef::get_links
 
 
 +++MODIFICATIONS PROGRAMMING STYLE
@@ -102,10 +96,6 @@ everything looks symmetric (correlation functions in the two l arguments...)
 
 26. what is the comment statement in norm_ob.h:  "Note that this does not correspond with an isospin projection of a particle or particle pair!" (isospin selection)
 
-27. PRIORITY check isospin selection in the norm_ob class!!! (is the naive assumption ok, replace with alternative used in the obmd calculations)
--> this has consequences for how matrix elements of the correlations operator etc are handled (factors 4T-3) etc. How is this handled in the obmd claculations...
--> Looks ok, everything still remains diagonal in T and MT -> (NOOO, see LCA manual p31 or p11, not diagonal in T!!!!)
--> Asymmetry is there in mom distribution results, but norms seem symmetric (np(p), np(n))
 
 28. Nucleus::makepaircoefs: I think normi is always equal to normj (same pair) 
     so we could just replace this by the normf of the pair and reduce the confusing norm business!
@@ -114,7 +104,6 @@ everything looks symmetric (correlation functions in the two l arguments...)
 SIMILAR QUESTION/PROBLEM in the corr matrix elements of the obmd calculations!!!
 -> crosscheck with the order in all the integrand_cc->add calls!!!
 
-34. units momentum distribution and intermediate results there 
 
 35. density_ob3::write -> get rid of all the news (and deletes)
 
@@ -160,4 +149,21 @@ xx. RESTRICTION on n too strict in norm functions??? Not diagonal with correlati
 
 41. parameter passing between density_ob3 and the integral classes!!! -> looks ok
 
+34. units momentum distribution and intermediate results there -> annotated 10/12/17
+
+
 48. add static builds, debug and profiling flag options in cmake -> done 13/12/17
+
+23. replace those functions iterating over map elements by C++11 functionality (basically look up all the it++ loops)
+Worst offenders are probably
+Paircoef::get_links -> done [old one still used in some test programs, otherwise can be deleted] 13/12/17
+Nucleus::getPaircoef -> done by makeing arrays of pointers workaround [old one still used in some test programs, otherwise can be deleted] 13/12/17
+Nucleus::getTripletcoef
+Tripletcoef::get_links
+
+27. PRIORITY check isospin selection in the norm_ob class!!! (is the naive assumption ok, replace with alternative used in the obmd calculations)
+-> this has consequences for how matrix elements of the correlations operator etc are handled (factors 4T-3) etc. How is this handled in the obmd claculations...
+-> Looks ok, everything still remains diagonal in T and MT -> (NOOO, see LCA manual p31 or p11, not diagonal in T!!!!)
+-> Asymmetry is there in mom distribution results, but norms seem symmetric (np(p), np(n))
+
+-> explicitly changed in normob and everything is still ok. 13/12/17

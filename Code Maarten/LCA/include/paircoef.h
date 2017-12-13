@@ -160,7 +160,7 @@ public:
      */
     void get_links( int i, Paircoef** pc, double* val );
 
-    std::map< Paircoef*, double >& getLinksmap()
+    const std::map< Paircoef*, double >& getLinksmap() const
     { return *links;}
 };
 

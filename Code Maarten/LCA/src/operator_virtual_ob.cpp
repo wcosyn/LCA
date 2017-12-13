@@ -59,9 +59,17 @@ double operator_virtual_ob::sum_me_corr( void* params )
      * Sum over the paircoefs in the nucleus,
      * and the links between the paircoefs
      */
+    //this construction is because we cannot use iterator together with omp, so we make array with all the pointers to the values and loop over that
+    Paircoef* loop_array[nucleus->getPaircoefs().size()];
+    int index=0;
+    for (const auto& value : nucleus->getPaircoefs()){
+        loop_array[index]=value.second;
+        index++;
+    }
+
     #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:sum) //num_threads(1)
-    for( int i= 0; i < max; i++ ) {
-        Paircoef* pc1= nucleus->getPaircoef(i);
+    for( int i= 0; i < nucleus->getPaircoefs().size() ; i++ ) {
+        Paircoef* pc1= loop_array[i];
         double val= pc1->get_value(); //normalisation of partially filled shells taken into account in the linkstrength val
 
         // is left== right?
@@ -70,9 +78,8 @@ double operator_virtual_ob::sum_me_corr( void* params )
             + get_me_corr_both( pc1, pc1, params, val )
             + get_me_corr_right( pc1, pc1, params, val );
 
-        int max_links= pc1->get_number_of_links();
         Paircoef* pc2;
-        for( std::map< Paircoef*, double >::iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
+        for( std::map< Paircoef*, double >::const_iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
             //pc1->get_links( j, &pc2, &val ); //normalisation of partially filled shells taken into account in the linkstrength val
             pc2=it->first;
             val=it->second;
@@ -137,17 +144,25 @@ double operator_virtual_ob::sum_me_coefs( void* params )
      * Sum over the paircoefs in the nucleus,
      * and the links between the paircoefs
      */
+    //this construction is because we cannot use iterator together with omp, so we make array with all the pointers to the values and loop over that
+    Paircoef* loop_array[nucleus->getPaircoefs().size()];
+    int index=0;
+    for (const auto& value : nucleus->getPaircoefs()){
+        loop_array[index]=value.second;
+        index++;
+    }
+
     #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:sum) //num_threads(1)
-    for( int i= 0; i < max; i++ ) {
-        Paircoef* pc1= nucleus->getPaircoef(i);
+    for( int i= 0; i < nucleus->getPaircoefs().size() ; i++ ) {
+        Paircoef* pc1= loop_array[i];
 
         double val=  pc1->get_value();
         double sum_i= get_me( pc1, pc1, params, val ); //normalisation of partially filled shells taken into account in the linkstrength val
 
-        int max_links= pc1->get_number_of_links();
+        // int max_links= pc1->get_number_of_links();
 //    cout << max_links << endl;
         Paircoef* pc2;
-        for( std::map< Paircoef*, double >::iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
+        for( std::map< Paircoef*, double >::const_iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
             //pc1->get_links( j, &pc2, &val ); //normalisation of partially filled shells taken into account in the linkstrength val
             /*
              * pc2 is set to the "j"-th link in the link map of pc1 (linear search every time, VERY INEFFICIENT) ~ O(link^2)

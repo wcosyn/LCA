@@ -52,7 +52,7 @@ double norm_ob::get_me( Pair* pair, void* params )
             if( coefi->getS()  != coefj->getS()  ) continue;
             if( coefi->getj()  != coefj->getj()  ) continue;
             if( coefi->getmj() != coefj->getmj() ) continue;
-            if( coefi->getT()  != coefj->getT()  ) continue;
+            // if( coefi->getT()  != coefj->getT()  ) continue;
             if( coefi->getMT() != coefj->getMT() ) continue;
             if( coefi->getN()  != coefj->getN()  ) continue;
             if( coefi->getL()  != coefj->getL()  ) continue;
@@ -86,15 +86,22 @@ double norm_ob::get_me( Pair* pair, void* params )
             if( lBs > -1 && l != lBs ) continue;
 
 
-            if( t != 0 ) { // select on isospin!, t= -1 (neutron) or +1 (proton)
-                int MT= coefi->getMT();
-                if( t == -1*MT ) // wrong isospin! t \neq MT
+            int TA= coefi->getT();
+            int TB= coefj->getT();
+            int MT= coefi->getMT();
+            double preifactor=1.;
+            if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
                     continue;
-                if( MT == 0 ) // MT == 0, pn-pair, we want either proton or neutron.
-                    vali*= 0.5; // factor 1/2 because we only want half of pair.
+                if( MT == 0 ) {
+                    preifactor*= 0.5;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+                }
             }
+            if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+                continue;
 
-            sum+=  vali* valj;
+            sum+=  vali* valj*preifactor;
         }
     }
     return sum* 2./A; // normalisation 2/A, factor two because sum is 1 < 2 instead of 1 \neq 2
@@ -133,7 +140,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
             if( coefi->getS()  != coefj->getS()  ) continue;
             if( coefi->getj()  != coefj->getj()  ) continue;
             if( coefi->getmj() != coefj->getmj() ) continue;
-            if( coefi->getT()  != coefj->getT()  ) continue;
+            // if( coefi->getT()  != coefj->getT()  ) continue;
             if( coefi->getMT() != coefj->getMT() ) continue;
             if( coefi->getN()  != coefj->getN()  ) continue;
             if( coefi->getL()  != coefj->getL()  ) continue;
@@ -151,16 +158,24 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
             double valj= coefj->getCoef();
 
 
-            if( t != 0 ) {
-                if( t == -1*MT )
+            int TA= coefi->getT();
+            int TB= coefj->getT();
+            double preifactor=1.;
+            if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
                     continue;
-                if( MT == 0 )
-                    vali*= 0.5;
+                if( MT == 0 ) {
+                    preifactor*= 0.5;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+                }
             }
+            if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+                continue;
+
             //if we got up to here we know they are diagonal now
             int S= coefi->getS();
             int j= coefi->getj();
-            int T= coefi->getT();
+            int T= coefj->getT();
             double cen, ten, iso;
             //see app D.2 PhD Vanhalst for details
             if( bcentral && get_central_me( l1, l2, S, j, T, &cen ) ) {
@@ -186,7 +201,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                         }
                     }
                 }
-                sum+=  norm* 0.5* cen_sum* cen* vali* valj;
+                sum+=  norm* 0.5* cen_sum* cen* vali* valj*preifactor;
             }
             if( tensor && get_tensor_me( l1, l2, S, j, T, &ten ) ) {
                 double ten_sum= 0;
@@ -203,7 +218,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                         }
                     }
                 }
-                sum+=  norm* 0.5* ten_sum* ten* vali* valj;
+                sum+=  norm* 0.5* ten_sum* ten* vali* valj*preifactor;
             }
             if( spinisospin && get_spinisospin_me( l1, l2, S, j, T, &iso ) ) {
                 double iso_sum= 0;
@@ -220,7 +235,7 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                         }
                     }
                 }
-                sum+=  norm* 0.5* iso_sum* iso* vali* valj;
+                sum+=  norm* 0.5* iso_sum* iso* vali* valj*preifactor;
             }
         }
     }
@@ -264,7 +279,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
             if( coefi->getS()  != coefj->getS()  ) continue;
             if( coefi->getj()  != coefj->getj()  ) continue;
             if( coefi->getmj() != coefj->getmj() ) continue;
-            if( coefi->getT()  != coefj->getT()  ) continue;
+            // if( coefi->getT()  != coefj->getT()  ) continue;
             if( coefi->getMT() != coefj->getMT() ) continue;
             if( coefi->getN()  != coefj->getN()  ) continue;
             if( coefi->getL()  != coefj->getL()  ) continue;
@@ -282,12 +297,19 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
             double valj= coefj->getCoef();
 
 
-            if( t != 0 ) {
-                if( t == -1*MT )
+            int TA= coefi->getT();
+            int TB= coefj->getT();
+            double preifactor=1.;
+            if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
                     continue;
-                if( MT == 0 )
-                    vali*= 0.5;
+                if( MT == 0 ) {
+                    preifactor*= 0.5;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+                }
             }
+            if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+                continue;
 
             int S= coefi->getS();
             int j= coefi->getj();
@@ -309,7 +331,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                         }
                     }
                 }
-                sum+=  norm* 0.5* cen_sum* cen* vali* valj;
+                sum+=  norm* 0.5* cen_sum* cen* vali* valj*preifactor;
             }
             if( tensor && get_tensor_me( l2, l1, S, j, T, &ten ) ) {
                 double ten_sum= 0;
@@ -326,7 +348,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                         }
                     }
                 }
-                sum+=  norm* 0.5* ten_sum* ten* vali* valj;
+                sum+=  norm* 0.5* ten_sum* ten* vali* valj*preifactor;
             }
             if( spinisospin && get_spinisospin_me( l2, l1, S, j, T, &iso ) ) {
                 double iso_sum= 0;
@@ -343,7 +365,7 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
                         }
                     }
                 }
-                sum+=  norm* 0.5* iso_sum* iso* vali* valj;
+                sum+=  norm* 0.5* iso_sum* iso* vali* valj*preifactor;
             }
         }
     }
@@ -375,7 +397,7 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
             if( coefi->getS() != coefj->getS() ) continue;
             if( coefi->getj() != coefj->getj() ) continue;
             if( coefi->getmj() != coefj->getmj() ) continue;
-            if( coefi->getT() != coefj->getT() ) continue;
+            // if( coefi->getT() != coefj->getT() ) continue;
             if( coefi->getMT() != coefj->getMT() ) continue;
             if( coefi->getN() != coefj->getN() ) continue;
             if( coefi->getL() != coefj->getL() ) continue;
@@ -392,15 +414,21 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
             double vali= coefi->getCoef();
             double valj= coefj->getCoef();
 
-            if( t != 0 ) {
-                if( t == -1*MT )
+            int TA= coefi->getT();
+            int TB= coefj->getT();
+            double preifactor=1.;
+            if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
                     continue;
-                if( MT == 0 )
-                    vali*= 0.5;
+                if( MT == 0 ) {
+                    preifactor*= 0.5;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+                }
             }
+            if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+                continue;
             int S= coefi->getS();
             int j= coefi->getj();
-            int T= coefi->getT();
 
             //see app D.2 PhD Vanhalst for details/formulas of the remainder
             double expc= get_central_exp()/nu;
@@ -412,12 +440,12 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
             for( int k= j-1; k<= j+1; k++ ) {
                 if( k < 0 ) continue;
                 double mec1, mec2, met1, met2, mes1, mes2;
-                get_central_me( k, l1, S, j, T, &mec1 );
-                get_central_me( k, l2, S, j, T, &mec2 );
-                get_tensor_me( k, l1, S, j, T, &met1 );
-                get_tensor_me( k, l2, S, j, T, &met2 );
-                get_spinisospin_me( k, l1, S, j, T, &mes1 );
-                get_spinisospin_me( k, l2, S, j, T, &mes2 );
+                get_central_me( k, l1, S, j, TA, &mec1 );
+                get_central_me( k, l2, S, j, TB, &mec2 );
+                get_tensor_me( k, l1, S, j, TA, &met1 );
+                get_tensor_me( k, l2, S, j, TB, &met2 );
+                get_spinisospin_me( k, l1, S, j, TA, &mes1 );
+                get_spinisospin_me( k, l2, S, j, TB, &mes2 );
 
                 for( int i= 0; i < n1+1; i++ ) {
                     double anli=  laguerre_coeff( n1, l1, i );
@@ -481,7 +509,7 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
                     }
                 }
             }
-            sum*= norm* vali* valj* 0.5;
+            sum*= norm* vali* valj* 0.5*preifactor;
             result+= sum;
         }
     }
@@ -501,7 +529,7 @@ double norm_ob::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double val )
     if( pc1->getS() != pc2->getS() ) return 0;
     if( pc1->getj() != pc2->getj() ) return 0;
     if( pc1->getmj() != pc2->getmj() ) return 0;
-    if( pc1->getT() != pc2->getT() ) return 0;
+    // if( pc1->getT() != pc2->getT() ) return 0;
     if( pc1->getMT() != pc2->getMT() ) return 0;
     if( pc1->getN() != pc2->getN() ) return 0;
     if( pc1->getL() != pc2->getL() ) return 0;
@@ -515,15 +543,23 @@ double norm_ob::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double val )
     if( lAs > -1 && l != lAs ) return 0;
     if( lBs > -1 && l != lBs ) return 0;
 
-    if( t != 0 ) {
-        int MT= pc1->getMT();
-        if( t == -1*MT )
+    int TA= pc1->getT();
+    int TB= pc2->getT();
+    int MT= pc1->getMT();
+    double preifactor=1.;
+    if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+        if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
             return 0;
-        if( MT == 0 )
-            val*= 0.5;
+        if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+            preifactor*= 0.5;
+            if( TA != TB ) preifactor *= t;
+        }
     }
+    // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+    if( t == 0 && TA != TB )
+        return 0;
 
-    return val* 2./A;
+    return val* 2./A*preifactor;
 
 }
 
@@ -550,7 +586,7 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
     if( pc1->getS()  != pc2->getS()  ) return 0;
     if( pc1->getj()  != pc2->getj()  ) return 0;
     if( pc1->getmj() != pc2->getmj() ) return 0;
-    if( pc1->getT()  != pc2->getT()  ) return 0;
+    // if( pc1->getT()  != pc2->getT()  ) return 0;
     if( pc1->getMT() != pc2->getMT() ) return 0;
     if( pc1->getN()  != pc2->getN()  ) return 0;
     if( pc1->getL()  != pc2->getL()  ) return 0;
@@ -565,16 +601,24 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
     if( lBs > -1 && l2 != lBs ) return 0;
     int MT= pc1->getMT();
 
-    if( t != 0 ) {
-        if( t == -1*MT )
+   int TA= pc1->getT();
+   int TB= pc2->getT();
+    double preifactor=1.;   
+   if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+        if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
             return 0;
-        if( MT == 0 )
-            val*= 0.5;
+        if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+            preifactor*= 0.5;
+            if( TA != TB ) preifactor *= t;
+        }
     }
+    // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+    if( t == 0 && TA != TB )
+        return 0;
 
     int S= pc1->getS();
     int j= pc1->getj();
-    int T= pc1->getT();
+    int T= pc2->getT();
     double cen, ten, iso;
     if( bcentral && get_central_me( l1, l2, S, j, T, &cen ) ) {
         double cen_sum= 0;
@@ -632,7 +676,7 @@ double norm_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, d
         }
         sum+=  norm* 0.5* iso_sum* iso* val;
     }
-    return sum* 2./A;
+    return sum* 2./A*preifactor;
 }
 
 double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, double val )
@@ -660,7 +704,7 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
     if( pc1->getS() != pc2->getS() ) return 0;
     if( pc1->getj() != pc2->getj() ) return 0;
     if( pc1->getmj() != pc2->getmj() ) return 0;
-    if( pc1->getT() != pc2->getT() ) return 0;
+    // if( pc1->getT() != pc2->getT() ) return 0;
     if( pc1->getMT() != pc2->getMT() ) return 0;
     if( pc1->getN() != pc2->getN() ) return 0;
     if( pc1->getL() != pc2->getL() ) return 0;
@@ -675,12 +719,20 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
     if( lBs > -1 && l2 != lBs ) return 0;
     int MT= pc1->getMT();
 
-    if( t != 0 ) {
-        if( t == -1*MT )
+    int TA= pc1->getT();
+    int TB= pc2->getT();
+        double preifactor=1.;   
+if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+        if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
             return 0;
-        if( MT == 0 )
-            val*= 0.5;
+        if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+            preifactor*= 0.5;
+            if( TA != TB ) preifactor *= t;
+        }
     }
+    // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+    if( t == 0 && TA != TB )
+        return 0;
 
     int S= pc1->getS();
     int j= pc1->getj();
@@ -740,7 +792,7 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
         }
         sum+=  norm* 0.5* iso_sum* iso* val;
     }
-    return sum* 2./A* factor_right;
+    return sum* 2./A* factor_right*preifactor;
 
 }
 
@@ -760,7 +812,7 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
     if( pc1->getS() != pc2->getS() ) return 0;
     if( pc1->getj() != pc2->getj() ) return 0;
     if( pc1->getmj() != pc2->getmj() ) return 0;
-    if( pc1->getT() != pc2->getT() ) return 0;
+    // if( pc1->getT() != pc2->getT() ) return 0;
     if( pc1->getMT() != pc2->getMT() ) return 0;
     if( pc1->getN() != pc2->getN() ) return 0;
     if( pc1->getL() != pc2->getL() ) return 0;
@@ -775,15 +827,23 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
     if( lBs > -1 && l2 != lBs ) return 0;
     int MT= pc1->getMT();
 
-    if( t != 0 ) {
-        if( t == -1*MT )
+    int TA= pc1->getT();
+    int TB= pc2->getT();
+    double preifactor=1.;   
+    if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+        if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
             return 0;
-        if( MT == 0 )
-            val*= 0.5;
+        if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+            preifactor*= 0.5;
+            if( TA != TB ) preifactor *= t;
+        }
     }
+    // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+    if( t == 0 && TA != TB )
+        return 0;
+
     int S= pc1->getS();
     int j= pc1->getj();
-    int T= pc1->getT();
     double expc= get_central_exp()/nu;
     double expt= get_tensor_exp()/nu;
     double exps= get_spinisospin_exp()/nu;
@@ -793,12 +853,12 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
     for( int k= j-1; k<= j+1; k++ ) {
         if( k < 0 ) continue;
         double mec1, mec2, met1, met2, mes1, mes2;
-        get_central_me( k, l1, S, j, T, &mec1 );
-        get_central_me( k, l2, S, j, T, &mec2 );
-        get_tensor_me( k, l1, S, j, T, &met1 );
-        get_tensor_me( k, l2, S, j, T, &met2 );
-        get_spinisospin_me( k, l1, S, j, T, &mes1 );
-        get_spinisospin_me( k, l2, S, j, T, &mes2 );
+        get_central_me( k, l1, S, j, TA, &mec1 );
+        get_central_me( k, l2, S, j, TB, &mec2 );
+        get_tensor_me( k, l1, S, j, TA, &met1 );
+        get_tensor_me( k, l2, S, j, TB, &met2 );
+        get_spinisospin_me( k, l1, S, j, TA, &mes1 );
+        get_spinisospin_me( k, l2, S, j, TB, &mes2 );
 
         for( int i= 0; i < n1+1; i++ ) {
             double anli=  laguerre_coeff( n1, l1, i );
@@ -864,6 +924,6 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
     }
     sum*= norm* val* 0.5;
     result+= sum;
-    return result*2./A;
+    return result*2./A*preifactor;
 
 }
