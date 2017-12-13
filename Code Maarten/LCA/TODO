@@ -43,7 +43,7 @@ Now it is very inefficient as basically the program has to start from scratch ea
 23. replace those functions iterating over map elements by C++11 functionality (basically look up all the it++ loops)
 Worst offenders are probably
 Paircoef::get_links -> done [delete old one, still used in some test programs]
-Nucleus::getPaircoef
+Nucleus::getPaircoef -> difficult because conflicting with the omp shit
 Nucleus::getTripletcoef
 Tripletcoef::get_links
 
