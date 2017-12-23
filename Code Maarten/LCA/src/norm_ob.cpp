@@ -34,31 +34,27 @@ double norm_ob::get_me( Pair* pair, void* params )
 
     double sum= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
-        Newcoef* coefi;
-        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-        pair->getCoeff( ci, &coefi, &normi );
+        Newcoef coefi=pair->getCoeff(ci);
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-            Newcoef* coefj;
-            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-            pair->getCoeff( cj, &coefj, &normj );
+            Newcoef coefj=pair->getCoeff(cj);
             // The correlation operator keeps S j m_j unchanged
 
-            double vali = coefi->getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
-            double valj = coefj->getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
+            double vali = coefi.getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj = coefj.getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
             
             // the following block is delta in
             // n l S j m_j N L M_L T M_T, which characterizes a
             // rcm state A = | n l S j m_j N L M_L T M_T >
-            if( coefi->getS()  != coefj->getS()  ) continue;
-            if( coefi->getj()  != coefj->getj()  ) continue;
-            if( coefi->getmj() != coefj->getmj() ) continue;
-            // if( coefi->getT()  != coefj->getT()  ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
-            if( coefi->getN()  != coefj->getN()  ) continue;
-            if( coefi->getL()  != coefj->getL()  ) continue;
-            if( coefi->getML() != coefj->getML() ) continue;
-            if( coefi->getn()  != coefj->getn()  ) continue;
-            if( coefi->getl()  != coefj->getl()  ) continue;
+            if( coefi.getS()  != coefj.getS()  ) continue;
+            if( coefi.getj()  != coefj.getj()  ) continue;
+            if( coefi.getmj() != coefj.getmj() ) continue;
+            // if( coefi.getT()  != coefj.getT()  ) continue;
+            if( coefi.getMT() != coefj.getMT() ) continue;
+            if( coefi.getN()  != coefj.getN()  ) continue;
+            if( coefi.getL()  != coefj.getL()  ) continue;
+            if( coefi.getML() != coefj.getML() ) continue;
+            if( coefi.getn()  != coefj.getn()  ) continue;
+            if( coefi.getl()  != coefj.getl()  ) continue;
             
             if( fabs(vali - valj) > 1e-12){ //< testing camille
                 //-- camille testing: because of "kron. delta" above this should not never be true
@@ -78,17 +74,17 @@ double norm_ob::get_me( Pair* pair, void* params )
             // nBs == -1 || n == nBs
             // lAs == -1 || l == lAs
             // lBs == -1 || l == lBs
-            int l= coefi->getl();
-            int n= coefi->getn();
+            int l= coefi.getl();
+            int n= coefi.getn();
             if( nAs > -1 && n != nAs ) continue;
             if( nBs > -1 && n != nBs ) continue;
             if( lAs > -1 && l != lAs ) continue;
             if( lBs > -1 && l != lBs ) continue;
 
 
-            int TA= coefi->getT();
-            int TB= coefj->getT();
-            int MT= coefi->getMT();
+            int TA= coefi.getT();
+            int TB= coefj.getT();
+            int MT= coefi.getMT();
             double preifactor=1.;
             if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
                 if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
@@ -126,40 +122,36 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
 
     double sum= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
-        Newcoef* coefi;
-        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-        pair->getCoeff( ci, &coefi, &normi );
+        Newcoef coefi=pair->getCoeff(ci);
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-            Newcoef* coefj;
-            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-            pair->getCoeff( cj, &coefj, &normj );
+            Newcoef coefj=pair->getCoeff(cj);
             // The correlation operator keeps S j m_j T M_T N L M_L unchanged
             // any correlation function can give overlap between different n
             // tensor can give overlap between different l
 
-            if( coefi->getS()  != coefj->getS()  ) continue;
-            if( coefi->getj()  != coefj->getj()  ) continue;
-            if( coefi->getmj() != coefj->getmj() ) continue;
-            // if( coefi->getT()  != coefj->getT()  ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
-            if( coefi->getN()  != coefj->getN()  ) continue;
-            if( coefi->getL()  != coefj->getL()  ) continue;
-            if( coefi->getML() != coefj->getML() ) continue;
-            int l1= coefi->getl();
-            int l2= coefj->getl();
-            int n1= coefi->getn();
-            int n2= coefj->getn();
+            if( coefi.getS()  != coefj.getS()  ) continue;
+            if( coefi.getj()  != coefj.getj()  ) continue;
+            if( coefi.getmj() != coefj.getmj() ) continue;
+            // if( coefi.getT()  != coefj.getT()  ) continue;
+            if( coefi.getMT() != coefj.getMT() ) continue;
+            if( coefi.getN()  != coefj.getN()  ) continue;
+            if( coefi.getL()  != coefj.getL()  ) continue;
+            if( coefi.getML() != coefj.getML() ) continue;
+            int l1= coefi.getl();
+            int l2= coefj.getl();
+            int n1= coefi.getn();
+            int n2= coefj.getn();
             if( nAs > -1 && n1 != nAs ) continue;
             if( nBs > -1 && n2 != nBs ) continue;
             if( lAs > -1 && l1 != lAs ) continue;
             if( lBs > -1 && l2 != lBs ) continue;
-            int MT= coefi->getMT();
-            double vali= coefi->getCoef();
-            double valj= coefj->getCoef();
+            int MT= coefi.getMT();
+            double vali= coefi.getCoef();
+            double valj= coefj.getCoef();
 
 
-            int TA= coefi->getT();
-            int TB= coefj->getT();
+            int TA= coefi.getT();
+            int TB= coefj.getT();
             double preifactor=1.;
             if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
                 if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
@@ -173,9 +165,9 @@ double norm_ob::get_me_corr_right( Pair* pair, void* params )
                 continue;
 
             //if we got up to here we know they are diagonal now
-            int S= coefi->getS();
-            int j= coefi->getj();
-            int T= coefj->getT();
+            int S= coefi.getS();
+            int j= coefi.getj();
+            int T= coefj.getT();
             double cen, ten, iso;
             //see app D.2 PhD Vanhalst for details
             if( bcentral && get_central_me( l1, l2, S, j, T, &cen ) ) {
@@ -265,40 +257,36 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
     double sum= 0;
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
-        Newcoef* coefi;
-        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-        pair->getCoeff( ci, &coefi, &normi );
+        Newcoef coefi=pair->getCoeff(ci);
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-            Newcoef* coefj;
-            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-            pair->getCoeff( cj, &coefj, &normj );
+            Newcoef coefj=pair->getCoeff(cj);
             // The correlation operator keeps S j m_j T M_T N L M_L unchanged
             // any correlation function can give overlap between different n
             // tensor can give overlap between different l
 
-            if( coefi->getS()  != coefj->getS()  ) continue;
-            if( coefi->getj()  != coefj->getj()  ) continue;
-            if( coefi->getmj() != coefj->getmj() ) continue;
-            // if( coefi->getT()  != coefj->getT()  ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
-            if( coefi->getN()  != coefj->getN()  ) continue;
-            if( coefi->getL()  != coefj->getL()  ) continue;
-            if( coefi->getML() != coefj->getML() ) continue;
-            int l1= coefi->getl();
-            int l2= coefj->getl();
-            int n1= coefi->getn();
-            int n2= coefj->getn();
+            if( coefi.getS()  != coefj.getS()  ) continue;
+            if( coefi.getj()  != coefj.getj()  ) continue;
+            if( coefi.getmj() != coefj.getmj() ) continue;
+            // if( coefi.getT()  != coefj.getT()  ) continue;
+            if( coefi.getMT() != coefj.getMT() ) continue;
+            if( coefi.getN()  != coefj.getN()  ) continue;
+            if( coefi.getL()  != coefj.getL()  ) continue;
+            if( coefi.getML() != coefj.getML() ) continue;
+            int l1= coefi.getl();
+            int l2= coefj.getl();
+            int n1= coefi.getn();
+            int n2= coefj.getn();
             if( nAs > -1 && n1 != nAs ) continue;
             if( nBs > -1 && n2 != nBs ) continue;
             if( lAs > -1 && l1 != lAs ) continue;
             if( lBs > -1 && l2 != lBs ) continue;
-            int MT= coefi->getMT();
-            double vali= coefi->getCoef();
-            double valj= coefj->getCoef();
+            int MT= coefi.getMT();
+            double vali= coefi.getCoef();
+            double valj= coefj.getCoef();
 
 
-            int TA= coefi->getT();
-            int TB= coefj->getT();
+            int TA= coefi.getT();
+            int TB= coefj.getT();
             double preifactor=1.;
             if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
                 if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
@@ -311,9 +299,9 @@ double norm_ob::get_me_corr_left( Pair* pair, void* params )
             if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
                 continue;
 
-            int S= coefi->getS();
-            int j= coefi->getj();
-            int T= coefi->getT();
+            int S= coefi.getS();
+            int j= coefi.getj();
+            int T= coefi.getT();
             double cen, ten, iso;
             //see app D.2 PhD Vanhalst for details
             if( bcentral && get_central_me( l2, l1, S, j, T, &cen ) ) { // note: l2,l1,... here, l1,l2 in get_me_corr_right
@@ -383,39 +371,35 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
 
     double result= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
-        Newcoef* coefi;
-        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-        pair->getCoeff( ci, &coefi, &normi );
+        Newcoef coefi=pair->getCoeff(ci);
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-            Newcoef* coefj;
-            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-            pair->getCoeff( cj, &coefj, &normj );
+            Newcoef coefj=pair->getCoeff(cj);
             // The correlation operator keeps S j m_j T M_T N L M_L unchanged
             // any correlation function can give overlap between different n
             // tensor can give overlap between different l
 
-            if( coefi->getS() != coefj->getS() ) continue;
-            if( coefi->getj() != coefj->getj() ) continue;
-            if( coefi->getmj() != coefj->getmj() ) continue;
-            // if( coefi->getT() != coefj->getT() ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
-            if( coefi->getN() != coefj->getN() ) continue;
-            if( coefi->getL() != coefj->getL() ) continue;
-            if( coefi->getML() != coefj->getML() ) continue;
-            int MT= coefi->getMT();
-            int l1= coefi->getl();
-            int l2= coefj->getl();
-            int n1= coefi->getn();
-            int n2= coefj->getn();
+            if( coefi.getS() != coefj.getS() ) continue;
+            if( coefi.getj() != coefj.getj() ) continue;
+            if( coefi.getmj() != coefj.getmj() ) continue;
+            // if( coefi.getT() != coefj.getT() ) continue;
+            if( coefi.getMT() != coefj.getMT() ) continue;
+            if( coefi.getN() != coefj.getN() ) continue;
+            if( coefi.getL() != coefj.getL() ) continue;
+            if( coefi.getML() != coefj.getML() ) continue;
+            int MT= coefi.getMT();
+            int l1= coefi.getl();
+            int l2= coefj.getl();
+            int n1= coefi.getn();
+            int n2= coefj.getn();
             if( nAs > -1 && n1 != nAs ) continue;
             if( nBs > -1 && n2 != nBs ) continue;
             if( lAs > -1 && l1 != lAs ) continue;
             if( lBs > -1 && l2 != lBs ) continue;
-            double vali= coefi->getCoef();
-            double valj= coefj->getCoef();
+            double vali= coefi.getCoef();
+            double valj= coefj.getCoef();
 
-            int TA= coefi->getT();
-            int TB= coefj->getT();
+            int TA= coefi.getT();
+            int TB= coefj.getT();
             double preifactor=1.;
             if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
                 if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
@@ -427,8 +411,8 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
             }
             if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
                 continue;
-            int S= coefi->getS();
-            int j= coefi->getj();
+            int S= coefi.getS();
+            int j= coefi.getj();
 
             //see app D.2 PhD Vanhalst for details/formulas of the remainder
             double expc= get_central_exp()/nu;

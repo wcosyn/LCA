@@ -35,7 +35,8 @@ public:
      * @param two_mj2 HO 2*m_j quantum number of second nucleon
      * @param two_t2 2*m_t isospin HO n quantum number of second nucleon  [-1 n, +1 p]
      */
-    Pair( RecMosh* mosh, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2 );
+    Pair( RecMosh* mosh, const int n1, const int l1, const int two_j1, const int two_mj1, 
+            const int two_t1, const int n2, const int l2, const int two_j2, const int two_mj2, const int two_t2 );
     ~Pair();
     /*
      * Gives normalised number of pairs with rel orbital momentum l
@@ -51,7 +52,7 @@ public:
      * @param L HO center of mass OAM quantum number (-1 for summation over all)
      * @return double normalized number of pairs with relative orbital momentum quantum number l, relative n, total spin S, cm OAM L
      */
-    double getRelPair( int n, int l, int S, int L );
+    double getRelPair( const int n, const int l, const int S, const int L );
     /**
      * @brief returns normalized number of pairs with relative orbital momentum quantum number l, relative n, total spin S.
      * Normalisation to norm of the pair (<1 if at least one of the nucleons originates from partially filled shell).
@@ -61,7 +62,7 @@ public:
      * @param S total spin quantum number of two nucleons (0 or 1) (-1 for summation over all)
      * @return double normalized number of pairs with relative orbital momentum quantum number l, relative n, total spin S
      */
-    double getRelPair( int n, int l, int S );
+    double getRelPair( const int n, const int l, const int S );
     /**
      * @brief returns normalized number of pairs with relative orbital momentum quantum number l, relative n.
      * Normalisation to norm of the pair (<1 if at least one of the nucleons originates from partially filled shell).
@@ -70,7 +71,7 @@ public:
      * @param l HO relative OAM quantum number (-1 for summation over all)
      * @return double double normalized number of pairs with relative orbital momentum quantum number l, relative n
      */
-    double getRelPair( int n, int l );
+    double getRelPair( const int n, const int l );
     /**
      * @brief returns normalized number of pairs with relative orbital momentum quantum number l.
      * Normalisation to norm of the pair (<1 if at least one of the nucleons originates from partially filled shell).
@@ -78,7 +79,7 @@ public:
      * @param l HO relative OAM quantum number (-1 for summation over all)
      * @return double double normalized number of pairs with relative orbital momentum quantum number l, relative n 
      */
-    double getRelPair( int l );
+    double getRelPair( const int l );
     /**
      * @brief Gives transformation coefficient \f$\langle n(lS)jm_j,NLM_L,TM_T|n_1l_1j_1m_{j1}t_1,n_2l_2j_2m_{j2}t_2\rangle_{\mathrm{nas}}\f$ between uncoupled
      * two nucleon state and coupled one (to relative and c.o.m. coordinates)  
@@ -96,13 +97,14 @@ public:
      * @param ML HO center of mass OAM spin projection in the coupled state
      * @return [] double return the transformation coefficient, dimensionless
      */
-    double getcoef( int n, int l, int S, int j, int mj, int T, int MT, int N, int L, int ML );
+    double getcoef( const int n, const int l, const int S, const int j, const int mj, const int T, const int MT, 
+                            const int N, const int L, const int ML )const ;
     /**
      * @brief returns \f$\sum_A |C_{\alpha_1 \alpha_2}^A|^2\f$, sum over all coefficients.  Should be close to 1 if the expansion has converged
      * 
      * @return [] double returns \f$\sum_A |C_{\alpha_1 \alpha_2}^A|^2\f$, dimensionless
      */
-    double getSum( ) {
+    double getSum( ){
         if( coeflistmade == false) makecoeflist();
         return sum;
     };
@@ -120,57 +122,57 @@ public:
      * 
      * @return double norm (<1 for partially filled shell), probability of having the pair in the shell compared to closed shell
      */
-    double getfnorm() {
+    double getfnorm() const {
         return norm;
     };
 
     /*! returns HO quantum number n of first nucleon */
-    int getn1() {
+    int getn1()const  {
         return n1;
     }; 
 
     /*! returns HO quantum number n of second nucleon */
-    int getn2() {
+    int getn2() const {
         return n2;
     };
 
     /*! returns HO OAM quantum number l of first nucleon */
-    int getl1() {
+    int getl1() const {
         return l1;
     };
 
     /*! returns HO OAM quantum number l of second nucleon */
-    int getl2() {
+    int getl2() const {
         return l2;
     };
 
     /*! returns HO spin quantum number 2*j of first nucleon */
-    int gettwo_j1() {
+    int gettwo_j1() const {
         return two_j1;
     }; 
 
     /*! returns HO spin quantum number 2*j of second nucleon */
-    int gettwo_j2() {
+    int gettwo_j2() const {
         return two_j2;
     }; 
 
     /*! returns HO spin projection quantum number 2*m_j of first nucleon */
-    int gettwo_mj1() {
+    int gettwo_mj1() const {
         return two_mj1;
     }; 
 
     /*! returns HO spin projection quantum number 2*m_j of second nucleon */
-    int gettwo_mj2() {
+    int gettwo_mj2() const {
         return two_mj2;
     }; 
 
     /*! returns  isospin projection quantum number 2*m_t of first nucleon */
-    int gettwo_t1() {
+    int gettwo_t1()const  {
         return two_t1;
     };
 
     /*! returns  isospin projection quantum number 2*m_t of second nucleon */
-    int gettwo_t2() {
+    int gettwo_t2() const {
         return two_t2;
     }; 
 
@@ -190,7 +192,7 @@ public:
      *  WARNING this is the SQRT of the value that was passed on by Pair::setfnorm, because we are dealing with a state vector, not a probability
      * @see setfnorm
      */
-    void getCoeff( u_int i, Newcoef** coef, double* n );
+    void getCoeff( const u_int i, Newcoef** coef, double* n );
     /**
      * @brief Get the i-th coefficent of the pair
      * and the norm of the pair.
@@ -200,10 +202,10 @@ public:
      * @param i index of coefficient in expansion to coupled states of the NN pair
      * @param[out] coef pointer to coef object at index i
      */
-    void getCoeff( u_int i, Newcoef** coef);
+    const Newcoef& getCoeff( const u_int i);
 
 private:
-    std::vector < Newcoef* > coeflist; /*!< list that keeps track of the expansion of the pair in coupled (rel + cm) states */
+    std::vector < Newcoef> coeflist; /*!< list that keeps track of the expansion of the pair in coupled (rel + cm) states */
     int n1, l1, two_j1, two_mj1, two_t1; /*!< HO quantum numbers first nucleon in pair */
     int n2, l2, two_j2, two_mj2, two_t2; /*!< HO quantum numbers second nucleon in pair */
     RecMosh* mosh; /*!< pointer to a RecMosh object that contains Moshinsky brackets for the n,l of the two nucleons in the pair */

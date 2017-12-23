@@ -53,7 +53,7 @@ public:
      * 
      * @param coef pointer to a Newcoef object that contains the information on the coupled state
      */
-    Paircoef( Newcoef* coef );
+    Paircoef( const Newcoef* coef );
     /**
      * @brief Destructor
      * 

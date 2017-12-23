@@ -7,8 +7,8 @@ using std::vector;
 //double Pair::hbarc = 0.197327; // MeV*fm
 
 Pair::Pair( RecMosh* mosh,
-            int n1, int l1, int two_j1, int two_mj1, int two_t1,
-            int n2, int l2, int two_j2, int two_mj2, int two_t2 )
+            const int n1, const int l1, const int two_j1, const int two_mj1, const int two_t1,
+            const int n2, const int l2, const int two_j2, const int two_mj2, const int two_t2 )
     : n1( n1), l1( l1), two_j1( two_j1), two_mj1( two_mj1), two_t1( two_t1),
       n2( n2), l2( l2), two_j2( two_j2), two_mj2( two_mj2), two_t2( two_t2),
       mosh( mosh), coeflistmade( false),number_of_coeff(0)
@@ -21,8 +21,8 @@ Pair::Pair( RecMosh* mosh,
 
 Pair::~Pair()
 {
-    for( u_int i = 0; i < coeflist.size(); i++ )
-        delete coeflist[i];
+    // for( u_int i = 0; i < coeflist.size(); i++ )
+    //     delete coeflist[i];
     mosh->remove();
 }
 
@@ -32,55 +32,56 @@ int Pair::get_number_of_coeff()
     return number_of_coeff;
 }
 
-void Pair::getCoeff( u_int i, Newcoef** coef)
+const Newcoef& Pair::getCoeff( const u_int i)
 {
-    double norm;
-    getCoeff( i, coef, &norm );
+    //double norm;
+    if( coeflistmade == false) makecoeflist();
+    return coeflist.at(i);
 
 }
 
-void Pair::getCoeff( u_int i, Newcoef** coef, double* n )
+void Pair::getCoeff( const u_int i, Newcoef** coef, double* n )
 {
     if( coeflistmade == false) makecoeflist();
-    *coef= coeflist.at(i); //< std::vector::at(size_type) performs boundary checks...
+    **coef= coeflist.at(i); //< std::vector::at(size_type) performs boundary checks...
     *n= sqrt(norm);
 }
 
-double Pair::getRelPair( int n, int l, int S )
+double Pair::getRelPair(const  int n, const int l, const int S )
 {
     if( coeflistmade == false) makecoeflist();
     double result = 0;
     for( u_int i = 0; i < coeflist.size(); i++ ) {
-        if( coeflist[i]->getl() != l && l >  -1 ) continue;
-        if( coeflist[i]->getn() != n && n > -1 ) continue;
-        if( coeflist[i]->getS() != S && S > -1 ) continue;
-        double value = coeflist[i]->getCoef();
+        if( coeflist[i].getl() != l && l >  -1 ) continue;
+        if( coeflist[i].getn() != n && n > -1 ) continue;
+        if( coeflist[i].getS() != S && S > -1 ) continue;
+        double value = coeflist[i].getCoef();
         result += value*value;
     }
     return norm* result;
 }
 
-double Pair::getRelPair( int n, int l, int S, int L )
+double Pair::getRelPair( const int n, const int l, const int S, const int L )
 {
     if( coeflistmade == false) makecoeflist();
     double result = 0;
     for( u_int i = 0; i < coeflist.size(); i++ ) {
-        if( coeflist[i]->getl() != l && l >  -1 ) continue;
-        if( coeflist[i]->getn() != n && n > -1 ) continue;
-        if( coeflist[i]->getS() != S && S > -1 ) continue;
-        if( coeflist[i]->getL() != L && L > -1 ) continue;
-        double value = coeflist[i]->getCoef();
+        if( coeflist[i].getl() != l && l >  -1 ) continue;
+        if( coeflist[i].getn() != n && n > -1 ) continue;
+        if( coeflist[i].getS() != S && S > -1 ) continue;
+        if( coeflist[i].getL() != L && L > -1 ) continue;
+        double value = coeflist[i].getCoef();
         result += value*value;
     }
     return norm* result;
 }
 
-double Pair::getRelPair( int n, int l )
+double Pair::getRelPair( const int n, const int l )
 {
     return getRelPair( n, l, -1 );
 }
 
-double Pair::getRelPair( int l )
+double Pair::getRelPair( const int l )
 {
     return getRelPair( -1, l, -1 );
 }
@@ -88,7 +89,8 @@ double Pair::getRelPair( int l )
 
 
 
-double Pair::getcoef( int n, int l, int S, int j, int mj, int T, int MT, int N, int L, int ML )
+double Pair::getcoef( const int n, const int l, const int S, const int j, const int mj,
+                            const  int T, const int MT, const int N, const int L, const int ML ) const
 {
     Newcoef coef(n1,l1,two_j1,two_mj1,two_t1,n2,l2,two_j2,two_mj2,two_t2,mosh,N,l,ML,n,l,S,j,mj,T,MT);
     return coef.getCoef();
@@ -147,17 +149,15 @@ void Pair::makecoeflist()
                                                             */
 
                                         // Create coef
-                                        Newcoef* coeff = new Newcoef( n1, l1, two_j1, two_mj1, two_t1, n2, l2, two_j2, two_mj2, two_t2,
+                                        Newcoef coeff( n1, l1, two_j1, two_mj1, two_t1, n2, l2, two_j2, two_mj2, two_t2,
                                                                      mosh, N, L, ML, n, l, S, j, mj, T, MT);
 
-                                        double val = coeff->getCoef();
+                                        double val = coeff.getCoef();
                                         if( val*val > 1e-6 ) {
                                             coeflist.push_back( coeff );
                                             sum += val*val;
 
-                                        } else {
-                                            delete coeff;
-                                        }
+                                        } 
 
                                     }
                                 }

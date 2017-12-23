@@ -23,13 +23,13 @@ public:
      * @param two_j HO 2*j quantum number of shell
      */
     Shell( int n, int l, int two_j ): n(n), l(l), two_j(two_j) { };
-    int getN() {
+    int getN() const{
         return n;
     };
-    int getL() {
+    int getL() const{
         return l;
     };
-    int getTwo_j() {
+    int getTwo_j() const{
         return two_j;
     };
     /**
@@ -39,7 +39,7 @@ public:
      * @return true they are equal 
      * @return false they are not equal
      */
-    bool equal( Shell& shell ) {
+    bool equal( Shell& shell ) const{
         if( n != shell.getN() || l != shell.getL() || two_j != shell.getTwo_j() ) return false;
         else return true;
     };
@@ -50,7 +50,7 @@ public:
     */
     static std::vector< Shell* > shellsN; /*!< Array with pointers to proton shells up to Z=126 */
     static std::vector< Shell* > shellsP; /*!< Array with pointers to neutron shells up to N=126 */
-    
+    static std::vector< Shell > shells; /*!< Array that holds all the shells for nuclei, for up to 126 nucleons */
     /**
      * @brief Initializes the shellsN and shellsP arrays when needed
      * 

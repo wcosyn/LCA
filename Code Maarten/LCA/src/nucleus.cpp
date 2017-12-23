@@ -489,36 +489,28 @@ void Nucleus::makepaircoefs()
         Pair* pair= getPair(i);
         int maxc= pair->get_number_of_coeff();
         for( int ci= 0; ci < maxc; ci++ ) { // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
-            Newcoef* coefi;
-            double normi;
-            pair->getCoeff( ci, &coefi, &normi ); // coefi now points to Pair::coeflist[i], normi is the norm (only \neq 1 for open shells, set by Pair::setfnorm())
-
-            double vali= normi*coefi->getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
-            string keyi= coefi->getkey();
+            double vali= pair->getCoeff(ci).getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
+            string keyi= pair->getCoeff(ci).getkey();
             map < string, Paircoef* >::iterator iti = paircoefs->find( keyi ); // is the key already in our map?
             if( iti == paircoefs->end() ) { // no
-                (*paircoefs)[keyi]= new Paircoef( coefi );
+                (*paircoefs)[keyi]= new Paircoef( &(pair->getCoeff(ci)) );
                 iti = paircoefs->find(keyi);
             }
             Paircoef* pci= iti->second;
 
             // Add value of the matrix element of a paircoef with itself, e.g. \f$ | C_{\alpha_1,\alpha_2}^{A} |^{2} \f$
-            pci->add(vali*vali); //add to diagonal link strength
+            pci->add(vali*vali*pair->getfnorm()); //add to diagonal link strength
 
             // Add all the links of a Paircoef with the other Paircoefs generated
             // from this Pair.
             // A link is only added to one of the two Paircoefs involved.
             // Hence the sum from ci+1.
             for( int cj= ci+1; cj < maxc; cj++ ) { //we loop over the coupling coefficients of the pair under consideration (upper triangle)
-                Newcoef* coefj;
-                double normj;
-                pair->getCoeff( cj, &coefj, &normj );
-
-                double valj= normj*coefj->getCoef();
-                string keyj= coefj->getkey();
+                double valj= pair->getCoeff(cj).getCoef();
+                string keyj= pair->getCoeff(cj).getkey();
                 map < string, Paircoef* >::iterator itj = paircoefs->find( keyj );
                 if( itj == paircoefs->end() ) {
-                    (*paircoefs)[keyj]= new Paircoef( coefj );
+                    (*paircoefs)[keyj]= new Paircoef( &(pair->getCoeff(cj)) );
                     itj = paircoefs->find(keyj);
                 }
                 Paircoef* pcj= itj->second;
@@ -526,7 +518,7 @@ void Nucleus::makepaircoefs()
                 //add to off-diagonal link strength for coupled states, with the endpoint of the link also included
                 //we do not store 2 times the value (bidirectional) since matrix elements are in general not symmetric for coupled states
                 //see operator_virtual_ob::sum_me_corr function for use
-                pci->add( pcj, vali*valj ); 
+                pci->add( pcj, vali*valj*pair->getfnorm() ); 
             }
         }
     }

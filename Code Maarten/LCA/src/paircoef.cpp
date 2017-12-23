@@ -15,7 +15,7 @@ Paircoef::Paircoef( int n, int l, int S, int j, int mj, int N, int L, int ML, in
     number_of_links= 0;
 }
 
-Paircoef::Paircoef( Newcoef* coef )
+Paircoef::Paircoef( const Newcoef* coef )
 {
     n= coef->getn();
     l= coef->getl();

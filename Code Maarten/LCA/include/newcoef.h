@@ -71,67 +71,67 @@ public:
     /**
      * @brief returns calculated coefficient in the decomposition, dimensionless.  See Eq 2.14 PhD Vanhalst
      */
-    double getCoef() {
+    double getCoef() const{
         return coeff;
     }
     /**
      * @brief returns HO center of mass qn N
      */
-    int getN()       {
+    int getN() const      {
         return N;
     }
     /**
      * @brief returns coupled state HO center of mass OAM qn
      */
-    int getL()       {
+    int getL()       const {
         return L;
     }
     /**
      * @brief returns coupled state HO center of mass OAM 3-component
      */
-    int getML()      {
+    int getML()      const {
         return ML;
     }
     /**
      * @brief returns coupled state HO relative qn n
      */
-    int getn()       {
+    int getn()       const {
         return n;
     }
     /**
      * @brief returns coupled state HO relative OAM qn 
      */
-    int getl()       {
+    int getl()       const {
         return l;
     }
     /**
      * @brief returns coupled state total spin
      */
-    int getS()       {
+    int getS()     const   {
         return S;
     }
     /**
      * @brief returns coupled state j=l+S qn
      */
-    int getj()       {
+    int getj()      const  {
         return j;
     }
     /**
      * @brief returns coupled state j=l+S qn 3-component
      */
-    int getmj()      {
+    int getmj()      const {
         return mj;
     }
     /**
      * @brief returns coupled state total isospin
      */
-    int getT()       {
+    int getT()     const   {
         return T;
     }
     /**
      * @brief returns coupled state total isospin 3-component
      */
-    int getMT()      {
+    int getMT()    const   {
         return MT;
     }
 //  int gettwo_t1() { return two_t1;};
@@ -142,7 +142,7 @@ public:
      * 
      * @return std::string string with the key in it
      */
-    std::string getkey() {
+    const std::string & getkey() const {
         return key;
     }
 

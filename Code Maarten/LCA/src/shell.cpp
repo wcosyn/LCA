@@ -7,6 +7,37 @@ int Shell::shellsinit = 0;
 vector< Shell* > Shell::shellsN= vector< Shell* >(22);
 vector< Shell* > Shell::shellsP= vector< Shell* >(22);
 
+vector< Shell > Shell::shells={
+    Shell(0,0,1), //2
+
+    Shell(0,1,3), //6
+    Shell(0,1,1), //8
+    
+    Shell(0,2,5), //14
+    Shell(1,0,1), //16
+    Shell(0,2,3), //20
+
+    Shell(0,3,7), //28
+
+    Shell(1,1,3), //32
+    Shell(0,3,5), //38
+    Shell(1,1,1), //40
+    Shell(0,4,9), //50
+
+    Shell(0,4,7), //58
+    Shell(1,2,5), //64
+    Shell(1,2,3), //68
+    Shell(2,0,1), //70
+    Shell(0,5,11), //82
+
+    Shell(0,5,9), //92
+    Shell(1,3,7), //100
+    Shell(1,3,5), //106
+    Shell(2,1,3), //110
+    Shell(2,1,1), //112
+    Shell(0,6,13), //126
+ };
+
 void Shell::initializeShells()
 {
     if(!shellsinit ) {
