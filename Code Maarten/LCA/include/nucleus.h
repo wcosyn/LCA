@@ -182,7 +182,7 @@ public:
      * @return const std::map<std::string, Paircoef*>& reference to the map 
      */
     const std::map<std::string, Paircoef*>& getPaircoefs() const
-    { return *paircoefs;}
+    { return paircoefs;}
 
     /**
      * \brief Gives isospin of first particletype.
@@ -231,7 +231,7 @@ private:
      */
     void get_shell_max( const int occupied, int& shell_max, int& max );
 
-    std::vector< Pair*>* pairs;               ///< container for all Pairs
+    std::vector< Pair*> pairs;               ///< container for all Pairs
     std::vector< Triplet*>* triplets;         ///< container for all Triplets
     /**
      * @brief container for all Paircoefs. 
@@ -243,7 +243,7 @@ private:
      * @see Newcoef::Newcoef for key definition
      * 
      */
-    std::map< std::string, Paircoef*>* paircoefs; 
+    std::map< std::string, Paircoef*> paircoefs; 
     std::map< std::string, Tripletcoef*>* tripletcoefs; ///< container for all Tripletscoefs
 
     std::string inputdir;         ///< Path to input directory

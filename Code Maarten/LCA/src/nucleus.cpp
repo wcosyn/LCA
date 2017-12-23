@@ -30,11 +30,11 @@ Nucleus::Nucleus( const std::string & iinputdir, const std::string & iresultdir,
     /*
      * Create empty containers
      */
-    pairs= new vector<Pair*>();
-    pairs->reserve(256);
+    pairs= vector<Pair*>();
+    pairs.reserve(256);
     triplets= new vector<Triplet*>();
     triplets->reserve(256);
-    paircoefs= new map<string, Paircoef*>();
+    paircoefs= map<string, Paircoef*>();
     tripletcoefs= new map<string, Tripletcoef*>();
 
     pairsMade= false;
@@ -50,19 +50,18 @@ Nucleus::Nucleus( const std::string & iinputdir, const std::string & iresultdir,
 
 Nucleus::~Nucleus()
 {
-    for( u_int i= 0; i < pairs->size(); i++ ) {
-        delete (*pairs)[i];
+    for( u_int i= 0; i < pairs.size(); i++ ) {
+        delete pairs[i];
     }
-    delete pairs;
     for( u_int i= 0; i < triplets->size(); i++ ) {
         delete triplets->at(i);
     }
     delete triplets;
     map< string, Paircoef*>::iterator it;
-    for( it= paircoefs->begin(); it != paircoefs->end(); it++ ) {
+    for( it= paircoefs.begin(); it != paircoefs.end(); it++ ) {
         delete it->second;
     }
-    delete paircoefs;
+
     map< string, Tripletcoef*>::iterator itt;
     for( itt= tripletcoefs->begin(); itt != tripletcoefs->end(); itt++ ) {
         delete itt->second;
@@ -440,7 +439,7 @@ void Nucleus::makepairs()
                     else {
                         #pragma omp critical(pairs_push_back)
                         {
-                            pairs->push_back( pair);
+                            pairs.push_back( pair);
                         }
                     }
                 }
@@ -452,7 +451,7 @@ void Nucleus::makepairs()
             }
         }
     }
-    number_of_pairs = pairs->size();
+    number_of_pairs = pairs.size();
     cout << ((t1==1)?"p":"n") << ((t2==1)?"p":"n") << " pairs made." << endl;
     cout << "total pairs " << number_of_pairs << endl;
     pairsMade= true;
@@ -470,17 +469,16 @@ void Nucleus::makepaircoefs()
 {
     if( pairsMade == false ) makepairs();
     cout << "Make Pair Coefs ... " << endl;
-    int max= get_number_of_pairs();
     // summ over the pairs
-    for( int i= 0; i < max; i++ ) { // loop over \f$ \braket{ \alpha_1 \alpha_2 } \f$ pairs
+    for( int i= 0; i < get_number_of_pairs(); i++ ) { // loop over \f$ \braket{ \alpha_1 \alpha_2 } \f$ pairs
         Pair* pair= getPair(i);
         for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) { // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
             double vali= pair->getCoeff(ci).getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
             string keyi= pair->getCoeff(ci).getkey();
-            map < string, Paircoef* >::iterator iti = paircoefs->find( keyi ); // is the key already in our map?
-            if( iti == paircoefs->end() ) { // no
-                (*paircoefs)[keyi]= new Paircoef( pair->getCoeff(ci) );
-                iti = paircoefs->find(keyi);
+            map < string, Paircoef* >::iterator iti = paircoefs.find( keyi ); // is the key already in our map?
+            if( iti == paircoefs.end() ) { // no
+                paircoefs[keyi]= new Paircoef( pair->getCoeff(ci) );
+                iti = paircoefs.find(keyi);
             }
             Paircoef* pci= iti->second;
 
@@ -494,10 +492,10 @@ void Nucleus::makepaircoefs()
             for( int cj= ci+1; cj < pair->get_number_of_coeff(); cj++ ) { //we loop over the coupling coefficients of the pair under consideration (upper triangle)
                 double valj= pair->getCoeff(cj).getCoef();
                 string keyj= pair->getCoeff(cj).getkey();
-                map < string, Paircoef* >::iterator itj = paircoefs->find( keyj );
-                if( itj == paircoefs->end() ) {
-                    (*paircoefs)[keyj]= new Paircoef( pair->getCoeff(cj) );
-                    itj = paircoefs->find(keyj);
+                map < string, Paircoef* >::iterator itj = paircoefs.find( keyj );
+                if( itj == paircoefs.end() ) {
+                    paircoefs[keyj]= new Paircoef( pair->getCoeff(cj) );
+                    itj = paircoefs.find(keyj);
                 }
                 Paircoef* pcj= itj->second;
                 
@@ -508,8 +506,8 @@ void Nucleus::makepaircoefs()
             }
         }
     }
-    cout << "pair coefs " << paircoefs->size() << endl;
-    number_of_paircoefs= paircoefs->size();
+    cout << "pair coefs " << paircoefs.size() << endl;
+    number_of_paircoefs= paircoefs.size();
     paircoefsMade= true;
 }
 
@@ -603,7 +601,7 @@ int Nucleus::get_number_of_triplets()
 Pair* Nucleus::getPair( const int i )
 {
     if( pairsMade == false ) makepairs();
-    return (*pairs).at(i); // std::vector::at(int i) does bounds checking!
+    return pairs.at(i); // std::vector::at(int i) does bounds checking!
 }
 
 Paircoef* Nucleus::getPaircoef( const int i )
@@ -613,7 +611,7 @@ Paircoef* Nucleus::getPaircoef( const int i )
         cerr << "get_Paircoefs " << i << " index out of range" << endl;
         exit(-1);
     }
-    map< string, Paircoef*>::iterator it= paircoefs->begin();
+    map< string, Paircoef*>::iterator it= paircoefs.begin();
     for( int j= 0; j < i; j++)
         it++;
     return it->second;
@@ -650,7 +648,7 @@ double Nucleus::getlLPairs( const int n, const int l, const int S, const int L )
     if( pairsMade == false ) makepairs();
     double sum= 0;
     vector< Pair*>::iterator it;
-    for( it= pairs->begin(); it!= pairs->end(); it++ ) {
+    for( it= pairs.begin(); it!= pairs.end(); it++ ) {
         double val= (*it)->getRelPair( n, l, S, L);
         sum += val;
     }
@@ -663,7 +661,7 @@ double Nucleus::getlPairs( const int n, const int l, const int S )
     if( pairsMade == false ) makepairs();
     double sum= 0;
     vector< Pair*>::iterator it;
-    for( it= pairs->begin(); it!= pairs->end(); it++ ) {
+    for( it= pairs.begin(); it!= pairs.end(); it++ ) {
         double val= (*it)->getRelPair( n, l, S);
         sum += val;
     }
@@ -686,7 +684,7 @@ void Nucleus::printPairsPerShell()
     file << endl;
 
     vector< Pair*>::iterator it;
-    for( it= pairs->begin(); it!= pairs->end(); it++ ) {
+    for( it= pairs.begin(); it!= pairs.end(); it++ ) {
         double totalPairs= (*it)->getRelPair( -1 );
         file << (*it)->getn1() << "\t" << (*it)->getl1() << "\t" << (*it)->gettwo_j1() << "\t" << (*it)->gettwo_mj1() << "\t" << (*it)->gettwo_t1();
         file << "\t" << (*it)->getn2() << "\t" << (*it)->getl2() << "\t" << (*it)->gettwo_j2() << "\t" << (*it)->gettwo_mj2() << "\t" << (*it)->gettwo_t2();
