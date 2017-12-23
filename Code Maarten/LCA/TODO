@@ -44,21 +44,18 @@ Now it is very inefficient as basically the program has to start from scratch ea
 
 +++MODIFICATIONS PROGRAMMING STYLE
 
-2. take out char* arguments and make them strings (RecMosh and others)
 
-5. replace pointer arguments by reference where applicable...
+5. replace pointer arguments by reference where applicable... -> done for a whole lot, Pair map in nucleus is
+     still problematic with the way recmosh is dealt with.  Got strange things with constructors (copy) and destructors.
 
-6. Nucleus::nucleus get rid of dynamic allocations
 
 7. storage of moshinskys: make binary, one file
 -the map for each nlnl, then the nlnl values + position in the file where map begins & length, total number of nlnl values
 -care will have to be taken if an nlnl map has been updated -> file will need te be rewritten.  Total size so far is ~100kb so should be ok.
 
-12. shells class, remove pointers 
 
 14. add sanity check to see that the recmosh object in pair & newcoef is for the correct quantum numbers.
 
-16. why double pointers in Pair::getCoeff, make norm pointer a ref
 
 19. naming variables, Lambda is sometimes used for coupled l, or sometimes for com OAM -> make uniform!!
 
@@ -97,8 +94,6 @@ everything looks symmetric (correlation functions in the two l arguments...)
 26. what is the comment statement in norm_ob.h:  "Note that this does not correspond with an isospin projection of a particle or particle pair!" (isospin selection)
 
 
-28. Nucleus::makepaircoefs: I think normi is always equal to normj (same pair) 
-    so we could just replace this by the normf of the pair and reduce the confusing norm business!
 
 31. PRIORITY normob in double corr matrix element, order of k,l1//k,l2 (l414) [also other corr functions]
 SIMILAR QUESTION/PROBLEM in the corr matrix elements of the obmd calculations!!!
@@ -167,3 +162,15 @@ Tripletcoef::get_links
 -> Asymmetry is there in mom distribution results, but norms seem symmetric (np(p), np(n))
 
 -> explicitly changed in normob and everything is still ok. 13/12/17
+
+28. Nucleus::makepaircoefs: I think normi is always equal to normj (same pair) 
+    so we could just replace this by the normf of the pair and reduce the confusing norm business!
+-> done 23/12/17
+
+16. why double pointers in Pair::getCoeff, make norm pointer a ref -> done 23/12/17
+
+12. shells class, remove pointers -> done 23/12/17.  Replaced by static array.  WS shit still uses it though, but haven't touched that part.
+
+6. Nucleus::nucleus get rid of dynamic allocations ->done
+
+2. take out char* arguments and make them strings (RecMosh and others) -> done for basic classes

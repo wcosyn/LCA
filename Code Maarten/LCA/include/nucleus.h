@@ -94,14 +94,14 @@ public:
      * @see get_number_of_pairs
      */
     Pair* getPair( const int i );
-    /**
+    /*
      * \brief Get the i-th paircoef of paircoefs
      *
      * @param i index of the paircoef you want to access
      * @see paircoefs
      * @see get_number_of_paircoefs
      */
-    Paircoef* getPaircoef( const int i );
+    //Paircoef* getPaircoef( const int i );
     /**
      * \brief Get the i-th triplet of triplets
      *
@@ -181,7 +181,7 @@ public:
      * 
      * @return const std::map<std::string, Paircoef*>& reference to the map 
      */
-    const std::map<std::string, Paircoef*>& getPaircoefs() const
+    std::map<std::string, Paircoef>& getPaircoefs()
     { return paircoefs;}
 
     /**
@@ -243,7 +243,7 @@ private:
      * @see Newcoef::Newcoef for key definition
      * 
      */
-    std::map< std::string, Paircoef*> paircoefs; 
+    std::map< std::string, Paircoef> paircoefs; 
     std::map< std::string, Tripletcoef*>* tripletcoefs; ///< container for all Tripletscoefs
 
     std::string inputdir;         ///< Path to input directory

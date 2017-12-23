@@ -34,7 +34,7 @@ Nucleus::Nucleus( const std::string & iinputdir, const std::string & iresultdir,
     pairs.reserve(256);
     triplets= new vector<Triplet*>();
     triplets->reserve(256);
-    paircoefs= map<string, Paircoef*>();
+    paircoefs= map<string, Paircoef>();
     tripletcoefs= new map<string, Tripletcoef*>();
 
     pairsMade= false;
@@ -57,10 +57,10 @@ Nucleus::~Nucleus()
         delete triplets->at(i);
     }
     delete triplets;
-    map< string, Paircoef*>::iterator it;
-    for( it= paircoefs.begin(); it != paircoefs.end(); it++ ) {
-        delete it->second;
-    }
+    // map< string, Paircoef*>::iterator it;
+    // for( it= paircoefs.begin(); it != paircoefs.end(); it++ ) {
+    //     delete it->second;
+    // }
 
     map< string, Tripletcoef*>::iterator itt;
     for( itt= tripletcoefs->begin(); itt != tripletcoefs->end(); itt++ ) {
@@ -475,15 +475,15 @@ void Nucleus::makepaircoefs()
         for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) { // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
             double vali= pair->getCoeff(ci).getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
             string keyi= pair->getCoeff(ci).getkey();
-            map < string, Paircoef* >::iterator iti = paircoefs.find( keyi ); // is the key already in our map?
+            map < string, Paircoef >::iterator iti = paircoefs.find( keyi ); // is the key already in our map?
             if( iti == paircoefs.end() ) { // no
-                paircoefs[keyi]= new Paircoef( pair->getCoeff(ci) );
+                paircoefs[keyi]= Paircoef( pair->getCoeff(ci) );
                 iti = paircoefs.find(keyi);
             }
-            Paircoef* pci= iti->second;
+            // Paircoef* pci= iti->second;
 
             // Add value of the matrix element of a paircoef with itself, e.g. \f$ | C_{\alpha_1,\alpha_2}^{A} |^{2} \f$
-            pci->add(vali*vali*pair->getfnorm()); //add to diagonal link strength
+            iti->second.add(vali*vali*pair->getfnorm()); //add to diagonal link strength
 
             // Add all the links of a Paircoef with the other Paircoefs generated
             // from this Pair.
@@ -492,17 +492,17 @@ void Nucleus::makepaircoefs()
             for( int cj= ci+1; cj < pair->get_number_of_coeff(); cj++ ) { //we loop over the coupling coefficients of the pair under consideration (upper triangle)
                 double valj= pair->getCoeff(cj).getCoef();
                 string keyj= pair->getCoeff(cj).getkey();
-                map < string, Paircoef* >::iterator itj = paircoefs.find( keyj );
+                map < string, Paircoef >::iterator itj = paircoefs.find( keyj );
                 if( itj == paircoefs.end() ) {
-                    paircoefs[keyj]= new Paircoef( pair->getCoeff(cj) );
+                    paircoefs[keyj]= Paircoef( pair->getCoeff(cj) );
                     itj = paircoefs.find(keyj);
                 }
-                Paircoef* pcj= itj->second;
+                // Paircoef* pcj= itj->second;
                 
                 //add to off-diagonal link strength for coupled states, with the endpoint of the link also included
                 //we do not store 2 times the value (bidirectional) since matrix elements are in general not symmetric for coupled states
                 //see operator_virtual_ob::sum_me_corr function for use
-                pci->add( pcj, vali*valj*pair->getfnorm() ); 
+                iti->second.add( &itj->second, vali*valj*pair->getfnorm() ); 
             }
         }
     }
@@ -604,18 +604,18 @@ Pair* Nucleus::getPair( const int i )
     return pairs.at(i); // std::vector::at(int i) does bounds checking!
 }
 
-Paircoef* Nucleus::getPaircoef( const int i )
-{
-    if( pairsMade == false ) makepaircoefs();
-    if( i >= number_of_paircoefs ) {
-        cerr << "get_Paircoefs " << i << " index out of range" << endl;
-        exit(-1);
-    }
-    map< string, Paircoef*>::iterator it= paircoefs.begin();
-    for( int j= 0; j < i; j++)
-        it++;
-    return it->second;
-}
+// Paircoef* Nucleus::getPaircoef( const int i )
+// {
+//     if( pairsMade == false ) makepaircoefs();
+//     if( i >= number_of_paircoefs ) {
+//         cerr << "get_Paircoefs " << i << " index out of range" << endl;
+//         exit(-1);
+//     }
+//     map< string, Paircoef*>::iterator it= paircoefs.begin();
+//     for( int j= 0; j < i; j++)
+//         it++;
+//     return it->second;
+// }
 
 Triplet* Nucleus::getTriplet( int i )
 {

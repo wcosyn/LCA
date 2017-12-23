@@ -150,8 +150,8 @@ double operator_virtual::sum_me_corr_coefs( void* params )
     //this construction is because we cannot use iterator together with omp, so we make array with all the pointers to the values and loop over that
     Paircoef* loop_array[nucleus->getPaircoefs().size()];
     int index=0;
-    for (const auto& value : nucleus->getPaircoefs()){
-        loop_array[index]=value.second;
+    for (auto& value : nucleus->getPaircoefs()){
+        loop_array[index]=&value.second;
         index++;
     }
 

@@ -60,6 +60,9 @@ public:
      * 
      */
     ~Paircoef();
+
+    Paircoef();
+
     /**
      * @brief returns coupled state HO relative quantum number n
      */

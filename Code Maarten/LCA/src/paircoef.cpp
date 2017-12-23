@@ -33,6 +33,10 @@ Paircoef::Paircoef( const Newcoef& coef )
     number_of_links= 0;
 }
 
+Paircoef::Paircoef(){
+    
+}
+
 Paircoef::~Paircoef()
 {
     // delete links;
