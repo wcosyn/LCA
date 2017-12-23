@@ -21,19 +21,19 @@ public:
     /**
      * @brief np pairs so we have N possible particles for first nucleon
      */    
-    int getA1() {return  N;}
+    int getA1() const{return  N;}
     /**
      * @brief np pairs so we have Z possible particles for second nucleon
      */    
-    int getA2() {return  Z;}
+    int getA2() const{return  Z;}
     /**
      * @brief np pairs so isospin of first particle is -1
      */
-    int getT1() {return -1;}
+    int getT1() const{return -1;}
     /**
      * @brief np pairs so isospin of second particle is +1
      */
-    int getT2() {return  1;}
+    int getT2() const{return  1;}
 private:
     /**
      * @brief Constructs all possible np nas pairs 
@@ -53,20 +53,6 @@ private:
      */
     virtual void maketriplets( int t3 ) {
         Nucleus::maketriplets( t3 );
-    };
-    /**
-     * @brief returns pointer to array of all possible neutron shells
-     * 
-     */
-    std::vector < Shell* >* getShells1() {
-        return &Shell::shellsN;
-    };
-    /**
-     * @brief returns pointer to array of all possible proton shells
-     * 
-     */
-    std::vector < Shell* >* getShells2() {
-        return &Shell::shellsP;
     };
 
 };

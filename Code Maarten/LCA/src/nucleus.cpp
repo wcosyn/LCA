@@ -25,7 +25,7 @@ Nucleus::Nucleus( const std::string & iinputdir, const std::string & iresultdir,
     /*
      * Initialize Shells
      */
-    Shell::initializeShells();
+    // Shell::initializeShells();
 
     /*
      * Create empty containers
@@ -68,7 +68,7 @@ Nucleus::~Nucleus()
         delete itt->second;
     }
     delete tripletcoefs;
-    Shell::deleteShells();
+    // Shell::deleteShells();
     cout << "Nucleus deleted" << endl;
 }
 
@@ -107,13 +107,10 @@ void Nucleus::maketriplets()
 void Nucleus::maketriplets( int t3 )
 {
     if( tripletsMade== true) return;
-    vector< Shell* >* shells3;
     int A3;
     if( t3 == 1 ) {
-        shells3 = &Shell::shellsP;
         A3= Z;
     } else if( t3 == -1 ) {
-        shells3 = &Shell::shellsN;
         A3= N;
     } else {
         cerr << "error " << __FILE__ << __LINE__ << endl;
@@ -125,17 +122,15 @@ void Nucleus::maketriplets( int t3 )
     int A2 = getA2();
 
 
-    vector< Shell* >* shells1= getShells1();
-    vector< Shell* >* shells2= getShells2();
     int shell1_max, shell2_max, shell3_max;
     int max1, max2, max3;
     // Get the highest occupied shell index shelli_max
     // and the number of particles is this shell should be fully occupied: maxi
     // The latest is necessary to calculate the normalization factor for not
     // fully occupied shells
-    get_shell_max(A1, &shell1_max, &max1 );
-    get_shell_max(A2, &shell2_max, &max2 );
-    get_shell_max(A3, &shell3_max, &max3 );
+    get_shell_max(A1, shell1_max, max1 );
+    get_shell_max(A2, shell2_max, max2 );
+    get_shell_max(A3, shell3_max, max3 );
     double totalsum= 0;
 
     #pragma omp parallel for collapse(3)
@@ -153,23 +148,20 @@ void Nucleus::maketriplets( int t3 )
                 if( t2==t3 ) {
                     if( i3 < i2 ) continue;
                 }
-                Shell* shell1= (*shells1)[i1];
-                Shell* shell2= (*shells2)[i2];
-                Shell* shell3= (*shells3)[i3];
 
-                int n1= (shell1)->getN();
-                int l1= (shell1)->getL();
-                int twoj1= (shell1)->getTwo_j();
+                int n1= Shell::shells[i1].getN();
+                int l1= Shell::shells[i1].getL();
+                int twoj1= Shell::shells[i1].getTwo_j();
                 int q1 = twoj1+ 1;
 
-                int n2= (shell2)->getN();
-                int l2= (shell2)->getL();
-                int twoj2= (shell2)->getTwo_j();
+                int n2= Shell::shells[i2].getN();
+                int l2= Shell::shells[i2].getL();
+                int twoj2= Shell::shells[i2].getTwo_j();
                 int q2 = twoj2+ 1;
 
-                int n3= (shell3)->getN();
-                int l3= (shell3)->getL();
-                int twoj3= (shell3)->getTwo_j();
+                int n3= Shell::shells[i3].getN();
+                int l3= Shell::shells[i3].getL();
+                int twoj3= Shell::shells[i3].getTwo_j();
                 int q3 = twoj3+ 1;
 
                 for( int two_mj1 = -twoj1; two_mj1 < twoj1+1; two_mj1+=2 ) {
@@ -270,74 +262,74 @@ void Nucleus::maketriplets( int t3 )
 
 
 // Also see shell.h
-void Nucleus::get_shell_max( int A, int* shell_max, int* max )
+void Nucleus::get_shell_max( const int A,  int& shell_max,  int& max )
 {
     if( A <= 2 ) {
-        *shell_max= 0;
-        *max= 2;
+        shell_max= 0;
+        max= 2;
     } else if( A <= 6 ) {
-        *shell_max= 1;
-        *max= 6;
+        shell_max= 1;
+        max= 6;
     } else if( A <= 8 ) {
-        *shell_max= 2;
-        *max= 8;
+        shell_max= 2;
+        max= 8;
     } else if( A <= 14 ) {
-        *shell_max= 3;
-        *max= 14;
+        shell_max= 3;
+        max= 14;
     } else if( A <= 16 ) {
-        *shell_max= 4;
-        *max= 16;
+        shell_max= 4;
+        max= 16;
     } else if( A <= 20) {
-        *shell_max= 5;
-        *max= 20;
+        shell_max= 5;
+        max= 20;
     } else if( A <= 28 ) {
-        *shell_max= 6;
-        *max= 28;
+        shell_max= 6;
+        max= 28;
     } else if( A <= 32 ) {
-        *shell_max= 7;
-        *max= 32;
+        shell_max= 7;
+        max= 32;
     } else if( A <= 38 ) {
-        *shell_max= 8;
-        *max= 38;
+        shell_max= 8;
+        max= 38;
     } else if( A <= 40 ) {
-        *shell_max= 9;
-        *max= 40;
+        shell_max= 9;
+        max= 40;
     } else if( A <= 50 ) {
-        *shell_max= 10;
-        *max= 50;
+        shell_max= 10;
+        max= 50;
     } else if( A <= 58 ) {
-        *shell_max= 11;
-        *max= 58;
+        shell_max= 11;
+        max= 58;
     } else if( A <= 64 ) {
-        *shell_max= 12;
-        *max= 64;
+        shell_max= 12;
+        max= 64;
     } else if( A <= 68 ) {
-        *shell_max= 13;
-        *max= 68;
+        shell_max= 13;
+        max= 68;
     } else if( A <= 70 ) {
-        *shell_max= 14;
-        *max= 70;
+        shell_max= 14;
+        max= 70;
     } else if( A <= 82 ) {
-        *shell_max= 15;
-        *max= 82;
+        shell_max= 15;
+        max= 82;
     } else if( A <= 92 ) {
-        *shell_max= 16;
-        *max= 92;
+        shell_max= 16;
+        max= 92;
     } else if( A <= 100 ) {
-        *shell_max= 17;
-        *max= 100;
+        shell_max= 17;
+        max= 100;
     } else if( A <= 106 ) {
-        *shell_max= 18;
-        *max= 106;
+        shell_max= 18;
+        max= 106;
     } else if( A <= 110 ) {
-        *shell_max= 19;
-        *max= 110;
+        shell_max= 19;
+        max= 110;
     } else if( A <= 112 ) {
-        *shell_max= 20;
-        *max= 112;
+        shell_max= 20;
+        max= 112;
     } else if( A <= 126 ) {
-        *shell_max= 21;
-        *max= 126;
+        shell_max= 21;
+        max= 126;
     }
 }
 
@@ -360,12 +352,9 @@ void Nucleus::makepairs()
 
     int shell1_max= 0, shell2_max= 0;
     int max1= 0, max2= 0;
-    get_shell_max(A1, &shell1_max, &max1 );
-    get_shell_max(A2, &shell2_max, &max2 );
+    get_shell_max(A1, shell1_max, max1 );
+    get_shell_max(A2, shell2_max, max2 );
 
-
-    vector< Shell* >* shells1= getShells1();
-    vector< Shell* >* shells2= getShells2();
 
     #pragma omp parallel for collapse(2)
     //loops run over closed filled shells!!
@@ -374,17 +363,15 @@ void Nucleus::makepairs()
             if( t1==t2 ) {
                 if( i2 < i1 ) continue; // prevent double counting, only if t1==t2, e.g. pp or nn pairs
             }
-            Shell* shell1= (*shells1)[i1];
-            Shell* shell2= (*shells2)[i2];
 
-            int n1= (shell1)->getN();
-            int l1= (shell1)->getL();
-            int twoj1= (shell1)->getTwo_j();
+            int n1= Shell::shells[i1].getN();
+            int l1= Shell::shells[i1].getL();
+            int twoj1= Shell::shells[i1].getTwo_j();
             int q1 = twoj1 + 1;
 
-            int n2= (shell2)->getN();
-            int l2= (shell2)->getL();
-            int twoj2= (shell2)->getTwo_j();
+            int n2= Shell::shells[i2].getN();
+            int l2= Shell::shells[i2].getL();
+            int twoj2= Shell::shells[i2].getTwo_j();
             int q2 = twoj2 + 1;
 
             RecMosh* mosh;
@@ -487,8 +474,7 @@ void Nucleus::makepaircoefs()
     // summ over the pairs
     for( int i= 0; i < max; i++ ) { // loop over \f$ \braket{ \alpha_1 \alpha_2 } \f$ pairs
         Pair* pair= getPair(i);
-        int maxc= pair->get_number_of_coeff();
-        for( int ci= 0; ci < maxc; ci++ ) { // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
+        for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) { // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
             double vali= pair->getCoeff(ci).getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
             string keyi= pair->getCoeff(ci).getkey();
             map < string, Paircoef* >::iterator iti = paircoefs->find( keyi ); // is the key already in our map?
@@ -505,7 +491,7 @@ void Nucleus::makepaircoefs()
             // from this Pair.
             // A link is only added to one of the two Paircoefs involved.
             // Hence the sum from ci+1.
-            for( int cj= ci+1; cj < maxc; cj++ ) { //we loop over the coupling coefficients of the pair under consideration (upper triangle)
+            for( int cj= ci+1; cj < pair->get_number_of_coeff(); cj++ ) { //we loop over the coupling coefficients of the pair under consideration (upper triangle)
                 double valj= pair->getCoeff(cj).getCoef();
                 string keyj= pair->getCoeff(cj).getkey();
                 map < string, Paircoef* >::iterator itj = paircoefs->find( keyj );
@@ -614,13 +600,13 @@ int Nucleus::get_number_of_triplets()
     return number_of_triplets;
 }
 
-Pair* Nucleus::getPair( int i )
+Pair* Nucleus::getPair( const int i )
 {
     if( pairsMade == false ) makepairs();
     return (*pairs).at(i); // std::vector::at(int i) does bounds checking!
 }
 
-Paircoef* Nucleus::getPaircoef( int i )
+Paircoef* Nucleus::getPaircoef( const int i )
 {
     if( pairsMade == false ) makepaircoefs();
     if( i >= number_of_paircoefs ) {
@@ -659,7 +645,7 @@ Tripletcoef* Nucleus::getTripletcoef( int i )
 
 
 
-double Nucleus::getlLPairs( int n, int l, int S, int L )
+double Nucleus::getlLPairs( const int n, const int l, const int S, const int L )
 {
     if( pairsMade == false ) makepairs();
     double sum= 0;
@@ -672,7 +658,7 @@ double Nucleus::getlLPairs( int n, int l, int S, int L )
 
 }
 
-double Nucleus::getlPairs( int n, int l, int S )
+double Nucleus::getlPairs( const int n, const int l, const int S )
 {
     if( pairsMade == false ) makepairs();
     double sum= 0;

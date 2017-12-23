@@ -20,19 +20,19 @@ public:
     /**
      * @brief pp pairs so isospin of first particle is 1
      */
-    int getT1() { return  1;}
+    int getT1() const{ return  1;}
     /**
      * @brief pp pairs so isospin of second particle is 1
      */
-    int getT2() { return  1;}
+    int getT2() const{ return  1;}
     /**
      * @brief pp pairs so we have Z possible particles for first nucleon
      */    
-    int getA1() { return  Z;}
+    int getA1() const{ return  Z;}
     /**
      * @brief pp pairs so we have Z possible particles for second nucleon
      */    
-    int getA2() { return  Z;}
+    int getA2() const{ return  Z;}
 private:
     /**
      * @brief Constructs all possible pp nas pairs 
@@ -53,16 +53,6 @@ private:
      * @brief returns pointer to array of all possible proton shells
      * 
      */
-    std::vector < Shell* >* getShells1() {
-        return &Shell::shellsP;
-    };
-    /**
-     * @brief returns pointer to array of all possible proton shells 
-     * 
-     */
-    std::vector < Shell* >* getShells2() {
-        return &Shell::shellsP;
-    };
 };
 
 #endif // NUCLEUSPP_H

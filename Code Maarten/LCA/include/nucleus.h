@@ -44,19 +44,19 @@ public:
     /**
      * \brief Get mass number
      */
-    int getA() {
+    int getA() const{
         return A;
     };
     /**
      * \brief Get proton number
      */
-    int getZ() {
+    int getZ() const{
             return Z;
     }
     /**
      * \brief Get neutron number
      */
-    int getN() {
+    int getN() const{
         return N;
     }
 
@@ -93,7 +93,7 @@ public:
      * @see pairs
      * @see get_number_of_pairs
      */
-    Pair* getPair( int i );
+    Pair* getPair( const int i );
     /**
      * \brief Get the i-th paircoef of paircoefs
      *
@@ -101,7 +101,7 @@ public:
      * @see paircoefs
      * @see get_number_of_paircoefs
      */
-    Paircoef* getPaircoef( int i );
+    Paircoef* getPaircoef( const int i );
     /**
      * \brief Get the i-th triplet of triplets
      *
@@ -129,7 +129,7 @@ public:
      * @param L coupled states HO center of mass OAM quantum number
      * @return double : number of pairs with certain quantum numbers in a nucleus
      */
-    double getlLPairs( int n, int l, int S, int L );
+    double getlLPairs( const int n, const int l, const int S, const int L );
     /**
      * @brief Function which give number of pairs with certain quantum numbers, 
      * maximum total number of pairs is determined by the nucleus (A(A-1)/2 for Nucleusall etc.)
@@ -139,7 +139,7 @@ public:
      * @param S coupled states total spin
      * @return double : number of pairs with certain quantum numbers in a nucleus
      */
-    double getlPairs( int n, int l, int S);
+    double getlPairs( const int n, const int l, int S);
     /**
      * @brief Function which give number of pairs with certain quantum numbers, 
      * maximum total number of pairs is determined by the nucleus (A(A-1)/2 for Nucleusall etc.)
@@ -148,7 +148,7 @@ public:
      * @param l coupled states HO relative OAM quantum number
      * @return double : number of pairs with certain quantum numbers in a nucleus
      */
-    double getlPairs( int n, int l) {
+    double getlPairs( const int n, const int l) {
         return getlPairs( n, l, -1);
     };
     /**
@@ -158,7 +158,7 @@ public:
      * @param l coupled states HO relative OAM quantum number
      * @return double : number of pairs with certain relative OAM in a nucleus
      */
-    double getlPairs( int l) {
+    double getlPairs( const int l) {
         return getlPairs( -1, l, -1 );
     };
 
@@ -189,31 +189,21 @@ public:
      * -1= neutron, 1= proton
      *  e.g. 1 for NucleusPP
      */
-    virtual int getT1() =0;
+    virtual int getT1()const =0;
     /**
      * \brief Gives isospin of second particletype.
      * -1= neutron, 1= proton
      *  e.g. 1 for NucleusPP
      */
-    virtual int getT2() =0;
+    virtual int getT2()const =0;
     /**
      * \brief Give number of particles of first particletype.  e.g. Z for NucleusPP
      */
-    virtual int getA1() =0;
+    virtual int getA1()const =0;
     /**
      * \brief Give number of particles of second particletype.  e.g. N for NucleusNN
      */
-    virtual int getA2() =0;
-    /**
-     * \brief Give pointer to the static vector of n/p shells defined in shell.h
-     * @see Shell
-     */
-    virtual std::vector< Shell* >* getShells1() =0;
-    /**
-     * \brief Give pointer to the static vector of n/p shells defined in shell.h
-     * @see Shell
-     */
-    virtual std::vector< Shell* >* getShells2() =0;
+    virtual int getA2()const =0;
 
 private:
 
@@ -239,7 +229,7 @@ private:
      * 
      * 
      */
-    void get_shell_max( int occupied, int* shell_max, int* max );
+    void get_shell_max( const int occupied, int& shell_max, int& max );
 
     std::vector< Pair*>* pairs;               ///< container for all Pairs
     std::vector< Triplet*>* triplets;         ///< container for all Triplets

@@ -13,8 +13,6 @@ Nucleusall::Nucleusall( const std::string & inputdir, const std::string & result
     A2= 0;
     t1= 0;
     t2= 0;
-    shells1 = &Shell::shellsP;
-    shells2 = &Shell::shellsP;
 
 
 }
@@ -29,8 +27,6 @@ void Nucleusall::makepairs( )
     // Make pp pairs
     t1= 1;
     t2= 1;
-    shells1 = &Shell::shellsP;
-    shells2 = &Shell::shellsP;
     A1= Z;
     A2= Z;
     Nucleus::makepairs();
@@ -39,8 +35,6 @@ void Nucleusall::makepairs( )
     pairsMade=false;
     t1= -1;
     t2= -1;
-    shells1 = &Shell::shellsN;
-    shells2 = &Shell::shellsN;
     A1= N;
     A2= N;
     Nucleus::makepairs();
@@ -49,8 +43,6 @@ void Nucleusall::makepairs( )
     pairsMade=false;
     t1= -1;
     t2= 1;
-    shells1 = &Shell::shellsN;
-    shells2 = &Shell::shellsP;
     A1= N;
     A2= Z;
     Nucleus::makepairs();
@@ -70,8 +62,6 @@ void Nucleusall::maketriplets( )
     if( tripletsMade== true) return;
     t1= 1;
     t2= 1;
-    shells1 = &Shell::shellsP;
-    shells2 = &Shell::shellsP;
     A1= Z;
     A2= Z;
     Nucleus::maketriplets();
@@ -79,8 +69,6 @@ void Nucleusall::maketriplets( )
 
     t1= -1;
     t2= -1;
-    shells1 = &Shell::shellsN;
-    shells2 = &Shell::shellsN;
     A1= N;
     A2= N;
     Nucleus::maketriplets();
@@ -88,8 +76,6 @@ void Nucleusall::maketriplets( )
 
     t1= -1;
     t2= 1;
-    shells1 = &Shell::shellsN;
-    shells2 = &Shell::shellsP;
     A1= N;
     A2= Z;
     Nucleus::maketriplets();
@@ -107,8 +93,6 @@ void Nucleusall::maketriplets( int t3 )
     if( tripletsMade== true) return;
     t1= 1;
     t2= 1;
-    shells1 = &Shell::shellsP;
-    shells2 = &Shell::shellsP;
     A1= Z;
     A2= Z;
 
@@ -116,16 +100,12 @@ void Nucleusall::maketriplets( int t3 )
     tripletsMade=false;
     t1= -1;
     t2= -1;
-    shells1 = &Shell::shellsN;
-    shells2 = &Shell::shellsN;
     A1= N;
     A2= N;
     Nucleus::maketriplets( t3 );
     tripletsMade=false;
     t1= -1;
     t2= 1;
-    shells1 = &Shell::shellsN;
-    shells2 = &Shell::shellsP;
     A1= N;
     A2= Z;
     Nucleus::maketriplets( t3 );

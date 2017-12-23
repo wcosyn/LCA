@@ -21,19 +21,19 @@ public:
     /**
      * @brief nn pairs so isospin of first particle is -1
      */
-    int getT1() { return -1;}
+    int getT1() const{ return -1;}
     /**
      * @brief nn pairs so isospin of first particle is +1
      */
-    int getT2() { return -1;}
+    int getT2() const{ return -1;}
     /**
      * @brief nn pairs so we have N possible particles for first nucleon
      */    
-    int getA1() { return  N;}
+    int getA1() const{ return  N;}
     /**
      * @brief nn pairs so we have N possible particles for second nucleon
      */    
-    int getA2() { return  N;} 
+    int getA2() const{ return  N;} 
 private:
     /**
      * @brief Constructs all possible nn nas pairs 
@@ -57,16 +57,6 @@ private:
      * @brief returns pointer to array of all possible neutron shells
      * 
      */
-    std::vector < Shell* >* getShells1() {
-        return &Shell::shellsN;
-    };
-    /**
-     * @brief returns pointer to array of all possible neutron shells
-     * 
-     */
-    std::vector < Shell* >* getShells2() {
-        return &Shell::shellsN;
-    };
 };
 
 #endif // NUCLEUSNN_H
