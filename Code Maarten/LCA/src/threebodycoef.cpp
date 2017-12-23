@@ -28,7 +28,7 @@ Threebodycoef::Threebodycoef(char* input, char* output, int n1, int l1, int two_
     strstream >> key;
     result = 0;
 
-    RecMosh* mosh1 = RecMosh::createRecMosh( n1, l1, n2, l2, input, output );
+    RecMosh* mosh1 = &RecMosh::createRecMosh( n1, l1, n2, l2, input );
 
     int energy12 = 2*n1+ l1+ 2*n2+ l2;
     for( int N12= 0; 2*N12+ 2*n12+ l12 <= energy12; N12++ ) {
@@ -101,8 +101,8 @@ double Threebodycoef::stb( int n123, int l123, int N123, int L123, int N12, int 
     double result = 0;
     double betao2 = 0.9553166181245092; // rad
 //	double betao2 = -0.9553166181245092; // rad
-    RecMosh* recmosh1 = RecMosh::createRecMosh( n123, l123, N123, L123, input, output);
-    RecMosh* recmosh2 = RecMosh::createRecMosh( N12, L12, n3, l3, input, output );
+    RecMosh* recmosh1 = &RecMosh::createRecMosh( n123, l123, N123, L123, input);
+    RecMosh* recmosh2 = &RecMosh::createRecMosh( N12, L12, n3, l3, input);
     // double intmosh1 = 0;
     // !!! Two different cases, if L123+l3 is odd or even.
     // Then the cos or sin term is real, and the imag term cancels out

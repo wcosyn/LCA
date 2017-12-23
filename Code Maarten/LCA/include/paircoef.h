@@ -30,7 +30,7 @@ private:
     int T; ///< coupled state total isospin
     int MT; ///< coupled state 3-component of total isospin
     double value; ///< contains the value of the link strength with itself (loop in the graph)
-    std::map< Paircoef*, double >* links; ///< map that contains all the other Paircoef that this one has links to (first), and their link strengths (second)
+    std::map< Paircoef*, double > links; ///< map that contains all the other Paircoef that this one has links to (first), and their link strengths (second)
     int number_of_links; ///< length of the Paircoef::links map
 public:
     /**
@@ -47,13 +47,14 @@ public:
      * @param T coupled state total isospin
      * @param MT coupled state totla isospin 3-component
      */
-    Paircoef( int n, int l, int S, int j, int mj, int N, int L, int ML, int T, int MT );
+    Paircoef( const int n, const int l, const int S, const int j, const int mj,
+            const  int N, const int L, const int ML, const int T, const int MT );
     /**
      * @brief Constructor that uses a Newcoef object to initialise.  No links or linkstrengths are stored yet after construction.
      * 
      * @param coef pointer to a Newcoef object that contains the information on the coupled state
      */
-    Paircoef( const Newcoef* coef );
+    Paircoef( const Newcoef& coef );
     /**
      * @brief Destructor
      * 
@@ -62,61 +63,61 @@ public:
     /**
      * @brief returns coupled state HO relative quantum number n
      */
-    int getn() {
+    int getn() const {
         return n;
     };
      /**
      * @brief returns coupled state HO relative OAM quantum number
      */
-   int getl() {
+   int getl() const {
         return l;
     };
     /**
      * @brief returns coupled state total spin 
      */
-    int getS() {
+    int getS() const {
         return S;
     };
     /**
      * @brief returns coupled state spin coupled j=l+S (relative OAM + total spin) 
      */
-    int getj() {
+    int getj() const {
         return j;
     };
     /**
      * @brief returns coupled state 3-component of j
      */
-    int getmj() {
+    int getmj() const {
         return mj;
     };
     /**
      * @brief returns coupled state HO com quantum number N 
      */
-    int getN() {
+    int getN() const {
         return N;
     };
     /**
      * @brief returns coupled state HO com OAM quantum number
      */
-    int getL() {
+    int getL() const {
         return L;
     };
     /**
      * @brief returns coupled state HO com OAM 3-component quantum number
      */
-    int getML() {
+    int getML() const {
         return ML;
     };
     /**
      * @brief returns coupled state total isospin
      */
-    int getT() {
+    int getT() const {
         return T;
     };
     /**
      * @brief returns coupled state totla isospin 3-component
      */
-    int getMT() {
+    int getMT() const {
         return MT;
     };
     // 
@@ -131,7 +132,7 @@ public:
      * 
      * @see Nucleus::makepaircoefs()
      */
-    void add( Paircoef* pc, double val);
+    void add( Paircoef* pc, const double val);
     // Add value of transformation coefficient
     // <a1a2| nlSjmj NLML TMT>
     /**
@@ -140,28 +141,22 @@ public:
      * @param val [] Value of the loop linkstrength that needs to be added.  
      *  This is the square of the expansion coefficients \f$C^A_{\alpha_i\alpha_j}\f$ times a normalisation factor for partially occupied shells.  Dimensionless.
      */
-    void add( double val);
+    void add(const double val);
     /**
      * @brief return the number of other coupled states (not counting the loop) this one is linked to.  [Is equal to the length of the map Paircoeff::links]
      */
-    int get_number_of_links();
+    int get_number_of_links() const{
+        return number_of_links;
+    }
     /**
      * @brief [] returns the loop linkstrength for this coupled state, dimensionless
      */
     double get_value() {
         return value;
     };
-    /**
-     * @brief function used to loop over the contents of the Paircoeff:links map.  Should be replaced with C++11 functionality!!!
-     * 
-     * @param i element in the map
-     * @param pc first element of the map at that index (pointer to a coupled state object)
-     * @param val [] second element of the map at that index (total linkstrength between the base object and the coupled state from the first index), dimensionless
-     */
-    void get_links( int i, Paircoef** pc, double* val );
-
+    
     const std::map< Paircoef*, double >& getLinksmap() const
-    { return *links;}
+    { return links;}
 };
 
 #endif

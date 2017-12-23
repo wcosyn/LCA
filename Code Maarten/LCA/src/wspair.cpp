@@ -169,7 +169,7 @@ void WSPair::expansion()
         for( int nj= 0; nj< n2max; nj++ ) {
             // make Pair (n1a1 n2a2 )
             // make both (n1a1 n2a2) and (n2a2, n1a1) ?? No because Pair is anti-symmetrised
-            RecMosh* mosh= RecMosh::createRecMosh( ni, l1, nj, l2, recmoshPath, output );
+            RecMosh* mosh= &RecMosh::createRecMosh( ni, l1, nj, l2, recmoshPath);
 
             //for( int two_mj1 = -j1; two_mj1 < j1+1; two_mj1+=2 )
             //{

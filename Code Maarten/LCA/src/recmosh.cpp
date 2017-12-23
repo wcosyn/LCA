@@ -12,14 +12,13 @@ using std::stringstream;
 
 MapRecMosh RecMosh::maprecmosh = MapRecMosh(); //initialise static object (empty map)
 
-RecMosh::RecMosh(int n1, int l1, int n2, int l2, char* inputPath, char* outputPath)
+RecMosh::RecMosh(const int n1, const int l1, const int n2, const int l2, const std::string& path)
     : n1(n1),
       l1(l1),
       n2(n2),
       l2(l2),
       coefficients(),
-      inputPath(inputPath),
-      outputPath(outputPath)
+      path(path)
 
 {
     if( n1*10+l1 <= n2*10+l2 )
@@ -37,11 +36,11 @@ RecMosh::RecMosh(int n1, int l1, int n2, int l2, char* inputPath, char* outputPa
 
 }
 
-RecMosh* RecMosh::createRecMosh(int n1, int l1, int n2, int l2, char* inputPath, char* outputPath)
+RecMosh& RecMosh::createRecMosh(const int n1, const int l1, const int n2, const int l2, const std::string& path)
 {
-    RecMosh* r = maprecmosh.get( n1, l1, n2, l2, inputPath, outputPath );
+    RecMosh *r = &maprecmosh.get( n1, l1, n2, l2, path );
     r->use();
-    return r;
+    return *r;
 
 }
 
@@ -74,7 +73,7 @@ void RecMosh::writeToFile()
 {
     if( updated ) {
         stringstream name;
-        name << outputPath << "/recmosh" << n1 << l1 << n2 << l2 << ".dat";
+        name << path << "/recmosh" << n1 << l1 << n2 << l2 << ".dat";
         cout << "[recmosh][RecMosh::writeToFile] write to " << name.str().c_str() << endl;
         ofstream dataFile ( name.str().c_str(), ofstream::out );
         if( !dataFile.is_open() ) {
@@ -103,7 +102,7 @@ void RecMosh::loadFile(  )
 {
     stringstream name;
 
-    name << inputPath << "/recmosh" << n1 << l1 << n2 << l2 << ".dat";
+    name << path << "/recmosh" << n1 << l1 << n2 << l2 << ".dat";
     ifstream dataFile ( name.str().c_str(), ifstream::in );
     if( !dataFile ) {
         cerr << "[recmosh][RecMosh::loadFile] File " << name.str() << " not found! " << endl;
@@ -122,14 +121,14 @@ void RecMosh::loadFile(  )
     }
 }
 
-double RecMosh::getCoefficient( int n, int l, int N, int Lambda, int L )
+double RecMosh::getCoefficient( const int n, const int l, const int N, const int Lambda, const int L )
 {
     if( 2*n+l+2*N+Lambda != 2*n1+l1+2*n2+l2) {
         return 0;
     }
     //only coefficients with N Lambda >= nl are computed and stored, so make use of permutation relations
     if( 10*n+l > 10*N+Lambda ) {
-        double val = maprecmosh.get( n1, l1, n2, l2, inputPath, outputPath )->getCoefficient( N, Lambda, n, l, L);
+        double val = maprecmosh.get( n1, l1, n2, l2, path ).getCoefficient( N, Lambda, n, l, L);
         if( (l1+L)%2 ) return -1*val;
         else return val;
     }
@@ -138,7 +137,7 @@ double RecMosh::getCoefficient( int n, int l, int N, int Lambda, int L )
     // Only the files with n1l1 <= n2l2 are calculated and saved,
     // So the n2l2 n1l1 coeff is taken and correct phase factor added
     if( 10*n1+l1 > 10*n2+l2 ) {
-        double val = maprecmosh.get( n2, l2, n1, l1, inputPath, outputPath )->getCoefficient( n, l, N, Lambda, L);
+        double val = maprecmosh.get( n2, l2, n1, l1, path ).getCoefficient( n, l, N, Lambda, L);
         if( (Lambda+L)%2 ) return -1*val;
         else return val;
 
@@ -147,7 +146,7 @@ double RecMosh::getCoefficient( int n, int l, int N, int Lambda, int L )
 
     int key = 100000*n + 10000*l + 1000*N + 100*Lambda + L*10;
 
-    map< int, double >::iterator it;
+    map< int, double >::const_iterator it;
     it = coefficients.find(key);
     if( it == coefficients.end()) {
         double result = calculate(n,l,N,Lambda,n1,l1,n2,l2,L);
@@ -167,7 +166,8 @@ double RecMosh::getCoefficient( int n, int l, int N, int Lambda, int L )
  * The moshinskybracket is calculated in a recursive way,
  * See thesis appendix for the expression
  */
-double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int n2, int l2, int L)
+double RecMosh::calculate( const int n, const int l, const int N, const int Lambda, 
+                            const int n1, const int l1, const int n2, const int l2, const int L) const
 {
     cout << "[recmosh][RecMosh::calculate] new recmosh value calculated " << endl;
 // 	cout << "<(" << n << l << N << Lambda << ")" << L;
@@ -182,7 +182,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
     if( 2*n+l + 2*N+Lambda != 2*n1+l1+2*n2+l2) return 0;
 //	cerr << " calculating missing coeff. " << endl;
 //	cerr << n << l << N << Lambda << "|" << n1 << l1 << n2 << l2 << "; " << L << endl ;
-    maprecmosh.get(n1,l1,n2,l2,inputPath,outputPath)->updated= true;
+    maprecmosh.get(n1,l1,n2,l2,path).updated= true;
     // n1 not zero -> Eq. A.15 Phd thesis M. Vanhalst
     if( n1 > 0 ) {
 // 		cout << "n1>0" << endl;
@@ -197,7 +197,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
                     for( int Lambdaa = Lambda-1; Lambdaa <= Lambda+1; Lambdaa++) {
                         if( Lambdaa<0||L<fabs(la-Lambdaa)||L>la+Lambdaa) continue;
                         double me = getMatrixElement(n,l,N,Lambda,na,la,Na,Lambdaa, L, 1);
-                        double moshbr = maprecmosh.get( n1-1, l1, n2, l2, inputPath, outputPath)->getCoefficient( na, la, Na, Lambdaa, L);
+                        double moshbr = maprecmosh.get( n1-1, l1, n2, l2, path).getCoefficient( na, la, Na, Lambdaa, L);
                         // double moshbr = calculate(na,la,Na,Lambdaa,n1-1,l1,n2,l2,L);
                         sum += me*moshbr;
                     }
@@ -219,7 +219,7 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
                     for( int Lambdaa = Lambda-1; Lambdaa <= Lambda+1; Lambdaa++) {
                         if( Lambdaa<0||L<fabs(la-Lambdaa)||L>la+Lambdaa) continue;
                         double me = getMatrixElement(n,l,N,Lambda,na,la,Na,Lambdaa, L, 2);
-                        double moshbr = maprecmosh.get( n1, l1, n2-1, l2, inputPath, outputPath)->getCoefficient( na, la, Na, Lambdaa, L);
+                        double moshbr = maprecmosh.get( n1, l1, n2-1, l2, path).getCoefficient( na, la, Na, Lambdaa, L);
                         //double moshbr = calculate(na,la,Na,Lambdaa,n1,l1,n2-1,l2,L);
                         sum += me*moshbr;
                     }
@@ -266,7 +266,8 @@ double RecMosh::calculate( int n, int l, int N, int Lambda, int n1, int l1, int 
     return 0;
 }
 
-double RecMosh::getMatrixElement( int n, int l, int N, int Lambda, int na, int la, int Na, int Lambdaa, int L, int f)
+double RecMosh::getMatrixElement( const int n, const int l, const int N, const int Lambda, 
+                                const int na, const int la, const int Na, const int Lambdaa, const int L, const int f) const 
 {
     if( na == n-1 ) {
         if( la == l) {
@@ -306,14 +307,14 @@ double RecMosh::getMatrixElement( int n, int l, int N, int Lambda, int na, int l
 
 }
 
-double RecMosh::Wc( int a, int b, int c, int d, int e, int f)
+double RecMosh::Wc( const int a, const int b, const int c, const int d, const int e, const int f)const 
 {
     double sign = pow(-1.,a+b+c+d);
     double sixj = gsl_sf_coupling_6j( 2*a, 2*b, 2*e, 2*d, 2*c, 2*f);
     return sign*sixj;
 }
 
-double RecMosh::A( int l1, int l, int l2, int Lambda, int x )
+double RecMosh::A( const int l1, const int l, const int l2, const int Lambda, const int x )const 
 {
     double factor = gsl_sf_fact(l1+l+x+1) ;
     factor*= gsl_sf_fact(l1+l-x);
@@ -344,7 +345,7 @@ double RecMosh::A( int l1, int l, int l2, int Lambda, int x )
  * Check if appropriate recmosh already exists.
  * If not, create new one
  */
-RecMosh* MapRecMosh::get( int n1, int l1, int n2, int l2, char* inputPath, char* outputPath )
+RecMosh& MapRecMosh::get( const int n1, const int l1, const int n2, const int l2, const std::string& path )
 {
     int key=  n1*1e3+ l1*1e2+ n2*10+ l2;
     map< int, RecMosh* >::iterator it;
@@ -352,12 +353,12 @@ RecMosh* MapRecMosh::get( int n1, int l1, int n2, int l2, char* inputPath, char*
     //it's already in the map
     if( it != maprecmosh.end() ) {
         //it->second->use();
-        return it->second;
+        return *(it->second);
     }
     //not in the map so create a new RecMosh object
-    RecMosh* newrecmosh= new RecMosh( n1, l1, n2, l2, inputPath, outputPath );
+    RecMosh* newrecmosh= new RecMosh( n1, l1, n2, l2, path );
     maprecmosh[ key]= newrecmosh;
-    return newrecmosh;
+    return *newrecmosh;
 }
 
 

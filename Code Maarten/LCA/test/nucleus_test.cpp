@@ -44,23 +44,23 @@ int main(int argc,char* argv[])
     //  PAIRCOEFS  //
     /////////////////
     
-    printf("[Info]: number of paircoefs: %d\n",nuc.get_number_of_paircoefs());
-    for (int pc=0;pc<nuc.get_number_of_paircoefs();pc++){
-        Paircoef* coef = nuc.getPaircoef(pc);
-        printf("[PAIRCOEF]: %d \n",pc+1);
-        printf(" | N L M_L n l S j mj T MT >  : | % d  % d  % d  % d  % d  % d  % d  % d  % d  % d > \n",
-                coef->getN(),coef->getL(),coef->getML(),coef->getn(),coef->getl(),coef->getS(),coef->getj(),
-                coef->getmj(),coef->getT(),coef->getMT());
-        printf(" >  This paircoef has %d links.\n",coef->get_number_of_links());
-        for (int li=0;li<coef->get_number_of_links();li++){
-            Paircoef* coef_l;
-            double val;
-            coef->get_links(li,&coef_l,&val);
-            printf(" > [link] with strength % f to state :",val);
-            printf(" | N L M_L n l S j mj T MT >  : | % d  % d  % d  % d  % d  % d  % d  % d  % d  % d > \n",
-                coef_l->getN(),coef_l->getL(),coef_l->getML(),coef_l->getn(),coef_l->getl(),coef_l->getS(),coef_l->getj(),
-                coef_l->getmj(),coef_l->getT(),coef_l->getMT());
-        }
-    }
+    // printf("[Info]: number of paircoefs: %d\n",nuc.get_number_of_paircoefs());
+    // for (int pc=0;pc<nuc.get_number_of_paircoefs();pc++){
+    //     Paircoef* coef = nuc.getPaircoef(pc);
+    //     printf("[PAIRCOEF]: %d \n",pc+1);
+    //     printf(" | N L M_L n l S j mj T MT >  : | % d  % d  % d  % d  % d  % d  % d  % d  % d  % d > \n",
+    //             coef->getN(),coef->getL(),coef->getML(),coef->getn(),coef->getl(),coef->getS(),coef->getj(),
+    //             coef->getmj(),coef->getT(),coef->getMT());
+    //     printf(" >  This paircoef has %d links.\n",coef->get_number_of_links());
+    //     for (int li=0;li<coef->get_number_of_links();li++){
+    //         Paircoef* coef_l;
+    //         double val;
+    //         coef->get_links(li,&coef_l,&val);
+    //         printf(" > [link] with strength % f to state :",val);
+    //         printf(" | N L M_L n l S j mj T MT >  : | % d  % d  % d  % d  % d  % d  % d  % d  % d  % d > \n",
+    //             coef_l->getN(),coef_l->getL(),coef_l->getML(),coef_l->getn(),coef_l->getl(),coef_l->getS(),coef_l->getj(),
+    //             coef_l->getmj(),coef_l->getT(),coef_l->getMT());
+    //     }
+    // }
     return 0;
 }

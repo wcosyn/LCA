@@ -391,7 +391,7 @@ void Nucleus::makepairs()
             // create mosh brackets for pair caclulations
             #pragma omp critical(recmosh)
             {
-                mosh = RecMosh::createRecMosh( n1, l1, n2, l2, inputdir, inputdir  );
+                mosh = &RecMosh::createRecMosh( n1, l1, n2, l2, inputdir );
             }
 
             for( int two_mj1 = -twoj1; two_mj1 < twoj1+1; two_mj1+=2 ) {
@@ -493,7 +493,7 @@ void Nucleus::makepaircoefs()
             string keyi= pair->getCoeff(ci).getkey();
             map < string, Paircoef* >::iterator iti = paircoefs->find( keyi ); // is the key already in our map?
             if( iti == paircoefs->end() ) { // no
-                (*paircoefs)[keyi]= new Paircoef( &(pair->getCoeff(ci)) );
+                (*paircoefs)[keyi]= new Paircoef( pair->getCoeff(ci) );
                 iti = paircoefs->find(keyi);
             }
             Paircoef* pci= iti->second;
@@ -510,7 +510,7 @@ void Nucleus::makepaircoefs()
                 string keyj= pair->getCoeff(cj).getkey();
                 map < string, Paircoef* >::iterator itj = paircoefs->find( keyj );
                 if( itj == paircoefs->end() ) {
-                    (*paircoefs)[keyj]= new Paircoef( &(pair->getCoeff(cj)) );
+                    (*paircoefs)[keyj]= new Paircoef( pair->getCoeff(cj) );
                     itj = paircoefs->find(keyj);
                 }
                 Paircoef* pcj= itj->second;

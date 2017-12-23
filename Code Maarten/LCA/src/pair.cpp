@@ -42,9 +42,11 @@ const Newcoef& Pair::getCoeff( const u_int i)
 
 void Pair::getCoeff( const u_int i, Newcoef** coef, double* n )
 {
-    if( coeflistmade == false) makecoeflist();
-    **coef= coeflist.at(i); //< std::vector::at(size_type) performs boundary checks...
-    *n= sqrt(norm);
+    std::cout << "obsolete function, replace this call!!" << std::endl;
+    exit(-1);
+    // if( coeflistmade == false) makecoeflist();
+    // **coef= coeflist.at(i); //< std::vector::at(size_type) performs boundary checks...
+    // *n= sqrt(norm);
 }
 
 double Pair::getRelPair(const  int n, const int l, const int S )

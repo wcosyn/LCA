@@ -274,33 +274,29 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
     double pair_norm= pair->getfnorm(); // probability <1 for partially filled shell
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
+        Newcoef coefi=pair->getCoeff(ci);
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-            Newcoef* coefi;
-            double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-            pair->getCoeff( ci, &coefi, &normi );
 
-            Newcoef* coefj;
-            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-            pair->getCoeff( cj, &coefj, &normj );
+            Newcoef coefj=pair->getCoeff(cj);
 
-            double vali= coefi->getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
-            double valj= coefj->getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
-            assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
-            assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
-            assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
-            if( coefi->getS() != coefj->getS() ) continue; //only correct when the obmd is summed over spin
-            if( coefi->getMT() != coefj->getMT() ) continue; // ok, this is correct (see manual)
-            int nA= coefi->getn();
-            int nB= coefj->getn();
-            int lA= coefi->getl();
-            int lB= coefj->getl();
+            double vali= coefi.getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj= coefj.getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
+            assert( (coefi.getl()+coefi.getS()+coefi.getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefj.getl()+coefj.getS()+coefj.getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefi.getl()+coefi.getL())%2 == (coefj.getl()+coefj.getL())%2 ); // parity conservation
+            if( coefi.getS() != coefj.getS() ) continue; //only correct when the obmd is summed over spin
+            if( coefi.getMT() != coefj.getMT() ) continue; // ok, this is correct (see manual)
+            int nA= coefi.getn();
+            int nB= coefj.getn();
+            int lA= coefi.getl();
+            int lB= coefj.getl();
             if( nAs > -1 && nA != nAs ) continue;
             if( nBs > -1 && nB != nBs ) continue;
             if( lAs > -1 && lA != lAs ) continue;
             if( lBs > -1 && lB != lBs ) continue;
-            int TA= coefi->getT();
-            int TB= coefj->getT();
-            int MT= coefi->getMT();
+            int TA= coefi.getT();
+            int TB= coefj.getT();
+            int MT= coefi.getMT();
             double preifactor=1;
 
             /** Camille: For explanation of
@@ -318,17 +314,17 @@ double density_ob3::get_me_proj( Pair* pair, void* params )
             if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
                 continue;
 
-            int NA= coefi->getN();
-            int NB= coefj->getN();
-            int LA= coefi->getL();
-            int LB= coefj->getL();
-            int MLA= coefi->getML();
-            int MLB= coefj->getML();
-            int jA= coefi->getj();
-            int jB= coefj->getj();
-            int mjA= coefi->getmj();
-            int mjB= coefj->getmj();
-            int S= coefi->getS();
+            int NA= coefi.getN();
+            int NB= coefj.getN();
+            int LA= coefi.getL();
+            int LB= coefj.getL();
+            int MLA= coefi.getML();
+            int MLB= coefj.getML();
+            int jA= coefi.getj();
+            int jB= coefj.getj();
+            int mjA= coefi.getmj();
+            int mjB= coefj.getmj();
+            int S= coefi.getS();
 
 
             /*
@@ -429,44 +425,40 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
     double pair_norm= pair->getfnorm(); // probability <1 for partially filled shell
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
-        Newcoef* coefi;
-        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-        pair->getCoeff( ci, &coefi, &normi );
+        Newcoef coefi=pair->getCoeff(ci);
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-            Newcoef* coefj;
-            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-            pair->getCoeff( cj, &coefj, &normj );
+            Newcoef coefj=pair->getCoeff(cj);
 
-            double vali= coefi->getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
-            double valj= coefj->getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
-            assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
-            assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
-            assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
-            if( coefi->getS() != coefj->getS() ) continue; //only correct when the obmd is summed over spin
-//      if( coefi->getT() != coefj->getT() ) continue; // projection isospin operator not diagonal in T!!!
-            if( coefi->getMT() != coefj->getMT() ) continue; //all operators diagonal in MT
-            int nA= coefi->getn();
-            int nB= coefj->getn();
-            int lA= coefi->getl();
-            int lB= coefj->getl();
+            double vali= coefi.getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj= coefj.getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
+            assert( (coefi.getl()+coefi.getS()+coefi.getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefj.getl()+coefj.getS()+coefj.getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefi.getl()+coefi.getL())%2 == (coefj.getl()+coefj.getL())%2 ); // parity conservation
+            if( coefi.getS() != coefj.getS() ) continue; //only correct when the obmd is summed over spin
+//      if( coefi.getT() != coefj.getT() ) continue; // projection isospin operator not diagonal in T!!!
+            if( coefi.getMT() != coefj.getMT() ) continue; //all operators diagonal in MT
+            int nA= coefi.getn();
+            int nB= coefj.getn();
+            int lA= coefi.getl();
+            int lB= coefj.getl();
             if( nAs > -1 && nA != nAs ) continue;
             if( nBs > -1 && nB != nBs ) continue;
             if( lAs > -1 && lA != lAs ) continue;
             if( lBs > -1 && lB != lBs ) continue;
-            int NA= coefi->getN();
-            int NB= coefj->getN();
-            int LA= coefi->getL();
-            int LB= coefj->getL();
-            int MLA= coefi->getML();
-            int MLB= coefj->getML();
-            int jA= coefi->getj();
-            int jB= coefj->getj();
-            int mjA= coefi->getmj();
-            int mjB= coefj->getmj();
-            int S= coefi->getS();
-            int TA= coefi->getT();
-            int TB= coefj->getT();
-            int MT= coefi->getMT();
+            int NA= coefi.getN();
+            int NB= coefj.getN();
+            int LA= coefi.getL();
+            int LB= coefj.getL();
+            int MLA= coefi.getML();
+            int MLB= coefj.getML();
+            int jA= coefi.getj();
+            int jB= coefj.getj();
+            int mjA= coefi.getmj();
+            int mjB= coefj.getmj();
+            int S= coefi.getS();
+            int TA= coefi.getT();
+            int TB= coefj.getT();
+            int MT= coefi.getMT();
             double preifactor=1;
 
 
@@ -595,50 +587,46 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
     double pair_norm= pair->getfnorm();// probability <1 for partially filled shell
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
-        Newcoef* coefi;
-        double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-        pair->getCoeff( ci, &coefi, &normi );
+        Newcoef coefi=pair->getCoeff(ci);
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
 
-            Newcoef* coefj;
-            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-            pair->getCoeff( cj, &coefj, &normj );
+            Newcoef coefj=pair->getCoeff(cj);
 
-            double vali= coefi->getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
-            double valj= coefj->getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
-            assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
-            assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
-            assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
-            if( coefi->getS() != coefj->getS() ) continue; //only correct when the obmd is summed over spin
-//      if( coefi->getT() != coefj->getT() ) continue; // projection isospin operator not diagonal in T!!!
-            if( coefi->getMT() != coefj->getMT() ) continue; //all operators diagonal in MT
-            int TA= coefi->getT();
-            int TB= coefj->getT();
+            double vali= coefi.getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj= coefj.getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
+            assert( (coefi.getl()+coefi.getS()+coefi.getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefj.getl()+coefj.getS()+coefj.getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefi.getl()+coefi.getL())%2 == (coefj.getl()+coefj.getL())%2 ); // parity conservation
+            if( coefi.getS() != coefj.getS() ) continue; //only correct when the obmd is summed over spin
+//      if( coefi.getT() != coefj.getT() ) continue; // projection isospin operator not diagonal in T!!!
+            if( coefi.getMT() != coefj.getMT() ) continue; //all operators diagonal in MT
+            int TA= coefi.getT();
+            int TB= coefj.getT();
             // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
             if( t == 0 && TA != TB ) { 
                 continue;
             }
 
-            int nA= coefi->getn();
-            int nB= coefj->getn();
-            int lA= coefi->getl();
-            int lB= coefj->getl();
+            int nA= coefi.getn();
+            int nB= coefj.getn();
+            int lA= coefi.getl();
+            int lB= coefj.getl();
             if( nAs > -1 && nA != nAs ) continue;
             if( nBs > -1 && nB != nBs ) continue;
             if( lAs > -1 && lA != lAs ) continue;
             if( lBs > -1 && lB != lBs ) continue;
-            int NA= coefi->getN();
-            int NB= coefj->getN();
-            int LA= coefi->getL();
-            int LB= coefj->getL();
-            int MLA= coefi->getML();
-            int MLB= coefj->getML();
-            int jA= coefi->getj();
-            int jB= coefj->getj();
-            int mjA= coefi->getmj();
-            int mjB= coefj->getmj();
-            int S= coefi->getS();
-            int MT= coefi->getMT();
+            int NA= coefi.getN();
+            int NB= coefj.getN();
+            int LA= coefi.getL();
+            int LB= coefj.getL();
+            int MLA= coefi.getML();
+            int MLB= coefj.getML();
+            int jA= coefi.getj();
+            int jB= coefj.getj();
+            int mjA= coefi.getmj();
+            int mjB= coefj.getmj();
+            int S= coefi.getS();
+            int MT= coefi.getMT();
             double preifactor= 1;
 
              /** Camille: For explanation of
@@ -761,34 +749,30 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
     double pair_norm= pair->getfnorm(); // probability <1 for partially filled shell
 
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
+        Newcoef coefi=pair->getCoeff(ci);
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-            Newcoef* coefi;
-            double normi; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-            pair->getCoeff( ci, &coefi, &normi );
 
-            Newcoef* coefj;
-            double normj; //norm is not used here, is done higher up operator_virtual_ob::sum_me_pairs
-            pair->getCoeff( cj, &coefj, &normj );
+            Newcoef coefj=pair->getCoeff(cj);
 
-            double vali= coefi->getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
-            double valj= coefj->getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
-            assert( (coefi->getl()+coefi->getS()+coefi->getT()) % 2 == 1 ); // antisymmetry requirement
-            assert( (coefj->getl()+coefj->getS()+coefj->getT()) % 2 == 1 ); // antisymmetry requirement
-            assert( (coefi->getl()+coefi->getL())%2 == (coefj->getl()+coefj->getL())%2 ); // parity conservation
-            if( coefi->getS() != coefj->getS() ) continue; //only correct when the obmd is summed over spin
-//      if( coefi->getT() != coefj->getT() ) continue; // projection isospin operator not diagonal in T!!!
-            if( coefi->getMT() != coefj->getMT() ) continue; //all operators diagonal in MT
-            int nA= coefi->getn();
-            int nB= coefj->getn();
-            int lA= coefi->getl();
-            int lB= coefj->getl();
+            double vali= coefi.getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj= coefj.getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
+            assert( (coefi.getl()+coefi.getS()+coefi.getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefj.getl()+coefj.getS()+coefj.getT()) % 2 == 1 ); // antisymmetry requirement
+            assert( (coefi.getl()+coefi.getL())%2 == (coefj.getl()+coefj.getL())%2 ); // parity conservation
+            if( coefi.getS() != coefj.getS() ) continue; //only correct when the obmd is summed over spin
+//      if( coefi.getT() != coefj.getT() ) continue; // projection isospin operator not diagonal in T!!!
+            if( coefi.getMT() != coefj.getMT() ) continue; //all operators diagonal in MT
+            int nA= coefi.getn();
+            int nB= coefj.getn();
+            int lA= coefi.getl();
+            int lB= coefj.getl();
             if( nAs > -1 && nA != nAs ) continue;
             if( nBs > -1 && nB != nBs ) continue;
             if( lAs > -1 && lA != lAs ) continue;
             if( lBs > -1 && lB != lBs ) continue;
-            int TA= coefi->getT();
-            int TB= coefj->getT();
-            int MT= coefi->getMT();
+            int TA= coefi.getT();
+            int TB= coefj.getT();
+            int MT= coefi.getMT();
             double preifactor= 1;
             // Adapt prefactor if cj sum starts at ci  WIM: IS THIS NEEDED???
 
@@ -816,17 +800,17 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
             }
 
 
-            int NA= coefi->getN();
-            int NB= coefj->getN();
-            int LA= coefi->getL();
-            int LB= coefj->getL();
-            int MLA= coefi->getML();
-            int MLB= coefj->getML();
-            int jA= coefi->getj();
-            int jB= coefj->getj();
-            int mjA= coefi->getmj();
-            int mjB= coefj->getmj();
-            int S= coefi->getS();
+            int NA= coefi.getN();
+            int NB= coefj.getN();
+            int LA= coefi.getL();
+            int LB= coefj.getL();
+            int MLA= coefi.getML();
+            int MLB= coefj.getML();
+            int jA= coefi.getj();
+            int jB= coefj.getj();
+            int mjA= coefi.getmj();
+            int mjB= coefj.getmj();
+            int S= coefi.getS();
 
 
             for( int q= 0; q <= qmax; q++ ) {

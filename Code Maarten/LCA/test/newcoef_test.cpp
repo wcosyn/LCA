@@ -20,7 +20,7 @@ void simpletest(){
     int two_t2 = 1;
 
     //RecMosh::createRecMosh(n1,l1,n2,l2,"./","./");
-    RecMosh* mosh = RecMosh::createRecMosh(n1,l1,n2,l2,".",".");
+    RecMosh* mosh = &RecMosh::createRecMosh(n1,l1,n2,l2,".");
     mosh->use();
 
     int N=0;
@@ -67,22 +67,22 @@ void nucleustest(){
 
     int npc = nuc.get_number_of_paircoefs();
     std::cout << "#[Info] nucleus has " << npc << " paircoefs" << std::endl;
-    for (int i=0;i<npc;i++){
-        Paircoef* pc = nuc.getPaircoef(i);
-        printf("#[Info] [#] (S,T,l,L) : [%4d] (%d,%d,%d %d)\n",i,pc->getS(),pc->getT(),pc->getl(),pc->getL());
-        int nol = pc->get_number_of_links();
-        printf("# > number of links : %d\n",nol);
-        for (int l=0;l<nol;l++){
-            Paircoef* pcl = nullptr;
-            double val = -999;
-            pc->get_links(l,&pcl,&val);
-            printf("#   >   link with (S,T,l,L) : [%4d] (%d,%d,%d,%d) with val = % 6.2e   ",l,pcl->getS(),pcl->getT(),pcl->getl(),pcl->getL(),val);
-            int parity1 = (pc->getl()+pc->getL()) % 2;
-            int parity2 = (pc->getl()+pc->getL()) % 2;
-            printf("  parity :  (%d -- %d)\n",parity1,parity2);
-            assert(parity1==parity2);
-        }
-    }
+    // for (int i=0;i<npc;i++){
+    //     Paircoef* pc = nuc.getPaircoef(i);
+    //     printf("#[Info] [#] (S,T,l,L) : [%4d] (%d,%d,%d %d)\n",i,pc->getS(),pc->getT(),pc->getl(),pc->getL());
+    //     int nol = pc->get_number_of_links();
+    //     printf("# > number of links : %d\n",nol);
+    //     for (int l=0;l<nol;l++){
+    //         Paircoef* pcl = nullptr;
+    //         double val = -999;
+    //         pc->get_links(l,&pcl,&val);
+    //         printf("#   >   link with (S,T,l,L) : [%4d] (%d,%d,%d,%d) with val = % 6.2e   ",l,pcl->getS(),pcl->getT(),pcl->getl(),pcl->getL(),val);
+    //         int parity1 = (pc->getl()+pc->getL()) % 2;
+    //         int parity2 = (pc->getl()+pc->getL()) % 2;
+    //         printf("  parity :  (%d -- %d)\n",parity1,parity2);
+    //         assert(parity1==parity2);
+    //     }
+    // }
 }
 
 int main(){
