@@ -34,7 +34,7 @@ public:
      * @param A the nucleus' mass number
      * @param Z the nucleus' number of protons
      */
-    Nucleus( char* inputdir, char* resultdir,int A, int Z);
+    Nucleus( const std::string & iinputdir, const std::string & iresultdir, const int A, const int Z);
     /**
      * \brief Destructor
      */
@@ -256,8 +256,8 @@ private:
     std::map< std::string, Paircoef*>* paircoefs; 
     std::map< std::string, Tripletcoef*>* tripletcoefs; ///< container for all Tripletscoefs
 
-    char* inputdir;         ///< Path to input directory
-    char* resultdir;        ///< Path to result/output directory
+    std::string inputdir;         ///< Path to input directory
+    std::string resultdir;        ///< Path to result/output directory
     int number_of_pairs;    ///< Total number of pairs in container pairs
     int number_of_triplets; ///< Total number of triplets in container triplets
     int number_of_paircoefs;///< Total number of paircoefs in container paircoefs

@@ -18,7 +18,7 @@ public:
      * @param A mass number of the nucleus
      * @param Z number of protons
      */
-    Nucleusall(char* inputdir, char* resultdir, int A, int Z) ;
+    Nucleusall( const std::string & iinputdir, const std::string & iresultdir, const int A, const int Z);
     /**
      * @brief will return A in normal circumstances (is modified during makepairs())
      */

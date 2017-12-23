@@ -17,7 +17,7 @@ public:
      * @param A mass number of the nucleus
      * @param Z number of protons
      */
-    NucleusNN(char* inputdir, char* resultdir, int A, int Z);
+    NucleusNN( const std::string & iinputdir, const std::string & iresultdir, const int A, const int Z);
     /**
      * @brief nn pairs so isospin of first particle is -1
      */

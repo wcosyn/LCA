@@ -17,7 +17,7 @@ using std::cout;
 using std::endl;
 using std::cerr;
 
-Nucleus::Nucleus( char* iinputdir, char* iresultdir,int A, int Z)
+Nucleus::Nucleus( const std::string & iinputdir, const std::string & iresultdir, const int A, const int Z)
     : inputdir(iinputdir), resultdir(iresultdir), Z(Z), A(A)
 {
     N = A-Z;

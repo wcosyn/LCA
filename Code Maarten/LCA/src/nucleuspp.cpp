@@ -1,6 +1,6 @@
 #include "nucleuspp.h"
 
-NucleusPP::NucleusPP(char* inputdir, char* resultdir, int A, int Z)
+NucleusPP::NucleusPP( const std::string & inputdir, const std::string & resultdir, const int A, const int Z)
     : Nucleus( inputdir, resultdir, A, Z)
 {
 

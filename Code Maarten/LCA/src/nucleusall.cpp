@@ -6,7 +6,7 @@ using std::vector;
 using std::cout;
 using std::endl;
 
-Nucleusall::Nucleusall(char* inputdir, char* resultdir, int A, int Z)
+Nucleusall::Nucleusall( const std::string & inputdir, const std::string & resultdir, const int A, const int Z)
     : Nucleus( inputdir, resultdir, A, Z)
 {
     A1= 0;

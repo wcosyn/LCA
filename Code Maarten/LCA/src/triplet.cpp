@@ -15,7 +15,7 @@ using std::endl;
  *  So the int perm = 0, 1, 2 distinguishes between
  *  |a_1a_2a_3>, |a_2a_3a_1> and |a_3a_1a_2>
  */
-Triplet::Triplet(char* input, char* output, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2, int n3, int l3, int two_j3, int two_mj3, int two_t3 )
+Triplet::Triplet(const std::string & input, const std::string & output, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2, int n3, int l3, int two_j3, int two_mj3, int two_t3 )
     : input(input), output(output), fnorm(1)
 {
 

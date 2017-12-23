@@ -16,7 +16,7 @@ using std::stringstream;
 using std::cerr;
 using std::endl;
 
-Threebodycoef::Threebodycoef(char* input, char* output, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2, int n3, int l3, int two_j3, int two_mj3, int two_t3,
+Threebodycoef::Threebodycoef(const string& input, const string& output, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2, int n3, int l3, int two_j3, int two_mj3, int two_t3,
                              int n12, int l12, int S12, int j12, int mj12, int T12, int MT12, int N123, int L123, int ML123, int n123, int l123, int ml123, int two_ms3, int perm)
     : input( input ), output( output ), n12( n12), l12( l12), S12( S12), j12(j12), mj12(mj12), T12(T12), MT12(MT12),  n123(n123), l123(l123), ml123(ml123), N123( N123), L123( L123), ML123( ML123), two_ms3(two_ms3), two_t3(two_t3), perm(perm)
 {

@@ -15,7 +15,7 @@ class Threebodycoef
 {
 public:
 
-    Threebodycoef(char* input, char* output, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2, int n3, int l3, int two_j3, int two_mj3, int two_t3,
+    Threebodycoef(const std::string& input, const std::string& output, int n1, int l1, int two_j1, int two_mj1, int two_t1, int n2, int l2, int two_j2, int two_mj2, int two_t2, int n3, int l3, int two_j3, int two_mj3, int two_t3,
                   int n12, int l12, int ml12, int T12, int MT12, int S12, int MS12, int n123, int l123, int ml123, int N123, int L123, int ML123, int two_ms3, int perm);
     double getvalue() {
         return result;
@@ -50,8 +50,8 @@ private:
     // Get clebsch gordan coefficients
     double cg(int j1, int mj1, int j2, int mj2, int J, int MJ);
     double cg2(int two_j1, int two_mj1, int two_j2, int two_mj2, int two_J, int two_MJ);
-    char* input;
-    char* output;
+    std::string input;
+    std::string output;
     int n12, l12, S12, j12, mj12, T12, MT12, n123, l123, ml123, N123, L123, ML123, two_ms3, two_t3;
     int perm;
     std::string key;
