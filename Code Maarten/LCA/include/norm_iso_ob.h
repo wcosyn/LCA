@@ -1,0 +1,62 @@
+#ifndef NORM_ISO_OB_H
+#define NORM_ISO_OB_H
+#include "nucleus_iso.h"
+#include "operator_virtual_iso_ob.h"
+
+/**
+ * \brief Calculates the norm for a one-body operator. 
+ * 
+ * - See appendix D2 of PhD thesis Vanhalst for information about the formulas.
+ * - Everywhere a void* pointer is passed to one of the virtual functions, a pointer to a norm_ob::norm_ob_params is expected
+ */
+class norm_iso_ob : public operator_virtual_iso_ob
+{
+public:
+    /**
+     * \brief Constructor.
+     *
+     * @param nucleus holds all the pairs [Nucleus::pairs] and/or coupled states with linkstrengths [Nucleus::paircoefs]
+     * @param central turn on/off the central correlations.
+     * @param tensor turn on/off the tensor correlations .
+     * @param isospin turn on/off the spin-isospin correlations .
+     * @param norm the renormalization factor needed to renormalize .
+     */
+    norm_iso_ob(NucleusIso* nucleus, bool central= true, bool tensor=true, bool isospin=true, double norm= 1);
+    /**
+     * \brief Destructor
+     */
+    virtual ~norm_iso_ob() {};
+
+    //these are commented in the base class
+
+    virtual Isoterm get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
+    virtual Isoterm get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
+    virtual Isoterm get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
+    virtual Isoterm get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
+
+    /**
+     * @struct norm_ob_params
+     * \brief Structure used by the norm_ob class.
+     *
+     * @var norm_ob_params::nA
+     * \brief Selects bra pairs with certain coupled HO relative n qn. -1 if you want all.
+     * @var norm_ob_params::lA
+     * \brief Selects bra pairs with certain coupled HO relative OAM qn. -1 if you want all.
+     * @var norm_ob_params::nB
+     * \brief Selects ket pairs with certain coupled HO relative n qn. -1 if you want all.
+     * @var norm_ob_params::lB
+     * \brief Selects ket pairs with certain coupled HO relative OAM qn. -1 if you want all.
+     * @var norm_ob_params::t
+     * \brief select proton (+1), neutron (-1), both (0). Note that this does not correspond with an isospin projection of a particle or particle pair!
+     */
+    struct norm_ob_params {
+        int nA;
+        int lA;
+        int nB;
+        int lB;
+    };
+
+};
+
+
+#endif // NORM_ISO_OB_H

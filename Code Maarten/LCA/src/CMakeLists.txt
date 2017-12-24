@@ -12,6 +12,7 @@ set( SRC
 	kinenergy_ob.cpp
 	newcoef.cpp
 	norm_ob.cpp
+	norm_iso_ob.cpp
 	norm_tb.cpp
 	nucleusall.cpp
 	nucleus.cpp

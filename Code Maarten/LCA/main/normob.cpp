@@ -1,4 +1,5 @@
 #include "norm_ob.h"
+#include "norm_iso_ob.h"
 #include "nucleusall.h"
 #include "nucleuspp.h"
 #include "nucleusnp.h"
@@ -474,8 +475,13 @@ int main(int argc,char* argv[]){
     // double norm_corr= no.sum_me_corr( &nob );
     // double norm_res = norm_mf+norm_corr;
     // std::cout << norm_mf << " " << norm_corr << std::endl;
-    // NucleusIso("../data/mosh","../data/mosh",12,6);
+    // NucleusIso test("../data/mosh","../data/mosh",12,6);
+    // norm_iso_ob isonorm(&test);
+    // norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
+    // IsoMatrixElement res= isonorm.sum_me_coefs( &nob );
+    // std::cout << res.pp_res << " " << res.nn_res << " " << res.np_p_res << " " << res.np_p_res << std::endl;
     // exit(1);
+
     bool succes = normsRun(bool(atoi(argv[1])),bool(atoi(argv[2])),atoi(argv[3]));
     printf("[norm] normsRun() ");
     if (succes){
