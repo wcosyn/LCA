@@ -215,22 +215,7 @@ private:
      * \brief Make Tripletcoefs from list of triplets
      */
     void maketripletcoefs();
-    /**
-     * @brief  Get index of highest occupied shell "shell_max" in
-     * the vector <Shell*> from getShells1() and getShells2() defined above
-     * and get number of nucleons "max" in the nucleus if this shell would
-     * be closed (fully occupied).
-     * 
-     * @param occupied number of particles in all shells (proton or neutron)
-     * @param[out] shell_max 
-     * @param[out] max 
-     * 
-     * @see Shell
-     * 
-     * 
-     */
-    void get_shell_max( const int occupied, int& shell_max, int& max );
-
+    
     std::vector< Pair*> pairs;               ///< container for all Pairs
     std::vector< Triplet*>* triplets;         ///< container for all Triplets
     /**

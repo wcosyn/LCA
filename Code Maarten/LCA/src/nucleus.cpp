@@ -127,9 +127,9 @@ void Nucleus::maketriplets( int t3 )
     // and the number of particles is this shell should be fully occupied: maxi
     // The latest is necessary to calculate the normalization factor for not
     // fully occupied shells
-    get_shell_max(A1, shell1_max, max1 );
-    get_shell_max(A2, shell2_max, max2 );
-    get_shell_max(A3, shell3_max, max3 );
+    Shell::get_shell_max(A1, shell1_max, max1 );
+    Shell::get_shell_max(A2, shell2_max, max2 );
+    Shell::get_shell_max(A3, shell3_max, max3 );
     double totalsum= 0;
 
     #pragma omp parallel for collapse(3)
@@ -260,78 +260,6 @@ void Nucleus::maketriplets( int t3 )
 }
 
 
-// Also see shell.h
-void Nucleus::get_shell_max( const int A,  int& shell_max,  int& max )
-{
-    if( A <= 2 ) {
-        shell_max= 0;
-        max= 2;
-    } else if( A <= 6 ) {
-        shell_max= 1;
-        max= 6;
-    } else if( A <= 8 ) {
-        shell_max= 2;
-        max= 8;
-    } else if( A <= 14 ) {
-        shell_max= 3;
-        max= 14;
-    } else if( A <= 16 ) {
-        shell_max= 4;
-        max= 16;
-    } else if( A <= 20) {
-        shell_max= 5;
-        max= 20;
-    } else if( A <= 28 ) {
-        shell_max= 6;
-        max= 28;
-    } else if( A <= 32 ) {
-        shell_max= 7;
-        max= 32;
-    } else if( A <= 38 ) {
-        shell_max= 8;
-        max= 38;
-    } else if( A <= 40 ) {
-        shell_max= 9;
-        max= 40;
-    } else if( A <= 50 ) {
-        shell_max= 10;
-        max= 50;
-    } else if( A <= 58 ) {
-        shell_max= 11;
-        max= 58;
-    } else if( A <= 64 ) {
-        shell_max= 12;
-        max= 64;
-    } else if( A <= 68 ) {
-        shell_max= 13;
-        max= 68;
-    } else if( A <= 70 ) {
-        shell_max= 14;
-        max= 70;
-    } else if( A <= 82 ) {
-        shell_max= 15;
-        max= 82;
-    } else if( A <= 92 ) {
-        shell_max= 16;
-        max= 92;
-    } else if( A <= 100 ) {
-        shell_max= 17;
-        max= 100;
-    } else if( A <= 106 ) {
-        shell_max= 18;
-        max= 106;
-    } else if( A <= 110 ) {
-        shell_max= 19;
-        max= 110;
-    } else if( A <= 112 ) {
-        shell_max= 20;
-        max= 112;
-    } else if( A <= 126 ) {
-        shell_max= 21;
-        max= 126;
-    }
-}
-
 
 /**
  * \brief Note: This will calculate the all normalised anti-sym pairs \f$ |t1t2>_nas
@@ -351,8 +279,8 @@ void Nucleus::makepairs()
 
     int shell1_max= 0, shell2_max= 0;
     int max1= 0, max2= 0;
-    get_shell_max(A1, shell1_max, max1 );
-    get_shell_max(A2, shell2_max, max2 );
+    Shell::get_shell_max(A1, shell1_max, max1 );
+    Shell::get_shell_max(A2, shell2_max, max2 );
 
 
     #pragma omp parallel for collapse(2)
