@@ -8,6 +8,7 @@ set( SRC
 	density_rel.cpp
 	density_rel_integrand2.cpp
 	density_td.cpp
+	isopaircoef.cpp
 	kinenergy_ob.cpp
 	newcoef.cpp
 	norm_ob.cpp
@@ -17,6 +18,7 @@ set( SRC
 	nucleusnn.cpp
 	nucleusnp.cpp
 	nucleuspp.cpp
+	nucleus_iso.cpp
 	operator_virtual.cpp
 	operator_virtual_ob.cpp
 	paircoef.cpp
