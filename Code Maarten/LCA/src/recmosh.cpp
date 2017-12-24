@@ -63,7 +63,7 @@ void RecMosh::remove()
     used--;
     if( used < 1 ) {
         cout << "test" << __FILE__ << __LINE__ << endl;
-        maprecmosh.remove( n1*1e3+ l1*1e2+ n2*10+ l2 );
+        // maprecmosh.remove( n1*1e3+ l1*1e2+ n2*10+ l2 );
         //delete this;
     }
 

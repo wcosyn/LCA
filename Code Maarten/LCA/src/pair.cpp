@@ -14,7 +14,7 @@ Pair::Pair( RecMosh* mosh,
       mosh( mosh), coeflistmade( false),number_of_coeff(0)
 {
     // Let the moshinsky bracket know it is being used.
-    mosh->use();
+    //mosh->use();
     norm = 1.;
 }
 
@@ -23,7 +23,7 @@ Pair::~Pair()
 {
     // for( u_int i = 0; i < coeflist.size(); i++ )
     //     delete coeflist[i];
-    mosh->remove();
+    //mosh->remove();
 }
 
 int Pair::get_number_of_coeff()

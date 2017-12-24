@@ -313,7 +313,7 @@ void Nucleus::makepairs()
                     if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 <= two_mj1 ) continue;
                     // make pair with combination of it1 and it2;
                     Pair* pair;
-                    #pragma omp critical(recmosh)
+                    //#pragma omp critical(recmosh)
                     {
                         pair = new Pair( mosh, n1, l1, twoj1, two_mj1, t1, n2, l2, twoj2, two_mj2, t2 );
                     }
@@ -373,10 +373,10 @@ void Nucleus::makepairs()
                 }
             }
 
-            #pragma omp critical(recmosh)
-            {
-                mosh->remove();
-            }
+            // #pragma omp critical(recmosh)
+            // {
+            //     mosh->remove();
+            // }
         }
     }
     number_of_pairs = pairs.size();
