@@ -4,6 +4,7 @@
 #include "nucleusnp.h"
 #include "nucleusnn.h"
 #include "recmosh.h"
+#include "nucleus_iso.h"
 
 int testUnit(Nucleusall& nuc){
     norm_ob nob(&nuc);
@@ -473,7 +474,8 @@ int main(int argc,char* argv[]){
     // double norm_corr= no.sum_me_corr( &nob );
     // double norm_res = norm_mf+norm_corr;
     // std::cout << norm_mf << " " << norm_corr << std::endl;
-
+    // NucleusIso("../data/mosh","../data/mosh",12,6);
+    // exit(1);
     bool succes = normsRun(bool(atoi(argv[1])),bool(atoi(argv[2])),atoi(argv[3]));
     printf("[norm] normsRun() ");
     if (succes){

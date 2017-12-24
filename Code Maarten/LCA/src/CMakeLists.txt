@@ -21,6 +21,7 @@ set( SRC
 	nucleus_iso.cpp
 	operator_virtual.cpp
 	operator_virtual_ob.cpp
+	operator_virtual_iso_ob.cpp
 	paircoef.cpp
 	pair.cpp
 	recmosh.cpp

@@ -74,7 +74,7 @@ public:
      * 
      * @return const std::map<std::string, Paircoef*>& reference to the map 
      */
-    std::map<std::string, IsoPaircoef>& getIsoPaircoefs()
+    const std::map<std::string, IsoPaircoef>& getIsoPaircoefs() const
     { return isopaircoefs;}
 
 private:

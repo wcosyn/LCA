@@ -84,6 +84,8 @@ Now it is very inefficient as basically the program has to start from scratch ea
 
 45. MapWavefunctionP checks for A and pstepset, if changed everything should be cleared etc.
 
+48. isopaircoefs: symmetry between pp and nn, take abs(MT) in key.  Due to MT dependence only 1 of the tree strenghts is non-zero now!  check mem usage for large nuclei then..., 
+one could take mt dependence out keys even and account for it in matrix multiplication since we know the MT from each of the 3 values...
 
 ++++CHECKS++++
 
