@@ -21,7 +21,6 @@ operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus, bool cent
 IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
 {
     int max= nucleus->get_number_of_iso_paircoefs();
-    IsoMatrixElement result={0.,0.,0.,0.};
 
     /*
      * Sum over the paircoefs in the nucleus,
@@ -35,7 +34,8 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
         index++;
     }
 
-    #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:sum) //num_threads(1)
+    double pp_res=0.,nn_res=0.,np_p_res=0.,np_n_res=0.;
+    #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:pp_res, nn_res, np_p_res, np_n_res) //num_threads(1)
     for( int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
         const IsoPaircoef* pc1= loop_array[i];
         //double val= pc1->get_value(); //normalisation of partially filled shells taken into account in the linkstrength val
@@ -45,10 +45,10 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
         Isoterm both =  get_me_corr_both( *pc1, *pc1, params);
         Isoterm right =  get_me_corr_right( *pc1, *pc1, params);
 
-        result.pp_res+=pc1->get_ppvalue()*(left.p_res+both.p_res+right.p_res);
-        result.nn_res+=pc1->get_nnvalue()*(left.n_res+both.n_res+right.n_res);
-        result.np_p_res+=pc1->get_npvalue()*(left.p_res+both.p_res+right.p_res);
-        result.np_n_res+=pc1->get_npvalue()*(left.n_res+both.n_res+right.n_res);
+        pp_res+=pc1->get_ppvalue()*(left.p_res+both.p_res+right.p_res);
+        nn_res+=pc1->get_nnvalue()*(left.n_res+both.n_res+right.n_res);
+        np_p_res+=pc1->get_npvalue()*(left.p_res+both.p_res+right.p_res);
+        np_n_res+=pc1->get_npvalue()*(left.n_res+both.n_res+right.n_res);
 
 
         IsoPaircoef* pc2;
@@ -65,10 +65,10 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
             Isoterm right1= get_me_corr_right( *pc1, *pc2, params);
             Isoterm right2= get_me_corr_right( *pc2, *pc1, params);
 
-            result.pp_res+=it->second.pplink*(left1.p_res+both1.p_res+right1.p_res+left2.p_res+both2.p_res+right2.p_res);
-            result.nn_res+=it->second.nnlink*(left1.n_res+both1.n_res+right1.n_res+left2.n_res+both2.n_res+right2.n_res);
-            result.np_p_res+=it->second.nplink*(left1.p_res+both1.p_res+right1.p_res+left2.p_res+both2.p_res+right2.p_res);
-            result.np_n_res+=it->second.nplink*(left1.n_res+both1.n_res+right1.n_res+left2.n_res+both2.n_res+right2.n_res);
+            pp_res+=it->second.pplink*(left1.p_res+both1.p_res+right1.p_res+left2.p_res+both2.p_res+right2.p_res);
+            nn_res+=it->second.nnlink*(left1.n_res+both1.n_res+right1.n_res+left2.n_res+both2.n_res+right2.n_res);
+            np_p_res+=it->second.nplink*(left1.p_res+both1.p_res+right1.p_res+left2.p_res+both2.p_res+right2.p_res);
+            np_n_res+=it->second.nplink*(left1.n_res+both1.n_res+right1.n_res+left2.n_res+both2.n_res+right2.n_res);
 
             
         }
@@ -77,12 +77,8 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
         }
 
     }
-    result.pp_res/=norm;
-    result.nn_res/=norm;
-    result.np_p_res/=norm;
-    result.np_n_res/=norm;
     
-    return result;
+    return {pp_res/norm, nn_res/norm, np_p_res/norm, np_n_res/norm};
 }
 
 
@@ -90,7 +86,6 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
 IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
 {
     int max= nucleus->get_number_of_iso_paircoefs();
-    IsoMatrixElement result={0.,0.,0.,0.};
     /*
      * Sum over the paircoefs in the nucleus,
      * and the links between the paircoefs
@@ -103,16 +98,17 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
         index++;
     }
 
-    #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:sum) //num_threads(1)
+    double pp_res=0.,nn_res=0.,np_p_res=0.,np_n_res=0.;
+    #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:pp_res, nn_res, np_p_res, np_n_res) //num_threads(1)
     for( int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
         const IsoPaircoef* pc1= loop_array[i];
 
         //double val=  pc1->get_value();
         Isoterm res =  get_me( *pc1, *pc1, params); //normalisation of partially filled shells taken into account in the linkstrength val
-        result.pp_res+=pc1->get_ppvalue()*(res.p_res);
-        result.nn_res+=pc1->get_nnvalue()*(res.n_res);
-        result.np_p_res+=pc1->get_npvalue()*(res.p_res);
-        result.np_n_res+=pc1->get_npvalue()*(res.n_res);
+        pp_res+=pc1->get_ppvalue()*(res.p_res);
+        nn_res+=pc1->get_nnvalue()*(res.n_res);
+        np_p_res+=pc1->get_npvalue()*(res.p_res);
+        np_n_res+=pc1->get_npvalue()*(res.n_res);
         
         // int max_links= pc1->get_number_of_links();
 //    cout << max_links << endl;
@@ -129,10 +125,10 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
             Isoterm res1 = get_me( *pc1, *pc2, params); //normalisation of partially filled shells taken into account in the linkstrength val
             Isoterm res2 = get_me( *pc2, *pc1, params); //normalisation of partially filled shells taken into account in the linkstrength val
 
-            result.pp_res+=it->second.pplink*(res1.p_res+res2.p_res);
-            result.nn_res+=it->second.nnlink*(res1.p_res+res2.p_res);
-            result.np_p_res+=it->second.nplink*(res1.p_res+res2.p_res);
-            result.np_n_res+=it->second.nplink*(res1.p_res+res2.p_res);
+            pp_res+=it->second.pplink*(res1.p_res+res2.p_res);
+            nn_res+=it->second.nnlink*(res1.p_res+res2.p_res);
+            np_p_res+=it->second.nplink*(res1.p_res+res2.p_res);
+            np_n_res+=it->second.nplink*(res1.p_res+res2.p_res);
 
         }
         if( !(i%1000) ) {
@@ -140,13 +136,8 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
         }
 
     }
-
-    result.pp_res/=(A-1.)*norm;
-    result.nn_res/=(A-1.)*norm;
-    result.np_p_res/=(A-1.)*norm;  //factor A-1 is because we compute a one-body operator as a two-body one: O(1)+O(2)
-    result.np_n_res/=(A-1.)*norm;
     
-    return result;
+    return {pp_res/(A-1.)/norm,nn_res/(A-1.)/norm, np_p_res/(A-1.)/norm, np_n_res/(A-1.)/norm};
  
 }
 

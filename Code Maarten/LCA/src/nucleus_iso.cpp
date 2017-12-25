@@ -72,8 +72,8 @@ void NucleusIso::makeisopaircoefs()
     #pragma omp parallel for collapse(2)
     //loops run over closed filled shells!!
     for( int i1= 0; i1 <= shell1_max; i1++ ) {
-        for( int i2= i1; i2 <= shell2_max; i2++ ) { //start from i1 to prevent double counting!
-
+        for( int i2= 0; i2 <= shell2_max; i2++ ) { //start from i1 to prevent double counting!
+            if( i2 < i1 ) continue; // prevent double counting, only if t1==t2, e.g. pp or nn pairs
             int n1= Shell::shells[i1].getN();
             int l1= Shell::shells[i1].getL();
             int twoj1= Shell::shells[i1].getTwo_j();
@@ -190,8 +190,8 @@ void NucleusIso::makeisopaircoefs()
     #pragma omp parallel for collapse(2)
     //loops run over closed filled shells!!
     for( int i1= 0; i1 <= shell1_max; i1++ ) {
-        for( int i2= i1; i2 <= shell2_max; i2++ ) { //start from i1 to prevent double counting 
-
+        for( int i2= 0; i2 <= shell2_max; i2++ ) { 
+            if( i2 < i1 ) continue; // prevent double counting, only if t1==t2, e.g. pp or nn pairs
             int n1= Shell::shells[i1].getN();
             int l1= Shell::shells[i1].getL();
             int twoj1= Shell::shells[i1].getTwo_j();
