@@ -13,7 +13,7 @@ norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, bool central, bool tensor, bool is
 
 
 
-Isoterm norm_iso_ob::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
+double norm_iso_ob::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
 {
     struct norm_ob_params* nob= (struct norm_ob_params*) params;
     int nAs= nob->nA;
@@ -22,50 +22,35 @@ Isoterm norm_iso_ob::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, voi
     int lBs= nob->lB;
     
     //has to be diagonal in all quantum numbers
-    if( pc1.getS() != pc2.getS() ) return {0.,0.};
-    if( pc1.getj() != pc2.getj() ) return {0.,0.};
-    if( pc1.getmj() != pc2.getmj() ) return {0.,0.};
-    // if( pc1.getT() != pc2.getT() ) return {0.,0.};
-    if( pc1.getMT() != pc2.getMT() ) return {0.,0.};
-    if( pc1.getN() != pc2.getN() ) return {0.,0.};
-    if( pc1.getL() != pc2.getL() ) return {0.,0.};
-    if( pc1.getML() != pc2.getML() ) return {0.,0.};
-    if( pc1.getn() != pc2.getn() ) return {0.,0.};
-    if( pc1.getl() != pc2.getl() ) return {0.,0.};
+    if( pc1.getS() != pc2.getS() ) return 0.;
+    if( pc1.getj() != pc2.getj() ) return 0.;
+    if( pc1.getmj() != pc2.getmj() ) return 0.;
+    // if( pc1.getT() != pc2.getT() ) return 0.;
+    if( pc1.getMT() != pc2.getMT() ) return 0.;
+    if( pc1.getN() != pc2.getN() ) return 0.;
+    if( pc1.getL() != pc2.getL() ) return 0.;
+    if( pc1.getML() != pc2.getML() ) return 0.;
+    if( pc1.getn() != pc2.getn() ) return 0.;
+    if( pc1.getl() != pc2.getl() ) return 0.;
     int l= pc1.getl();
     int n= pc1.getn();
-    if( nAs > -1 && n != nAs ) return {0.,0.};
-    if( nBs > -1 && n != nBs ) return {0.,0.};
-    if( lAs > -1 && l != lAs ) return {0.,0.};
-    if( lBs > -1 && l != lBs ) return {0.,0.};
+    if( nAs > -1 && n != nAs ) return 0.;
+    if( nBs > -1 && n != nBs ) return 0.;
+    if( lAs > -1 && l != lAs ) return 0.;
+    if( lBs > -1 && l != lBs ) return 0.;
 
     int TA= pc1.getT();
     int TB= pc2.getT();
     int MT= pc1.getMT();
-    double prepfactor=1., prenfactor=1.;
-    if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
-        prepfactor*= 0.5;
-        prenfactor*=0.5;
-        if( TA != TB ){
-            prenfactor *= -1;
-        } 
-    }
-    else{
-        if(TA!=TB) return {0.,0.};
-        else{
-            if(MT==1) { prenfactor=0.;}
-            else{prepfactor=0.;}
-        }
-    }
     
     // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
     // if( t == 0 && TA != TB )
-    //     return {0.,0.};
-    return {prepfactor*2./A,prenfactor*2./A};
+    //     return 0.;
+    return 2./A;
 
 }
 
-Isoterm norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
+double norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
 {
     struct norm_ob_params* nob= (struct norm_ob_params*) params;
     int nAs= nob->nA;
@@ -75,7 +60,7 @@ Isoterm norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoe
     // If diagonal is left = right,
     // so it is not necessary to calculate right
     if( nAs == nBs && lAs == lBs )
-        return {0.,0.};
+        return 0.;
 
 
     
@@ -84,42 +69,27 @@ Isoterm norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoe
     // The correlation operator keeps S j m_j T M_T N L M_L unchanged
     // any correlation function can give overlap between different n
     // tensor can give overlap between different l
-    if( pc1.getS()  != pc2.getS()  ) return {0.,0.};
-    if( pc1.getj()  != pc2.getj()  ) return {0.,0.};
-    if( pc1.getmj() != pc2.getmj() ) return {0.,0.};
-    // if( pc1.getT()  != pc2.getT()  ) return {0.,0.};
-    if( pc1.getMT() != pc2.getMT() ) return {0.,0.};
-    if( pc1.getN()  != pc2.getN()  ) return {0.,0.};
-    if( pc1.getL()  != pc2.getL()  ) return {0.,0.};
-    if( pc1.getML() != pc2.getML() ) return {0.,0.};
+    if( pc1.getS()  != pc2.getS()  ) return 0.;
+    if( pc1.getj()  != pc2.getj()  ) return 0.;
+    if( pc1.getmj() != pc2.getmj() ) return 0.;
+    // if( pc1.getT()  != pc2.getT()  ) return 0.;
+    if( pc1.getMT() != pc2.getMT() ) return 0.;
+    if( pc1.getN()  != pc2.getN()  ) return 0.;
+    if( pc1.getL()  != pc2.getL()  ) return 0.;
+    if( pc1.getML() != pc2.getML() ) return 0.;
     int l1= pc1.getl();
     int l2= pc2.getl();
     int n1= pc1.getn();
     int n2= pc2.getn();
-    if( nAs > -1 && n1 != nAs ) return {0.,0.};
-    if( nBs > -1 && n2 != nBs ) return {0.,0.};
-    if( lAs > -1 && l1 != lAs ) return {0.,0.};
-    if( lBs > -1 && l2 != lBs ) return {0.,0.};
+    if( nAs > -1 && n1 != nAs ) return 0.;
+    if( nBs > -1 && n2 != nBs ) return 0.;
+    if( lAs > -1 && l1 != lAs ) return 0.;
+    if( lBs > -1 && l2 != lBs ) return 0.;
     int MT= pc1.getMT();
 
     int TA= pc1.getT();
     int TB= pc2.getT();
 
-    double prepfactor=1., prenfactor=1.;
-    if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
-        prepfactor*= 0.5;
-        prenfactor*=0.5;
-        if( TA != TB ){
-            prenfactor *= -1;
-        } 
-    }
-    else{
-        if(TA!=TB) return {0.,0.};
-        else{
-            if(MT==1) { prenfactor=0.;}
-            else{prepfactor=0.;}
-        }
-    }
 
     int S= pc1.getS();
     int j= pc1.getj();
@@ -182,10 +152,10 @@ Isoterm norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoe
         sum+=  norm* 0.5* iso_sum* iso;
     }
 
-    return {sum*2./A*prepfactor, sum*2./A*prenfactor};
+    return sum*2./A;
 }
 
-Isoterm norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
+double norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
 {
     struct norm_ob_params* nob= (struct norm_ob_params*) params;
     int nAs= nob->nA;
@@ -206,42 +176,26 @@ Isoterm norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef
     // The correlation operator keeps S j m_j T M_T N L M_L unchanged
     // any correlation function can give overlap between different n
     // tensor can give overlap between different l
-    if( pc1.getS() != pc2.getS() ) return {0.,0.};
-    if( pc1.getj() != pc2.getj() ) return {0.,0.};
-    if( pc1.getmj() != pc2.getmj() ) return {0.,0.};
-    // if( pc1.getT() != pc2.getT() ) return {0.,0.};
-    if( pc1.getMT() != pc2.getMT() ) return {0.,0.};
-    if( pc1.getN() != pc2.getN() ) return {0.,0.};
-    if( pc1.getL() != pc2.getL() ) return {0.,0.};
-    if( pc1.getML() != pc2.getML() ) return {0.,0.};
+    if( pc1.getS() != pc2.getS() ) return 0.;
+    if( pc1.getj() != pc2.getj() ) return 0.;
+    if( pc1.getmj() != pc2.getmj() ) return 0.;
+    // if( pc1.getT() != pc2.getT() ) return 0.;
+    if( pc1.getMT() != pc2.getMT() ) return 0.;
+    if( pc1.getN() != pc2.getN() ) return 0.;
+    if( pc1.getL() != pc2.getL() ) return 0.;
+    if( pc1.getML() != pc2.getML() ) return 0.;
     int l1= pc1.getl();
     int l2= pc2.getl();
     int n1= pc1.getn();
     int n2= pc2.getn();
-    if( nAs > -1 && n1 != nAs ) return {0.,0.};
-    if( nBs > -1 && n2 != nBs ) return {0.,0.};
-    if( lAs > -1 && l1 != lAs ) return {0.,0.};
-    if( lBs > -1 && l2 != lBs ) return {0.,0.};
+    if( nAs > -1 && n1 != nAs ) return 0.;
+    if( nBs > -1 && n2 != nBs ) return 0.;
+    if( lAs > -1 && l1 != lAs ) return 0.;
+    if( lBs > -1 && l2 != lBs ) return 0.;
     int MT= pc1.getMT();
 
     int TA= pc1.getT();
     int TB= pc2.getT();
-
-    double prepfactor=1., prenfactor=1.;
-    if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
-        prepfactor*= 0.5;
-        prenfactor*=0.5;
-        if( TA != TB ){
-            prenfactor *= -1;
-        } 
-    }
-    else{
-        if(TA!=TB) return {0.,0.};
-        else{
-            if(MT==1) { prenfactor=0.;}
-            else{prepfactor=0.;}
-        }
-    }
 
     int S= pc1.getS();
     int j= pc1.getj();
@@ -301,11 +255,11 @@ Isoterm norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef
         }
         sum+=  norm* 0.5* iso_sum* iso;
     }
-    return {sum*2./A*prepfactor*factor_right, sum*2./A*prenfactor*factor_right};
+    return sum*2./A*factor_right;
 
 }
 
-Isoterm norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
+double norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
 {
     struct norm_ob_params* nob= (struct norm_ob_params*) params;
     int nAs= nob->nA;
@@ -316,43 +270,27 @@ Isoterm norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef
     // The correlation operator keeps S j m_j T M_T N L M_L unchanged
     // any correlation function can give overlap between different n
     // tensor can give overlap between different l
-    if( pc1.getS() != pc2.getS() ) return {0.,0.};
-    if( pc1.getj() != pc2.getj() ) return {0.,0.};
-    if( pc1.getmj() != pc2.getmj() ) return {0.,0.};
-    // if( pc1.getT() != pc2.getT() ) return {0.,0.};
-    if( pc1.getMT() != pc2.getMT() ) return {0.,0.};
-    if( pc1.getN() != pc2.getN() ) return {0.,0.};
-    if( pc1.getL() != pc2.getL() ) return {0.,0.};
-    if( pc1.getML() != pc2.getML() ) return {0.,0.};
+    if( pc1.getS() != pc2.getS() ) return 0.;
+    if( pc1.getj() != pc2.getj() ) return 0.;
+    if( pc1.getmj() != pc2.getmj() ) return 0.;
+    // if( pc1.getT() != pc2.getT() ) return 0.;
+    if( pc1.getMT() != pc2.getMT() ) return 0.;
+    if( pc1.getN() != pc2.getN() ) return 0.;
+    if( pc1.getL() != pc2.getL() ) return 0.;
+    if( pc1.getML() != pc2.getML() ) return 0.;
     int l1= pc1.getl();
     int l2= pc2.getl();
     int n1= pc1.getn();
     int n2= pc2.getn();
-    if( nAs > -1 && n1 != nAs ) return {0.,0.};
-    if( nBs > -1 && n1 != nBs ) return {0.,0.};
-    if( lAs > -1 && l2 != lAs ) return {0.,0.};
-    if( lBs > -1 && l2 != lBs ) return {0.,0.};
+    if( nAs > -1 && n1 != nAs ) return 0.;
+    if( nBs > -1 && n1 != nBs ) return 0.;
+    if( lAs > -1 && l2 != lAs ) return 0.;
+    if( lBs > -1 && l2 != lBs ) return 0.;
     int MT= pc1.getMT();
 
     int TA= pc1.getT();
     int TB= pc2.getT();
 
-
-    double prepfactor=1., prenfactor=1.;
-    if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
-        prepfactor*= 0.5;
-        prenfactor*=0.5;
-        if( TA != TB ){
-            prenfactor *= -1;
-        } 
-    }
-    else{
-        if(TA!=TB) return {0.,0.};
-        else{
-            if(MT==1) { prenfactor=0.;}
-            else{prepfactor=0.;}
-        }
-    }
 
     int S= pc1.getS();
     int j= pc1.getj();
@@ -435,6 +373,6 @@ Isoterm norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef
         }
     }
     sum*= norm* 0.5;
-    return {sum*2./A*prepfactor, sum*2./A*prenfactor};
+    return sum*2./A;
 
 }

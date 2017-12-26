@@ -29,10 +29,10 @@ public:
 
     //these are commented in the base class
 
-    virtual Isoterm get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
-    virtual Isoterm get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
-    virtual Isoterm get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
-    virtual Isoterm get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
+    virtual double get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
+    virtual double get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
+    virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
+    virtual double get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params);
 
     /**
      * @struct norm_ob_params

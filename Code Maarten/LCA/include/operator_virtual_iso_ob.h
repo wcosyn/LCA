@@ -6,9 +6,9 @@ struct IsoMatrixElement {
     double pp_res, nn_res, np_p_res, np_n_res;
 };
 
-struct Isoterm {
-    double p_res, n_res;
-};
+// struct Isoterm {
+//     double p_res, n_res;
+// };
 
 /**
  * \brief Virtual parent class for one-body operators that does all possible isospin combinations of interest in one go
@@ -61,7 +61,7 @@ public:
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
      */
-    virtual Isoterm get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
+    virtual double get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
     /**
      * \brief Calculates the correlated EV of a paircoefs combination (not necessarily diagonal!!)
      * with correlation operator working to the left.
@@ -74,7 +74,7 @@ public:
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
      */
-    virtual Isoterm get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
+    virtual double get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
     /**
      * \brief Calculates the correlated EV of a paircoefs combination
      * with a correlation operator working to the left and a correlation
@@ -88,7 +88,7 @@ public:
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
      */
-    virtual Isoterm get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
+    virtual double get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
     /**
      * \brief Calculates the correlated EV of a paircoefs combination
      * with a correlation operator working to the right.
@@ -101,7 +101,7 @@ public:
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
      */
-    virtual Isoterm get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
+    virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
 
 
 protected:
