@@ -87,6 +87,7 @@ Now it is very inefficient as basically the program has to start from scratch ea
 48. isopaircoefs: symmetry between pp and nn, take abs(MT) in key.  Due to MT dependence only 1 of the tree strenghts is non-zero now!  check mem usage for large nuclei then..., 
 one could take mt dependence out keys even and account for it in matrix multiplication since we know the MT from each of the 3 values...
 
+49. isopaircoef:addxx funcntions, change those erase things since it could get into trouble later 
 ++++CHECKS++++
 
 25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...

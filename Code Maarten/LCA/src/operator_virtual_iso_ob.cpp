@@ -126,9 +126,9 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
             Isoterm res2 = get_me( *pc2, *pc1, params); //normalisation of partially filled shells taken into account in the linkstrength val
 
             pp_res+=it->second.pplink*(res1.p_res+res2.p_res);
-            nn_res+=it->second.nnlink*(res1.p_res+res2.p_res);
+            nn_res+=it->second.nnlink*(res1.n_res+res2.n_res);
             np_p_res+=it->second.nplink*(res1.p_res+res2.p_res);
-            np_n_res+=it->second.nplink*(res1.p_res+res2.p_res);
+            np_n_res+=it->second.nplink*(res1.n_res+res2.n_res);
 
         }
         if( !(i%1000) ) {
