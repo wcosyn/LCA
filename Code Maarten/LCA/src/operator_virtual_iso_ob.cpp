@@ -40,25 +40,16 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
         const IsoPaircoef* pc1= loop_array[i];
         //double val= pc1->get_value(); //normalisation of partially filled shells taken into account in the linkstrength val
 
-        double prepfactor=1.,prenfactor=1.;
-        if(pc1->getMT()==0){
-            prepfactor*= 0.5;
-            prenfactor*=0.5;
-        }
-        else{
-            if(pc1->getMT()==1) { prenfactor=0.;}
-            else{prepfactor=0.;}
-        }
 
 
         // is left== right?
         double inter_me= get_me_corr_left( *pc1, *pc1, params)+get_me_corr_both( *pc1, *pc1, params) +get_me_corr_right( *pc1, *pc1, params);
 
 
-        pp_res+=prepfactor*pc1->get_ppvalue()*inter_me;
-        nn_res+=prenfactor*pc1->get_nnvalue()*inter_me;
-        np_p_res+=prepfactor*pc1->get_npvalue()*inter_me;
-        np_n_res+=prenfactor*pc1->get_npvalue()*inter_me;
+        pp_res+=pc1->get_ppvalue()*inter_me;
+        nn_res+=pc1->get_nnvalue()*inter_me;
+        np_p_res+=0.5*pc1->get_npvalue()*inter_me;
+        np_n_res+=0.5*pc1->get_npvalue()*inter_me;
 
 
         IsoPaircoef* pc2;
@@ -67,26 +58,14 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
             pc2=it->first;
             //val=it->second;
             // Sometimes is left pc1, pc2 ) == right( pc2, pc1 )
-            double prep=1., pren=1.;
-            if( pc1->getMT() == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
-                prep*= 0.5;
-                pren*=0.5;
-                if( pc1->getT() != pc2->getT() ){
-                    pren *= -1;
-                } 
-            }
-            else{
-                if(pc1->getMT()==1) { pren=0.;}
-                else{prep=0.;}
-            }
             
             double inter_me_links=get_me_corr_left( *pc1, *pc2, params) + get_me_corr_left( *pc2, *pc1, params) + get_me_corr_both( *pc1, *pc2, params)
                                 +get_me_corr_both( *pc2, *pc1, params)+get_me_corr_right( *pc1, *pc2, params)+get_me_corr_right( *pc2, *pc1, params);
 
-            pp_res+=prep*it->second.pplink*inter_me_links;
-            nn_res+=pren*it->second.nnlink*inter_me_links;
-            np_p_res+=prep*it->second.nplink*inter_me_links;
-            np_n_res+=pren*it->second.nplink*inter_me_links;
+            pp_res+=it->second.pplink*inter_me_links;
+            nn_res+=it->second.nnlink*inter_me_links;
+            np_p_res+=0.5*it->second.nplink*inter_me_links;
+            np_n_res+=0.5*((pc1->getT() == pc2->getT())?1.:-1.)*it->second.nplink*inter_me_links;
 
             
         }
@@ -121,22 +100,12 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
     for( int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
         const IsoPaircoef* pc1= loop_array[i];
 
-        double prepfactor=1.,prenfactor=1.;
-        if(pc1->getMT()==0){
-            prepfactor*= 0.5;
-            prenfactor*=0.5;
-        }
-        else{
-            if(pc1->getMT()==1) { prenfactor=0.;}
-            else{prepfactor=0.;}
-        }
-
         //double val=  pc1->get_value();
         double res =  get_me( *pc1, *pc1, params); //normalisation of partially filled shells taken into account in the linkstrength val
-        pp_res+=prepfactor*pc1->get_ppvalue()*res;
-        nn_res+=prenfactor*pc1->get_nnvalue()*res;
-        np_p_res+=prepfactor*pc1->get_npvalue()*res;
-        np_n_res+=prenfactor*pc1->get_npvalue()*res;
+        pp_res+=pc1->get_ppvalue()*res;
+        nn_res+=pc1->get_nnvalue()*res;
+        np_p_res+=0.5*pc1->get_npvalue()*res;
+        np_n_res+=0.5*pc1->get_npvalue()*res;
         
         // int max_links= pc1->get_number_of_links();
 //    cout << max_links << endl;
@@ -149,25 +118,13 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
              */
             pc2=it->first;
             //val=it->second;
-            double prep=1., pren=1.;
-            if( pc1->getMT() == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
-                prep*= 0.5;
-                pren*=0.5;
-                if( pc1->getT() != pc2->getT() ){
-                    pren *= -1;
-                } 
-            }
-            else{
-                if(pc1->getMT()==1) { pren=0.;}
-                else{prep=0.;}
-            }
 
             double res_links = get_me( *pc1, *pc2, params)+ get_me( *pc2, *pc1, params);
 
-            pp_res+=prep*it->second.pplink*res_links;
-            nn_res+=pren*it->second.nnlink*res_links;
-            np_p_res+=prep*it->second.nplink*res_links;
-            np_n_res+=pren*it->second.nplink*res_links;
+            pp_res+=it->second.pplink*res_links;
+            nn_res+=it->second.nnlink*res_links;
+            np_p_res+=0.5*it->second.nplink*res_links;
+            np_n_res+=0.5*((pc1->getT() == pc2->getT())?1.:-1.)*it->second.nplink*res_links;
 
         }
         if( !(i%1000) ) {

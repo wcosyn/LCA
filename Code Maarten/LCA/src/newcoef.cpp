@@ -20,8 +20,10 @@ Newcoef::Newcoef( int n1, int l1, int two_j1, int two_mj1, int two_t1,
     stringstream strstream;
     strstream << n << l << S << j << mj << ".";
     strstream << N << L << ML << ".";
-    strstream << T << MT;
-    strstream >> key;
+    strstream << T;
+    strstream >> key_iso;
+    // strstream << MT;
+    key=key_iso+"."+std::to_string(MT);
     if( two_t1+ two_t2 != 2*MT ) {
         coeff = 0;
         return;

@@ -31,7 +31,7 @@ private:
     int L; ///< coupled state HO center of mass OAM quantum number
     int ML; ///< coupled state HO center of mass OAM 3-component
     int T; ///< coupled state total isospin
-    int MT; ///< coupled state 3-component of total isospin
+    // int MT; ///< coupled state 3-component of total isospin
     double ppvalue; ///< contains the value of the link strength with itself (loop in the graph) originating from pp pairs
     double nnvalue; ///< contains the value of the link strength with itself (loop in the graph) originating from nn pairs
     double npvalue; ///< contains the value of the link strength with itself (loop in the graph) originating from np pairs
@@ -54,7 +54,7 @@ public:
      * @param MT coupled state totla isospin 3-component
      */
     IsoPaircoef( const int n, const int l, const int S, const int j, const int mj,
-            const  int N, const int L, const int ML, const int T, const int MT );
+            const  int N, const int L, const int ML, const int T);
     /**
      * @brief Constructor that uses a Newcoef object to initialise.  No links or linkstrengths are stored yet after construction.
      * 
@@ -126,9 +126,9 @@ public:
     /**
      * @brief returns coupled state totla isospin 3-component
      */
-    int getMT() const {
-        return MT;
-    };
+    // int getMT() const {
+    //     return MT;
+    // };
     
     /**
      * @brief Link a IsoPaircoef to an other IsoPaircoef originated from the same |a1a2>_nas pp Pair

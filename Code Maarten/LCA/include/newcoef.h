@@ -33,6 +33,7 @@ private:
     int n2, l2, two_j2, two_mj2, two_t2; /*!< second nucleon quantum numbers */
     double coeff; /*!< [] transformation coefficient, dimensionless */
     std::string key; /*!< key for sorting based on all the coupled quantum numbers (see constructor)*/
+    std::string key_iso; /*!< key for sorting based on all the coupled quantum numbers isospin blind (see constructor)*/
 public:
     /**
      * @brief Constructor
@@ -145,6 +146,11 @@ public:
     const std::string & getkey() const {
         return key;
     }
+
+    const std::string & getkey_iso() const {
+        return key_iso;
+    }
+
 
 };
 

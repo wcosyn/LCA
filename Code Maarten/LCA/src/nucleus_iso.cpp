@@ -144,14 +144,21 @@ void NucleusIso::makeisopaircoefs()
                         //make coefs for pp
                         for( int ci= 0; ci < pair.get_number_of_coeff(); ci++ ) { // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
                             double vali= pair.getCoeff(ci).getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
-                            string keyi= pair.getCoeff(ci).getkey();
-                            map < string, IsoPaircoef >::iterator iti = isopaircoefs.find( keyi ); // is the key already in our map?
+                            string keyi= pair.getCoeff(ci).getkey_iso();
+                            map < string, IsoPaircoef >::iterator iti;
+                            #pragma omp critical(addisopaircoef)
+                            {
+                            iti = isopaircoefs.find( keyi ); // is the key already in our map?
                             if( iti == isopaircoefs.end() ) { // no
                                 isopaircoefs[keyi]= IsoPaircoef( pair.getCoeff(ci) );
                                 iti = isopaircoefs.find(keyi);
                             }
+                            }
                             // Add value of the matrix element of a paircoef with itself, e.g. \f$ | C_{\alpha_1,\alpha_2}^{A} |^{2} \f$
+                            #pragma omp critical(addpp)
+                            {
                             iti->second.addpp(vali*vali*pair.getfnorm()); //add to diagonal link strength
+                            }
 
                             // Add all the links of a Paircoef with the other Paircoefs generated
                             // from this Pair.
@@ -159,17 +166,24 @@ void NucleusIso::makeisopaircoefs()
                             // Hence the sum from ci+1.
                             for( int cj= ci+1; cj < pair.get_number_of_coeff(); cj++ ) { //we loop over the coupling coefficients of the pair under consideration (upper triangle)
                                 double valj= pair.getCoeff(cj).getCoef();
-                                string keyj= pair.getCoeff(cj).getkey();
-                                map < string, IsoPaircoef >::iterator itj = isopaircoefs.find( keyj );
+                                string keyj= pair.getCoeff(cj).getkey_iso();
+                                map < string, IsoPaircoef >::iterator itj;
+                                #pragma omp critical(addisopaircoef)
+                                {
+                               itj = isopaircoefs.find( keyj );
                                 if( itj == isopaircoefs.end() ) {
                                     isopaircoefs[keyj]= IsoPaircoef( pair.getCoeff(cj) );
                                     itj = isopaircoefs.find(keyj);
                                 }
-                                
+                                }
+
                                 //add to off-diagonal link strength for coupled states, with the endpoint of the link also included
                                 //we do not store 2 times the value (bidirectional) since matrix elements are in general not symmetric for coupled states
                                 //see operator_virtual_ob::sum_me_corr function for use
+                                #pragma omp critical(addpp_link)
+                                {
                                 iti->second.addpp( &itj->second, vali*valj*pair.getfnorm() ); 
+                                }
                             }//loop over links cj
                         }//loop over initial coefs in the pair
                     }//sum of pair is ok, so we loop over coefs
@@ -262,14 +276,21 @@ void NucleusIso::makeisopaircoefs()
                         //make coefs for nn
                         for( int ci= 0; ci < pair.get_number_of_coeff(); ci++ ) { // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
                             double vali= pair.getCoeff(ci).getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
-                            string keyi= pair.getCoeff(ci).getkey();
-                            map < string, IsoPaircoef >::iterator iti = isopaircoefs.find( keyi ); // is the key already in our map?
+                            string keyi= pair.getCoeff(ci).getkey_iso();
+                            map < string, IsoPaircoef >::iterator iti;
+                            #pragma omp critical(addisopaircoef)
+                            {
+                            iti = isopaircoefs.find( keyi ); // is the key already in our map?
                             if( iti == isopaircoefs.end() ) { // no
                                 isopaircoefs[keyi]= IsoPaircoef( pair.getCoeff(ci) );
                                 iti = isopaircoefs.find(keyi);
                             }
+                            }
                             // Add value of the matrix element of a paircoef with itself, e.g. \f$ | C_{\alpha_1,\alpha_2}^{A} |^{2} \f$
+                            #pragma omp critical(addnn)
+                            {
                             iti->second.addnn(vali*vali*pair.getfnorm()); //add to diagonal link strength
+                            }
 
                             // Add all the links of a Paircoef with the other Paircoefs generated
                             // from this Pair.
@@ -277,17 +298,25 @@ void NucleusIso::makeisopaircoefs()
                             // Hence the sum from ci+1.
                             for( int cj= ci+1; cj < pair.get_number_of_coeff(); cj++ ) { //we loop over the coupling coefficients of the pair under consideration (upper triangle)
                                 double valj= pair.getCoeff(cj).getCoef();
-                                string keyj= pair.getCoeff(cj).getkey();
-                                map < string, IsoPaircoef >::iterator itj = isopaircoefs.find( keyj );
+                                string keyj= pair.getCoeff(cj).getkey_iso();
+                                map < string, IsoPaircoef >::iterator itj;
+                                #pragma omp critical(addisopaircoef)
+                                {
+                                itj = isopaircoefs.find( keyj );
                                 if( itj == isopaircoefs.end() ) {
                                     isopaircoefs[keyj]= IsoPaircoef( pair.getCoeff(cj) );
                                     itj = isopaircoefs.find(keyj);
+                                }
                                 }
                                 
                                 //add to off-diagonal link strength for coupled states, with the endpoint of the link also included
                                 //we do not store 2 times the value (bidirectional) since matrix elements are in general not symmetric for coupled states
                                 //see operator_virtual_ob::sum_me_corr function for use
+                                #pragma omp critical(addnn_link)
+                                {
                                 iti->second.addnn( &itj->second, vali*valj*pair.getfnorm() ); 
+                                }
+
                             }//loop over links cj
                         }//loop over initial coefs in the pair
                     }//sum of pair is ok, so we loop over coefs
@@ -381,14 +410,21 @@ void NucleusIso::makeisopaircoefs()
                        //make coefs for nn
                         for( int ci= 0; ci < pair.get_number_of_coeff(); ci++ ) { // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
                             double vali= pair.getCoeff(ci).getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
-                            string keyi= pair.getCoeff(ci).getkey();
-                            map < string, IsoPaircoef >::iterator iti = isopaircoefs.find( keyi ); // is the key already in our map?
+                            string keyi= pair.getCoeff(ci).getkey_iso();
+                            map < string, IsoPaircoef >::iterator iti;
+                            #pragma omp critical(addisopaircoef)
+                            {
+                            iti = isopaircoefs.find( keyi ); // is the key already in our map?
                             if( iti == isopaircoefs.end() ) { // no
                                 isopaircoefs[keyi]= IsoPaircoef( pair.getCoeff(ci) );
                                 iti = isopaircoefs.find(keyi);
                             }
+                            }
                             // Add value of the matrix element of a paircoef with itself, e.g. \f$ | C_{\alpha_1,\alpha_2}^{A} |^{2} \f$
+                            #pragma omp critical(addnp)
+                            {
                             iti->second.addnp(vali*vali*pair.getfnorm()); //add to diagonal link strength
+                            }
 
                             // Add all the links of a Paircoef with the other Paircoefs generated
                             // from this Pair.
@@ -396,17 +432,26 @@ void NucleusIso::makeisopaircoefs()
                             // Hence the sum from ci+1.
                             for( int cj= ci+1; cj < pair.get_number_of_coeff(); cj++ ) { //we loop over the coupling coefficients of the pair under consideration (upper triangle)
                                 double valj= pair.getCoeff(cj).getCoef();
-                                string keyj= pair.getCoeff(cj).getkey();
-                                map < string, IsoPaircoef >::iterator itj = isopaircoefs.find( keyj );
+                                string keyj= pair.getCoeff(cj).getkey_iso();
+                                map < string, IsoPaircoef >::iterator itj;
+                                #pragma omp critical(addisopaircoef)
+                                {
+                                itj = isopaircoefs.find( keyj );
                                 if( itj == isopaircoefs.end() ) {
                                     isopaircoefs[keyj]= IsoPaircoef( pair.getCoeff(cj) );
                                     itj = isopaircoefs.find(keyj);
                                 }
+                                }
+
                                 
                                 //add to off-diagonal link strength for coupled states, with the endpoint of the link also included
                                 //we do not store 2 times the value (bidirectional) since matrix elements are in general not symmetric for coupled states
                                 //see operator_virtual_ob::sum_me_corr function for use
+                                #pragma omp critical(addnp_link)
+                                {
                                 iti->second.addnp( &itj->second, vali*valj*pair.getfnorm() ); 
+                                }
+
                             }//loop over links cj
                         }//loop over initial coefs in the pair
                     }//sum of pair is ok, so we loop over coefs
