@@ -29,17 +29,16 @@ Wim
 ===========================================================
 
 +++MODIFICATIONS ALGORITHMS+++
-3. PRIORITY modify nucleusall such that bookkeeping is done of which pairs (or links) originate from which isospin combination
-Can be done I think by storing 4 links maps (all, nn, pp , np) -> for iteration purposes maybe better, 1  map with second an array of 4 doubles.  
-But might be more difficult to implement?  Check on T1 for the different cases (all or specific isospin)
 
 4. PRIORITY modify calculation of matrix elements such that all isospin combinations are being calculated in one go.
 Now it is very inefficient as basically the program has to start from scratch each time and does almost the same thing all over (but with different linear combinations)
 -> we will have to change the way the outputs work (at least for the norm) -> see how it is handled for the obmd's
 -> Make new abstract class, where the output is given as a struct or a vector or something with 8 doubles for all the different isospin combinations
+-> done for norm 26/12
+
 
 18. can the links be stored somehow for any nucleus? Is it worth the effort/reusability?
-
+->think too difficult...
 
 
 +++MODIFICATIONS PROGRAMMING STYLE
@@ -65,8 +64,6 @@ Now it is very inefficient as basically the program has to start from scratch ea
 
 22. add copy and copy assignment constructors?
 
-24. in the correlation functions in the operator_virtual_ob, why all the superfluous parameters, 
-    and why passing the result by pointer (this is for if statements in child classes)
 
 28. obmd in double loops move lookups of the first one after first forloop
 
@@ -84,21 +81,14 @@ Now it is very inefficient as basically the program has to start from scratch ea
 
 45. MapWavefunctionP checks for A and pstepset, if changed everything should be cleared etc.
 
-48. isopaircoefs: symmetry between pp and nn, take abs(MT) in key.  Due to MT dependence only 1 of the tree strenghts is non-zero now!  check mem usage for large nuclei then..., 
-one could take mt dependence out keys even and account for it in matrix multiplication since we know the MT from each of the 3 values...
-
-49. isopaircoef:addxx funcntions, change those erase things since it could get into trouble later 
 ++++CHECKS++++
 
 25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...
 everything looks symmetric (correlation functions in the two l arguments...)
 
 
-26. what is the comment statement in norm_ob.h:  "Note that this does not correspond with an isospin projection of a particle or particle pair!" (isospin selection)
-
-
-
 31. PRIORITY normob in double corr matrix element, order of k,l1//k,l2 (l414) [also other corr functions]
+-> this is ok for norm, when corr function is conjugated, order of arguments switches of course! 26/12
 SIMILAR QUESTION/PROBLEM in the corr matrix elements of the obmd calculations!!!
 -> crosscheck with the order in all the integrand_cc->add calls!!!
 
@@ -116,7 +106,6 @@ Also make the computation of these integrals more dimensionless
 
 45. Compare the calculations that iterate over pairs with the one over paircoefs.  Should yield identical results! -> ok for norms
 
-47. random segfaults in the beginning.... valgrind, profiling
 
 ++++COMMENTING+++++
 
@@ -149,6 +138,8 @@ xx. RESTRICTION on n too strict in norm functions??? Not diagonal with correlati
 
 34. units momentum distribution and intermediate results there -> annotated 10/12/17
 
+26. what is the comment statement in norm_ob.h:  "Note that this does not correspond with an isospin projection of a particle or particle pair!" (isospin selection)
+-> probably ok, replaced this by explicit projector but same result
 
 48. add static builds, debug and profiling flag options in cmake -> done 13/12/17
 
@@ -177,3 +168,20 @@ Tripletcoef::get_links
 6. Nucleus::nucleus get rid of dynamic allocations ->done
 
 2. take out char* arguments and make them strings (RecMosh and others) -> done for basic classes
+
+48. isopaircoefs: symmetry between pp and nn, take abs(MT) in key.  Due to MT dependence only 1 of the tree strenghts is non-zero now!  check mem usage for large nuclei then..., 
+one could take mt dependence out keys even and account for it in matrix multiplication since we know the MT from each of the 3 values...
+-> done 26/12
+
+49. isopaircoef:addxx funcntions, change those erase things since it could get into trouble later -> done 26/12
+
+47. random segfaults in the beginning.... valgrind, profiling -> checked nothing out of the ordinary so far... (norm)
+
+3. PRIORITY modify nucleusall such that bookkeeping is done of which pairs (or links) originate from which isospin combination
+Can be done I think by storing 4 links maps (all, nn, pp , np) -> for iteration purposes maybe better, 1  map with second an array of 4 doubles.  
+But might be more difficult to implement?  Check on T1 for the different cases (all or specific isospin)
+-> done with Nucleus_iso class 26/12
+
+24. in the correlation functions in the operator_virtual_ob, why all the superfluous parameters, 
+    and why passing the result by pointer (this is for if statements in child classes)
+    -> changed in the operator_virtual_iso_ob class 26/12
