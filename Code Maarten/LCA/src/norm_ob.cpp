@@ -424,12 +424,12 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
             for( int k= j-1; k<= j+1; k++ ) {
                 if( k < 0 ) continue;
                 double mec1, mec2, met1, met2, mes1, mes2;
-                get_central_me( k, l1, S, j, TA, &mec1 );
-                get_central_me( k, l2, S, j, TB, &mec2 );
-                get_tensor_me( k, l1, S, j, TA, &met1 );
-                get_tensor_me( k, l2, S, j, TB, &met2 );
-                get_spinisospin_me( k, l1, S, j, TA, &mes1 );
-                get_spinisospin_me( k, l2, S, j, TB, &mes2 );
+                int mec1_check=get_central_me( k, l1, S, j, TA, &mec1 );
+                int mec2_check=get_central_me( k, l2, S, j, TB, &mec2 );
+                int met1_check=get_tensor_me( k, l1, S, j, TA, &met1 );
+                int met2_check=get_tensor_me( k, l2, S, j, TB, &met2 );
+                int mes1_check=get_spinisospin_me( k, l1, S, j, TA, &mes1 );
+                int mes2_check=get_spinisospin_me( k, l2, S, j, TB, &mes2 );
 
                 for( int i= 0; i < n1+1; i++ ) {
                     double anli=  laguerre_coeff( n1, l1, i );
@@ -439,19 +439,19 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
                             for( int lambdaj= 0; lambdaj < 11; lambdaj++ ) {
                                 int N= -3-2*i-2*j-lambdai-lambdaj-l1-l2;
                                 double prefactor_sum= 0;
-                                if( bcentral && mec1 && mec2 ) {
+                                if( bcentral && mec1_check && mec2_check ) {
                                     double power= pow(1+ 2*expc, 0.5*N);
                                     double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai ); // division because dimensionless variable x in D.19
                                     double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                                     prefactor_sum+= mec1* mec2* alambdai* alambdaj* power;
                                 }
-                                if( tensor && met1 && met2 ) {
+                                if( tensor && met1_check && met2_check ) {
                                     double power= pow(1+ 2*expt, 0.5*N);
                                     double alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
                                     double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                                     prefactor_sum+= met1* met2* alambdai* alambdaj* power;
                                 }
-                                if( spinisospin && mes1 && mes2 ) {
+                                if( spinisospin && mes1_check && mes2_check ) {
                                     double power= pow(1+ 2*exps, 0.5*N);
                                     double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
                                     double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
@@ -459,33 +459,42 @@ double norm_ob::get_me_corr_both( Pair* pair, void* params )
                                 }
                                 if( tensor && bcentral ) {
                                     double power= pow(1+ expc+ expt, 0.5*N);
-                                    double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                                    double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                                    prefactor_sum-= mec1* met2* alambdai* alambdaj* power;
-
-                                    alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                                    alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                                    prefactor_sum-= met1* mec2* alambdai* alambdaj* power;
+                                    if(mec1_check && met2_check){
+                                        double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        prefactor_sum-= mec1* met2* alambdai* alambdaj* power;
+                                    }
+                                    if(mec2_check && met1_check){
+                                        double alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        prefactor_sum-= met1* mec2* alambdai* alambdaj* power;
+                                    }
                                 }
                                 if( spinisospin && bcentral ) {
                                     double power= pow(1+ expc+ exps, 0.5*N);
-                                    double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                                    double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                                    prefactor_sum-= mec1* mes2* alambdai* alambdaj* power;
-
-                                    alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                                    alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                                    prefactor_sum-= mes1* mec2* alambdai* alambdaj* power;
+                                    if(mec1_check && mes2_check){
+                                        double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        prefactor_sum-= mec1* mes2* alambdai* alambdaj* power;
+                                    }
+                                    if(mes1_check && mec2_check){
+                                        double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        prefactor_sum-= mes1* mec2* alambdai* alambdaj* power;
+                                    }
                                 }
                                 if( tensor && spinisospin ) {
                                     double power= pow(1+ exps+ expt, 0.5*N);
-                                    double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                                    double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                                    prefactor_sum+= mes1* met2* alambdai* alambdaj* power;
-
-                                    alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                                    alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                                    prefactor_sum+= met1* mes2* alambdai* alambdaj* power;
+                                    if(mes1_check && met2_check){
+                                        double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        prefactor_sum+= mes1* met2* alambdai* alambdaj* power;
+                                    }
+                                    if(met1_check && mes2_check){
+                                        double alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        prefactor_sum+= met1* mes2* alambdai* alambdaj* power;
+                                    }
                                 }
                                 sum+= anli* anlj* prefactor_sum* hiGamma( 3+2*i+2*j+lambdai+lambdaj+l1+l2);
                             }
@@ -837,12 +846,12 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
     for( int k= j-1; k<= j+1; k++ ) {
         if( k < 0 ) continue;
         double mec1, mec2, met1, met2, mes1, mes2;
-        get_central_me( k, l1, S, j, TA, &mec1 );
-        get_central_me( k, l2, S, j, TB, &mec2 );
-        get_tensor_me( k, l1, S, j, TA, &met1 );
-        get_tensor_me( k, l2, S, j, TB, &met2 );
-        get_spinisospin_me( k, l1, S, j, TA, &mes1 );
-        get_spinisospin_me( k, l2, S, j, TB, &mes2 );
+        int mec1_check=get_central_me( k, l1, S, j, TA, &mec1 );
+        int mec2_check=get_central_me( k, l2, S, j, TB, &mec2 );
+        int met1_check=get_tensor_me( k, l1, S, j, TA, &met1 );
+        int met2_check=get_tensor_me( k, l2, S, j, TB, &met2 );
+        int mes1_check=get_spinisospin_me( k, l1, S, j, TA, &mes1 );
+        int mes2_check=get_spinisospin_me( k, l2, S, j, TB, &mes2 );
 
         for( int i= 0; i < n1+1; i++ ) {
             double anli=  laguerre_coeff( n1, l1, i );
@@ -852,19 +861,19 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
                     for( int lambdaj= 0; lambdaj < 11; lambdaj++ ) {
                         int N= -3-2*i-2*j-lambdai-lambdaj-l1-l2;
                         double prefactor_sum= 0;
-                        if( bcentral && mec1 && mec2 ) {
+                        if( bcentral && mec1_check && mec2_check ) {
                             double power= pow(1+ 2*expc, 0.5*N);
                             double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
                             double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                             prefactor_sum+= mec1* mec2* alambdai* alambdaj* power;
                         }
-                        if( tensor && met1 && met2 ) {
+                        if( tensor && met1_check && met2_check ) {
                             double power= pow(1+ 2*expt, 0.5*N);
                             double alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
                             double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                             prefactor_sum+= met1* met2* alambdai* alambdaj* power;
                         }
-                        if( spinisospin && mes1 && mes2 ) {
+                        if( spinisospin && mes1_check && mes2_check ) {
                             double power= pow(1+ 2*exps, 0.5*N);
                             double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
                             double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
@@ -872,33 +881,42 @@ double norm_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, do
                         }
                         if( tensor && bcentral ) {
                             double power= pow(1+ expc+ expt, 0.5*N);
-                            double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                            double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                            prefactor_sum-= mec1* met2* alambdai* alambdaj* power;
-
-                            alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                            alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                            prefactor_sum-= met1* mec2* alambdai* alambdaj* power;
+                            if(mec1_check && met2_check){
+                                double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                prefactor_sum-= mec1* met2* alambdai* alambdaj* power;
+                            }
+                            if(mec2_check && met1_check){                            
+                                double alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                prefactor_sum-= met1* mec2* alambdai* alambdaj* power;
+                            }
                         }
                         if( spinisospin && bcentral ) {
                             double power= pow(1+ expc+ exps, 0.5*N);
-                            double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                            double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                            prefactor_sum-= mec1* mes2* alambdai* alambdaj* power;
-
-                            alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                            alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                            prefactor_sum-= mes1* mec2* alambdai* alambdaj* power;
+                            if(mec1_check && mes2_check){                            
+                                double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                prefactor_sum-= mec1* mes2* alambdai* alambdaj* power;
+                            }
+                            if(mes1_check && mec2_check){
+                                double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                prefactor_sum-= mes1* mec2* alambdai* alambdaj* power;
+                            }
                         }
                         if( tensor && spinisospin ) {
                             double power= pow(1+ exps+ expt, 0.5*N);
-                            double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                            double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                            prefactor_sum+= mes1* met2* alambdai* alambdaj* power;
-
-                            alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                            alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                            prefactor_sum+= met1* mes2* alambdai* alambdaj* power;
+                            if(mes1_check && met2_check){                            
+                                double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                prefactor_sum+= mes1* met2* alambdai* alambdaj* power;
+                            }
+                            if(met1_check && mes2_check){
+                                double alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                prefactor_sum+= met1* mes2* alambdai* alambdaj* power;
+                            }
                         }
                         sum+= anli* anlj* prefactor_sum* hiGamma( 3+2*i+2*j+lambdai+lambdaj+l1+l2);
                     }

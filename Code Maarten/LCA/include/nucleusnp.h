@@ -17,7 +17,7 @@ public:
      * @param A mass number of the nucleus
      * @param Z number of protons
      */
-    NucleusNP( const std::string & iinputdir, const std::string & iresultdir, const int A, const int Z);
+    NucleusNP( const std::string & inputdir, const std::string & resultdir, const int A, const int Z);
     /**
      * @brief np pairs so we have N possible particles for first nucleon
      */    

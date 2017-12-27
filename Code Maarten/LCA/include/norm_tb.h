@@ -21,7 +21,6 @@ public:
      * @param central turn on/off the central correlations.
      * @param tensor turn on/off the tensor correlations .
      * @param isospin turn on/off the spin-isospin correlations .
-     * @param norm the renormalization factor needed to renormalize.
      */
     norm_tb(Nucleus* nucleus, bool central= true, bool tensor=true, bool isospin=true);
     /**

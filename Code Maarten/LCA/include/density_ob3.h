@@ -19,7 +19,7 @@ public:
     /**
      * \brief Constructor.
      *
-     * @param[in] nucleus, contains all uncoupled pairs and/or coupled states + linkstrengths
+     * @param[in] nucleus contains all uncoupled pairs and/or coupled states + linkstrengths
      * @param central turn on/off the central correlations.
      * @param tensor turn on/off the tensor correlations .
      * @param isospin turn on/off the spin-isospin correlations .

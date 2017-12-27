@@ -86,18 +86,7 @@ Now it is very inefficient as basically the program has to start from scratch ea
 25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...
 everything looks symmetric (correlation functions in the two l arguments...)
 
-
-31. PRIORITY normob in double corr matrix element, order of k,l1//k,l2 (l414) [also other corr functions]
--> this is ok for norm, when corr function is conjugated, order of arguments switches of course! 26/12
-SIMILAR QUESTION/PROBLEM in the corr matrix elements of the obmd calculations!!!
--> crosscheck with the order in all the integrand_cc->add calls!!!
-
-
 35. density_ob3::write -> get rid of all the news (and deletes)
-
-37. !!!!PRIORITY in density_ob3. Integrand->add, I think there might be mistakes with the relative l qn passed.  They should be the kA,kB parameters!
-
-38. In density_ob3::get_me_corr_both why is there a prefactor *=2.  The sums over coefficients run over all??
 
 39. in obmd:corrpair methods left/right/both-> isospin projection t==0 case seems missing??
 
@@ -185,3 +174,15 @@ But might be more difficult to implement?  Check on T1 for the different cases (
 24. in the correlation functions in the operator_virtual_ob, why all the superfluous parameters, 
     and why passing the result by pointer (this is for if statements in child classes)
     -> changed in the operator_virtual_iso_ob class 26/12
+
+37. !!!!PRIORITY in density_ob3. Integrand->add, I think there might be mistakes with the relative l qn passed.  They should be the kA,kB parameters!
+-> No, LCA manual was wrong, code is ok!! mistake w radial part wf 26/12
+
+31. PRIORITY normob in double corr matrix element, order of k,l1//k,l2 (l414) [also other corr functions]
+-> this is ok for norm, when corr function is conjugated, order of arguments switches of course! 26/12
+SIMILAR QUESTION/PROBLEM in the corr matrix elements of the obmd calculations!!!
+-> crosscheck with the order in all the integrand_cc->add calls!!!
+-> looks ok! 26/12
+
+38. In density_ob3::get_me_corr_both why is there a prefactor *=2.  The sums over coefficients run over all??
+-> think this was a mistake, changed it.  we odn't really care since the pair functionality isn't used, coefs are better

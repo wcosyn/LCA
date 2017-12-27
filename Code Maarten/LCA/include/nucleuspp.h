@@ -16,7 +16,7 @@ public:
      * @param A mass number of the nucleus
      * @param Z number of protons
      */
-    NucleusPP( const std::string & iinputdir, const std::string & iresultdir, const int A, const int Z);
+    NucleusPP( const std::string & inputdir, const std::string & resultdir, const int A, const int Z);
     /**
      * @brief pp pairs so isospin of first particle is 1
      */

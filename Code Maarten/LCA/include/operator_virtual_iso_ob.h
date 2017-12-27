@@ -2,13 +2,14 @@
 #define OPERATOR_OB_ISO_V_H
 #include "nucleus_iso.h"
 
+/**
+ * @brief small structure that is used as return value for matrix element calculations.  
+ * Holds the results for pp,nn,np(tagged p) and np(tagged n) pairs separately
+ * 
+ */
 struct IsoMatrixElement {
     double pp_res, nn_res, np_p_res, np_n_res;
 };
-
-// struct Isoterm {
-//     double p_res, n_res;
-// };
 
 /**
  * \brief Virtual parent class for one-body operators that does all possible isospin combinations of interest in one go
@@ -24,7 +25,7 @@ public:
     /**
      * @brief Constructor
      * 
-     * @param isonucleus holds all the coupled states with linkstrengths [NucleusIso::isopaircoefs]
+     * @param nucleus holds all the coupled states with linkstrengths [NucleusIso::isopaircoefs]
      * @param central turn on/off the central correlations.
      * @param tensor turn on/off the tensor correlations.
      * @param isospin turn on/off the spin-isospin correlations.
@@ -36,6 +37,7 @@ public:
      * \brief Gives the two-body operator EV of the mean field part, using sum over coupled states in NucleusIso::isopaircoefs map
      *
      * @param params parameter specific to child class.
+     * @return IsoMatrixElement holds nn,pp,np(p),np(n) results
      */
     IsoMatrixElement sum_me_coefs( void* params );
     /**
@@ -44,6 +46,7 @@ public:
      *  In general, for the two-body part the sum over paircoefs is faster
      *  than the sum over pairs
      * @param params parameter specific to child class
+     * @return IsoMatrixElement holds nn,pp,np(p),np(n) results
      */
     IsoMatrixElement sum_me_corr( void* params );
 
@@ -54,12 +57,14 @@ public:
      */
 
     /**
-     * \brief Calculates the mean-field; EV of a paircoefs combination (not necessarily diagonal!!)
+     * \brief Calculates the mean-field; EV of a paircoefs combination (not necessarily diagonal!!), 
+     * does not care about isospin MT, that is taken care of higher up.
      *
-     * Called by the sum_me_* function
+     * Called by the sum_me_* function, where also all the isospin specific stuff happens
      * @param pc1 The left paircoef
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
+     * @return value of the matrix element, dimension depends on operator.
      */
     virtual double get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
     /**
@@ -68,11 +73,12 @@ public:
      *
      * e.g. \f$\left< A \right| \hat{l}^\dagger (1,2)
      * \left(\widehat{\Omega}(1)+ \widehat{\Omega}(2)\right)  \left| B \right>\f$.
-     * Function is used by the corresponding sum_me_* function.
+     * Function is used by the corresponding sum_me_* function, where also all the isospin specific stuff happens
      *
      * @param pc1 The left paircoef
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
+     * @return value of the matrix element, dimension depends on operator.
      */
     virtual double get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
     /**
@@ -82,11 +88,12 @@ public:
      *
      * e.g. \f$\left< A \right| \hat{l}^\dagger (1,2)
      * \left(\widehat{\Omega}(1)+ \widehat{\Omega}(2)\right)  \hat{l}(1,2)\left| B \right>\f$.
-     * Function is used by the corresponding sum_me_* function.
+     * Function is used by the corresponding sum_me_* function, where also all the isospin specific stuff happens
      *
      * @param pc1 The left paircoef
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
+     * @return value of the matrix element, dimension depends on operator.
      */
     virtual double get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
     /**
@@ -95,11 +102,12 @@ public:
      *
      * e.g. \f$\left< A \right|
      * \left(\widehat{\Omega}(1)+ \widehat{\Omega}(2)\right)  \hat{l}(1,2)\left| B \right>\f$.
-     * Function is used by the corresponding sum_me_* function.
+     * Function is used by the corresponding sum_me_* function, where also all the isospin specific stuff happens
      *
      * @param pc1 The left paircoef
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
+     * @return value of the matrix element, dimension depends on operator.
      */
     virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
 
@@ -128,9 +136,6 @@ protected:
      * 
      * @param la relative OAM initial state
      * @param l relative OAM final state
-     * @param S total spin (diagonal), not used here
-     * @param J total angular momentum (l+S) [diagonal], not used here
-     * @param T total isospin (diagonal), not used here
      * @param[out] result value of the relative angular-spin-isospin part of the matrix element, basically 1 if la==l, 0 otherwise
      * @return int returns 0 if matrix element is zero, 1 otherwise
      */
@@ -154,7 +159,6 @@ protected:
      * @param la relative OAM initial state
      * @param l relative OAM final state
      * @param S total spin (diagonal), not used here
-     * @param J total angular momentum (l+S) [diagonal], not used here
      * @param T total isospin (diagonal), not used here
      * @param[out] result value of the relative-angular+spin+isospin part of the matrix element, (4T-3)*(4S-3)
      * @return int returns 0 if matrix element is zero, 1 otherwise

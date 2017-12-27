@@ -38,34 +38,28 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
     #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:pp_res, nn_res, np_p_res, np_n_res) //num_threads(1)
     for( int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
         const IsoPaircoef* pc1= loop_array[i];
-        //double val= pc1->get_value(); //normalisation of partially filled shells taken into account in the linkstrength val
 
-
-
-        // is left== right?
+        // is left== right? Sometimes, accounted for in those functions (left gets put to 0, right *2)
         double inter_me= get_me_corr_left( *pc1, *pc1, params)+get_me_corr_both( *pc1, *pc1, params) +get_me_corr_right( *pc1, *pc1, params);
 
 
-        pp_res+=pc1->get_ppvalue()*inter_me;
+        pp_res+=pc1->get_ppvalue()*inter_me; //first factor is linkstrength for the loop in the diagram
         nn_res+=pc1->get_nnvalue()*inter_me;
-        np_p_res+=0.5*pc1->get_npvalue()*inter_me;
-        np_n_res+=0.5*pc1->get_npvalue()*inter_me;
+        np_p_res+=0.5*pc1->get_npvalue()*inter_me; //factor 0.5 from isospin projection, see LCA manual 10.3
+        np_n_res+=0.5*pc1->get_npvalue()*inter_me; //factor 0.5 from isospin projection, see LCA manual 10.3
 
 
         IsoPaircoef* pc2;
         for( std::map< IsoPaircoef*, Isolinkstrength >::const_iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
-            //pc1->get_links( j, &pc2, &val ); //normalisation of partially filled shells taken into account in the linkstrength val
-            pc2=it->first;
-            //val=it->second;
-            // Sometimes is left pc1, pc2 ) == right( pc2, pc1 )
+            pc2=it->first; //linked paircoef
             
             double inter_me_links=get_me_corr_left( *pc1, *pc2, params) + get_me_corr_left( *pc2, *pc1, params) + get_me_corr_both( *pc1, *pc2, params)
                                 +get_me_corr_both( *pc2, *pc1, params)+get_me_corr_right( *pc1, *pc2, params)+get_me_corr_right( *pc2, *pc1, params);
 
-            pp_res+=it->second.pplink*inter_me_links;
+            pp_res+=it->second.pplink*inter_me_links; //first factor is linkstrength to pc2
             nn_res+=it->second.nnlink*inter_me_links;
             np_p_res+=0.5*it->second.nplink*inter_me_links;
-            np_n_res+=0.5*((pc1->getT() == pc2->getT())?1.:-1.)*it->second.nplink*inter_me_links;
+            np_n_res+=0.5*((pc1->getT() == pc2->getT())?1.:-1.)*it->second.nplink*inter_me_links; //first two factors from isospin projection rules, see LCA manual 10.3
 
             
         }
@@ -100,7 +94,6 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
     for( int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
         const IsoPaircoef* pc1= loop_array[i];
 
-        //double val=  pc1->get_value();
         double res =  get_me( *pc1, *pc1, params); //normalisation of partially filled shells taken into account in the linkstrength val
         pp_res+=pc1->get_ppvalue()*res;
         nn_res+=pc1->get_nnvalue()*res;
@@ -111,20 +104,14 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
 //    cout << max_links << endl;
         const IsoPaircoef* pc2;
         for( std::map< IsoPaircoef*, Isolinkstrength >::const_iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
-            //pc1->get_links( j, &pc2, &val ); //normalisation of partially filled shells taken into account in the linkstrength val
-            /*
-             * pc2 is set to the "j"-th link in the link map of pc1 (linear search every time, VERY INEFFICIENT) ~ O(link^2)
-             * value here is overwritten with the "link strength" $C_{\alpha_1,\alpha_2}^{A} C_{\alpha_1,\alpha_2}^{B}$.
-             */
-            pc2=it->first;
-            //val=it->second;
+            pc2=it->first;//linked paircoef
 
             double res_links = get_me( *pc1, *pc2, params)+ get_me( *pc2, *pc1, params);
 
             pp_res+=it->second.pplink*res_links;
             nn_res+=it->second.nnlink*res_links;
             np_p_res+=0.5*it->second.nplink*res_links;
-            np_n_res+=0.5*((pc1->getT() == pc2->getT())?1.:-1.)*it->second.nplink*res_links;
+            np_n_res+=0.5*((pc1->getT() == pc2->getT())?1.:-1.)*it->second.nplink*res_links; //first two factors from isospin projection rules, see LCA manual 10.3
 
         }
         if( !(i%1000) ) {

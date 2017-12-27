@@ -17,10 +17,11 @@ public:
     /**
      * \brief  Constructor
      *
-     * @param central turn on/off the central correlations.  @param tensor turn
-     * on/off the tensor correlations .  @param isospin turn on/off the
-     * spin-isospin correlations .  @param norm the renormalization factor
-     * needed to renormalize .
+     * @param nucleus has all the pairs or paircoefs to compute matrix elements
+     * @param central turn on/off the central correlations.  
+     * @param tensor turn on/off the tensor correlations .  
+     * @param isospin turn on/off the spin-isospin correlations .  
+     * @param norm the renormalization factor needed to renormalize .
      */
     operator_virtual( Nucleus* nucleus, bool central=true, bool tensor=true, bool isospin=false, double norm=1);
     /**

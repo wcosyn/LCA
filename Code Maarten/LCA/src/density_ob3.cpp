@@ -499,9 +499,9 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                             int kB= lB; //l'q=l' due to no correlation functions acting on the ket! [first summations on line 1 in master formula]
 
                             double mec1, met1, mes1;
-                            get_central_me( kA, lA, S, jA, TA, &mec1 );
-                            get_tensor_me( kA, lA, S, jA, TA, &met1 );
-                            get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
+                            int mec1_check=get_central_me( kA, lA, S, jA, TA, &mec1 );
+                            int met1_check=get_tensor_me( kA, lA, S, jA, TA, &met1 );
+                            int mes1_check=get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
 
                             //k->l1 in master formula
                             for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
@@ -547,13 +547,13 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
                                 {
                                     //Here the normalisation is accounted for!
                                     //the prefactor is added to a particular integral (last line master formula Eq 53 LCA manual)
-                                    if( bcentral && mec1 ) {
+                                    if( bcentral && mec1_check ) {
                                         integrand_c->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm*mec1*vali*valj*sum*ifactor*factor_right );
                                     }
-                                    if( tensor && met1 ) {
+                                    if( tensor && met1_check ) {
                                         integrand_t->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm*met1*vali*valj*sum*ifactor*factor_right );
                                     }
-                                    if( spinisospin && mes1 ) {
+                                    if( spinisospin && mes1_check ) {
                                         integrand_s->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm*mes1*vali*valj*sum*ifactor*factor_right );
                                     }
                                 }
@@ -662,9 +662,9 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
                             if( kB < 0 ) continue;
 
                             double mec2, met2, mes2;
-                            get_central_me( kB, lB, S, jB, TB, &mec2 );
-                            get_tensor_me( kB, lB, S, jB, TB, &met2 );
-                            get_spinisospin_me( kB, lB, S, jB, TB, &mes2 );
+                            int mec2_check =get_central_me( kB, lB, S, jB, TB, &mec2 );
+                            int met2_check =get_tensor_me( kB, lB, S, jB, TB, &met2 );
+                            int mes2_check =get_spinisospin_me( kB, lB, S, jB, TB, &mes2 );
 
                             //k->l1 in master formula
                             for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
@@ -710,13 +710,13 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
                                 {
                                     //Here the normalisation is accounted for!
                                     //the prefactor is added to a particular integral (last line master formula Eq 53 LCA manual)
-                                    if( bcentral && mec2 ) {
+                                    if( bcentral && mec2_check ) {
                                         integrand_c->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k, pair_norm*mec2*vali*valj*sum*ifactor );
                                     }
-                                    if( tensor && met2 ) {
+                                    if( tensor && met2_check ) {
                                         integrand_t->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k, pair_norm*met2*vali*valj*sum*ifactor );
                                     }
-                                    if( spinisospin && mes2 ) {
+                                    if( spinisospin && mes2_check ) {
                                         integrand_s->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k, pair_norm*mes2*vali*valj*sum*ifactor );
                                     }
                                 }
@@ -774,12 +774,12 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
             int TB= coefj.getT();
             int MT= coefi.getMT();
             double preifactor= 1;
-            // Adapt prefactor if cj sum starts at ci  WIM: IS THIS NEEDED???
+            // Adapt prefactor if cj sum starts at ci  WIM: IS THIS NEEDED??? cj runs over all!!!
 
-            preifactor*=2;
-            if( ci == cj ) {
-                preifactor *= 0.5;
-            }
+            // preifactor*=2;
+            // if( ci == cj ) {
+            //     preifactor *= 0.5;
+            // }
 
 
              /** Camille: For explanation of
@@ -834,12 +834,12 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
                                 if( kB < 0 ) continue;
 
                                 double mec1, mec2, met1, met2, mes1, mes2;
-                                get_central_me( kA, lA, S, jA, TA, &mec1 );
-                                get_central_me( kB, lB, S, jB, TB, &mec2 );
-                                get_tensor_me( kA, lA, S, jA, TA, &met1 );
-                                get_tensor_me( kB, lB, S, jB, TB, &met2 );
-                                get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
-                                get_spinisospin_me( kB, lB, S, jB, TB, &mes2 );
+                                int mec1_check=get_central_me( kA, lA, S, jA, TA, &mec1 );
+                                int mec2_check=get_central_me( kB, lB, S, jB, TB, &mec2 );
+                                int met1_check=get_tensor_me( kA, lA, S, jA, TA, &met1 );
+                                int met2_check=get_tensor_me( kB, lB, S, jB, TB, &met2 );
+                                int mes1_check=get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
+                                int mes2_check=get_spinisospin_me( kB, lB, S, jB, TB, &mes2 );
 
                                 //k->l1 in master formula
                                 for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
@@ -891,31 +891,31 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
                                     {
                                         //Here the normalisation is accounted for!
                                         //the prefactor is added to a particular integral (last line master formula Eq 53 LCA manual)
-                                        if( bcentral && mec1 && mec2) {
+                                        if( bcentral && mec1_check && mec2_check) {
                                             integrand_cc->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm* mec1*mec2*vali*valj*sum*ifactor );
                                         }
-                                        if( tensor && met1 && met2) {
+                                        if( tensor && met1_check && met2_check) {
                                             integrand_tt->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm* met1*met2*vali*valj*sum*ifactor );
                                         }
-                                        if( spinisospin && mes1 && mes2) {
+                                        if( spinisospin && mes1_check && mes2_check) {
                                             integrand_ss->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm* mes1*mes2*vali*valj*sum*ifactor );
                                         }
                                         if( tensor && bcentral) {
-                                            if( mec1 && met2 )
+                                            if( mec1_check && met2_check )
                                                 integrand_ct->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm* mec1*met2*vali*valj*sum*ifactor );
-                                            if( met1 && mec2 )
+                                            if( met1_check && mec2_check )
                                                 integrand_ct->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k ,pair_norm* met1*mec2*vali*valj*sum*ifactor );
                                         }
                                         if( spinisospin && bcentral ) {
-                                            if( mec1 && mes2 )
+                                            if( mec1_check && mes2_check )
                                                 integrand_cs->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm* mec1*mes2*vali*valj*sum*ifactor );
-                                            if( mes1 && mec2 )
+                                            if( mes1_check && mec2_check )
                                                 integrand_cs->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k ,pair_norm* mes1*mec2*vali*valj*sum*ifactor );
                                         }
                                         if( tensor && spinisospin) {
-                                            if( mes1 && met2 )
+                                            if( mes1_check && met2_check )
                                                 integrand_st->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, pair_norm* mes1*met2*vali*valj*sum*ifactor );
-                                            if( met1 && mes2 )
+                                            if( met1_check && mes2_check )
                                                 integrand_st->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k ,pair_norm* met1*mes2*vali*valj*sum*ifactor );
                                         }
                                     }
@@ -1145,9 +1145,9 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
                     int kA= lA;
 
                     double mec1, met1, mes1;
-                    get_central_me( kB, lB, S, jB, TB, &mec1 );
-                    get_tensor_me( kB, lB, S, jB, TB, &met1 );
-                    get_spinisospin_me( kB, lA, S, jB, TB, &mes1 );
+                    int mec1_check=get_central_me( kB, lB, S, jB, TB, &mec1 );
+                    int met1_check=get_tensor_me( kB, lB, S, jB, TB, &met1 );
+                    int mes1_check=get_spinisospin_me( kB, lA, S, jB, TB, &mes1 );
 
                     //k->l1 in master formula
                     for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
@@ -1192,13 +1192,13 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
 
                         #pragma omp critical(add)
                         {
-                            if( bcentral && mec1 ) {
+                            if( bcentral && mec1_check ) {
                                 integrand_c->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k, mec1*sum*ifactor);
                             }
-                            if( tensor && met1 ) {
+                            if( tensor && met1_check ) {
                                 integrand_t->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k, met1*sum*ifactor);
                             }
-                            if( spinisospin && mes1 ) {
+                            if( spinisospin && mes1_check ) {
                                 integrand_s->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k, mes1*sum*ifactor);
                             }
                         }
@@ -1295,9 +1295,9 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
                     int kB= lB; //l'q=l' due to no correlation functions acting on the ket! [first summations on line 1 in master formula]
 
                     double mec1, met1, mes1;
-                    get_central_me( kA, lA, S, jA, TA, &mec1 );
-                    get_tensor_me( kA, lA, S, jA, TA, &met1 );
-                    get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
+                    int mec1_check=get_central_me( kA, lA, S, jA, TA, &mec1 );
+                    int met1_check=get_tensor_me( kA, lA, S, jA, TA, &met1 );
+                    int mes1_check=get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
 
                     //k->l1 in master formula
                     for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
@@ -1342,13 +1342,13 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
 
                         #pragma omp critical(add)
                         {
-                            if( bcentral && mec1 ) {
+                            if( bcentral && mec1_check ) {
                                 integrand_c->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, mec1*sum*ifactor*factor_right );
                             }
-                            if( tensor && met1 ) {
+                            if( tensor && met1_check ) {
                                 integrand_t->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, met1*sum*ifactor*factor_right );
                             }
-                            if( spinisospin && mes1 ) {
+                            if( spinisospin && mes1_check ) {
                                 integrand_s->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, mes1*sum*ifactor*factor_right );
                             }
                         }
@@ -1453,12 +1453,12 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
                         if( kB < 0 ) continue;
 
                         double mec1, mec2, met1, met2, mes1, mes2;
-                        get_central_me( kA, lA, S, jA, TA, &mec1 );
-                        get_central_me( kB, lB, S, jB, TB, &mec2 );
-                        get_tensor_me( kA, lA, S, jA, TA, &met1 );
-                        get_tensor_me( kB, lB, S, jB, TB, &met2 );
-                        get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
-                        get_spinisospin_me( kB, lB, S, jB, TB, &mes2 );
+                        int mec1_check=get_central_me( kA, lA, S, jA, TA, &mec1 );
+                        int mec2_check=get_central_me( kB, lB, S, jB, TB, &mec2 );
+                        int met1_check=get_tensor_me( kA, lA, S, jA, TA, &met1 );
+                        int met2_check=get_tensor_me( kB, lB, S, jB, TB, &met2 );
+                        int mes1_check=get_spinisospin_me( kA, lA, S, jA, TA, &mes1 );
+                        int mes2_check=get_spinisospin_me( kB, lB, S, jB, TB, &mes2 );
 
                         //k->l1 in master formula
                         for( int k= max( fabs(kB-l), fabs(kA-la)) ; k <= min( kB+l, kA+la ); k++ ) {
@@ -1503,31 +1503,31 @@ double density_ob3::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params
 
                             #pragma omp critical(add)
                             {
-                                if( bcentral && mec1 && mec2) {
+                                if( bcentral && mec1_check && mec2_check) {
                                     integrand_cc->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k,  mec1*mec2*sum*ifactor );
                                 }
-                                if( tensor && met1 && met2) {
+                                if( tensor && met1_check && met2_check) {
                                     integrand_tt->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, met1*met2*sum*ifactor );
                                 }
-                                if( spinisospin && mes1 && mes2) {
+                                if( spinisospin && mes1_check && mes2_check) {
                                     integrand_ss->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, mes1*mes2*sum*ifactor );
                                 }
                                 if( tensor && bcentral) {
-                                    if( mec1 && met2 )
+                                    if( mec1_check && met2_check )
                                         integrand_ct->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, mec1*met2*sum*ifactor );
-                                    if( met1 && mec2 )
+                                    if( met1_check && mec2_check )
                                         integrand_ct->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k ,met1*mec2*sum*ifactor );
                                 }
                                 if( spinisospin && bcentral ) {
-                                    if( mec1 && mes2 )
+                                    if( mec1_check && mes2_check )
                                         integrand_cs->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, mec1*mes2*sum*ifactor );
-                                    if( mes1 && mec2 )
+                                    if( mes1_check && mec2_check )
                                         integrand_cs->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k ,mes1*mec2*sum*ifactor );
                                 }
                                 if( tensor && spinisospin) {
-                                    if( mes1 && met2 )
+                                    if( mes1_check && met2_check )
                                         integrand_st->add( nA, lA, NA, LA, nB, lB, NB, LB, l, la, k, mes1*met2*sum*ifactor );
-                                    if( met1 && mes2 )
+                                    if( met1_check && mes2_check )
                                         integrand_st->add( nB, lB, NB, LB, nA, lA, NA, LA, la, l, k ,met1*mes2*sum*ifactor );
                                 }
                             }

@@ -4,16 +4,22 @@
 #include "newcoef.h"
 #include <map>
 
+/**
+ * @brief small structure that holds three doubles, holds the linkstrength for the isopaircoefs for pp,nn and np pairs.
+ * 
+ */
 struct Isolinkstrength{
     double pplink, nnlink, nplink;
 };
 
 /**
- * @brief Class that contains a coupled state | nlSjmj, NLML, TMT> and linkstrengths to other coupled states, differentiates between different isospin contributions.
+ * @brief Class that contains a coupled state | nlSjmj, NLML, TMT> and linkstrengths to other coupled states.
+ * The MT dependence is contained in the different ppvalue,nnvalue,npvalue variables + one linkstrength for each isospin combination.
  * 
  * The coupled states originate from transforming | a1 a2 >_nas pairs [PhD Vanhalst Eq 2.14].  
  * Different uncoupled pairs can have the same coupled states in their expansion.  
- * This class stores the links between these and the total link strength (using Paircoef::addpp( double val) and Paircoef::addpp(Paircoef* pc, double val) ).
+ * This class stores the links between these and the total link strength (using Paircoef::addpp( double val) and Paircoef::addpp(Paircoef* pc, double val) )
+ * and similar for other isospin combinations.
  * Contrary to the Newcoef class this class doesn't care anymore from which uncoupled pair the coupled state originated! 
  * All the needed information to compute matrix elements in included in the link strenghts.  
  * The normalisation of the originating shells is taken into account in the linkstrengths!
@@ -31,7 +37,6 @@ private:
     int L; ///< coupled state HO center of mass OAM quantum number
     int ML; ///< coupled state HO center of mass OAM 3-component
     int T; ///< coupled state total isospin
-    // int MT; ///< coupled state 3-component of total isospin
     double ppvalue; ///< contains the value of the link strength with itself (loop in the graph) originating from pp pairs
     double nnvalue; ///< contains the value of the link strength with itself (loop in the graph) originating from nn pairs
     double npvalue; ///< contains the value of the link strength with itself (loop in the graph) originating from np pairs
@@ -51,7 +56,6 @@ public:
      * @param L coupled state HO com OAM quantum number
      * @param ML coupled state HO com OAM 3-component quantum number
      * @param T coupled state total isospin
-     * @param MT coupled state totla isospin 3-component
      */
     IsoPaircoef( const int n, const int l, const int S, const int j, const int mj,
             const  int N, const int L, const int ML, const int T);
@@ -123,12 +127,6 @@ public:
     int getT() const {
         return T;
     };
-    /**
-     * @brief returns coupled state totla isospin 3-component
-     */
-    // int getMT() const {
-    //     return MT;
-    // };
     
     /**
      * @brief Link a IsoPaircoef to an other IsoPaircoef originated from the same |a1a2>_nas pp Pair
@@ -217,6 +215,11 @@ public:
         return npvalue;
     };
     
+    /**
+     * @brief returns the map that holds all the connections to other IsoPaircoef objects and their linkstrengths differentiated for isospin
+     * 
+     * @return const std::map< IsoPaircoef*, Isolinkstrength >& getLinksmap 
+     */
     const std::map< IsoPaircoef*, Isolinkstrength >& getLinksmap() const
     { return links;}
 };

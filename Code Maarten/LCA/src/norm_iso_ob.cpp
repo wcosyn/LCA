@@ -42,9 +42,6 @@ double norm_iso_ob::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void
     int TA= pc1.getT();
     int TB= pc2.getT();
     
-    // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
-    // if( t == 0 && TA != TB )
-    //     return 0.;
     return 2./A;
 
 }
@@ -71,8 +68,6 @@ double norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef
     if( pc1.getS()  != pc2.getS()  ) return 0.;
     if( pc1.getj()  != pc2.getj()  ) return 0.;
     if( pc1.getmj() != pc2.getmj() ) return 0.;
-    // if( pc1.getT()  != pc2.getT()  ) return 0.;
-    // if( pc1.getMT() != pc2.getMT() ) return 0.;
     if( pc1.getN()  != pc2.getN()  ) return 0.;
     if( pc1.getL()  != pc2.getL()  ) return 0.;
     if( pc1.getML() != pc2.getML() ) return 0.;
@@ -84,7 +79,6 @@ double norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef
     if( nBs > -1 && n2 != nBs ) return 0.;
     if( lAs > -1 && l1 != lAs ) return 0.;
     if( lBs > -1 && l2 != lBs ) return 0.;
-    // int MT= pc1.getMT();
 
     int TA= pc1.getT();
     int TB= pc2.getT();
@@ -178,8 +172,6 @@ double norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef&
     if( pc1.getS() != pc2.getS() ) return 0.;
     if( pc1.getj() != pc2.getj() ) return 0.;
     if( pc1.getmj() != pc2.getmj() ) return 0.;
-    // if( pc1.getT() != pc2.getT() ) return 0.;
-    // if( pc1.getMT() != pc2.getMT() ) return 0.;
     if( pc1.getN() != pc2.getN() ) return 0.;
     if( pc1.getL() != pc2.getL() ) return 0.;
     if( pc1.getML() != pc2.getML() ) return 0.;
@@ -191,7 +183,6 @@ double norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef&
     if( nBs > -1 && n2 != nBs ) return 0.;
     if( lAs > -1 && l1 != lAs ) return 0.;
     if( lBs > -1 && l2 != lBs ) return 0.;
-    // int MT= pc1.getMT();
 
     int TA= pc1.getT();
     int TB= pc2.getT();
@@ -272,8 +263,6 @@ double norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef&
     if( pc1.getS() != pc2.getS() ) return 0.;
     if( pc1.getj() != pc2.getj() ) return 0.;
     if( pc1.getmj() != pc2.getmj() ) return 0.;
-    // if( pc1.getT() != pc2.getT() ) return 0.;
-    // if( pc1.getMT() != pc2.getMT() ) return 0.;
     if( pc1.getN() != pc2.getN() ) return 0.;
     if( pc1.getL() != pc2.getL() ) return 0.;
     if( pc1.getML() != pc2.getML() ) return 0.;
@@ -285,7 +274,6 @@ double norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef&
     if( nBs > -1 && n1 != nBs ) return 0.;
     if( lAs > -1 && l2 != lAs ) return 0.;
     if( lBs > -1 && l2 != lBs ) return 0.;
-    // int MT= pc1.getMT();
 
     int TA= pc1.getT();
     int TB= pc2.getT();

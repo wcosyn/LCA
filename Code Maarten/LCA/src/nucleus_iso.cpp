@@ -36,6 +36,7 @@ NucleusIso::NucleusIso( const std::string & iinputdir, const std::string & iresu
 
     number_of_isopaircoefs= 0;
 
+    //make all paircoefs
     makeisopaircoefs();
 
 }
@@ -45,16 +46,6 @@ NucleusIso::~NucleusIso()
     //cout << "Nucleus deleted" << endl;
 }
 
-
-
-
-/**
- * \brief Note: This will calculate the all normalised anti-sym pairs \f$ |t1t2>_nas
- * \f$ For the sum over all combinations, it is assumed \f$ \alpha_1 < \alpha_2
- * \f$ where \f$ \alpha = nljm_j \f$ If a single nucleon shell is not fully
- * occupied an according norm factor is calculated.  The isospin of first and
- * second particle are given by getT1(), getT2().
- */
 void NucleusIso::makeisopaircoefs()
 {
     if( isopaircoefsMade== true) return;
@@ -72,8 +63,8 @@ void NucleusIso::makeisopaircoefs()
     #pragma omp parallel for collapse(2)
     //loops run over closed filled shells!!
     for( int i1= 0; i1 <= shell1_max; i1++ ) {
-        for( int i2= 0; i2 <= shell2_max; i2++ ) { //start from i1 to prevent double counting!
-            if( i2 < i1 ) continue; // prevent double counting, only if t1==t2, e.g. pp or nn pairs
+        for( int i2= 0; i2 <= shell2_max; i2++ ) { 
+            if( i2 < i1 ) continue; // prevent double counting, only if t1==t2, e.g. pp or nn pairs, omp doesn't like it in the for loop above
             int n1= Shell::shells[i1].getN();
             int l1= Shell::shells[i1].getL();
             int twoj1= Shell::shells[i1].getTwo_j();
@@ -135,18 +126,18 @@ void NucleusIso::makeisopaircoefs()
 
                     pair.setfnorm( factor1*factor2 );
 
-                    double sum = pair.getSum(); //WIM: check what this does... -> 
+                    double sum = pair.getSum(); //WIM: check what this does... -> ok, expansion check
                     // Fermi test
                     //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl;
                     if( sum < 1e-4 || factor1*factor2 == 0 ) { }  //This happens for a pair that comes from the same shell with only 1 nucleon in it for instance 
                     else if( sum < 0.99 ) cerr << "CHECK " << sum << " " << __FILE__ << ":" << __LINE__ << endl;
                     else {
-                        //make coefs for pp
+                        //make coefs for this pp pair
                         for( int ci= 0; ci < pair.get_number_of_coeff(); ci++ ) { // loop over the rcm states A with nonzero overlap with \braket{ \alpha_1 \alpha_2}
                             double vali= pair.getCoeff(ci).getCoef(); // get the value of the coefficient C_{\alpha_1,\alpha_2}^{A}
                             string keyi= pair.getCoeff(ci).getkey_iso();
                             map < string, IsoPaircoef >::iterator iti;
-                            #pragma omp critical(addisopaircoef)
+                            #pragma omp critical(addisopaircoef) // since elements are added, no conflicts please
                             {
                             iti = isopaircoefs.find( keyi ); // is the key already in our map?
                             if( iti == isopaircoefs.end() ) { // no
@@ -157,7 +148,7 @@ void NucleusIso::makeisopaircoefs()
                             // Add value of the matrix element of a paircoef with itself, e.g. \f$ | C_{\alpha_1,\alpha_2}^{A} |^{2} \f$
                             #pragma omp critical(addpp)
                             {
-                            iti->second.addpp(vali*vali*pair.getfnorm()); //add to diagonal link strength
+                            iti->second.addpp(vali*vali*pair.getfnorm()); //add to diagonal link strength, partially filled shell accounted for
                             }
 
                             // Add all the links of a Paircoef with the other Paircoefs generated
@@ -168,9 +159,9 @@ void NucleusIso::makeisopaircoefs()
                                 double valj= pair.getCoeff(cj).getCoef();
                                 string keyj= pair.getCoeff(cj).getkey_iso();
                                 map < string, IsoPaircoef >::iterator itj;
-                                #pragma omp critical(addisopaircoef)
+                                #pragma omp critical(addisopaircoef) //no conflicts when potentially adding elements
                                 {
-                               itj = isopaircoefs.find( keyj );
+                                itj = isopaircoefs.find( keyj );
                                 if( itj == isopaircoefs.end() ) {
                                     isopaircoefs[keyj]= IsoPaircoef( pair.getCoeff(cj) );
                                     itj = isopaircoefs.find(keyj);
@@ -267,7 +258,7 @@ void NucleusIso::makeisopaircoefs()
 
                     pair.setfnorm( factor1*factor2 );
 
-                    double sum = pair.getSum(); //WIM: check what this does... -> 
+                    double sum = pair.getSum(); //WIM: check what this does... ->  ok, expansion checking
                     // Fermi test
                     //                        if( t1 == t2 && n1==n2 && l1==l2 && twoj1==twoj2 && two_mj2 == two_mj1 ) cerr << "FERMI TEST sum = " << sum << endl;
                     if( sum < 1e-4 || factor1*factor2 == 0 ) {}  //This happens for a pair that comes from the same shell with only 1 nucleon in it for instance 

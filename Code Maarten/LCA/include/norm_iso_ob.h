@@ -15,11 +15,11 @@ public:
     /**
      * \brief Constructor.
      *
-     * @param nucleus holds all the pairs [Nucleus::pairs] and/or coupled states with linkstrengths [Nucleus::paircoefs]
+     * @param nucleus holds all the coupled states with linkstrengths [IsoNucleus::isopaircoefs]
      * @param central turn on/off the central correlations.
      * @param tensor turn on/off the tensor correlations .
      * @param isospin turn on/off the spin-isospin correlations .
-     * @param norm the renormalization factor needed to renormalize .
+     * @param norm the renormalization factor needed to renormalize.
      */
     norm_iso_ob(NucleusIso* nucleus, bool central= true, bool tensor=true, bool isospin=true, double norm= 1);
     /**
@@ -46,8 +46,6 @@ public:
      * \brief Selects ket pairs with certain coupled HO relative n qn. -1 if you want all.
      * @var norm_ob_params::lB
      * \brief Selects ket pairs with certain coupled HO relative OAM qn. -1 if you want all.
-     * @var norm_ob_params::t
-     * \brief select proton (+1), neutron (-1), both (0). Note that this does not correspond with an isospin projection of a particle or particle pair!
      */
     struct norm_ob_params {
         int nA;

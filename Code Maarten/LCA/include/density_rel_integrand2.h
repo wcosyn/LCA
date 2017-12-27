@@ -65,8 +65,8 @@ public:
      * correlation function combinations.
      * Remember: the density_ob_integrand_cf are functions of one-nucleon
      * momentum k and cm momentum P.
-     * \params doic1 object of density_ob_integrand_cf for left pair
-     * \params doic2 object of density_ob_integrand_cf for right pair
+     * \param doic1 object of density_ob_integrand_cf for left pair
+     * \param doic2 object of density_ob_integrand_cf for right pair
      * \return sum of all the integrals
      */
     double get( density_ob_integrand_cf* doic1, density_ob_integrand_cf* doic2 );

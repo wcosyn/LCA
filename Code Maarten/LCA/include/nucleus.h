@@ -34,7 +34,7 @@ public:
      * @param A the nucleus' mass number
      * @param Z the nucleus' number of protons
      */
-    Nucleus( const std::string & iinputdir, const std::string & iresultdir, const int A, const int Z);
+    Nucleus( const std::string & inputdir, const std::string & resultdir, const int A, const int Z);
     /**
      * \brief Destructor
      */

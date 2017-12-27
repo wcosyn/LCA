@@ -200,7 +200,7 @@ public:
      * < 1 for open shell.
      * 
      * @param i index of coefficient in expansion to coupled states of the NN pair
-     * @param[out] coef pointer to coef object at index i
+     * @return coef pointer to coef object at index i
      */
     const Newcoef& getCoeff( const u_int i);
 

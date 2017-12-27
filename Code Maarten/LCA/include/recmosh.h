@@ -98,10 +98,9 @@ private:
      * @param l1 HO OAM quantum number of first nucleon 
      * @param n2 HO n quantum number of second nucleon 
      * @param l2 HO OAM quantum number of second nucleon 
-     * @param inputPath read in stored Moshinsky brackets from this folder
-     * @param outputPath write out newly created Moshinsky brackets to this folder
+     * @param path to read in or write out newly created Moshinsky brackets to this folder
      */
-    RecMosh(const int n1, const int l1, const int n2, const int l2, const std::string& inputPath);
+    RecMosh(const int n1, const int l1, const int n2, const int l2, const std::string& path);
     /**
      * @brief write out newly constructed Moshinsky brackets to a file
      * 
@@ -116,8 +115,7 @@ public:
      * @param l1 HO OAM quantum number of first nucleon 
      * @param n2 HO n quantum number of second nucleon 
      * @param l2 HO OAM quantum number of second nucleon 
-     * @param inputPath read in stored Moshinsky brackets from this folder
-     * @param outputPath write out newly created Moshinsky brackets to this folder
+     * @param path read in stored Moshinsky brackets from this folder
      * @return RecMosh* pointer to a RecMosh object (obtained from the RecMosh::maprecmosh map)
      */
     static RecMosh& createRecMosh( const int n1, const int l1, const int n2, const int l2, const std::string& path);
@@ -191,8 +189,7 @@ private:
      * @param l1 HO OAM quantum number of first nucleon 
      * @param n2 HO n quantum number of second nucleon 
      * @param l2 HO OAM quantum number of second nucleon 
-     * @param inputPath read in stored Moshinsky brackets from this folder
-     * @param outputPath write out newly created Moshinsky brackets to this folder
+     * @param path read in stored Moshinsky brackets from this folder, or write them out there
      * @return RecMosh* pointer to the relevant RecMosh object
      */
     RecMosh& get( const int n1, const int l1, const int n2, const int l2, const std::string& path );
