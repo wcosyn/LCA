@@ -2,13 +2,17 @@ set( SRC
 	correlation_functions.cpp
 	density_angle.cpp
 	density_ob3.cpp
+	density_iso_ob3.cpp
 	density_ob_integrand3.cpp
+	density_iso_ob_integrand3.cpp
 	density_ob_integrand_cf.cpp
 	density_ob_integrand_pow.cpp
 	density_rel.cpp
 	density_rel_integrand2.cpp
 	density_td.cpp
+	isolinkstrength.cpp
 	isopaircoef.cpp
+	isomatrixelement.cpp
 	kinenergy_ob.cpp
 	newcoef.cpp
 	norm_ob.cpp

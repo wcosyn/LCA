@@ -1,9 +1,12 @@
 #include "density_ob3.h"
+#include "density_iso_ob3.h"
 #include "nucleusall.h"
 #include "nucleusnp.h"
 #include "nucleuspp.h"
 #include "nucleusnn.h"
+#include "nucleus_iso.h"
 #include "norm_ob.h"
+#include "norm_iso_ob.h"
 #include <string>
 #include <cstdlib>
 #include <cassert>
@@ -31,6 +34,28 @@ void ob(int A,int Z,std::string name, int isospin, Nucleus *nuc){
      */
     double mf,corr;
     dob3.write(".",name.c_str(),-1,-1,-1,-1, isospin,&mf,&corr); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
+}
+
+void ob(int A,int Z,std::string name, NucleusIso *nuc){
+
+
+    //NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
+    // NucleusNP  nuc("../data/mosh","../data/mosh",A,Z); // idem
+    // NucleusNN  nuc("../data/mosh","../data/mosh",A,Z); // idem
+
+    NucleusIso nucall("../data/mosh","../data/mosh",A,Z);
+    norm_iso_ob no(&nucall);
+    norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
+    double norm_mf  = no.sum_me_coefs( &nob ).norm();
+    double norm_corr= no.sum_me_corr( &nob ).norm();
+    double norm_all = norm_mf+norm_corr;
+
+    density_iso_ob3 dob3(nuc,true,true,true,norm_all,10); // nuc, central,tensor,nucl,norm,qmax (default=7)
+    /* qmax is the maximum value of q in the sum in Eq. D.37 in Maartens thesis
+     * note that this equation is incorrect/incomplete, see manual
+     */
+    double mf,corr;
+    dob3.write(".",name,mf,corr,-1,-1,-1,-1); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
 int main(int argc,char* argv[]){
@@ -132,6 +157,10 @@ int main(int argc,char* argv[]){
     else if(!pairs.compare("np")||!pairs.compare("pn")){
         NucleusNP nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
         ob( A, Z, nucl_name,nucl, &nuc);
+    }
+    else if(!pairs.compare("iso")){
+        NucleusIso nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
+        ob(A,Z,nucl_name,&nuc);
     }
     else {std::cerr << "Invalid fifth argument (pairs): select either pp, nn, pn(=np) or all " << pairs << std::endl; exit(-1); assert(1==0);} 
 }

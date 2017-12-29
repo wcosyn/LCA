@@ -40,7 +40,8 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
         const IsoPaircoef* pc1= loop_array[i];
 
         // is left== right? Sometimes, accounted for in those functions (left gets put to 0, right *2)
-        double inter_me= get_me_corr_left( *pc1, *pc1, params)+get_me_corr_both( *pc1, *pc1, params) +get_me_corr_right( *pc1, *pc1, params);
+        double inter_me= get_me_corr_left( *pc1, *pc1, params,pc1->get_linkvalue())+get_me_corr_both( *pc1, *pc1, params,pc1->get_linkvalue())
+                     +get_me_corr_right( *pc1, *pc1, params,pc1->get_linkvalue());
 
 
         pp_res+=pc1->get_ppvalue()*inter_me; //first factor is linkstrength for the loop in the diagram
@@ -53,8 +54,8 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
         for( std::map< IsoPaircoef*, Isolinkstrength >::const_iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
             pc2=it->first; //linked paircoef
             
-            double inter_me_links=get_me_corr_left( *pc1, *pc2, params) + get_me_corr_left( *pc2, *pc1, params) + get_me_corr_both( *pc1, *pc2, params)
-                                +get_me_corr_both( *pc2, *pc1, params)+get_me_corr_right( *pc1, *pc2, params)+get_me_corr_right( *pc2, *pc1, params);
+            double inter_me_links=get_me_corr_left( *pc1, *pc2, params, it->second) + get_me_corr_left( *pc2, *pc1, params, it->second) + get_me_corr_both( *pc1, *pc2, params, it->second)
+                                +get_me_corr_both( *pc2, *pc1, params, it->second)+get_me_corr_right( *pc1, *pc2, params, it->second)+get_me_corr_right( *pc2, *pc1, params, it->second);
 
             pp_res+=it->second.pplink*inter_me_links; //first factor is linkstrength to pc2
             nn_res+=it->second.nnlink*inter_me_links;
@@ -94,7 +95,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
     for( int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
         const IsoPaircoef* pc1= loop_array[i];
 
-        double res =  get_me( *pc1, *pc1, params); //normalisation of partially filled shells taken into account in the linkstrength val
+        double res =  get_me( *pc1, *pc1, params, pc1->get_linkvalue()); //normalisation of partially filled shells taken into account in the linkstrength val
         pp_res+=pc1->get_ppvalue()*res;
         nn_res+=pc1->get_nnvalue()*res;
         np_p_res+=0.5*pc1->get_npvalue()*res;
@@ -106,7 +107,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
         for( std::map< IsoPaircoef*, Isolinkstrength >::const_iterator it=pc1->getLinksmap().begin(); it!=pc1->getLinksmap().end(); ++it ) {
             pc2=it->first;//linked paircoef
 
-            double res_links = get_me( *pc1, *pc2, params)+ get_me( *pc2, *pc1, params);
+            double res_links = get_me( *pc1, *pc2, params, it->second)+ get_me( *pc2, *pc1, params, it->second);
 
             pp_res+=it->second.pplink*res_links;
             nn_res+=it->second.nnlink*res_links;

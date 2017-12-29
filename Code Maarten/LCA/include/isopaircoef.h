@@ -3,14 +3,7 @@
 
 #include "newcoef.h"
 #include <map>
-
-/**
- * @brief small structure that holds three doubles, holds the linkstrength for the isopaircoefs for pp,nn and np pairs.
- * 
- */
-struct Isolinkstrength{
-    double pplink, nnlink, nplink;
-};
+#include "isolinkstrength.h"
 
 /**
  * @brief Class that contains a coupled state | nlSjmj, NLML, TMT> and linkstrengths to other coupled states.
@@ -214,6 +207,10 @@ public:
     double get_npvalue() const {
         return npvalue;
     };
+
+    Isolinkstrength get_linkvalue() const {
+        return Isolinkstrength(ppvalue,nnvalue,npvalue);
+    }
     
     /**
      * @brief returns the map that holds all the connections to other IsoPaircoef objects and their linkstrengths differentiated for isospin

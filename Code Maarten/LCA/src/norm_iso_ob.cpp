@@ -13,7 +13,7 @@ norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, bool central, bool tensor, bool is
 
 
 
-double norm_iso_ob::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
+double norm_iso_ob::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link)
 {
     struct norm_ob_params* nob= (struct norm_ob_params*) params;
     int nAs= nob->nA;
@@ -46,7 +46,7 @@ double norm_iso_ob::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void
 
 }
 
-double norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
+double norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link)
 {
     struct norm_ob_params* nob= (struct norm_ob_params*) params;
     int nAs= nob->nA;
@@ -148,7 +148,7 @@ double norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef
     return sum*2./A;
 }
 
-double norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
+double norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link)
 {
     struct norm_ob_params* nob= (struct norm_ob_params*) params;
     int nAs= nob->nA;
@@ -249,7 +249,7 @@ double norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef&
 
 }
 
-double norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params)
+double norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link)
 {
     struct norm_ob_params* nob= (struct norm_ob_params*) params;
     int nAs= nob->nA;

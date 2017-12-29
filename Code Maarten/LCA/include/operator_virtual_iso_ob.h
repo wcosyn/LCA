@@ -1,15 +1,7 @@
 #ifndef OPERATOR_OB_ISO_V_H
 #define OPERATOR_OB_ISO_V_H
 #include "nucleus_iso.h"
-
-/**
- * @brief small structure that is used as return value for matrix element calculations.  
- * Holds the results for pp,nn,np(tagged p) and np(tagged n) pairs separately
- * 
- */
-struct IsoMatrixElement {
-    double pp_res, nn_res, np_p_res, np_n_res;
-};
+#include "isomatrixelement.h"
 
 /**
  * \brief Virtual parent class for one-body operators that does all possible isospin combinations of interest in one go
@@ -66,7 +58,7 @@ public:
      * @param params Parameter specific to the child class
      * @return value of the matrix element, dimension depends on operator.
      */
-    virtual double get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
+    virtual double get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link) =0;
     /**
      * \brief Calculates the correlated EV of a paircoefs combination (not necessarily diagonal!!)
      * with correlation operator working to the left.
@@ -80,7 +72,7 @@ public:
      * @param params Parameter specific to the child class
      * @return value of the matrix element, dimension depends on operator.
      */
-    virtual double get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
+    virtual double get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link) =0;
     /**
      * \brief Calculates the correlated EV of a paircoefs combination
      * with a correlation operator working to the left and a correlation
@@ -95,7 +87,7 @@ public:
      * @param params Parameter specific to the child class
      * @return value of the matrix element, dimension depends on operator.
      */
-    virtual double get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
+    virtual double get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link) =0;
     /**
      * \brief Calculates the correlated EV of a paircoefs combination
      * with a correlation operator working to the right.
@@ -109,7 +101,7 @@ public:
      * @param params Parameter specific to the child class
      * @return value of the matrix element, dimension depends on operator.
      */
-    virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params) =0;
+    virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link) =0;
 
 
 protected:
