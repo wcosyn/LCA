@@ -55,7 +55,6 @@ Now it is very inefficient as basically the program has to start from scratch ea
 
 14. add sanity check to see that the recmosh object in pair & newcoef is for the correct quantum numbers.
 
-
 19. naming variables, Lambda is sometimes used for coupled l, or sometimes for com OAM -> make uniform!!
 
 20. create pointer to mosh object in pair and newcoef in the constructor itself instead of passing as a parameter...
@@ -64,14 +63,11 @@ Now it is very inefficient as basically the program has to start from scratch ea
 
 22. add copy and copy assignment constructors?
 
-
 28. obmd in double loops move lookups of the first one after first forloop
 
 29. make namespace for the correlation functions file
 
 30. correlation integrals in norm_ob -> write some small extra functions (everything seems so similar every time?)
-
-32. in double corr norm matrix element if statements on doubles! + l478 substitute by -N // same in the paircoeff version (+ result at the end can be shorter)
 
 33. void params in the operators -> can this be replaced by template class?
 
@@ -97,7 +93,7 @@ Also make the computation of these integrals more dimensionless
 
 
 ++++COMMENTING+++++
-
+49. fix LCA manual with error in kA,lA
 
 
 +++DONE+++
@@ -186,3 +182,5 @@ SIMILAR QUESTION/PROBLEM in the corr matrix elements of the obmd calculations!!!
 
 38. In density_ob3::get_me_corr_both why is there a prefactor *=2.  The sums over coefficients run over all??
 -> think this was a mistake, changed it.  we odn't really care since the pair functionality isn't used, coefs are better
+
+32. in double corr norm matrix element if statements on doubles! + l478 substitute by -N // same in the paircoeff version (+ result at the end can be shorter) -> done 27/12
