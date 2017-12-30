@@ -30,13 +30,6 @@ Wim
 
 +++MODIFICATIONS ALGORITHMS+++
 
-4. PRIORITY modify calculation of matrix elements such that all isospin combinations are being calculated in one go.
-Now it is very inefficient as basically the program has to start from scratch each time and does almost the same thing all over (but with different linear combinations)
--> we will have to change the way the outputs work (at least for the norm) -> see how it is handled for the obmd's
--> Make new abstract class, where the output is given as a struct or a vector or something with 8 doubles for all the different isospin combinations
--> done for norm 26/12
-
-
 18. can the links be stored somehow for any nucleus? Is it worth the effort/reusability?
 ->think too difficult...
 
@@ -82,7 +75,6 @@ Now it is very inefficient as basically the program has to start from scratch ea
 25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...
 everything looks symmetric (correlation functions in the two l arguments...)
 
-35. density_ob3::write -> get rid of all the news (and deletes)
 
 39. in obmd:corrpair methods left/right/both-> isospin projection t==0 case seems missing??
 
@@ -184,3 +176,12 @@ SIMILAR QUESTION/PROBLEM in the corr matrix elements of the obmd calculations!!!
 -> think this was a mistake, changed it.  we odn't really care since the pair functionality isn't used, coefs are better
 
 32. in double corr norm matrix element if statements on doubles! + l478 substitute by -N // same in the paircoeff version (+ result at the end can be shorter) -> done 27/12
+
+4. PRIORITY modify calculation of matrix elements such that all isospin combinations are being calculated in one go.
+Now it is very inefficient as basically the program has to start from scratch each time and does almost the same thing all over (but with different linear combinations)
+-> we will have to change the way the outputs work (at least for the norm) -> see how it is handled for the obmd's
+-> Make new abstract class, where the output is given as a struct or a vector or something with 8 doubles for all the different isospin combinations
+-> done for norm 26/12
+-> done for obmd 29/30
+
+35. density_ob3::write -> get rid of all the news (and deletes) -> done for the iso version
