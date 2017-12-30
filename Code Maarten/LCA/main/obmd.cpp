@@ -62,7 +62,7 @@ int main(int argc,char* argv[]){
     if (argc<=6){
         std::cerr << "[Error] expected five arguments: " << argc << std::endl;
         std::cerr << "[executable] [A] [Z] [nucleusname] [p/n/all] [pp/nn/np/pn/all]"<< std::endl;
-        std::cerr << argv[1] << endl;
+        std::cerr << argv[1] << std::endl;
         std::cerr << std::endl;
         exit(-1);
     }
