@@ -43,8 +43,8 @@ void ob(int A,int Z,std::string name, NucleusIso *nuc){
     // NucleusNP  nuc("../data/mosh","../data/mosh",A,Z); // idem
     // NucleusNN  nuc("../data/mosh","../data/mosh",A,Z); // idem
 
-    NucleusIso nucall("../data/mosh","../data/mosh",A,Z);
-    norm_iso_ob no(&nucall);
+    // NucleusIso nucall("../data/mosh","../data/mosh",A,Z);
+    norm_iso_ob no(nuc);
     norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
     double norm_mf  = no.sum_me_coefs( &nob ).norm();
     double norm_corr= no.sum_me_corr( &nob ).norm();
