@@ -190,6 +190,32 @@ int main(int argc,char* argv[]){
     // double norm_res = norm_mf+norm_corr;
     // std::cout << norm_mf << " " << norm_corr << std::endl;
 
+    // int A[5]={40,84,124,142,184};
+    // int Z[5]={18,36,54,60,74};
+
+    // for(int i=0;i<5;i++){
+    //     IsoMatrixElement norm_mf,norm_corr;
+    //     bool pass=0;
+    //     NucleusIso nuc("../data/mosh","../data/mosh",A[i],Z[i]);
+
+    //     norm_iso_ob nopp(&nuc);
+    //     norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
+    //     norm_mf  = nopp.sum_me_coefs( &nob );
+    //     norm_corr= nopp.sum_me_corr( &nob );
+
+    //     std::cout << "A: " << A[i] << "\tZ: " << Z[i] << std::endl;
+    //     std::cout << "pp norm: " << norm_mf.pp_res << " " << norm_corr.pp_res << " " << norm_mf.pp_res + norm_corr.pp_res << std::endl;
+    //     std::cout << "nn norm: " << norm_mf.nn_res << " " << norm_corr.nn_res << " " << norm_mf.nn_res + norm_corr.nn_res << std::endl;
+    //     std::cout << "np_p norm: " << norm_mf.np_p_res << " " << norm_corr.np_p_res << " " << norm_mf.np_p_res + norm_corr.np_p_res << std::endl;
+    //     std::cout << "np_n norm: " << norm_mf.np_n_res << " " << norm_corr.np_n_res << " " << norm_mf.np_n_res + norm_corr.np_n_res << std::endl;
+    //     std::cout << "p norm: " << norm_mf.pp_res+norm_mf.np_p_res << " " << norm_corr.pp_res+norm_corr.np_p_res << " " 
+    //         << norm_mf.pp_res + norm_corr.pp_res + norm_mf.np_p_res + norm_corr.np_p_res << std::endl;
+    //     std::cout << "n norm: " << norm_mf.nn_res+norm_mf.np_n_res << " " << norm_corr.nn_res+norm_corr.np_n_res << " " 
+    //         << norm_mf.nn_res + norm_corr.nn_res + norm_mf.np_n_res + norm_corr.np_n_res << std::endl;
+    //     std::cout << "total norm: " << norm_mf.norm() << " " << norm_corr.norm() << " " 
+    //         << norm_mf.norm()+norm_corr.norm() << std::endl;
+    // }    
+
     bool succes = normsRun(atoi(argv[1]));
     printf("[norm] normsRun() ");
     if (succes){

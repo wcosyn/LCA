@@ -131,7 +131,7 @@ double operator_virtual_ob::sum_me_pairs( void* params )
         sum+= pair_norm* me ;
     }
 
-    return sum/ (A-1.)/ norm; //factor A-1 is because we compute a one-body operator as a two-body one: O(1)+O(2)
+    return sum/ (A-1.)/ norm; //factor A-1 is because we compute a one-body operator as a two-body one for coupled states: O(1)+O(2)
 }
 
 //mean-field paircoefs
@@ -188,7 +188,7 @@ double operator_virtual_ob::sum_me_coefs( void* params )
 
         sum+= sum_i;
     }
-    return sum/ (A-1.)/norm; //factor A-1 is because we compute a one-body operator as a two-body one: O(1)+O(2)
+    return sum/ (A-1.)/norm; //factor A-1 is because we compute a one-body operator as a two-body one for coupled states: O(1)+O(2)
 }
 
 int operator_virtual_ob::get_central_me( int la, int l, int S, int J, int T, double* result )
