@@ -36,18 +36,18 @@ public:
      * Integrals itself are not calculated yet, happens later.  
      * Method is called in all the density_ob3::get_me_xxx methods.
      *
-     * @param nA parameter of the integral, n in master formula (53) of LCA manual
-     * @param lA parameter of the integral, lp in master formula (53) of LCA manual
-     * @param NA parameter of the integral, N in master formula (53) of LCA manual
-     * @param LA parameter of the integral, L in master formula (53) of LCA manual
-     * @param nB parameter of the integral, n' in master formula (53) of LCA manual
-     * @param lB parameter of the integral, l'q in master formula (53) of LCA manual
-     * @param NB parameter of the integral, N' in master formula (53) of LCA manual
-     * @param LB parameter of the integral, L' in master formula (53) of LCA manual
-     * @param l parameter of the integral, k' in master formula (53) of LCA manual
-     * @param la parameter of the integral, k in master formula (53) of LCA manual
-     * @param k parameter of the integral, l1 in master formula (53) of LCA manual
-     * @param val [] strength (or prefactor) of the integral, all the prefactors before the integral in Eq (53) LCA manual, dimensionless
+     * @param nA parameter of the integral, n in master formula (56) of LCA manual
+     * @param lA parameter of the integral, lp in master formula (56) of LCA manual
+     * @param NA parameter of the integral, N in master formula (56) of LCA manual
+     * @param LA parameter of the integral, L in master formula (56) of LCA manual
+     * @param nB parameter of the integral, n' in master formula (56) of LCA manual
+     * @param lB parameter of the integral, l'q in master formula (56) of LCA manual
+     * @param NB parameter of the integral, N' in master formula (56) of LCA manual
+     * @param LB parameter of the integral, L' in master formula (56) of LCA manual
+     * @param l parameter of the integral, k' in master formula (56) of LCA manual
+     * @param la parameter of the integral, k in master formula (56) of LCA manual
+     * @param k parameter of the integral, l1 in master formula (56) of LCA manual
+     * @param val [] strength (or prefactor) of the integral, all the prefactors before the integral in Eq (56) LCA manual, dimensionless
      */
     void add( int nA, int lA, int NA, int LA, int nB, int lB, int NB, int LB, int l, int la, int k, const IsoMatrixElement& val );
 
@@ -75,13 +75,13 @@ private:
     /**
      * @brief Calculate one integral over cm momentum P.
      * 
-     * @param nA parameter of the integral, n in master formula (53) of LCA manual
-     * @param lA parameter of the integral, lp in master formula (53) of LCA manual
-     * @param la parameter of the integral, k in master formula (53) of LCA manual
-     * @param nB parameter of the integral, n' in master formula (53) of LCA manual
-     * @param lB parameter of the integral, l'q in master formula (53) of LCA manual
-     * @param l parameter of the integral, k' in master formula (53) of LCA manual
-     * @param k parameter of the integral, l1 in master formula (53) of LCA manual
+     * @param nA parameter of the integral, n in master formula (56) of LCA manual
+     * @param lA parameter of the integral, lp in master formula (56) of LCA manual
+     * @param la parameter of the integral, k in master formula (56) of LCA manual
+     * @param nB parameter of the integral, n' in master formula (56) of LCA manual
+     * @param lB parameter of the integral, l'q in master formula (56) of LCA manual
+     * @param l parameter of the integral, k' in master formula (56) of LCA manual
+     * @param k parameter of the integral, l1 in master formula (56) of LCA manual
      * @param index power of com momentum P (Laguerre polynomials were expanded!): L+L'+2i+2j
      * @param doic1 object that holds value of a chi integral Eq(52) LCA manual (left correlation operator)
      * @param doic2 object that holds value of a chi integral Eq(52) LCA manual (right correlation operator)
@@ -107,13 +107,13 @@ private:
      * 
      */
     struct params_int2 {
-        int nA; ///< parameter of the integral, n in master formula (53) of LCA manual
-        int lA; ///< parameter of the integral, lp in master formula (53) of LCA manual
-        int la; ///< parameter of the integral, k in master formula (53) of LCA manual
-        int nB; ///< parameter of the integral, n' in master formula (53) of LCA manual
-        int lB; ///< parameter of the integral, l'q in master formula (53) of LCA manual
-        int l; ///< parameter of the integral, k' in master formula (53) of LCA manual
-        int k; ///< parameter of the integral, l1 in master formula (53) of LCA manual
+        int nA; ///< parameter of the integral, n in master formula (56) of LCA manual
+        int lA; ///< parameter of the integral, lp in master formula (56) of LCA manual
+        int la; ///< parameter of the integral, k in master formula (56) of LCA manual
+        int nB; ///< parameter of the integral, n' in master formula (56) of LCA manual
+        int lB; ///< parameter of the integral, l'q in master formula (56) of LCA manual
+        int l; ///< parameter of the integral, k' in master formula (56) of LCA manual
+        int k; ///< parameter of the integral, l1 in master formula (56) of LCA manual
         uint index; ///< power of com momentum P (Laguerre polynomials were expanded!)
         double nu; ///< HO parameter
         density_ob_integrand_cf* doic1; ///< object that holds value of a chi integral Eq(52) LCA manual (left correlation operator)
@@ -125,13 +125,13 @@ private:
      * \brief Structure which contains all information of an integral.
      */
     struct doi3_struct {
-        int n1; ///< parameter of the integral, n in master formula (53) of LCA manual
-        int l1; ///< parameter of the integral, lp in master formula (53) of LCA manual
-        int k1; ///< parameter of the integral, k in master formula (53) of LCA manual
-        int n2; ///< parameter of the integral, n' in master formula (53) of LCA manual
-        int l2; ///< parameter of the integral, l'q in master formula (53) of LCA manual
-        int k2; ///< parameter of the integral, k' in master formula (53) of LCA manual
-        int k; ///< parameter of the integral, l1 in master formula (53) of LCA manual
+        int n1; ///< parameter of the integral, n in master formula (56) of LCA manual
+        int l1; ///< parameter of the integral, lp in master formula (56) of LCA manual
+        int k1; ///< parameter of the integral, k in master formula (56) of LCA manual
+        int n2; ///< parameter of the integral, n' in master formula (56) of LCA manual
+        int l2; ///< parameter of the integral, l'q in master formula (56) of LCA manual
+        int k2; ///< parameter of the integral, k' in master formula (56) of LCA manual
+        int k; ///< parameter of the integral, l1 in master formula (56) of LCA manual
         std::vector< IsoMatrixElement >* pow_values; ///< integral values for different powers of P
     };
 

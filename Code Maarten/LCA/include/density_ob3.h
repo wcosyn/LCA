@@ -10,7 +10,7 @@
  * \brief calculates the one-nucleon momentum distribution n_1(p).
  *
  * - See appendix D3 of PhD Vanhalst for information about the formulas.  
- * - Also see LCA manual Sec. 9 for some more derivations/explanation.  Eq (53) is the master formula [the one with missing bits coloured in red]
+ * - Also see LCA manual Sec. 9 for some more derivations/explanation.  Eq (56) is the master formula [the one with missing bits coloured in red]
  * - Everywhere a void* pointer appears in the virtual functions a density_ob3::dens_ob_params pointer is expected!
  */
 class density_ob3 : public operator_virtual_ob

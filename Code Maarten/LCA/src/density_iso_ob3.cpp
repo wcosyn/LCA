@@ -159,7 +159,7 @@ void density_iso_ob3::write(const string& outputdir, const string& name, double&
         {
             // factor 1/(A-1) because a one-body operator is calculated as 2-body
             // this was taken care of in operator_virtual_ob::sum_me_coefs but that result isn't used here!!
-            //rest of the factors is the 4\sqrt{2}/\pi in the master formula (Eq 53 LCA manual) 
+            //rest of the factors is the 4\sqrt{2}/\pi in the master formula (Eq. 56 LCA manual) 
             // + the normalisation supplied with the object (denominator matrix element)            
             mf= i0.get( cf0, cf0 )*(2./M_PI*sqrt(8)/norm/(A-1));  // we take info from the density_iso_ob_integrand3 objects
         }
@@ -265,8 +265,8 @@ double density_iso_ob3::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, 
      * if S==S' and T==T' => l-l' is even => L-L' is even
      */
     for( int q= 0; q <= qmax; q++ ) {
-        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
-            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 56 LCA manual), restriction from 3j-symbol
+            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 56 LCA manual), restriction from 3j-symbol
                 //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
                 //see also Sec. 9 "One body operators acting on coupled states" in LCA manual                        
                 double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
@@ -285,9 +285,9 @@ double density_iso_ob3::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, 
                     for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                         int mkA= mjA-MS;
                         int mkB= mjB-MS;
-                        //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
+                        //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq. (56)) 
                         if( MLA+ mkA != MLB+ mkB ) continue;
-                        //third line master formule (LCA manual Eq(53))
+                        //third line master formule (LCA manual Eq. (56))
                         double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                    * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                    * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
@@ -376,8 +376,8 @@ double density_iso_ob3::get_me_corr_right( const IsoPaircoef& pc1, const IsoPair
 
     for( int q= 0; q <= qmax; q++ ) {
 
-        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
-            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 56 LCA manual), restriction from 3j-symbol
+            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 56 LCA manual), restriction from 3j-symbol
                 //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
                 //see also Sec. 9 "One body operators acting on coupled states" in LCA manual
                 double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
@@ -404,9 +404,9 @@ double density_iso_ob3::get_me_corr_right( const IsoPaircoef& pc1, const IsoPair
                         for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                             int mkA= mjA-MS;
                             int mkB= mjB-MS;
-                            //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
+                            //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq. (56)) 
                             if( MLA+ mkA != MLB+ mkB ) continue;
-                            //third line master formule (LCA manual Eq(53))
+                            //third line master formule (LCA manual Eq. (56))
                             double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                        * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                        * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
@@ -510,8 +510,8 @@ double density_iso_ob3::get_me_corr_left( const IsoPaircoef& pc1, const IsoPairc
 
     for( int q= 0; q <= qmax; q++ ) {
 
-        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
-            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 56 LCA manual), restriction from 3j-symbol
+            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 56 LCA manual), restriction from 3j-symbol
                 //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
                 //see also Sec. 9 "One body operators acting on coupled states" in LCA manual
                 double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
@@ -537,9 +537,9 @@ double density_iso_ob3::get_me_corr_left( const IsoPaircoef& pc1, const IsoPairc
                         for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                             int mkA= mjA-MS;
                             int mkB= mjB-MS;
-                            //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
+                            //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq. (56)) 
                             if( MLA+ mkA != MLB+ mkB ) continue;
-                            //third line master formule (LCA manual Eq(53))
+                            //third line master formule (LCA manual Eq. (56))
                             double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                        * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                        * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
@@ -646,8 +646,8 @@ double density_iso_ob3::get_me_corr_both( const IsoPaircoef& pc1, const IsoPairc
 
     for( int q= 0; q <= qmax; q++ ) {
 
-        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
-            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 53 LCA manual), restriction from 3j-symbol
+        for( int l = fabs( LA-q); l <= LA+q; l++ ) { //l->k' in master formula (Eq. 56 LCA manual), restriction from 3j-symbol
+            for( int la= fabs( LB-q); la <= LB+q; la++ ) { //la->k in master formula (Eq. 56 LCA manual), restriction from 3j-symbol
             //factor originating from the O(1)+O(2) + i factor (Eq. 56 LCA manual)
             //see also Sec. 9 "One body operators acting on coupled states" in LCA manual
             double ifactor= preifactor*get_me12_factor(LA-LB+l-la);
@@ -678,9 +678,9 @@ double density_iso_ob3::get_me_corr_both( const IsoPaircoef& pc1, const IsoPairc
                             for( int MS= -S; MS <= S; MS++ ) { //Hurray, this one has the same name as in the master formula!
                                 int mkA= mjA-MS;
                                 int mkB= mjB-MS;
-                                //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq(53)) 
+                                //This restriction follows from the 4 3j-symbols with non-zero lower indices (master formula LCA manual Eq. (56)) 
                                 if( MLA+ mkA != MLB+ mkB ) continue;
-                                //third line master formule (LCA manual Eq(53))
+                                //third line master formule (LCA manual Eq. (56))
                                 double cg= pow( -1, mjA+mjB+kA+kB)* sqrt(2*jA+1)*sqrt(2*jB+1)
                                            * threej::threejs.get( 2*kA, 2*S, 2*jA, 2*mkA, 2*MS, -2*mjA)
                                            * threej::threejs.get( 2*kB, 2*S, 2*jB, 2*mkB, 2*MS, -2*mjB);
