@@ -15,15 +15,110 @@ rms_ob::rms_ob(Nucleus* nucleus, bool central, bool tensor, bool isospin, double
 double rms_ob::get_me( Pair* pair, void* params )
 {
 
-    int n1= pair->getn1();
-    int l1= pair->getl1();
-//  int two_j1= pair->gettwo_j1();
-//  int two_mj1= pair->gettwo_mj1();
-    int n2= pair->getn2();
-    int l2= pair->getl2();
-//  int two_j2= pair->gettwo_j2();
-//  int two_mj2= pair->gettwo_mj2();
-    return calc_me( n1, l1) + calc_me( n2, l2 );
+//     int n1= pair->getn1();
+//     int l1= pair->getl1();
+// //  int two_j1= pair->gettwo_j1();
+// //  int two_mj1= pair->gettwo_mj1();
+//     int n2= pair->getn2();
+//     int l2= pair->getl2();
+// //  int two_j2= pair->gettwo_j2();
+// //  int two_mj2= pair->gettwo_mj2();
+//     return calc_me( n1, l1) + calc_me( n2, l2 );
+
+
+    struct rms_ob_params* nob= (struct rms_ob_params*) params;
+    int nAs= nob->nA;
+    int lAs= nob->lA;
+    int nBs= nob->nB;
+    int lBs= nob->lB;
+    int t= nob->t;
+    int t1= pair->gettwo_t1();
+    int t2= pair->gettwo_t2();
+
+    double sum= 0;
+    for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
+        Newcoef coefi=pair->getCoeff(ci);
+        for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
+            Newcoef coefj=pair->getCoeff(cj);
+            // The correlation operator keeps S j m_j unchanged
+
+            double vali = coefi.getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj = coefj.getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
+
+            // the following block is delta in
+            // n l S j m_j N L M_L T M_T, which characterizes a
+            // rcm state A = | n l S j m_j N L M_L T M_T >
+            if( coefi.getS()  != coefj.getS()  ) continue;
+            if( coefi.getj()  != coefj.getj()  ) continue;
+            if( coefi.getmj() != coefj.getmj() ) continue;
+            // if( coefi.getT()  != coefj.getT()  ) continue;
+            if( coefi.getMT() != coefj.getMT() ) continue;
+            // if( coefi.getN()  != coefj.getN()  ) continue;
+            if( coefi.getL()  != coefj.getL()  ) continue;
+            if( coefi.getML() != coefj.getML() ) continue;
+            // if( coefi.getn()  != coefj.getn()  ) continue;
+            if( coefi.getl()  != coefj.getl()  ) continue;
+            int nA= coefi.getn();
+            int nB= coefj.getn();
+            int lA= coefi.getl();
+            int lB= coefj.getl();
+            if( nAs > -1 && nA != nAs ) continue;
+            if( nBs > -1 && nB != nBs ) continue;
+            if( lAs > -1 && lA != lAs ) continue;
+            if( lBs > -1 && lB != lBs ) continue;
+
+
+            int TA= coefi.getT();
+            int TB= coefj.getT();
+            int MT= coefi.getMT();
+            double preifactor=1.;
+            if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
+                    continue;
+                if( MT == 0 ) {
+                    preifactor*= 0.5;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+                }
+            }
+            if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+                continue;
+            int n1= coefi.getn();
+            int n2= coefj.getn();
+            int l1= coefi.getl();
+            int l2= coefj.getl();
+            int N1= coefi.getN();
+            int N2= coefj.getN();
+            int L= coefi.getL();
+            double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
+            double me1=0.,me2=0.;
+            for( int i= 0; i < n1+1; i++ ) {
+                double anli=  laguerre_coeff( nu, n1, l1, i );
+                for( int j= 0; j < n2+1; j++ ) {
+                    double anlj=  laguerre_coeff( nu, n2, l2, j );
+                    if( N1 == N2 ) {
+                        int rpow1= -5-2*i-2*j-l1-l2;
+                        // double power= pow( 1.+aa, 0.5*rpow1);
+                        me1+=  no* 0.5* anli* anlj* hiGamma(-rpow1)/nu;
+                    }
+                    int rpow2= -3-2*i-2*j-l1-l2;
+                    // double power= pow( 1.+aa, 0.5*rpow2);
+                    me2+=  no* 0.5* anli* anlj* hiGamma(-rpow2);
+                }
+            }
+            double me2_cm=0;
+            double nocm= ho_norm( N1, L )* ho_norm( N2, L);
+            for( int i= 0; i< N1+1; i++ ) {
+                double anli= laguerre_coeff( nu, N1, L, i );
+                for( int j= 0; j< N2+1; j++ ) {
+                    double anlj= laguerre_coeff( nu, N2, L, j );
+                    me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* nocm/ nu;
+                }
+            }
+            sum+= (me1 + me2* me2_cm)* vali* valj*preifactor;
+        }
+    }
+    return sum/A;
+
 }
 
 double rms_ob::calc_me( int n, int l )

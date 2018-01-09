@@ -30,9 +30,6 @@ public:
     virtual double get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, double val= 1) {
         return 0;
     };
-
-private:
-    double calc_me( int n, int l );
     struct rms_ob_params {
         int nA;
         int lA;
@@ -40,6 +37,9 @@ private:
         int lB;
         int t;
     };
+
+private:
+    double calc_me( int n, int l );
 
 };
 

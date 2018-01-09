@@ -34,10 +34,17 @@ int main(int argc,char* argv[]){
         double norm= norm_mf+ norm_corr;
 
         rms_ob rms_all= rms_ob( &nuc, true, true, true, norm);
-        double ra = rms_all.sum_me_pairs( NULL );
-        double rca = rms_all.sum_me_corr_pairs( NULL );
+        struct rms_ob::rms_ob_params nob_params;
+        nob_params.nA = -1;
+        nob_params.nB = -1;
+        nob_params.lA = -1;
+        nob_params.lB = -1;
+        nob_params.t  = 0; // proton(+1), neutron (-1), both(0)
+        double ra = rms_all.sum_me_pairs( &nob_params );
+        double rca = rms_all.sum_me_corr_pairs( &nob_params );
         double rIPM= sqrt(ra);
         double rLCA= sqrt( (ra+rca) );
+        std::cout << "A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         std::cout << "RMS";
         std::cout << "\t" << ra  << " " << rca << std::endl;
         std::cout << "MF " << rIPM*sqrt(norm);
