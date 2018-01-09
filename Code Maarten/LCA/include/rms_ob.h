@@ -33,6 +33,13 @@ public:
 
 private:
     double calc_me( int n, int l );
+    struct rms_ob_params {
+        int nA;
+        int lA;
+        int nB;
+        int lB;
+        int t;
+    };
 
 };
 

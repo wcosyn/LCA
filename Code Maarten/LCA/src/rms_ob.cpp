@@ -14,6 +14,7 @@ rms_ob::rms_ob(Nucleus* nucleus, bool central, bool tensor, bool isospin, double
 
 double rms_ob::get_me( Pair* pair, void* params )
 {
+
     int n1= pair->getn1();
     int l1= pair->getl1();
 //  int two_j1= pair->gettwo_j1();
@@ -47,34 +48,30 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
 {
     double sum= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
-        Newcoef* coefi;
-        double normi;
-        pair->getCoeff( ci, &coefi, &normi );
-        double vali= coefi->getCoef();
+        Newcoef coefi=pair->getCoeff( ci );
+        double vali= coefi.getCoef();
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-            Newcoef* coefj;
-            double normj;
-            pair->getCoeff( cj, &coefj, &normj );
-            double valj= coefj->getCoef();
+            Newcoef coefj=pair->getCoeff( cj);
+            double valj= coefj.getCoef();
             // The correlation operator keeps S j m_j unchanged
 
-            if( coefi->getS() != coefj->getS() ) continue;
-            if( coefi->getj() != coefj->getj() ) continue;
-            if( coefi->getmj() != coefj->getmj() ) continue;
-            if( coefi->getT() != coefj->getT() ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
-            if( coefi->getL() != coefj->getL() ) continue;
-            if( coefi->getML() != coefj->getML() ) continue;
-            int n1= coefi->getn();
-            int n2= coefj->getn();
-            int l1= coefi->getl();
-            int l2= coefj->getl();
-            int N1= coefi->getN();
-            int N2= coefj->getN();
-            int L= coefi->getL();
-            int S = coefi->getS();
-            int T = coefi->getT();
-            int j = coefi->getj();
+            if( coefi.getS() != coefj.getS() ) continue;
+            if( coefi.getj() != coefj.getj() ) continue;
+            if( coefi.getmj() != coefj.getmj() ) continue;
+            if( coefi.getT() != coefj.getT() ) continue;
+            if( coefi.getMT() != coefj.getMT() ) continue;
+            if( coefi.getL() != coefj.getL() ) continue;
+            if( coefi.getML() != coefj.getML() ) continue;
+            int n1= coefi.getn();
+            int n2= coefj.getn();
+            int l1= coefi.getl();
+            int l2= coefj.getl();
+            int N1= coefi.getN();
+            int N2= coefj.getN();
+            int L= coefi.getL();
+            int S = coefi.getS();
+            int T = coefi.getT();
+            int j = coefi.getj();
             double me1= 0;
             double me2= 0;
             double cen, ten;
@@ -142,34 +139,30 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
 {
     double sum= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
-        Newcoef* coefi;
-        double normi;
-        pair->getCoeff( ci, &coefi, &normi );
-        double vali= coefi->getCoef();
+        Newcoef coefi = pair->getCoeff( ci );
+        double vali= coefi.getCoef();
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-            Newcoef* coefj;
-            double normj;
-            pair->getCoeff( cj, &coefj, &normj );
-            double valj= coefj->getCoef();
+            Newcoef coefj = pair->getCoeff( cj );
+            double valj= coefj.getCoef();
             // The correlation operator keeps S j m_j unchanged
 
-            if( coefi->getS() != coefj->getS() ) continue;
-            if( coefi->getj() != coefj->getj() ) continue;
-            if( coefi->getmj() != coefj->getmj() ) continue;
-            if( coefi->getT() != coefj->getT() ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
-            if( coefi->getL() != coefj->getL() ) continue;
-            if( coefi->getML() != coefj->getML() ) continue;
-            int n1= coefi->getn();
-            int n2= coefj->getn();
-            int l1= coefi->getl();
-            int l2= coefj->getl();
-            int N1= coefi->getN();
-            int N2= coefj->getN();
-            int L= coefi->getL();
-            int S = coefi->getS();
-            int T = coefi->getT();
-            int j = coefi->getj();
+            if( coefi.getS() != coefj.getS() ) continue;
+            if( coefi.getj() != coefj.getj() ) continue;
+            if( coefi.getmj() != coefj.getmj() ) continue;
+            if( coefi.getT() != coefj.getT() ) continue;
+            if( coefi.getMT() != coefj.getMT() ) continue;
+            if( coefi.getL() != coefj.getL() ) continue;
+            if( coefi.getML() != coefj.getML() ) continue;
+            int n1= coefi.getn();
+            int n2= coefj.getn();
+            int l1= coefi.getl();
+            int l2= coefj.getl();
+            int N1= coefi.getN();
+            int N2= coefj.getN();
+            int L= coefi.getL();
+            int S = coefi.getS();
+            int T = coefi.getT();
+            int j = coefi.getj();
             double me1= 0;
             double me2= 0;
             double cen, ten;
@@ -236,34 +229,30 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
 {
     double result= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
-        Newcoef* coefi;
-        double normi;
-        pair->getCoeff( ci, &coefi, &normi );
+        Newcoef coefi = pair->getCoeff( ci );
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
-            Newcoef* coefj;
-            double normj;
-            pair->getCoeff( cj, &coefj, &normj );
+            Newcoef coefj = pair->getCoeff( cj );
             // The correlation operator keeps S j m_j unchanged
 
-            double vali= coefi->getCoef();
-            double valj= coefj->getCoef();
-            if( coefi->getS() != coefj->getS() ) continue;
-            if( coefi->getj() != coefj->getj() ) continue;
-            if( coefi->getmj() != coefj->getmj() ) continue;
-            if( coefi->getT() != coefj->getT() ) continue;
-            if( coefi->getMT() != coefj->getMT() ) continue;
-            if( coefi->getL() != coefj->getL() ) continue;
-            if( coefi->getML() != coefj->getML() ) continue;
-            int l1= coefi->getl();
-            int l2= coefj->getl();
-            int n1= coefi->getn();
-            int n2= coefj->getn();
-            int N1= coefi->getN();
-            int N2= coefj->getN();
-            int L= coefi->getL();
-            int S= coefi->getS();
-            int j= coefi->getj();
-            int T= coefi->getT();
+            double vali= coefi.getCoef();
+            double valj= coefj.getCoef();
+            if( coefi.getS() != coefj.getS() ) continue;
+            if( coefi.getj() != coefj.getj() ) continue;
+            if( coefi.getmj() != coefj.getmj() ) continue;
+            if( coefi.getT() != coefj.getT() ) continue;
+            if( coefi.getMT() != coefj.getMT() ) continue;
+            if( coefi.getL() != coefj.getL() ) continue;
+            if( coefi.getML() != coefj.getML() ) continue;
+            int l1= coefi.getl();
+            int l2= coefj.getl();
+            int n1= coefi.getn();
+            int n2= coefj.getn();
+            int N1= coefi.getN();
+            int N2= coefj.getN();
+            int L= coefi.getL();
+            int S= coefi.getS();
+            int j= coefi.getj();
+            int T= coefi.getT();
             double expc= get_central_exp()/nu;
             double expt= get_tensor_exp()/nu;
             double norm_rel= ho_norm( n1, l1)* ho_norm( n2, l2 );
