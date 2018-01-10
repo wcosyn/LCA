@@ -25,7 +25,7 @@ int main(int argc,char* argv[]){
 
     double mf[11] = {1.83825,2.31983,2.45806,2.59025,3.0613,3.36158,3.58634,3.76245,4.5723,5.50623,5.61158};
     //double corr[11] = {1.69649,2.13105,2.24335,2.34069,2.77162,3.01579,3.22792,3.38491,4.11307,4.93008,5.03558}; // old without spinisospin
-    double corr[11] = {1.76542,2.21225,2.34037,2.45565,2.90423,3.17068,3.38993,3.5548,4.32867}
+    double corr[11] = {1.76542,2.21225,2.34037,2.45565,2.90423,3.17068,3.38993,3.5548,4.32867};
     bool allpass = true;
 
     for(int i=0;i<limit;i++){
@@ -45,8 +45,8 @@ int main(int argc,char* argv[]){
         nob_params.lA = -1;
         nob_params.lB = -1;
         nob_params.t  = 0; // proton(+1), neutron (-1), both(0)
-        double ra = rms_all.sum_me_pairs( &nob_params );
-        double rca = rms_all.sum_me_corr_pairs( &nob_params );
+        double ra = rms_all.sum_me_coefs( &nob_params );
+        double rca = rms_all.sum_me_corr( &nob_params );
         double rIPM= sqrt(ra);
         double rLCA= sqrt( (ra+rca) );
         std::cout << "A: " << A[i] << "\tZ: " << Z[i] << std::endl;

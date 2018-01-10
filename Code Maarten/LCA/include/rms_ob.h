@@ -18,18 +18,11 @@ public:
     virtual double get_me_corr_right( Pair* pair, void* params);
     virtual double get_me_corr_both( Pair* pair, void* params);
 
-    virtual double get_me( Paircoef* pc1, Paircoef* pc2, void* params, double val= 1) {
-        return 0;
-    };
-    virtual double get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, double val= 1) {
-        return 0;
-    };
-    virtual double get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, double val= 1) {
-        return 0;
-    };
-    virtual double get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, double val= 1) {
-        return 0;
-    };
+    virtual double get_me( Paircoef* pc1, Paircoef* pc2, void* params, double val= 1);
+    virtual double get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, double val= 1);
+    virtual double get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, double val= 1);
+    virtual double get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, double val= 1);
+
     struct rms_ob_params {
         int nA;
         int lA;
