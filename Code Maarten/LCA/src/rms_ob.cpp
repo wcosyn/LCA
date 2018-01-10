@@ -15,24 +15,12 @@ rms_ob::rms_ob(Nucleus* nucleus, bool central, bool tensor, bool isospin, double
 double rms_ob::get_me( Pair* pair, void* params )
 {
 
-    int pn1= pair->getn1();
-    int pl1= pair->getl1();
-    int ptwo_j1= pair->gettwo_j1();
-    int ptwo_mj1= pair->gettwo_mj1();
-    int pn2= pair->getn2();
-    int pl2= pair->getl2();
-    int ptwo_j2= pair->gettwo_j2();
-    int ptwo_mj2= pair->gettwo_mj2();
-    // return calc_me( pn1, pl1) + calc_me( pn2, pl2 );
-
     struct rms_ob_params* nob= (struct rms_ob_params*) params;
     int nAs= nob->nA;
     int lAs= nob->lA;
     int nBs= nob->nB;
     int lBs= nob->lB;
     int t= nob->t;
-    int t1= pair->gettwo_t1();
-    int t2= pair->gettwo_t2();
 
     double sum= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
@@ -57,14 +45,11 @@ double rms_ob::get_me( Pair* pair, void* params )
             if( coefi.getML() != coefj.getML() ) continue;
             // if( coefi.getn()  != coefj.getn()  ) continue;
             if( coefi.getl()  != coefj.getl()  ) continue;
-            int nA= coefi.getn();
-            int nB= coefj.getn();
-            int lA= coefi.getl();
-            int lB= coefj.getl();
-            if( nAs > -1 && nA != nAs ) continue;
-            if( nBs > -1 && nB != nBs ) continue;
-            if( lAs > -1 && lA != lAs ) continue;
-            if( lBs > -1 && lB != lBs ) continue;
+
+            if( nAs > -1 && coefi.getn() != nAs ) continue;
+            if( nBs > -1 && coefj.getn() != nBs ) continue;
+            if( lAs > -1 && coefi.getl() != lAs ) continue;
+            if( lBs > -1 && coefj.getl() != lBs ) continue;
 
 
             int TA= coefi.getT();
@@ -115,22 +100,8 @@ double rms_ob::get_me( Pair* pair, void* params )
                     }
                 }
             }
-        //     #pragma omp critical(testout)
-        //     {
-        //     if(fabs(me2-1.)>1.E-03) std::cout << "MEEE2 " << pair->gettwo_t1() << " " << pair->gettwo_t2() << " " << pn1 << " " << pl1 << " " << ptwo_j1 << " " << ptwo_mj1 << " " 
-        //  << pn2 << " " << pl2 << " " << ptwo_j2 << " " << ptwo_mj2 << " " << me2 << " " << n1 << " " << l1 << " " << n2 << " " << l2 << std::endl;
-        //     }
             sum+= (me1 + me2_cm)* vali* valj*preifactor;
         }
-    }
-    #pragma omp critical(testout)
-    {
-    if (fabs(sum/A-calc_me( pn1, pl1) - calc_me( pn2, pl2 ))>1.E-02) std::cout << "old " << pair->gettwo_t1() << " " << pair->gettwo_t2() << " " << pn1 << " " << pl1 << " " << ptwo_j1 << " " << ptwo_mj1 << " " 
-         << pn2 << " " << pl2 << " " << ptwo_j2 << " " << ptwo_mj2 << " " 
-         << calc_me( pn1, pl1) + calc_me( pn2, pl2 ) << " " << sum/A << std::endl;
-    // std::cout << "new " << pair->gettwo_t1() << " " << pair->gettwo_t2() << " "<< pn1 << " " << pl1 << " " << ptwo_j1 << " " << ptwo_mj1 << " " 
-    //      << pn2 << " " << pl2 << " " << ptwo_j2 << " " << ptwo_mj2 << " "  
-    //      << sum/A << std::endl;
     }
     return sum/A;
 
@@ -156,6 +127,13 @@ double rms_ob::calc_me( int n, int l )
 
 double rms_ob::get_me_corr_right( Pair* pair, void* params )
 {
+    struct rms_ob_params* nob= (struct rms_ob_params*) params;
+    int nAs= nob->nA;
+    int lAs= nob->lA;
+    int nBs= nob->nB;
+    int lBs= nob->lB;
+    int t= nob->t;
+
     double sum= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef coefi=pair->getCoeff( ci );
@@ -168,10 +146,30 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
             if( coefi.getS() != coefj.getS() ) continue;
             if( coefi.getj() != coefj.getj() ) continue;
             if( coefi.getmj() != coefj.getmj() ) continue;
-            if( coefi.getT() != coefj.getT() ) continue;
+            // if( coefi.getT() != coefj.getT() ) continue;
             if( coefi.getMT() != coefj.getMT() ) continue;
             if( coefi.getL() != coefj.getL() ) continue;
             if( coefi.getML() != coefj.getML() ) continue;
+            int TA= coefi.getT();
+            int TB= coefj.getT();
+            int MT= coefi.getMT();
+
+            if( nAs > -1 && coefi.getn() != nAs ) continue;
+            if( nBs > -1 && coefj.getn() != nBs ) continue;
+            if( lAs > -1 && coefi.getl() != lAs ) continue;
+            if( lBs > -1 && coefj.getl() != lBs ) continue;
+
+            double preifactor=1.;
+            if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
+                    continue;
+                if( MT == 0 ) {
+                    preifactor*= 0.5;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+                }
+            }
+            if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+                continue;
             int n1= coefi.getn();
             int n2= coefj.getn();
             int l1= coefi.getl();
@@ -184,9 +182,9 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
             int j = coefi.getj();
             double me1= 0;
             double me2= 0;
-            double cen, ten;
-            if( bcentral && get_central_me( l1, l2, S, j, T, &cen ) ) {
-                double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
+            double cen, ten, spiniso;
+            double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
+             if( bcentral && get_central_me( l1, l2, S, j, T, &cen ) ) {
                 for( int i= 0; i < n1+1; i++ ) {
                     double anli=  laguerre_coeff( n1, l1, i );
                     for( int j= 0; j < n2+1; j++ ) {
@@ -207,7 +205,6 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
                 }
             }
             if( tensor && get_tensor_me( l1, l2, S, j, T, &ten ) ) {
-                double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
                 for( int i= 0; i < n1+1; i++ ) {
                     double anli=  laguerre_coeff( n1, l1, i );
                     for( int j= 0; j < n2+1; j++ ) {
@@ -227,18 +224,38 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
                     }
                 }
             }
+            if (spinisospin && get_spinisospin_me(l1,l2,S,j,T,&spiniso)){
+                for( int i= 0; i < n1+1; i++ ) {
+                    double anli=  laguerre_coeff( n1, l1, i );
+                    for( int j= 0; j < n2+1; j++ ) {
+                        double anlj=  laguerre_coeff( n2, l2, j );
+                        for( int lambda= 0; lambda < 11; lambda++ ) {
+                            double alambda= get_spinisospin_pow( lambda )/ pow( sqrt(nu), lambda );
+                            double aa= get_spinisospin_exp()/nu;
+                            if( N1 == N2 ) {
+                                int rpow1= -5-2*i-2*j-lambda-l1-l2;
+                                double power= pow( 1.+aa, 0.5*rpow1);
+                                me1+= spiniso* no* 0.5* anli* anlj* alambda* hiGamma(-rpow1)* power/nu;
+                            }
+                            int rpow2= -3-2*i-2*j-lambda-l1-l2;
+                            double power= pow( 1.+aa, 0.5*rpow2);
+                            me2+= spiniso* no* 0.5* anli* anlj* alambda* hiGamma(-rpow2)* power;
+                        }
+                    }
+                }            
+            }
             double me2_cm=0;
-            double no= ho_norm( N1, L )* ho_norm( N2, L);
+            double nocm= ho_norm( N1, L )* ho_norm( N2, L);
             for( int i= 0; i< N1+1; i++ ) {
                 double anli= laguerre_coeff( N1, L, i );
                 for( int j= 0; j< N2+1; j++ ) {
                     double anlj= laguerre_coeff( N2, L, j );
-                    me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* no/ nu;
+                    me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* nocm/ nu;
                 }
             }
 //      cout << n1 << l1 << " " << n2 << l2 << ": " << me1 << " " << me2 << endl;
 //      cout << "CM " << N1 << L << " " << N2 << L << ": " << me2_cm << endl;
-            sum+= (me1 + me2* me2_cm)* vali* valj;
+            sum+= (me1 + me2* me2_cm)* vali* valj*preifactor;
         }
     }
     return sum/A;
@@ -247,6 +264,13 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
 
 double rms_ob::get_me_corr_left( Pair* pair, void* params )
 {
+    struct rms_ob_params* nob= (struct rms_ob_params*) params;
+    int nAs= nob->nA;
+    int lAs= nob->lA;
+    int nBs= nob->nB;
+    int lBs= nob->lB;
+    int t= nob->t;
+
     double sum= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef coefi = pair->getCoeff( ci );
@@ -259,10 +283,32 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
             if( coefi.getS() != coefj.getS() ) continue;
             if( coefi.getj() != coefj.getj() ) continue;
             if( coefi.getmj() != coefj.getmj() ) continue;
-            if( coefi.getT() != coefj.getT() ) continue;
+            // if( coefi.getT() != coefj.getT() ) continue;
             if( coefi.getMT() != coefj.getMT() ) continue;
             if( coefi.getL() != coefj.getL() ) continue;
             if( coefi.getML() != coefj.getML() ) continue;
+
+            int TA= coefi.getT();
+            int TB= coefj.getT();
+            int MT= coefi.getMT();
+
+            if( nAs > -1 && coefi.getn() != nAs ) continue;
+            if( nBs > -1 && coefj.getn() != nBs ) continue;
+            if( lAs > -1 && coefi.getl() != lAs ) continue;
+            if( lBs > -1 && coefj.getl() != lBs ) continue;
+
+            double preifactor=1.;
+            if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
+                    continue;
+                if( MT == 0 ) {
+                    preifactor*= 0.5;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+                }
+            }
+            if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+                continue;
+
             int n1= coefi.getn();
             int n2= coefj.getn();
             int l1= coefi.getl();
@@ -275,9 +321,9 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
             int j = coefi.getj();
             double me1= 0;
             double me2= 0;
-            double cen, ten;
+            double cen, ten, spiniso;
+            double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
             if( bcentral && get_central_me( l2, l1, S, j, T, &cen ) ) {
-                double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
                 for( int i= 0; i < n1+1; i++ ) {
                     double anli=  laguerre_coeff( n1, l1, i );
                     for( int j= 0; j < n2+1; j++ ) {
@@ -298,7 +344,6 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
                 }
             }
             if( tensor && get_tensor_me( l2, l1, S, j, T, &ten ) ) {
-                double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
                 for( int i= 0; i < n1+1; i++ ) {
                     double anli=  laguerre_coeff( n1, l1, i );
                     for( int j= 0; j < n2+1; j++ ) {
@@ -318,18 +363,38 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
                     }
                 }
             }
+            if( spinisospin && get_spinisospin_me( l2, l1, S, j, T, &spiniso ) ) {
+                for( int i= 0; i < n1+1; i++ ) {
+                    double anli=  laguerre_coeff( n1, l1, i );
+                    for( int j= 0; j < n2+1; j++ ) {
+                        double anlj=  laguerre_coeff( n2, l2, j );
+                        for( int lambda= 0; lambda < 11; lambda++ ) {
+                            double alambda= get_spinisospin_pow( lambda )/ pow( sqrt(nu), lambda );
+                            double aa= get_spinisospin_exp()/nu;
+                            if( N1 == N2 ) {
+                                int rpow1= -5-2*i-2*j-lambda-l1-l2;
+                                double power= pow( 1.+aa, 0.5*rpow1);
+                                me1+= spiniso* no* 0.5* anli* anlj* alambda* hiGamma(-rpow1)* power/nu;
+                            }
+                            int rpow2= -3-2*i-2*j-lambda-l1-l2;
+                            double power= pow( 1.+aa, 0.5*rpow2);
+                            me2+=  spiniso* no* 0.5* anli* anlj* alambda* hiGamma(-rpow2)* power;
+                        }
+                    }
+                }
+            }
             double me2_cm=0;
-            double no= ho_norm( N1, L )* ho_norm( N2, L);
+            double nocm= ho_norm( N1, L )* ho_norm( N2, L);
             for( int i= 0; i< N1+1; i++ ) {
                 double anli= laguerre_coeff( N1, L, i );
                 for( int j= 0; j< N2+1; j++ ) {
                     double anlj= laguerre_coeff( N2, L, j );
-                    me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* no/ nu;
+                    me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* nocm/ nu;
                 }
             }
 //      cout << n1 << l1 << " " << n2 << l2 << ": " << me1 << " " << me2 << endl;
 //      cout << "CM " << N1 << L << " " << N2 << L << ": " << me2_cm << endl;
-            sum+= (me1 + me2* me2_cm)* vali* valj;
+            sum+= (me1 + me2* me2_cm)* vali* valj*preifactor;
         }
     }
     return sum/A;
@@ -337,6 +402,13 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
 
 double rms_ob::get_me_corr_both( Pair* pair, void* params )
 {
+    struct rms_ob_params* nob= (struct rms_ob_params*) params;
+    int nAs= nob->nA;
+    int lAs= nob->lA;
+    int nBs= nob->nB;
+    int lBs= nob->lB;
+    int t= nob->t;
+
     double result= 0;
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef coefi = pair->getCoeff( ci );
@@ -349,10 +421,33 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
             if( coefi.getS() != coefj.getS() ) continue;
             if( coefi.getj() != coefj.getj() ) continue;
             if( coefi.getmj() != coefj.getmj() ) continue;
-            if( coefi.getT() != coefj.getT() ) continue;
+            // if( coefi.getT() != coefj.getT() ) continue;
             if( coefi.getMT() != coefj.getMT() ) continue;
             if( coefi.getL() != coefj.getL() ) continue;
             if( coefi.getML() != coefj.getML() ) continue;
+
+            int TA= coefi.getT();
+            int TB= coefj.getT();
+            int MT= coefi.getMT();
+
+            if( nAs > -1 && coefi.getn() != nAs ) continue;
+            if( nBs > -1 && coefj.getn() != nBs ) continue;
+            if( lAs > -1 && coefi.getl() != lAs ) continue;
+            if( lBs > -1 && coefj.getl() != lBs ) continue;
+
+            double preifactor=1.;
+            if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
+                    continue;
+                if( MT == 0 ) {
+                    preifactor*= 0.5;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+                }
+            }
+            if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+                continue;
+
+
             int l1= coefi.getl();
             int l2= coefj.getl();
             int n1= coefi.getn();
@@ -365,6 +460,7 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
             int T= coefi.getT();
             double expc= get_central_exp()/nu;
             double expt= get_tensor_exp()/nu;
+            double exps= get_spinisospin_exp()/nu;
             double norm_rel= ho_norm( n1, l1)* ho_norm( n2, l2 );
             double norm_cm= ho_norm( N1, L)* ho_norm( N2, L);
 
@@ -373,18 +469,22 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
                 double anli= laguerre_coeff( N1, L, i );
                 for( int j= 0; j< N2+1; j++ ) {
                     double anlj= laguerre_coeff( N2, L, j );
-                    me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* norm_cm/ nu;
+                    me2_cm+= anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L );
                 }
             }
+            me2_cm*=0.5*norm_cm/ nu;
 
             double me1= 0, me2= 0;
             for( int k= j-1; k<= j+1; k++ ) {
                 if( k < 0 ) continue;
-                double mec1, mec2, met1, met2;
-                get_central_me( k, l1, S, j, T, &mec1 );
-                get_central_me( k, l2, S, j, T, &mec2 );
-                get_tensor_me( k, l1, S, j, T, &met1 );
-                get_tensor_me( k, l2, S, j, T, &met2 );
+                double mec1, mec2, met1, met2, mes1, mes2;
+                
+                int mec1_check=get_central_me( k, l1, S, j, T, &mec1 );
+                int mec2_check=get_central_me( k, l2, S, j, T, &mec2 );
+                int met1_check=get_tensor_me( k, l1, S, j, T, &met1 );
+                int met2_check=get_tensor_me( k, l2, S, j, T, &met2 );
+                int mes1_check=get_spinisospin_me( k, l1, S, j, T, &mes1 );
+                int mes2_check=get_spinisospin_me( k, l2, S, j, T, &mes2 );
 
                 for( int i= 0; i < n1+1; i++ ) {
                     double anli=  laguerre_coeff( n1, l1, i );
@@ -394,44 +494,97 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
                             for( int lambdaj= 0; lambdaj < 11; lambdaj++ ) {
                                 int rpow1= -5-2*i-2*j-lambdai-lambdaj-l1-l2;
                                 int rpow2= -3-2*i-2*j-lambdai-lambdaj-l1-l2;
-                                if( bcentral && mec1 && mec2 ) {
+                                double me1_fact=0., me2_fact=0.;
+                                if( bcentral && mec1_check && mec2_check ) {
                                     double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
                                     double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                                     if( N1 == N2 ) {
-                                        me1+= alambdai* alambdaj* pow( 1+ 2*expc, 0.5*rpow1 )* hiGamma( -rpow1 )/nu * anli* anlj* 0.5* mec1* mec2* norm_rel;
+                                        me1_fact+= alambdai* alambdaj* pow( 1+ 2*expc, 0.5*rpow1 ) * mec1* mec2;
                                     }
-                                    me2+= alambdai* alambdaj* pow( 1+2*expc, 0.5*rpow2)* hiGamma( -rpow2 ) * anli* anlj* 0.5* mec1* mec2* norm_rel;
+                                    me2_fact+= alambdai* alambdaj* pow( 1+2*expc, 0.5*rpow2) * mec1* mec2;
 
-//                  prefactor_sum+= mec1* mec2* alambdai* alambdaj* power;
                                 }
-                                if( tensor && met1 && met2 ) {
+                                if( tensor && met1_check && met2_check ) {
                                     double alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
                                     double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
                                     if( N1 == N2 ) {
-                                        me1+= alambdai* alambdaj* pow( 1+ 2*expt, 0.5*rpow1 )* hiGamma( -rpow1 )/nu * anli* anlj* 0.5* met1* met2* norm_rel;
+                                        me1_fact+= alambdai* alambdaj* pow( 1+ 2*expt, 0.5*rpow1 ) * met1* met2;
                                     }
-                                    me2+= alambdai* alambdaj* pow( 1+2*expt, 0.5*rpow2)* hiGamma( -rpow2 ) * anli* anlj* 0.5* met1* met2* norm_rel;
+                                    me2_fact+= alambdai* alambdaj* pow( 1+2*expt, 0.5*rpow2) * met1* met2;
+
+                                }
+                                
+                                if( spinisospin && mes1_check && mes2_check ) {
+                                    double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                    double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                    if( N1 == N2 ) {
+                                        me1_fact+= alambdai* alambdaj* pow( 1+ 2*exps, 0.5*rpow1 ) * mes1* mes2;
+                                    }
+                                    me2_fact+= alambdai* alambdaj* pow( 1+2*exps, 0.5*rpow2) * mes1* mes2;
 
                                 }
                                 if( bcentral && tensor ) {
-                                    double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                                    double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                                    if( N1 == N2 ) {
-                                        me1-= alambdai* alambdaj* pow( 1+ expt+ expc, 0.5*rpow1 )* hiGamma( -rpow1 )/nu * anli* anlj* 0.5*norm_rel* ( mec1*met2 + met1* mec2 );
+                                    double power1=pow( 1+ expt+ expc, 0.5*rpow1 );
+                                    double power2=pow( 1+ expt+ expc, 0.5*rpow2);
+                                    if(mec1_check && met2_check){
+                                        double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        if( N1 == N2 ) {
+                                            me1_fact-= alambdai* alambdaj* power1 * ( mec1*met2 );
+                                        }
+                                        me2_fact-= alambdai* alambdaj* power2 * ( mec1*met2 );
                                     }
-                                    me2-= alambdai* alambdaj* pow( 1+ expt+ expc, 0.5*rpow2)* hiGamma( -rpow2 ) * anli* anlj* 0.5* norm_rel* ( mec1*met2+ met1*mec2 );
-
-                                    /*
-                                    alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
-                                    alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
-                                    if( N1 == N2 )
-                                    {
-                                      me1-= alambdai* alambdaj* pow( 1+ expt+ expc, 0.5*rpow1 )* gamma( -rpow1 )/nu * anli* anlj* 0.5* met1* mec2* norm_rel;
+                                    if(met1_check && mec2_check){
+                                        double alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        if( N1 == N2 ) {
+                                            me1_fact-= alambdai* alambdaj* power1 * ( met1* mec2 );
+                                        }
+                                        me2_fact-= alambdai* alambdaj* power2 * ( met1*mec2 );
                                     }
-                                    me2-= alambdai* alambdaj* pow( 1+ expt+ expc, 0.5*rpow2)* gamma( -rpow2 ) * anli* anlj* 0.5* met1* mec2* norm_rel;
-                                    */
-
                                 }
+                                if( bcentral && spinisospin ) {
+                                    double power1=pow( 1+ exps+ expc, 0.5*rpow1 );
+                                    double power2=pow( 1+ exps+ expc, 0.5*rpow2);
+                                    if(mec1_check && mes2_check){
+                                        double alambdai= get_central_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        if( N1 == N2 ) {
+                                            me1_fact-= alambdai* alambdaj* power1 * ( mec1*mes2 );
+                                        }
+                                        me2_fact-= alambdai* alambdaj* power2 * ( mec1*mes2 );
+                                    }
+                                    if(mes1_check && mec2_check){
+                                        double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_central_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        if( N1 == N2 ) {
+                                            me1_fact-= alambdai* alambdaj* power1 * ( mes1* mec2 );
+                                        }
+                                        me2_fact-= alambdai* alambdaj* power2 * ( mes1*mec2 );
+                                    }
+                                }
+                                if( spinisospin && tensor ) {
+                                    double power1=pow( 1+ expt+ exps, 0.5*rpow1 );
+                                    double power2=pow( 1+ expt+ exps, 0.5*rpow2);
+                                    if(mes1_check && met2_check){
+                                        double alambdai= get_spinisospin_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_tensor_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        if( N1 == N2 ) {
+                                            me1_fact-= alambdai* alambdaj* power1 * ( mes1*met2 );
+                                        }
+                                        me2_fact-= alambdai* alambdaj* power2 * ( mes1*met2 );
+                                    }
+                                    if(met1_check && mes2_check){
+                                        double alambdai= get_tensor_pow( lambdai )/ pow( sqrt(nu), lambdai );
+                                        double alambdaj= get_spinisospin_pow( lambdaj )/ pow( sqrt(nu), lambdaj );
+                                        if( N1 == N2 ) {
+                                            me1_fact-= alambdai* alambdaj* power1 * ( met1* mes2 );
+                                        }
+                                        me2_fact-= alambdai* alambdaj* power2 * ( met1*mes2 );
+                                    }
+                                }
+                                me1+=me1_fact*anli*anlj* hiGamma( -rpow1 ) ;
+                                me2+=me2_fact*anli*anlj* hiGamma( -rpow2 );
                             }
                         }
                     }
@@ -439,7 +592,7 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
             }
 //      cout << n1 << l1 << " " << n2 << l2 << ": " << me1 << " " << me2 << endl;
 //      cout << "CM " << N1 << L << " " << N2 << L << ": " << me2_cm << endl;
-            result+= ( me1+ me2* me2_cm)* vali* valj;
+            result+= ( me1/nu+ me2* me2_cm)* vali* valj*preifactor*0.5* norm_rel;
         }
     }
     return result/A;
