@@ -15,16 +15,15 @@ rms_ob::rms_ob(Nucleus* nucleus, bool central, bool tensor, bool isospin, double
 double rms_ob::get_me( Pair* pair, void* params )
 {
 
-//     int n1= pair->getn1();
-//     int l1= pair->getl1();
-// //  int two_j1= pair->gettwo_j1();
-// //  int two_mj1= pair->gettwo_mj1();
-//     int n2= pair->getn2();
-//     int l2= pair->getl2();
-// //  int two_j2= pair->gettwo_j2();
-// //  int two_mj2= pair->gettwo_mj2();
-//     return calc_me( n1, l1) + calc_me( n2, l2 );
-
+    int pn1= pair->getn1();
+    int pl1= pair->getl1();
+    int ptwo_j1= pair->gettwo_j1();
+    int ptwo_mj1= pair->gettwo_mj1();
+    int pn2= pair->getn2();
+    int pl2= pair->getl2();
+    int ptwo_j2= pair->gettwo_j2();
+    int ptwo_mj2= pair->gettwo_mj2();
+    // return calc_me( pn1, pl1) + calc_me( pn2, pl2 );
 
     struct rms_ob_params* nob= (struct rms_ob_params*) params;
     int nAs= nob->nA;
@@ -89,33 +88,49 @@ double rms_ob::get_me( Pair* pair, void* params )
             int N1= coefi.getN();
             int N2= coefj.getN();
             int L= coefi.getL();
-            double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
             double me1=0.,me2=0.;
-            for( int i= 0; i < n1+1; i++ ) {
-                double anli=  laguerre_coeff( nu, n1, l1, i );
-                for( int j= 0; j < n2+1; j++ ) {
-                    double anlj=  laguerre_coeff( nu, n2, l2, j );
-                    if( N1 == N2 ) {
-                        int rpow1= -5-2*i-2*j-l1-l2;
-                        // double power= pow( 1.+aa, 0.5*rpow1);
-                        me1+=  no* 0.5* anli* anlj* hiGamma(-rpow1)/nu;
+            if( N1 == N2 ) {
+                double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
+                for( int i= 0; i < n1+1; i++ ) {
+                    double anli=  laguerre_coeff( n1, l1, i );
+                    for( int j= 0; j < n2+1; j++ ) {
+                        double anlj=  laguerre_coeff( n2, l2, j );
+                            int rpow1= -5-2*i-2*j-l1-l2;
+                            // double power= pow( 1.+aa, 0.5*rpow1);
+                            me1+=  no* 0.5* anli* anlj* hiGamma(-rpow1)/nu;
+                        // int rpow2= -3-2*i-2*j-l1-l2;
+                        // // double power= pow( 1.+aa, 0.5*rpow2);
+                        // me2+=  no* 0.5* anli* anlj* hiGamma(-rpow2);
                     }
-                    int rpow2= -3-2*i-2*j-l1-l2;
-                    // double power= pow( 1.+aa, 0.5*rpow2);
-                    me2+=  no* 0.5* anli* anlj* hiGamma(-rpow2);
                 }
             }
             double me2_cm=0;
-            double nocm= ho_norm( N1, L )* ho_norm( N2, L);
-            for( int i= 0; i< N1+1; i++ ) {
-                double anli= laguerre_coeff( nu, N1, L, i );
-                for( int j= 0; j< N2+1; j++ ) {
-                    double anlj= laguerre_coeff( nu, N2, L, j );
-                    me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* nocm/ nu;
+            if(n1==n2) {
+                double nocm= ho_norm( N1, L )* ho_norm( N2, L);
+                for( int i= 0; i< N1+1; i++ ) {
+                    double anli= laguerre_coeff( N1, L, i );
+                    for( int j= 0; j< N2+1; j++ ) {
+                        double anlj= laguerre_coeff( N2, L, j );
+                        me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* nocm/ nu;
+                    }
                 }
             }
-            sum+= (me1 + me2* me2_cm)* vali* valj*preifactor;
+        //     #pragma omp critical(testout)
+        //     {
+        //     if(fabs(me2-1.)>1.E-03) std::cout << "MEEE2 " << pair->gettwo_t1() << " " << pair->gettwo_t2() << " " << pn1 << " " << pl1 << " " << ptwo_j1 << " " << ptwo_mj1 << " " 
+        //  << pn2 << " " << pl2 << " " << ptwo_j2 << " " << ptwo_mj2 << " " << me2 << " " << n1 << " " << l1 << " " << n2 << " " << l2 << std::endl;
+        //     }
+            sum+= (me1 + me2_cm)* vali* valj*preifactor;
         }
+    }
+    #pragma omp critical(testout)
+    {
+    if (fabs(sum/A-calc_me( pn1, pl1) - calc_me( pn2, pl2 ))>1.E-02) std::cout << "old " << pair->gettwo_t1() << " " << pair->gettwo_t2() << " " << pn1 << " " << pl1 << " " << ptwo_j1 << " " << ptwo_mj1 << " " 
+         << pn2 << " " << pl2 << " " << ptwo_j2 << " " << ptwo_mj2 << " " 
+         << calc_me( pn1, pl1) + calc_me( pn2, pl2 ) << " " << sum/A << std::endl;
+    // std::cout << "new " << pair->gettwo_t1() << " " << pair->gettwo_t2() << " "<< pn1 << " " << pl1 << " " << ptwo_j1 << " " << ptwo_mj1 << " " 
+    //      << pn2 << " " << pl2 << " " << ptwo_j2 << " " << ptwo_mj2 << " "  
+    //      << sum/A << std::endl;
     }
     return sum/A;
 
@@ -125,9 +140,9 @@ double rms_ob::calc_me( int n, int l )
 {
     double sum= 0;
     for( int i= 0; i< n+1; i++ ) {
-        double anli= laguerre_coeff( nu, n, l, i );
+        double anli= laguerre_coeff( n, l, i );
         for( int j= 0; j< n+1; j++ ) {
-            double anlj= laguerre_coeff( nu, n, l, j );
+            double anlj= laguerre_coeff( n, l, j );
             sum+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*l );
         }
     }
@@ -173,9 +188,9 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
             if( bcentral && get_central_me( l1, l2, S, j, T, &cen ) ) {
                 double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
                 for( int i= 0; i < n1+1; i++ ) {
-                    double anli=  laguerre_coeff( nu, n1, l1, i );
+                    double anli=  laguerre_coeff( n1, l1, i );
                     for( int j= 0; j < n2+1; j++ ) {
-                        double anlj=  laguerre_coeff( nu, n2, l2, j );
+                        double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
                             double alambda= get_central_pow( lambda )/ pow( sqrt(nu), lambda );
                             double aa= get_central_exp()/nu;
@@ -194,9 +209,9 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
             if( tensor && get_tensor_me( l1, l2, S, j, T, &ten ) ) {
                 double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
                 for( int i= 0; i < n1+1; i++ ) {
-                    double anli=  laguerre_coeff( nu, n1, l1, i );
+                    double anli=  laguerre_coeff( n1, l1, i );
                     for( int j= 0; j < n2+1; j++ ) {
-                        double anlj=  laguerre_coeff( nu, n2, l2, j );
+                        double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
                             double alambda= get_tensor_pow( lambda )/ pow( sqrt(nu), lambda );
                             double aa= get_tensor_exp()/nu;
@@ -215,9 +230,9 @@ double rms_ob::get_me_corr_right( Pair* pair, void* params )
             double me2_cm=0;
             double no= ho_norm( N1, L )* ho_norm( N2, L);
             for( int i= 0; i< N1+1; i++ ) {
-                double anli= laguerre_coeff( nu, N1, L, i );
+                double anli= laguerre_coeff( N1, L, i );
                 for( int j= 0; j< N2+1; j++ ) {
-                    double anlj= laguerre_coeff( nu, N2, L, j );
+                    double anlj= laguerre_coeff( N2, L, j );
                     me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* no/ nu;
                 }
             }
@@ -264,9 +279,9 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
             if( bcentral && get_central_me( l2, l1, S, j, T, &cen ) ) {
                 double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
                 for( int i= 0; i < n1+1; i++ ) {
-                    double anli=  laguerre_coeff( nu, n1, l1, i );
+                    double anli=  laguerre_coeff( n1, l1, i );
                     for( int j= 0; j < n2+1; j++ ) {
-                        double anlj=  laguerre_coeff( nu, n2, l2, j );
+                        double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
                             double alambda= get_central_pow( lambda )/ pow( sqrt(nu), lambda );
                             double aa= get_central_exp()/nu;
@@ -285,9 +300,9 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
             if( tensor && get_tensor_me( l2, l1, S, j, T, &ten ) ) {
                 double no= ho_norm( n1, l1)* ho_norm( n2, l2 );
                 for( int i= 0; i < n1+1; i++ ) {
-                    double anli=  laguerre_coeff( nu, n1, l1, i );
+                    double anli=  laguerre_coeff( n1, l1, i );
                     for( int j= 0; j < n2+1; j++ ) {
-                        double anlj=  laguerre_coeff( nu, n2, l2, j );
+                        double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambda= 0; lambda < 11; lambda++ ) {
                             double alambda= get_tensor_pow( lambda )/ pow( sqrt(nu), lambda );
                             double aa= get_tensor_exp()/nu;
@@ -306,9 +321,9 @@ double rms_ob::get_me_corr_left( Pair* pair, void* params )
             double me2_cm=0;
             double no= ho_norm( N1, L )* ho_norm( N2, L);
             for( int i= 0; i< N1+1; i++ ) {
-                double anli= laguerre_coeff( nu, N1, L, i );
+                double anli= laguerre_coeff( N1, L, i );
                 for( int j= 0; j< N2+1; j++ ) {
-                    double anlj= laguerre_coeff( nu, N2, L, j );
+                    double anlj= laguerre_coeff( N2, L, j );
                     me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* no/ nu;
                 }
             }
@@ -355,9 +370,9 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
 
             double me2_cm=0;
             for( int i= 0; i< N1+1; i++ ) {
-                double anli= laguerre_coeff( nu, N1, L, i );
+                double anli= laguerre_coeff( N1, L, i );
                 for( int j= 0; j< N2+1; j++ ) {
-                    double anlj= laguerre_coeff( nu, N2, L, j );
+                    double anlj= laguerre_coeff( N2, L, j );
                     me2_cm+= 0.5* anli* anlj* hiGamma( 5+ 2*i+ 2*j+ 2*L )* norm_cm/ nu;
                 }
             }
@@ -372,9 +387,9 @@ double rms_ob::get_me_corr_both( Pair* pair, void* params )
                 get_tensor_me( k, l2, S, j, T, &met2 );
 
                 for( int i= 0; i < n1+1; i++ ) {
-                    double anli=  laguerre_coeff( nu, n1, l1, i );
+                    double anli=  laguerre_coeff( n1, l1, i );
                     for( int j= 0; j < n2+1; j++ ) {
-                        double anlj=  laguerre_coeff( nu, n2, l2, j );
+                        double anlj=  laguerre_coeff( n2, l2, j );
                         for( int lambdai= 0; lambdai < 11; lambdai++ ) {
                             for( int lambdaj= 0; lambdaj < 11; lambdaj++ ) {
                                 int rpow1= -5-2*i-2*j-lambdai-lambdaj-l1-l2;

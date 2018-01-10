@@ -19,8 +19,12 @@ int main(int argc,char* argv[]){
     int A[11] = {4,9,12,16,27,40,48,56,108,197,208};
     int Z[11] = {2,4,6,8,13,20,20,26,47,79,82};
 
-    double mf[11] = {1.84,2.32,2.46,2.59,3.06,3.21,3.47,3.63,4.5,5.73,5.83};
-    double corr[11] = {1.7,2.13,2.23,2.32,2.72,2.84,3.05,3.2,3.94,5.21,5.28};
+    //old ones, had an error in them
+    // double mf[11] = {1.84,2.32,2.46,2.59,3.06,3.21,3.47,3.63,4.5,5.73,5.83};
+    // double corr[11] = {1.7,2.13,2.23,2.32,2.72,2.84,3.05,3.2,3.94,5.21,5.28};
+
+    double mf[11] = {1.83825,2.31983,2.45806,2.59025,3.0613,3.36158,3.58634,3.76245,4.5723};
+    double corr[11] = {1.69649,2.13105,2.24335,2.34069,2.77162,3.01579,3.22792,3.38491,4.11307};
     bool allpass = true;
 
     for(int i=0;i<limit;i++){
@@ -28,7 +32,7 @@ int main(int argc,char* argv[]){
 
         norm_ob no = norm_ob( &nuc, true, true, true );
         norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0};
-        double norm_mf= no.sum_me_pairs( &nob );
+        double norm_mf= no.sum_me_coefs( &nob );
         double norm_corr= no.sum_me_corr( &nob );
         std::cout << "norm\t"  << norm_mf << "\t" << norm_corr << "\t" << (norm_mf+ norm_corr) << "\t" << A[i]*(norm_mf+ norm_corr) << std::endl;
         double norm= norm_mf+ norm_corr;
