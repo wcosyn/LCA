@@ -70,6 +70,8 @@ Wim
 
 45. MapWavefunctionP checks for A and pstepset, if changed everything should be cleared etc.
 
+50. power calls in norm and rms, make some small arrays for that -> done for norm 11/1/18
+
 ++++CHECKS++++
 
 25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...
@@ -81,11 +83,9 @@ everything looks symmetric (correlation functions in the two l arguments...)
 44. check Eq C.6 PhD Vanhalst by comparing to explicit calculation, -> I get k+1 arguments instead of k+3/2 plus an overall factor of 2/sqrt(\pi).  
 Also make the computation of these integrals more dimensionless
 
-45. Compare the calculations that iterate over pairs with the one over paircoefs.  Should yield identical results! -> ok for norms
 
 
 ++++COMMENTING+++++
-49. fix LCA manual with error in kA,lA
 
 
 +++DONE+++
@@ -185,3 +185,9 @@ Now it is very inefficient as basically the program has to start from scratch ea
 -> done for obmd 29/30
 
 35. density_ob3::write -> get rid of all the news (and deletes) -> done for the iso version
+
+51. check bug for coefs in rms (left/right/both separately -> fixed 11/1/18
+
+45. Compare the calculations that iterate over pairs with the one over paircoefs.  Should yield identical results! -> ok for norms, rms 11/1/18
+
+49. fix LCA manual with error in kA,lA -> done 10/1/18

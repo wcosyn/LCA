@@ -714,8 +714,8 @@ double norm_ob::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, do
 
     int TA= pc1->getT();
     int TB= pc2->getT();
-        double preifactor=1.;   
-if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+    double preifactor=1.;   
+    if( t != 0 ) { // t = +1 or -1 (proton or neutron)
         if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
             return 0;
         if( MT == 0 ) { // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
