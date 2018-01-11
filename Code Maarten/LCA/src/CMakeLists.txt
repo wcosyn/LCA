@@ -31,6 +31,7 @@ set( SRC
 	pair.cpp
 	recmosh.cpp
 	rms_ob.cpp
+	rms_iso_ob.cpp
 	shell.cpp
 	speedy.cpp
 	threebodycoef.cpp

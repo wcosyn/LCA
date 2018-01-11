@@ -12,13 +12,16 @@ target_link_libraries(obmd ${LIBS} nmd)
 add_executable(rms rms.cpp)
 target_link_libraries(rms ${LIBS} nmd)
 
+add_executable(rms_iso rms_iso.cpp)
+target_link_libraries(rms_iso ${LIBS} nmd)
+
 add_executable(normtb normtb.cpp)
 target_link_libraries(normtb ${LIBS} nmd)
 
 add_executable(tbmd_rel tbmd_rel.cpp)
 target_link_libraries(tbmd_rel ${LIBS} nmd)
 
-install(TARGETS rms normob normob_iso obmd normtb tbmd_rel
+install(TARGETS rms rms_iso normob normob_iso obmd normtb tbmd_rel
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)
 
 	if(STATIC_BUILD)
@@ -31,6 +34,9 @@ install(TARGETS rms normob normob_iso obmd normtb tbmd_rel
 	add_executable(rmsST rms.cpp)
 	target_link_libraries(rmsST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
 
+	add_executable(rms_isoST rms_iso.cpp)
+	target_link_libraries(rms_isoST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
+
 	add_executable(obmdST obmd.cpp)
 	target_link_libraries(obmdST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
 
@@ -40,7 +46,7 @@ install(TARGETS rms normob normob_iso obmd normtb tbmd_rel
 	add_executable(tbmd_relST tbmd_rel.cpp)
 	target_link_libraries(tbmd_relST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
 
-	install(TARGETS rmsST normobST normob_isoST obmdST normtbST tbmd_relST
+	install(TARGETS rmsST rms_isoST normobST normob_isoST obmdST normtbST tbmd_relST
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)
 
 endif(STATIC_BUILD)

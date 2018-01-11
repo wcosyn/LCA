@@ -71,8 +71,6 @@ double norm_iso_ob::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void
     if( lAs > -1 && l != lAs ) return 0.;
     if( lBs > -1 && l != lBs ) return 0.;
 
-    int TA= pc1.getT();
-    int TB= pc2.getT();
     
     return 2./A;
 
