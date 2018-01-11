@@ -110,8 +110,6 @@ double norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef
     if( lAs > -1 && l1 != lAs ) return 0.;
     if( lBs > -1 && l2 != lBs ) return 0.;
 
-    int TA= pc1.getT();
-    int TB= pc2.getT();
 
 
     int S= pc1.getS();
@@ -178,8 +176,6 @@ double norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef&
     if( lAs > -1 && l1 != lAs ) return 0.;
     if( lBs > -1 && l2 != lBs ) return 0.;
 
-    int TA= pc1.getT();
-    int TB= pc2.getT();
 
     int S= pc1.getS();
     int j= pc1.getj();
