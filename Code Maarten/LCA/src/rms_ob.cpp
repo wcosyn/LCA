@@ -929,13 +929,12 @@ double rms_ob::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, do
 
 
 double rms_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, double val){
-    struct rms_ob_params* nob= (struct rms_ob_params*) params;
+   struct rms_ob_params* nob= (struct rms_ob_params*) params;
     int nAs= nob->nA;
     int lAs= nob->lA;
     int nBs= nob->nB;
     int lBs= nob->lB;
     int t= nob->t;
-
 
     if( pc1->getS() != pc2->getS() ) return 0.;
     if( pc1->getj() != pc2->getj() ) return 0.;
@@ -995,7 +994,7 @@ double rms_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, dou
 
     double me1= 0, me2= 0;
     for( int k= j-1; k<= j+1; k++ ) {
-        if( k < 0 ) return 0.;
+        if( k < 0 ) continue;
         double mec1, mec2, met1, met2, mes1, mes2;
         
         int mec1_check=get_central_me( k, l1, S, j, T, &mec1 );
@@ -1110,5 +1109,6 @@ double rms_ob::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, dou
         }
     }
     return ( me1/nu+ me2* me2_cm)* val*preifactor*0.5* norm_rel/A;
+
 
 }

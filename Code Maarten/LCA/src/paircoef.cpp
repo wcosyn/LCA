@@ -42,7 +42,9 @@ Paircoef::~Paircoef()
     // delete links;
 }
 
-
+void Paircoef::print() const{
+    std::cout << n << " " << l << " " << S << " " << j << " " << mj << " " << N << " " << L << " " << ML << " " << T << " " << MT << std::endl;
+}
 
 void Paircoef::add( Paircoef* pc, const double val )
 {

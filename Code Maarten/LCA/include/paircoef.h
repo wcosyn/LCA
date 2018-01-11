@@ -160,6 +160,14 @@ public:
     
     const std::map< Paircoef*, double >& getLinksmap() const
     { return links;}
+
+    /**
+     * @brief prints the quantum numbers to cout
+     * n l S j mj N L ML T MT
+     * 
+     */
+    void print() const;
+
 };
 
 #endif
