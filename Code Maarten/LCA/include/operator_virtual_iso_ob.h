@@ -56,6 +56,7 @@ public:
      * @param pc1 The left paircoef
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
+     * @param link Isolinkstrength object that contains the link strength between the two paircoefs split according to originating pairs (pp,nn,np)
      * @return value of the matrix element, dimension depends on operator.
      */
     virtual double get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link) =0;
@@ -70,6 +71,7 @@ public:
      * @param pc1 The left paircoef
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
+     * @param link Isolinkstrength object that contains the link strength between the two paircoefs split according to originating pairs (pp,nn,np)
      * @return value of the matrix element, dimension depends on operator.
      */
     virtual double get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link) =0;
@@ -85,6 +87,7 @@ public:
      * @param pc1 The left paircoef
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
+     * @param link Isolinkstrength object that contains the link strength between the two paircoefs split according to originating pairs (pp,nn,np)
      * @return value of the matrix element, dimension depends on operator.
      */
     virtual double get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link) =0;
@@ -99,6 +102,7 @@ public:
      * @param pc1 The left paircoef
      * @param pc2 The right paircoef
      * @param params Parameter specific to the child class
+     * @param link Isolinkstrength object that contains the link strength between the two paircoefs split according to originating pairs (pp,nn,np)
      * @return value of the matrix element, dimension depends on operator.
      */
     virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link) =0;

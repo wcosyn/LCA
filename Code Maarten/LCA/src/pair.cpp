@@ -15,6 +15,10 @@ Pair::Pair( RecMosh* mosh,
 {
     // Let the moshinsky bracket know it is being used.
     //mosh->use();
+    if(mosh->getn1()!=n1||mosh->getn2()!=n2||mosh->getl1()!=l1||mosh->getl2()!=l2){
+        std::cerr << "moshinsky pointer passed to Pair object does not have the right quantum numbers!!" << std::endl;
+        exit(-1);
+    }
     norm = 1.;
 }
 

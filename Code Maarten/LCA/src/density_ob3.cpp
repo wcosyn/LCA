@@ -633,13 +633,17 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
              *  if/else magic, see manual,
              *  section about isospin matrix elements.
               */
-           if( t != 0 ) { // t = +1 or -1 (proton or neutron)
+            if( t != 0 ) { // t = +1 or -1 (proton or neutron)
                 if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
                     continue;
                 if( MT == 0 ) {
                     preifactor*= 0.5;
                     if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
                 }
+            }
+            // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+            if( t == 0 && TA != TB ) {
+                continue;
             }
 
             for( int q= 0; q <= qmax; q++ ) {
@@ -1124,7 +1128,10 @@ double density_ob3::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* param
             if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
         }
     }
-    //t ==0 case missing???
+    // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+    if( t == 0 && TA != TB ) {
+        return 0;
+    }
 
     for( int q= 0; q <= qmax; q++ ) {
 
@@ -1275,7 +1282,10 @@ double density_ob3::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params
             if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
         }
     }
-    //t==0 case missing??
+    // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+    if( t == 0 && TA != TB ) {
+        return 0;
+    }
 
     for( int q= 0; q <= qmax; q++ ) {
 

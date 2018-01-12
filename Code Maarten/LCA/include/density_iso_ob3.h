@@ -44,7 +44,6 @@ public:
      * @param lA Selects pairs with certain relative OAM qn for the bra. -1 if you want all.
      * @param nB Selects pairs with certain relative n qn for the ket. -1 if you want all.
      * @param lB Selects pairs with certain relative OAM qn for the ket. -1 if you want all.
-     * @param t  -1 for neutron, +1 for proton, 0 for both.
      * @param[out] intmf return integral over mf part of the momentum distribution. 
      * The normalisation will depend on the density_ob3::norm value, but in general for the total momentum distribution the sum of intmf + intcorr divided
      * by the total correlated norm for all nucleons will yield something ~A (within algorithm limitations)
@@ -97,8 +96,6 @@ protected:
      * \brief Selects pairs with certain relative n qn for the ket. -1 if you want all.
      * @var dens_ob_params::lB
      * \brief Selects pairs with certain relative OAM qn for the ket. -1 if you want all.
-     * @var t
-     * \brief isospin of the nucleon contribution in the OBMD you want. +1 for proton, -1 neutron, 0 for both.
      * @var dens_ob_params::i0
      * \brief integral for uncorrelated system. [used for output]
      * @var dens_ob_params::ic

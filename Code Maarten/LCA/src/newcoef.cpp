@@ -17,6 +17,10 @@ Newcoef::Newcoef( int n1, int l1, int two_j1, int two_mj1, int two_t1,
       n2( n2 ),l2( l2 ),two_j2( two_j2 ),two_mj2( two_mj2 ),two_t2( two_t2)
 {
 
+    if(mosh->getn1()!=n1||mosh->getn2()!=n2||mosh->getl1()!=l1||mosh->getl2()!=l2){
+        std::cerr << "moshinsky pointer passed to Pair object does not have the right quantum numbers!!" << std::endl;
+        exit(-1);
+    }
     stringstream strstream;
     strstream << n << l << S << j << mj << ".";
     strstream << N << L << ML << ".";

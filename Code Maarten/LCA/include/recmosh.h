@@ -34,7 +34,7 @@ private:
     int n2; /*!< HO quantum number n of second nucleon */
     int l2; /*!< HO OAM quantum number of second nucleon */
     /*! map that contains all the Moshinsky brackets relating to a certain n_1l_1n_2l_2 combination,
-     key convention for the relative,com,L indexing: 100000*n + 10000*l + 1000*N + 100*Lambda + L*10*/
+     key convention for the relative,com,L indexing: 100000*n + 10000*l + 1000*N + 100*L + Lambda*10*/
     std::map< int, double > coefficients; 
     std::string path; /*!< read in stored Moshinsky brackets from this folder */
     int used; /*!< denotes if the RecMosh is in use.  This means it's been used to create a Pair object that is still in use. */
@@ -46,40 +46,40 @@ private:
     /**
      * @brief intermediary function that computes a whole lot of factorials.  See Eq A.14 PhD thesis M. Vanhalst
      */
-    double A( const int l1, const int l, const int l2, const int Lambda, const int x ) const;
+    double A( const int l1, const int l, const int l2, const int L, const int x ) const;
     /**
      * @brief Calculates the Moshinsky bracket.  It uses recursive algorithm: see Eq A.15, A.12 of M. Vanhalst PhD thesis
      * 
      * @param n HO relative quantum number n
      * @param l HO relative OAM quantum number
      * @param N HO center of mass quantum number N
-     * @param Lambda HO com OAM quantum number
+     * @param L HO com OAM quantum number
      * @param n1 HO quantum number n of first nucleon
      * @param l1 HO OAM quantum number of first nucleon 
      * @param n2  HO quantum number n of second nucleon
      * @param l2 HO OAM quantum number of second nucleon
-     * @param L coupled spin: l+Lambda = l1+l2=L
+     * @param Lambda coupled spin: l+L = l1+l2=Lambda
      * @return value of Moshinsky bracket
      */
-    double calculate( const int n, const int l, const int N, const int Lambda, const int n1,
-                        const  int l1, const int n2, const int l2, const int L) const;
+    double calculate( const int n, const int l, const int N, const int L, const int n1,
+                        const  int l1, const int n2, const int l2, const int Lambda) const;
     /**
      * @brief Calculates the matrix element of r_1^2 contained in the recursive relation for Moshinsky Brackets (Eq A.15, Table A.1 PhD Vanhalst)
      * 
      * @param n HO relative n bra state
      * @param l HO relative OAM  bra state
      * @param N HO com N bra state
-     * @param Lambda HO com OAM bra state
+     * @param L HO com OAM bra state
      * @param na HO relative n ket state
      * @param la HO relative OAM  ket state
      * @param Na HO com N ket state
-     * @param Lambdaa HO com OAM ket state
-     * @param L coupled OAM value (l+Lambda)
+     * @param La HO com OAM ket state
+     * @param Lambda coupled OAM value (l+La)
      * @param f controls the sign of the matrix elements: f=1 for recursion in n_1, f=2 for recursion in n_2
      * @return value of the matrix element (See table A.1 PhD vanhalst)
      */
-    double getMatrixElement( const int n, const int l, const int N, const int Lambda, const int na,
-                            const  int la, const int Na, const int Lambdaa, const int L, const int f) const;
+    double getMatrixElement( const int n, const int l, const int N, const int L, const int na,
+                            const  int la, const int Na, const int La, const int Lambda, const int f) const;
     /**
      * @brief loads an earlier stored file that has the Moshinsky brackets for a certain n_1l_1n_2l_2 combination
      * 
@@ -127,16 +127,16 @@ public:
      */
     void remove();
     /**
-     * @brief returns the Moshinsky bracket \f$\langle nl,N Lambda (L) | n_1 l_1 n_2 l_2 (L) \rangle  \f$ for a certain n l N Lambda L combination
+     * @brief returns the Moshinsky bracket \f$\langle nl,N L (Lambda) | n_1 l_1 n_2 l_2 (L) \rangle  \f$ for a certain n l N L Lambda combination
      * 
      * @param n HO relative n quantum number
      * @param l HO relative OAM quantum number
      * @param N HO center of mass N quantum number
-     * @param Lambda HO center of mass OAM quantum number
-     * @param L coupled spin of l and Lambda
+     * @param L HO center of mass OAM quantum number
+     * @param Lambda coupled spin of l and L
      * @return value of the Moshinksy bracket
      */
-    double getCoefficient( const int n, const int l, const int N, const int Lambda, const int L ) ;
+    double getCoefficient( const int n, const int l, const int N, const int L, const int Lambda ) ;
 
     /**
      * @brief returns HO quantum number n of first particle

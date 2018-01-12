@@ -121,15 +121,15 @@ void RecMosh::loadFile(  )
     }
 }
 
-double RecMosh::getCoefficient( const int n, const int l, const int N, const int Lambda, const int L )
+double RecMosh::getCoefficient( const int n, const int l, const int N, const int L, const int Lambda )
 {
-    if( 2*n+l+2*N+Lambda != 2*n1+l1+2*n2+l2) {
+    if( 2*n+l+2*N+L != 2*n1+l1+2*n2+l2) {
         return 0;
     }
-    //only coefficients with N Lambda >= nl are computed and stored, so make use of permutation relations
-    if( 10*n+l > 10*N+Lambda ) {
-        double val = maprecmosh.get( n1, l1, n2, l2, path ).getCoefficient( N, Lambda, n, l, L);
-        if( (l1+L)%2 ) return -1*val;
+    //only coefficients with N L >= nl are computed and stored, so make use of permutation relations
+    if( 10*n+l > 10*N+L ) {
+        double val = maprecmosh.get( n1, l1, n2, l2, path ).getCoefficient( N, L, n, l, Lambda);
+        if( (l1+Lambda)%2 ) return -1*val;
         else return val;
     }
 
@@ -137,19 +137,19 @@ double RecMosh::getCoefficient( const int n, const int l, const int N, const int
     // Only the files with n1l1 <= n2l2 are calculated and saved,
     // So the n2l2 n1l1 coeff is taken and correct phase factor added
     if( 10*n1+l1 > 10*n2+l2 ) {
-        double val = maprecmosh.get( n2, l2, n1, l1, path ).getCoefficient( n, l, N, Lambda, L);
-        if( (Lambda+L)%2 ) return -1*val;
+        double val = maprecmosh.get( n2, l2, n1, l1, path ).getCoefficient( n, l, N, L, Lambda);
+        if( (L+Lambda)%2 ) return -1*val;
         else return val;
 
 
     }
 
-    int key = 100000*n + 10000*l + 1000*N + 100*Lambda + L*10;
+    int key = 100000*n + 10000*l + 1000*N + 100*L + Lambda*10;
 
     map< int, double >::const_iterator it;
     it = coefficients.find(key);
     if( it == coefficients.end()) {
-        double result = calculate(n,l,N,Lambda,n1,l1,n2,l2,L);
+        double result = calculate(n,l,N,L,n1,l1,n2,l2,Lambda);
         //if(abs(result)<1.E-10) result=0.;
         coefficients[key] = result;
         //if( fabs(result) < 1e-10 ) return 0;
@@ -166,22 +166,22 @@ double RecMosh::getCoefficient( const int n, const int l, const int N, const int
  * The moshinskybracket is calculated in a recursive way,
  * See thesis appendix for the expression
  */
-double RecMosh::calculate( const int n, const int l, const int N, const int Lambda, 
-                            const int n1, const int l1, const int n2, const int l2, const int L) const
+double RecMosh::calculate( const int n, const int l, const int N, const int L, 
+                            const int n1, const int l1, const int n2, const int l2, const int Lambda) const
 {
     cout << "[recmosh][RecMosh::calculate] new recmosh value calculated " << endl;
-// 	cout << "<(" << n << l << N << Lambda << ")" << L;
-//	cout << "|(0" << l1 << 0 << l2 << ")" << L << "> = " << endl;
+// 	cout << "<(" << n << l << N << L << ")" << Lambda;
+//	cout << "|(0" << l1 << 0 << l2 << ")" << Lambda << "> = " << endl;
 
     //these are all in principle checked before...
     // tested norms with this commented out and indeed is ok, but no noticeable speed gain, so I leave them in to be sure...
-    if( L < fabs(l-Lambda) || L > l+Lambda)
+    if( Lambda < fabs(l-L) || Lambda > l+L)
         return 0;
-    if( L < fabs(l1-l2) || L > l1+l2 )
+    if( Lambda < fabs(l1-l2) || Lambda > l1+l2 )
         return 0;
-    if( 2*n+l + 2*N+Lambda != 2*n1+l1+2*n2+l2) return 0;
+    if( 2*n+l + 2*N+L != 2*n1+l1+2*n2+l2) return 0;
 //	cerr << " calculating missing coeff. " << endl;
-//	cerr << n << l << N << Lambda << "|" << n1 << l1 << n2 << l2 << "; " << L << endl ;
+//	cerr << n << l << N << L << "|" << n1 << l1 << n2 << l2 << "; " << Lambda << endl ;
     maprecmosh.get(n1,l1,n2,l2,path).updated= true;
     // n1 not zero -> Eq. A.15 Phd thesis M. Vanhalst
     if( n1 > 0 ) {
@@ -194,11 +194,11 @@ double RecMosh::calculate( const int n, const int l, const int N, const int Lamb
                 if( la<0) continue;
                 for( int Na = N-1; Na <=N; Na++ ) {
                     if( Na<0) continue;
-                    for( int Lambdaa = Lambda-1; Lambdaa <= Lambda+1; Lambdaa++) {
-                        if( Lambdaa<0||L<fabs(la-Lambdaa)||L>la+Lambdaa) continue;
-                        double me = getMatrixElement(n,l,N,Lambda,na,la,Na,Lambdaa, L, 1);
-                        double moshbr = maprecmosh.get( n1-1, l1, n2, l2, path).getCoefficient( na, la, Na, Lambdaa, L);
-                        // double moshbr = calculate(na,la,Na,Lambdaa,n1-1,l1,n2,l2,L);
+                    for( int La = L-1; La <= L+1; La++) {
+                        if( La<0||Lambda<fabs(la-La)||Lambda>la+La) continue;
+                        double me = getMatrixElement(n,l,N,L,na,la,Na,La, Lambda, 1);
+                        double moshbr = maprecmosh.get( n1-1, l1, n2, l2, path).getCoefficient( na, la, Na, La, Lambda);
+                        // double moshbr = calculate(na,la,Na,La,n1-1,l1,n2,l2,Lambda);
                         sum += me*moshbr;
                     }
                 }
@@ -216,11 +216,11 @@ double RecMosh::calculate( const int n, const int l, const int N, const int Lamb
                 if( la<0) continue;
                 for( int Na = N-1; Na <=N; Na++ ) {
                     if( Na<0) continue;
-                    for( int Lambdaa = Lambda-1; Lambdaa <= Lambda+1; Lambdaa++) {
-                        if( Lambdaa<0||L<fabs(la-Lambdaa)||L>la+Lambdaa) continue;
-                        double me = getMatrixElement(n,l,N,Lambda,na,la,Na,Lambdaa, L, 2);
-                        double moshbr = maprecmosh.get( n1, l1, n2-1, l2, path).getCoefficient( na, la, Na, Lambdaa, L);
-                        //double moshbr = calculate(na,la,Na,Lambdaa,n1,l1,n2-1,l2,L);
+                    for( int La = L-1; La <= L+1; La++) {
+                        if( La<0||Lambda<fabs(la-La)||Lambda>la+La) continue;
+                        double me = getMatrixElement(n,l,N,L,na,la,Na,La, Lambda, 2);
+                        double moshbr = maprecmosh.get( n1, l1, n2-1, l2, path).getCoefficient( na, la, Na, La, Lambda);
+                        //double moshbr = calculate(na,la,Na,La,n1,l1,n2-1,l2,Lambda);
                         sum += me*moshbr;
                     }
                 }
@@ -230,18 +230,18 @@ double RecMosh::calculate( const int n, const int l, const int N, const int Lamb
     //n1 and n2 zero -> Eq. A.12 PhD thesis M. Vanhalst    
     } else if( n1 == 0 && n2 == 0) {
         double factor = gsl_sf_fact(l1) * gsl_sf_fact(l2)/ gsl_sf_fact(2*l1) / gsl_sf_fact(2*l2);
-        factor *= (2*l+1)*(2*Lambda+1)/pow(2.,l+Lambda);
+        factor *= (2*l+1)*(2*L+1)/pow(2.,l+L);
         factor *= gsl_sf_fact(n+l)/gsl_sf_fact(n) / gsl_sf_fact(2*n+2*l+1);
-        factor *= gsl_sf_fact(N+Lambda)/gsl_sf_fact(N)/ gsl_sf_fact(2*N+2*Lambda+1);
-        double sign = pow( -1., n+l+Lambda-L);
+        factor *= gsl_sf_fact(N+L)/gsl_sf_fact(N)/ gsl_sf_fact(2*N+2*L+1);
+        double sign = pow( -1., n+l+L-Lambda);
         double sum = 0;
 // 	  	for( int x = 0; x <= 4; x++)
         for( int x = fabs(l-l1); x <= l+l1; x++) {
 // 			cout << "x allowed ?" << x << endl;
-            if( x < fabs(Lambda - l2) || x > Lambda+l2 ) {
+            if( x < fabs(L - l2) || x > L+l2 ) {
                 continue;
             }
-            double W = Wc( l, Lambda, l1, l2, L, x);
+            double W = Wc( l, L, l1, l2, Lambda, x);
 // 			cout << x << " " << W << endl;
             if( W == 0 ) {
                 // cout << "NOOOOOOOOOOO" << endl;
@@ -250,14 +250,14 @@ double RecMosh::calculate( const int n, const int l, const int N, const int Lamb
 // 			cout << "x allowed: " << x << endl;
 // 			cout << "-------" << endl;
             double term = 2*x+1;
-            term *= A( l1, l, l2, Lambda, x );
+            term *= A( l1, l, l2, L, x );
             // 		cout << " A" << term << endl;
             term *= W;
             sum += term;
             // 		cout << " ------E " << endl;
         }
-// 		cout << "<(" << n << l << N << Lambda << ")" << L;
-// 		cout << "|(0" << l1 << 0 << l2 << ")" << L << "> = " << sqrt(factor)*sign*sum << endl;
+// 		cout << "<(" << n << l << N << L << ")" << Lambda;
+// 		cout << "|(0" << l1 << 0 << l2 << ")" << Lambda << "> = " << sqrt(factor)*sign*sum << endl;
         if(fabs(sum)<1.E-09) sum=0.;
         return sqrt(factor)*sign*sum;
     }
@@ -266,40 +266,40 @@ double RecMosh::calculate( const int n, const int l, const int N, const int Lamb
     return 0;
 }
 
-double RecMosh::getMatrixElement( const int n, const int l, const int N, const int Lambda, 
-                                const int na, const int la, const int Na, const int Lambdaa, const int L, const int f) const 
+double RecMosh::getMatrixElement( const int n, const int l, const int N, const int L, 
+                                const int na, const int la, const int Na, const int La, const int Lambda, const int f) const 
 {
     if( na == n-1 ) {
         if( la == l) {
             if( Na == N) {
-                if( Lambdaa == Lambda) return 0.5*sqrt(n*(n+l+0.5));
+                if( La == L) return 0.5*sqrt(n*(n+l+0.5));
                 else return 0;
             } else return 0;
         } else if( la == l+1) {
             if( Na == N-1 ) {
-                if ( Lambdaa == Lambda+1)
-                    return pow(-1.,f+1)*sqrt( n*N*(l+1)*(Lambda+1))*pow(-1.,L+Lambda+l)*Wc(l,l+1,Lambda,Lambda+1,1,L);
+                if ( La == L+1)
+                    return pow(-1.,f+1)*sqrt( n*N*(l+1)*(L+1))*pow(-1.,Lambda+L+l)*Wc(l,l+1,L,L+1,1,Lambda);
                 else return 0;
             } else if (Na == N) {
-                if( Lambdaa == Lambda-1)
-                    return pow(-1,f+1)*sqrt(n*(N+Lambda+0.5)*(l+1)*Lambda)*pow(-1.,L+Lambda+l)*Wc(l,l+1,Lambda,Lambda-1,1,L);
+                if( La == L-1)
+                    return pow(-1,f+1)*sqrt(n*(N+L+0.5)*(l+1)*L)*pow(-1.,Lambda+L+l)*Wc(l,l+1,L,L-1,1,Lambda);
                 else return 0;
             } else return 0;
         } else return 0;
     } else if ( na == n) {
         if (la == l) {
             if( Na == N-1) {
-                if( Lambdaa == Lambda) return 0.5*sqrt(N*(N+Lambda+0.5));
+                if( La == L) return 0.5*sqrt(N*(N+L+0.5));
                 else return 0;
             } else return 0;
         } else if ( la == l-1) {
             if( Na == N-1) {
-                if( Lambdaa == Lambda+1)
-                    return pow(-1.,f+1)*sqrt((n+l+0.5)*N*l*(Lambda+1))*pow(-1.,L+Lambda+l)*Wc(l,l-1,Lambda,Lambda+1,1,L);
+                if( La == L+1)
+                    return pow(-1.,f+1)*sqrt((n+l+0.5)*N*l*(L+1))*pow(-1.,Lambda+L+l)*Wc(l,l-1,L,L+1,1,Lambda);
                 else return 0;
             } else if ( Na == N) {
-                if( Lambdaa == Lambda-1)
-                    return pow(-1.,f+1)*sqrt((n+l+0.5)*(N+Lambda+0.5)*l*Lambda)*pow(-1,L+Lambda+l)*Wc(l,l-1,Lambda,Lambda-1,1,L);
+                if( La == L-1)
+                    return pow(-1.,f+1)*sqrt((n+l+0.5)*(N+L+0.5)*l*L)*pow(-1,Lambda+L+l)*Wc(l,l-1,L,L-1,1,Lambda);
                 else return 0;
             } else return 0;
         } else return 0;
@@ -314,24 +314,24 @@ double RecMosh::Wc( const int a, const int b, const int c, const int d, const in
     return sign*sixj;
 }
 
-double RecMosh::A( const int l1, const int l, const int l2, const int Lambda, const int x )const 
+double RecMosh::A( const int l1, const int l, const int l2, const int L, const int x )const 
 {
     double factor = gsl_sf_fact(l1+l+x+1) ;
     factor*= gsl_sf_fact(l1+l-x);
     factor*= gsl_sf_fact(l1+x-l);
-    factor *= gsl_sf_fact(l2+Lambda+x+1)*gsl_sf_fact(l2+Lambda-x)*gsl_sf_fact(l2+x-Lambda);
-    factor *= 1./gsl_sf_fact(l+x-l1)/gsl_sf_fact(Lambda+x-l2);
+    factor *= gsl_sf_fact(l2+L+x+1)*gsl_sf_fact(l2+L-x)*gsl_sf_fact(l2+x-L);
+    factor *= 1./gsl_sf_fact(l+x-l1)/gsl_sf_fact(L+x-l2);
     double sum = 0.;
-    for( int q = x; q <= l1+l && q<= l2+Lambda; q++ ) {
+    for( int q = x; q <= l1+l && q<= l2+L; q++ ) {
 // 		cout << "q " << q << endl;
-        if( ((l+q-l1)%2) || ((Lambda+q-l2)%2) ) {
+        if( ((l+q-l1)%2) || ((L+q-l2)%2) ) {
             continue;
         }
-// 		cout << ((l+q-l1)%2) << " " <<  ((Lambda+q-l2)%2)  <<  q << endl;
+// 		cout << ((l+q-l1)%2) << " " <<  ((L+q-l2)%2)  <<  q << endl;
         double sign = pow(-1., 0.5*(l+q-l1) );
         double term = gsl_sf_fact(l+q-l1)/gsl_sf_fact((l+q-l1)/2)/gsl_sf_fact((l+l1-q)/2);
         term *= 1./gsl_sf_fact(q-x)/gsl_sf_fact(q+x+1);
-        term*= gsl_sf_fact(Lambda+q-l2)/gsl_sf_fact((Lambda+q-l2)/2)/gsl_sf_fact((Lambda+l2-q)/2);
+        term*= gsl_sf_fact(L+q-l2)/gsl_sf_fact((L+q-l2)/2)/gsl_sf_fact((L+l2-q)/2);
         term *= sign;
 // 		cout << " t " << term << endl;
         sum += term;

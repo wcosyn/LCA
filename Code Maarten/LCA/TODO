@@ -45,11 +45,6 @@ Wim
 -the map for each nlnl, then the nlnl values + position in the file where map begins & length, total number of nlnl values
 -care will have to be taken if an nlnl map has been updated -> file will need te be rewritten.  Total size so far is ~100kb so should be ok.
 
-
-14. add sanity check to see that the recmosh object in pair & newcoef is for the correct quantum numbers.
-
-19. naming variables, Lambda is sometimes used for coupled l, or sometimes for com OAM -> make uniform!!
-
 20. create pointer to mosh object in pair and newcoef in the constructor itself instead of passing as a parameter...
 
 21. streamline moshinsky inputdir/outputdir (the same), differentiate output mosh and other things
@@ -60,8 +55,6 @@ Wim
 
 29. make namespace for the correlation functions file
 
-30. correlation integrals in norm_ob -> write some small extra functions (everything seems so similar every time?)
-
 33. void params in the operators -> can this be replaced by template class?
 
 42.  make com integral computation dimensionless argument?  add function should be changed, integral too
@@ -70,15 +63,8 @@ Wim
 
 45. MapWavefunctionP checks for A and pstepset, if changed everything should be cleared etc.
 
-50. power calls in norm and rms, make some small arrays for that -> done for norm 11/1/18
 
 ++++CHECKS++++
-
-25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...
-everything looks symmetric (correlation functions in the two l arguments...)
-
-
-39. in obmd:corrpair methods left/right/both-> isospin projection t==0 case seems missing??
 
 44. check Eq C.6 PhD Vanhalst by comparing to explicit calculation, -> I get k+1 arguments instead of k+3/2 plus an overall factor of 2/sqrt(\pi).  
 Also make the computation of these integrals more dimensionless
@@ -191,3 +177,16 @@ Now it is very inefficient as basically the program has to start from scratch ea
 45. Compare the calculations that iterate over pairs with the one over paircoefs.  Should yield identical results! -> ok for norms, rms 11/1/18
 
 49. fix LCA manual with error in kA,lA -> done 10/1/18
+
+19. naming variables, Lambda is sometimes used for coupled l, or sometimes for com OAM -> make uniform!! -> done 12/1/18
+
+14. add sanity check to see that the recmosh object in pair & newcoef is for the correct quantum numbers. -> done 12/1/18
+
+30. correlation integrals in norm_ob -> write some small extra functions (everything seems so similar every time?) -> combined for loops 11/1/18
+
+25. in operator_virtual_ob::sum_me_corr check (l67) if diagonal contribution left and right is always equal even with restrictions...
+everything looks symmetric (correlation functions in the two l arguments...) -> order of matrix element is different, will make a diff with tensor if restrictions are asymmetric
+
+39. in obmd:corrpair methods left/right/both-> isospin projection t==0 case seems missing?? -> added 12/1/18
+
+50. power calls in norm and rms, make some small arrays for that -> done for norm/rms 11/1/18
