@@ -84,8 +84,8 @@ private:
      * @param l parameter of the integral, k' in master formula (56) of LCA manual
      * @param k parameter of the integral, l1 in master formula (56) of LCA manual
      * @param index power of com momentum P (Laguerre polynomials were expanded!): L+L'+2i+2j
-     * @param doic1 object that holds value of a chi integral Eq(52) LCA manual (left correlation operator)
-     * @param doic2 object that holds value of a chi integral Eq(52) LCA manual (right correlation operator)
+     * @param doic1 object that holds value of a chi integral Eq(55) LCA manual (left correlation operator)
+     * @param doic2 object that holds value of a chi integral Eq(55) LCA manual (right correlation operator)
      * @return [fm^-index] double result of the CM integral with power index of P
      */
     double calculate( int nA, int lA, int la, int nB, int lB, int l, int k, uint index , density_ob_integrand_cf* doic1, density_ob_integrand_cf* doic2 );
@@ -117,8 +117,8 @@ private:
         int k; ///< parameter of the integral, l1 in master formula (56) of LCA manual
         uint index; ///< power of com momentum P (Laguerre polynomials were expanded!)
         double nu; ///< HO parameter
-        density_ob_integrand_cf* doic1; ///< object that holds value of a chi integral Eq(52) LCA manual (left correlation operator)
-        density_ob_integrand_cf* doic2; ///< object that holds value of a chi integral Eq(52) LCA manual (right correlation operator)
+        density_ob_integrand_cf* doic1; ///< object that holds value of a chi integral Eq(55) LCA manual (left correlation operator)
+        density_ob_integrand_cf* doic2; ///< object that holds value of a chi integral Eq(55) LCA manual (right correlation operator)
     };
 
     /**

@@ -36,7 +36,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
 
     double pp_res=0.,nn_res=0.,np_p_res=0.,np_n_res=0.;
     #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:pp_res, nn_res, np_p_res, np_n_res) //num_threads(1)
-    for( int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
+    for( unsigned int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
         const IsoPaircoef* pc1= loop_array[i];
 
         // is left== right? Sometimes, accounted for in those functions (left gets put to 0, right *2)
@@ -92,7 +92,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
 
     double pp_res=0.,nn_res=0.,np_p_res=0.,np_n_res=0.;
     #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:pp_res, nn_res, np_p_res, np_n_res) //num_threads(1)
-    for( int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
+    for( unsigned int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
         const IsoPaircoef* pc1= loop_array[i];
 
         double res =  get_me( *pc1, *pc1, params, pc1->get_linkvalue()); //normalisation of partially filled shells taken into account in the linkstrength val

@@ -65,15 +65,15 @@ void density_iso_ob_integrand3::add( int nA, int lA, int NA, int LA, int nB, int
             key_vector->resize(LA+LB+2*NA+2*NB+1, IsoMatrixElement(0.,0.,0.,0.));
         }
     }
-    //Calculation prefactor integral, see Eq. 63 LCA manual, second line
+    //Calculation prefactor integral, see Eq. 66 LCA manual, second line.  Factors nu are absorbed in dimensionless variable X=P/sqrt(nu)
     double honorm = ho_norm(NA,LA)*ho_norm(NB,LB); //normalisation factors of the HO wf, dimensionless!
-    double pownu = sqrt(pow(nu,LA+LB+3)); // [fm^{(LA+LB+3)}]
+    // double pownu = sqrt(pow(nu,LA+LB+3)); // [fm^{(LA+LB+3)}]
     double phase = ((NA+NB) & 0b01)? -1 : 1; // = (-1)^{NA+NB}, -1 if NA+NB is odd, 1 if even
     for (int i=0; i<=NA;i++){
         double anli = laguerre_coeff(NA,LA,i);
         for (int j=0; j<=NB;j++){
             double anlj = laguerre_coeff(NB,LB,j);
-            key_vector->at(LA+LB+2*i+2*j) += val*(phase*honorm*anli*anlj/pow(nu,i+j)/pownu); //[fm^{(LA+LB+2i+2j+3)}]=[fm^{(index+3)}]
+            key_vector->at(LA+LB+2*i+2*j) += val*(phase*honorm*anli*anlj); //[dimensionless]
         }
     }
 }
@@ -96,12 +96,12 @@ IsoMatrixElement density_iso_ob_integrand3::get( density_ob_integrand_cf& doic1,
         vector< IsoMatrixElement >* key_vector = integral.pow_values;
 
         for( size_t i= 0;  i< key_vector->size(); i++ ) { //loop over powers of P
-            IsoMatrixElement val= key_vector->at(i); //[fm^{(i+3)}]
+            IsoMatrixElement val= key_vector->at(i); //[dimmensionless]
             if( val.norm() == 0. ) {
 //        cerr << "val == 0 " << endl;
                 continue;
             }
-            double result= calculate( n1, l1, k1, n2, l2, k2, k, i, doic1, doic2); //[fm^-i]
+            double result= calculate( n1, l1, k1, n2, l2, k2, k, i, doic1, doic2); //[fm^3]
             sum+= val*result; //[fm^3]
         }
     }
@@ -115,12 +115,12 @@ double density_iso_ob_integrand3::calculate( int nA, int lA, int la, int nB, int
 
     gsl_integration_workspace* w = gsl_integration_workspace_alloc( 10000 );
     gsl_function F ;
-    struct params_int2 params= { nA, lA, la, nB, lB, l, k, index, nu, &doic1, &doic2 };
+    struct params_int2 params= { nA, lA, la, nB, lB, l, k, index, sqrt(nu), &doic1, &doic2 };
     F.function = &integrand;
     F.params = &params;
-    double abserr, result; //[fm^-index]
+    double abserr, result; //[fm^3]
 //  int succes = gsl_integration_qagiu( &F, 0, 1e-7, 1e-3, 20000,  w, &result, &abserr );
-    int succes = gsl_integration_qag( &F, 0, 10, 1e-8, 1e-3, 10000, 1, w, &result, &abserr );
+    int succes = gsl_integration_qag( &F, 0, 10/sqrt(nu), 1e-8, 1e-3, 10000, 1, w, &result, &abserr );
 //  size_t neval;
 //  int succes = gsl_integration_qng( &F, 0, 10, 1e-5, 1e-2, &result, &abserr, &neval );
 
@@ -130,35 +130,23 @@ double density_iso_ob_integrand3::calculate( int nA, int lA, int la, int nB, int
         cerr << nA << lA << la << nB << lB << l << k << " " << index << "\t" << result << "\t" << abserr << endl;
     }
     gsl_integration_workspace_free(w);
-    return result; //[fm^-index]
+    return result; //[fm^3]
 }
 
-double density_iso_ob_integrand3::integrand( double P, void* params )
+double density_iso_ob_integrand3::integrand( double X, void* params )
 {
     struct params_int2* p= (struct params_int2*) params;
-    int nA= (p->nA);
-    int lA= (p->lA);
-    int la= (p->la);
-    int nB= (p->nB);
-    int lB= (p->lB);
-    int l= (p->l);
-    int k= (p->k);
-    uint index= (p->index);
-    double nu = p->nu;
-
-    density_ob_integrand_cf* doic1 = (p->doic1);
-    density_ob_integrand_cf* doic2 = (p->doic2);
-
-    double exp= speedy::speedies.get_neg_exp( P*P/nu );
+ 
+    double exp= speedy::speedies.get_neg_exp( X*X );
 
     if( exp== 0) {
         return 0;
     }
 
-    double res1= doic1->get_value( k, la, nA, lA, P); //[fm^3/2] chi integral
-    double res2= doic2->get_value( k, l, nB, lB, P); //[fm^3/2] 2nd chi integral
+    double res1= p->doic1->get_value( p->k, p->la, p->nA, p->lA, X*p->sqrtnu); //[fm^3/2] chi integral
+    double res2= p->doic2->get_value( p->k, p->l, p->nB, p->lB, X*p->sqrtnu); //[fm^3/2] 2nd chi integral
 
-    return P*P* gsl_pow_uint(P, index) *res1*res2* exp; //[fm^{1-index}]
+    return gsl_pow_uint(X, p->index+2) *res1*res2* exp; //[fm^3]
 }
 
 

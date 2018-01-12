@@ -58,7 +58,7 @@ double density_ob_integrand_cf::get_value( int k, int l, int nA, int lA, int int
 {
 
     if( intp >= pmax/pstep ) {
-        cerr << "p > pmax" << endl;
+        cerr << "p > pmax " << intp << " " << pmax/pstep << endl;
         return 0;
     }
 

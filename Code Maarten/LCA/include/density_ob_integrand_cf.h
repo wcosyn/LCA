@@ -11,7 +11,7 @@
 
 /**
  * \brief Containts the result of  \f$ \chi(P) = \int dr r^{i+2} j_l(\frac{rP}{\sqrt{\nu}}) 
- *  j_k(\frac{r q\sqrt{2}}{\sqrt{\nu}} )  f(\frac{r}{\sqrt{\nu}})  e^{\frac{-r^2}{2}} \f$.  Eq. 52 LCA Manual.
+ *  j_k(\frac{r q\sqrt{2}}{\sqrt{\nu}} )  f(\frac{r}{\sqrt{\nu}})  e^{\frac{-r^2}{2}} \f$.  Eq. 55 LCA Manual.
  *
  * where \f$P\f$ is cm momentum [fm^-1].
  *\f$ f\f$ is the correlation function and \f$q\f$ is a fixed parameter (e.g. the ONMD momentum in [fm^-1] ).

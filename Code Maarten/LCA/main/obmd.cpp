@@ -36,7 +36,7 @@ void ob(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     dob3.write(".",name.c_str(),-1,-1,-1,-1, isospin,&mf,&corr); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
-void ob(int A,int Z,std::string name, NucleusIso *nuc){
+void ob(std::string name, NucleusIso *nuc){
 
 
     //NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
@@ -161,7 +161,7 @@ int main(int argc,char* argv[]){
     }
     else if(!pairs.compare("iso")){
         NucleusIso nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
-        ob(A,Z,nucl_name,&nuc);
+        ob(nucl_name,&nuc);
     }
     else {std::cerr << "Invalid fifth argument (pairs): select either pp, nn, pn(=np) or all " << pairs << std::endl; exit(-1); assert(1==0);} 
 }

@@ -83,20 +83,20 @@ private:
      * @param l parameter of the integral, k' in master formula (56) of LCA manual
      * @param k parameter of the integral, l1 in master formula (56) of LCA manual
      * @param index power of com momentum P (Laguerre polynomials were expanded!): L+L'+2i+2j
-     * @param doic1 object that holds value of a chi integral Eq(52) LCA manual (left correlation operator)
-     * @param doic2 object that holds value of a chi integral Eq(52) LCA manual (right correlation operator)
-     * @return [fm^-index] double result of the CM integral with power index of P
+     * @param doic1 object that holds value of a chi integral Eq(55) LCA manual (left correlation operator)
+     * @param doic2 object that holds value of a chi integral Eq(55) LCA manual (right correlation operator)
+     * @return [fm^3] double result of the CM integral with power index of P
      */
     double calculate( int nA, int lA, int la, int nB, int lB, int l, int k, uint index , density_ob_integrand_cf& doic1, density_ob_integrand_cf& doic2 );
 
     /**
      * @brief The integrand of the integral over cm momentum P.
      * 
-     * @param P [fm^-1] com momentum P
+     * @param x [] dimensionless integration variable x=P/sqrt(nu), with P com momentum
      * @param params has to be of density_ob_integrand3::params_int2 type, contains all the parameters needed to compute integral
-     * @return //[fm^{1-index}] double 
+     * @return //[fm^{3}] double 
      */
-    static double integrand( double P, void* params );
+    static double integrand( double X, void* params );
 
     /**
      * @struct params_int2
@@ -115,9 +115,9 @@ private:
         int l; ///< parameter of the integral, k' in master formula (56) of LCA manual
         int k; ///< parameter of the integral, l1 in master formula (56) of LCA manual
         uint index; ///< power of com momentum P (Laguerre polynomials were expanded!)
-        double nu; ///< HO parameter
-        density_ob_integrand_cf* doic1; ///< object that holds value of a chi integral Eq(52) LCA manual (left correlation operator)
-        density_ob_integrand_cf* doic2; ///< object that holds value of a chi integral Eq(52) LCA manual (right correlation operator)
+        double sqrtnu; ///< Sqrt of HO parameter
+        density_ob_integrand_cf* doic1; ///< object that holds value of a chi integral Eq(55) LCA manual (left correlation operator)
+        density_ob_integrand_cf* doic2; ///< object that holds value of a chi integral Eq(55) LCA manual (right correlation operator)
     };
 
     /**
@@ -132,7 +132,7 @@ private:
         int l2; ///< parameter of the integral, l'q in master formula (56) of LCA manual
         int k2; ///< parameter of the integral, k' in master formula (56) of LCA manual
         int k; ///< parameter of the integral, l1 in master formula (56) of LCA manual
-        std::vector< IsoMatrixElement >* pow_values; ///< integral values for different powers of P
+        std::vector< IsoMatrixElement >* pow_values; ///< integral values for different powers of P/sqrt(nu)
     };
 
     ///Map containing the com integrals.  key is constructed as nA.lA.la.nB.lB.l.k

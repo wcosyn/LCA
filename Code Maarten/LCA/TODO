@@ -57,8 +57,6 @@ Wim
 
 33. void params in the operators -> can this be replaced by template class?
 
-42.  make com integral computation dimensionless argument?  add function should be changed, integral too
-
 43. Wavefunctionp grid sizes should be max+1!!
 
 45. MapWavefunctionP checks for A and pstepset, if changed everything should be cleared etc.
@@ -190,3 +188,6 @@ everything looks symmetric (correlation functions in the two l arguments...) -> 
 39. in obmd:corrpair methods left/right/both-> isospin projection t==0 case seems missing?? -> added 12/1/18
 
 50. power calls in norm and rms, make some small arrays for that -> done for norm/rms 11/1/18
+
+42.  make com integral computation dimensionless argument?  add function should be changed, integral too -> done 12/1/18
+

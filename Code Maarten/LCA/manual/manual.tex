@@ -30,7 +30,9 @@
 \begin{center}
 {\Huge \textsc{LCA CODE MANUAL}} \\
 \vspace{10pt}
-\textsc{ -- Camille Colle -- }
+\textsc{ -- Written by Camille Colle -- }\\
+\textsc{ -- Maintained and updated by Wim Cosyn since Dec 2017 -- }
+
 \end{center}
 \rule{\textwidth}{1pt} \\ [-0.75\baselineskip]
 \rule{\textwidth}{2pt} \\ [2\baselineskip]
@@ -447,9 +449,21 @@ the base class \texttt{operator\_virtual\_ob}.
 sum functions, the normalisations are accounted for at the end of all the 
 \text{get\_me\_xxx} functions when calling the com integrands 
 \texttt{density\_ob\_integrand3::add} functions.
+
+\item When computing LCA matrix elements, it is important to divide by the 
+appropriate correlated norm.  This can be done with the \texttt{norm} argument 
+in the constructors of the relevant $N$-body operator classes.  When 
+considering isospin dependent quantities (for instance proton and neutron 
+densities) care should be taken how to normalize these quantities.  The correct 
+way is to also calculate the same isospin depedent norm as the operator in the 
+nominator.  And not take the total LCA norm and for a proton quantitiy take 
+$Z/A$ of this number.  For $N=Z$ nuclei this does not make a difference but for 
+asymmetric nuclei it does.  In the latter approach this means that proton and 
+neutron densities are not normalized to $Z, N$ resp. any more.  In the first 
+approach this is still valid (up to truncation errors in the expansions in the 
+algorithm).
+
 \end{itemize}
-
-
 
 \section{Matrix Elements}
 First some theory on the matrix elements. In the calculation of the norm we only have the correlation operator $\hat{\wr}$ between the bras and kets.
@@ -1851,8 +1865,13 @@ L'}(P_{12}) \chi_{p,nl}^{l_1 k}(p_1,P_{12}) \chi_{q,n'l'}^{l_1
 k'}(p_1,P_{12}) \\
 = N_{NL} N_{N'L'} \nu^{ - \frac{L+L'+3}{2}} (-1)^{N+N'}
 \sum_{i=0}^{N} \sum_{j=0}^{N'} a_{NL,i} a_{NL,j} \nu^{-i-j} \\
- \int \text{d} P_{12} \, P_{12}^{2+L+L'+2i+2j}  e^{- \frac{P_{12}^{2}}{ \nu}}  
-\chi_{p,nl}^{l_1 k}(p_1,P_{12}) \chi_{q,n'l'}^{l_1 k'}(p_1,P_{12})
+ \times\int \text{d} P_{12} \, P_{12}^{2+L+L'+2i+2j}  e^{- \frac{P_{12}^{2}}{ 
+\nu}}  
+\chi_{p,nl}^{l_1 k}(p_1,P_{12}) \chi_{q,n'l'}^{l_1 k'}(p_1,P_{12})\\
+=N_{NL} N_{N'L'} (-1)^{N+N'}
+\sum_{i=0}^{N} \sum_{j=0}^{N'} a_{NL,i} a_{NL,j}
+ \int \text{d} X \, X^{2+L+L'+2i+2j}  e^{- X^2}  
+\chi_{p,nl}^{l_1 k}(p_1,X\sqrt{\nu}) \chi_{q,n'l'}^{l_1 k'}(p_1,X\sqrt{\nu})
 \label{eq:cm_mom_integral}
 \end{multline}
 is calculated in the code. As defined in Eq.~(\ref{eq:chi}), the symbols 
@@ -1862,11 +1881,11 @@ integral (Eq.~(\ref{eq:cm_mom_integral})) is done in
 \texttt{density\_ob\_integrand3}. The integrand of (\ref{eq:cm_mom_integral}) 
 can be found in \texttt{density\_ob\_integrand3::integrand}.
 \begin{align*}
-	P_{12}^{2} P_{12}^{\text{index}} e^{-\frac{P_{12}^{2}}{\nu}}  
-\chi_{p,nl}^{l_1 k}(p_1,P_{12}) \chi_{q,n'l'}^{l_1 k'}(p_1,P_{12}) 
+	X^{\text{index}+2} e^{-X^2}  
+\chi_{p,nl}^{l_1 k}(p_1,X\sqrt{\nu}) \chi_{q,n'l'}^{l_1 k'}(p_1,X\sqrt{\nu}) 
 \end{align*}
 Where the ``index'' (see code) is the power of the c.m. momentum (not including 
-the $P_{12}^{2}$ of the Jacobian) $L+L'+2i+2j$.
+the powers of the Jacobian) $L+L'+2i+2j$.
 \todo[inline]{ERROR: Maarten has extra summations, binomial coefficients, 
 pochhammer symbols etc, of which I have no clue where they are coming from (see 
 \texttt{density\_ob\_integrand3::add} @ line 34). If I read the code correctly 
