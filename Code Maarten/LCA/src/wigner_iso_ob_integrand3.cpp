@@ -140,6 +140,7 @@ double wigner_iso_ob_integrand3::calculate( double r_dimless, int nA, int lA, in
         cerr << "nA lA la k q index " << endl;
         cerr << nA << lA << la << k << q << " " << index2 << "\t" << result2 << "\t" << abserr << endl;
     }
+    gsl_integration_workspace_free(w);
     return result1*result2; //[]
 }
 
