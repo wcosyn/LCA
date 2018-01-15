@@ -22,7 +22,7 @@ int main(int argc,char* argv[]){
 
     ofstream myfile;
     myfile.open ("rms.txt");
-    myfile << "#A\tZ\tallIPM\tallLCA\tallLCA2\tp IPM\tp LCA1\tp LCA2\tn IPM\tp LCA1\tp LCA2\ts IPM\ts LCA1\ts LCA2" << std::endl;
+    myfile << "#A\tZ\tallIPM\tallLCA\tallLCA2\tp IPM\tp LCA1\tp LCA2\tn IPM\tn LCA1\tn LCA2\ts IPM\ts LCA1\ts LCA2" << std::endl;
 
     for(int i=0;i<limit;i++){
         NucleusIso nuc( "../data/mosh","../data/mosh" , A[i], Z[i] );
