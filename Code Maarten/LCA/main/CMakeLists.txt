@@ -1,4 +1,6 @@
 
+add_executable(obwd obwd.cpp)
+target_link_libraries(obwd ${LIBS} nmd)
 
 add_executable(normob normob.cpp)
 target_link_libraries(normob ${LIBS} nmd)
@@ -24,7 +26,7 @@ target_link_libraries(normtb ${LIBS} nmd)
 add_executable(tbmd_rel tbmd_rel.cpp)
 target_link_libraries(tbmd_rel ${LIBS} nmd)
 
-install(TARGETS rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel
+install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)
 
 	if(STATIC_BUILD)

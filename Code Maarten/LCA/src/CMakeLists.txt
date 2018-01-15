@@ -39,6 +39,8 @@ set( SRC
 	tripletcoef.cpp
 	triplet.cpp
 	wavefunctionp.cpp
+	wigner_iso_ob3.cpp
+	wigner_iso_ob_integrand3.cpp
 	wsexpansion.cpp
 	wsnucleus.cpp
 	wsnucleusnp.cpp
