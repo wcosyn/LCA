@@ -21,7 +21,7 @@ public:
      * @param isospin turn on/off the spin-isospin correlations .
      * @param norm the renormalization factor needed to renormalize.
      */
-    norm_iso_ob(NucleusIso* nucleus, bool central= true, bool tensor=true, bool isospin=true, double norm= 1);
+    norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, bool central= true, bool tensor=true, bool isospin=true);
     /**
      * \brief Destructor
      */

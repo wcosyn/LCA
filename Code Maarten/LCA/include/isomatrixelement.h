@@ -25,6 +25,12 @@ class IsoMatrixElement {
      */
     IsoMatrixElement(const double pp, const double nn, const double np_p, const double np_n);
     /**
+     * @brief copy constructor
+     * 
+     * @param copy 
+     */
+    IsoMatrixElement(const IsoMatrixElement& copy);
+    /**
      * @brief Destructor
      * 
      */

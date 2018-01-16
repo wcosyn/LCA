@@ -20,7 +20,7 @@ public:
      * @param isospin enable isospin correlation or not
      * @param norm denominator of matrix elements, see norm_iso_ob for calculations
      */
-    rms_iso_ob(NucleusIso* nucleus, bool central= true, bool tensor=true, bool isospin=true, double norm= 1);
+    rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, bool central= true, bool tensor=true, bool isospin=true );
     /**
      * @brief destructor
      * 

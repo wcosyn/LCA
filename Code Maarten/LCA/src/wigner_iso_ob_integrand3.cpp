@@ -67,7 +67,7 @@ void wigner_iso_ob_integrand3::add( int nA, int lA, int NA, int LA,
             key_vector->resize((LA+2*NA)+1, vector<IsoMatrixElement>(LA+2*NB+1,IsoMatrixElement(0.,0.,0.,0.)));
         }
         for(size_t i=0; i<key_vector->size();i++){
-            if(key_vector->at(i).size()-1<(LB+2*NB)) key_vector->at(i).resize(LB+2*NB+1,IsoMatrixElement(0.,0.,0.,0.));
+            if((key_vector->at(i).size()-1)<(LB+2*NB)) key_vector->at(i).resize(LB+2*NB+1,IsoMatrixElement(0.,0.,0.,0.));
         }
         
     }
@@ -100,7 +100,7 @@ IsoMatrixElement wigner_iso_ob_integrand3::get( const double r, density_ob_integ
     //        cerr << "val == 0 " << endl;
                     continue;
                 }
-                double result= calculate( r/sqrt(nu), integral.n1, integral.l1, integral.k1, integral.n2, integral.l2, 
+                double result= calculate( r*sqrt(nu), integral.n1, integral.l1, integral.k1, integral.n2, integral.l2, 
                     integral.k2, integral.k, integral.q, i, j, doic1, doic2); //[]
                 sum+= val*result; //[]
             }
@@ -114,7 +114,7 @@ double wigner_iso_ob_integrand3::calculate( double r_dimless, int nA, int lA, in
                                     density_ob_integrand_cf& doic1, density_ob_integrand_cf& doic2 )
 {
 
-    gsl_integration_workspace* w = gsl_integration_workspace_alloc( 10000 );
+    gsl_integration_workspace* w = gsl_integration_workspace_alloc( 200000 );
     gsl_function F ;
     struct params_int2 params1= {nB, lB, l, k, q, index1, sqrt(nu), r_dimless, &doic1};
     struct params_int2 params2= {nA, lA, la, k, q, index2, sqrt(nu), r_dimless, &doic2 };
@@ -122,7 +122,7 @@ double wigner_iso_ob_integrand3::calculate( double r_dimless, int nA, int lA, in
     F.params = &params1;
     double abserr, result1,result2; //[]
 //  int succes = gsl_integration_qagiu( &F, 0, 1e-7, 1e-3, 20000,  w, &result, &abserr );
-    int succes = gsl_integration_qag( &F, 0, 10/sqrt(nu), 1e-8, 1e-3, 10000, 1, w, &result1, &abserr );
+    int succes = gsl_integration_qag( &F, 0, 10/sqrt(nu), 1e-8, 1e-3, 200000, 6, w, &result1, &abserr );
 //  size_t neval;
 //  int succes = gsl_integration_qng( &F, 0, 10, 1e-5, 1e-2, &result, &abserr, &neval );
 
@@ -132,16 +132,16 @@ double wigner_iso_ob_integrand3::calculate( double r_dimless, int nA, int lA, in
         cerr << nB << lB << l << k << q << " " << index1 << "\t" << result1 << "\t" << abserr << endl;
     }
     gsl_integration_workspace_free(w);
-    w=gsl_integration_workspace_alloc( 10000 );
+    w=gsl_integration_workspace_alloc( 200000 );
     F.params = &params2;
-    succes = gsl_integration_qag( &F, 0, 10/sqrt(nu), 1e-8, 1e-3, 10000, 1, w, &result2, &abserr );
+    succes = gsl_integration_qag( &F, 0, 10/sqrt(nu), 1e-8, 1e-3, 200000, 6, w, &result2, &abserr );
     if( succes ) {
         cerr << "integration failed: " << succes << __FILE__ << __LINE__ << endl;
-        cerr << "nA lA la k q index " << endl;
-        cerr << nA << lA << la << k << q << " " << index2 << "\t" << result2 << "\t" << abserr << endl;
+        cerr << "nA lA la k q index r " << endl;
+        cerr << nA << lA << la << k << q << " " << index2 << " " << r_dimless << " " << r_dimless/sqrt(nu) << "\t" << result2 << "\t" << abserr << endl;
     }
     gsl_integration_workspace_free(w);
-    return result1*result2; //[]
+    return result1*result2*pow(sqrt(nu),3.); //[dimensionless]
 }
 
 double wigner_iso_ob_integrand3::integrand( double X, void* params )
@@ -156,7 +156,7 @@ double wigner_iso_ob_integrand3::integrand( double X, void* params )
 
     double res1= p->doic->get_value( p->k, p->la, p->nA, p->lA, X*p->sqrtnu); //[fm^3/2] chi integral
 
-    return gsl_pow_uint(X, p->index+2) *res1 *exp*gsl_sf_bessel_jl(p->q,p->r_dimless*X)*pow(p->sqrtnu,3.); //[dimensionless]
+    return gsl_pow_uint(X, p->index+2) *res1 *exp*gsl_sf_bessel_jl(p->q,p->r_dimless*X*M_SQRT2); //[fm^3/2]
 }
 
 

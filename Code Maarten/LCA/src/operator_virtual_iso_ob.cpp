@@ -8,7 +8,7 @@ using std::cout;
 using std::endl;
 using std::cerr;
 
-operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus, bool central, bool tensor, bool isospin, double norm )
+operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const IsoMatrixElement &norm, bool central, bool tensor, bool isospin)
     : nucleus( nucleus ), bcentral( central ), tensor( tensor ), spinisospin( isospin ), norm( norm )
 {
     A= nucleus->getA();
@@ -70,7 +70,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
 
     }
     
-    return {pp_res/norm, nn_res/norm, np_p_res/norm, np_n_res/norm};
+    return {pp_res/norm.norm(), nn_res/norm.norm(), np_p_res/norm.norm(), np_n_res/norm.norm()};
 }
 
 
@@ -121,7 +121,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
 
     }
     
-    return {pp_res/(A-1.)/norm,nn_res/(A-1.)/norm, np_p_res/(A-1.)/norm, np_n_res/(A-1.)/norm};
+    return {pp_res/(A-1.)/norm.norm(),nn_res/(A-1.)/norm.norm(), np_p_res/(A-1.)/norm.norm(), np_n_res/(A-1.)/norm.norm()};
  
 }
 

@@ -27,7 +27,7 @@ int main(int argc,char* argv[]){
     for(int i=0;i<limit;i++){
         NucleusIso nuc( "../data/mosh","../data/mosh" , A[i], Z[i] );
         int N=A[i]-Z[i];
-        norm_iso_ob no( &nuc, true, true, true );
+        norm_iso_ob no( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),double(N)*Z[i]/(2*A[i]*(A[i]-1)),double(N)*Z[i]/(2*A[i]*(A[i]-1))), true, true, true );
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
         IsoMatrixElement norm_mf= no.sum_me_coefs( &nob );
         IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
@@ -37,7 +37,8 @@ int main(int argc,char* argv[]){
         std::cout << "norm p\t"  << norm_mf.getValue(4) << "\t" << norm_corr.getValue(4) << "\t" << norm.getValue(4)  << "\t" << norm.getValue(4)/norm.getValue(6)*A[i]/Z[i] << std::endl;
         std::cout << "norm n\t"  << norm_mf.getValue(5) << "\t" << norm_corr.getValue(5) << "\t" << norm.getValue(5)  << "\t" << norm.getValue(5)/norm.getValue(6)*A[i]/N << std::endl;
 
-        rms_iso_ob rms_all( &nuc, true, true, true, 1.);
+        rms_iso_ob rms_all( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),
+                double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1))), true, true, true);
         struct rms_iso_ob::rms_ob_params nob_params;
         nob_params.nA = -1;
         nob_params.nB = -1;

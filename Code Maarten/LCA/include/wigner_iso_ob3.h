@@ -28,7 +28,7 @@ public:
      * @param norm the renormalization factor needed to renormalize .
      * @param qmax max q for summation .
      */
-    wigner_iso_ob3(NucleusIso* nucleus, bool central= true, bool tensor=true, bool isospin=false, double norm= 1., int qmax= 7 );
+    wigner_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement &norm, bool central= true, bool tensor=true, bool isospin=false, int qmax= 7 );
     /**
      * \brief Destructor
      */

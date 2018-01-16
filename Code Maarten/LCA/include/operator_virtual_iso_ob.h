@@ -23,7 +23,7 @@ public:
      * @param isospin turn on/off the spin-isospin correlations.
      * @param norm normalisation factor: denominator which is not 1 due to correlations generally
      */
-    operator_virtual_iso_ob( NucleusIso* nucleus, bool central=true, bool tensor=true, bool isospin=false, double norm= 1);
+    operator_virtual_iso_ob( NucleusIso* nucleus, const IsoMatrixElement &norm, bool central=true, bool tensor=true, bool isospin=false);
 
     /**
      * \brief Gives the two-body operator EV of the mean field part, using sum over coupled states in NucleusIso::isopaircoefs map
@@ -120,7 +120,7 @@ protected:
     /// Indicates if spin-isospin correlation in used
     bool spinisospin;
     /// Normalization factor
-    double norm;
+    IsoMatrixElement norm;
 
     /// Nucleus mass number
     int A;

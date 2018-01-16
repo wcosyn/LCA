@@ -13,6 +13,10 @@ pp_res(pp),nn_res(nn),np_p_res(np_p),np_n_res(np_n)
 {
 }
 
+IsoMatrixElement::IsoMatrixElement(const IsoMatrixElement &copy):
+pp_res(copy.pp_res),nn_res(copy.nn_res),np_p_res(copy.np_p_res),np_n_res(copy.np_n_res){
+}
+
 IsoMatrixElement::~IsoMatrixElement(){
 
 }

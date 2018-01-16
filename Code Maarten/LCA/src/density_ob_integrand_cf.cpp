@@ -154,7 +154,7 @@ double density_ob_integrand_cf::calculate( int k, int l, uint i, int intp )
 
     double p= pstep* intp;
     gsl_function F ;
-    struct params_doic params = { k, l, i, nu, p, q, f };
+    struct params_doic params = { k, l, i, sqrt(nu), p, q, f };
     F.function = &integrand;
     F.params = &params;
 //  double result, abserr;
@@ -179,20 +179,11 @@ double density_ob_integrand_cf::calculate( int k, int l, uint i, int intp )
 double density_ob_integrand_cf::integrand( double r, void* params )
 {
     struct params_doic* p = (struct params_doic*) params;
-    int k = (p->k);
-    int l = (p->l);
-    uint i = (p->i);
-    double nu= (p->nu); // [fm^-2]
-    double P = (p->P); //[fm^-1]
-    double q = (p->q);// [fm^-1]
-    double(*f)(double)= (p->f); //correlation function
-    double sqrtnu=sqrt(nu);  //[fm^-1]
 
+    const double bessel1b = gsl_sf_bessel_jl(p->l,r*p->P/p->sqrtnu); //dimensionless
+    const double bessel2b = gsl_sf_bessel_jl(p->k,r*p->q*M_SQRT2/p->sqrtnu); //dimensionless
 
-    const double bessel1b = gsl_sf_bessel_jl(l,r*P/sqrtnu); //dimensionless
-    const double bessel2b = gsl_sf_bessel_jl(k,r*q*M_SQRT2/sqrtnu); //dimensionless
-
-    return bessel1b*bessel2b*gsl_pow_uint(r,i+2)* (*f)(r/sqrtnu)* gsl_sf_exp(-0.5*r*r); //dimensionless!
+    return bessel1b*bessel2b*gsl_pow_uint(r,p->i+2)* p->f(r/p->sqrtnu)* gsl_sf_exp(-0.5*r*r); //dimensionless!
 
 
     /*

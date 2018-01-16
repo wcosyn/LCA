@@ -129,7 +129,7 @@ private:
         int k; /**< This is the order of the bessel function with the ob momentum */
         int l; /**< This is the order of the bessel function with the c.m. momentum */
         uint i;/**< This is the power in \f$ r^i \f$ in the integral */
-        double nu;/**< [fm^-2] HO-potential parameter */
+        double sqrtnu;/**< [fm^-1] sqrt of HO-potential parameter */
         double P; /**< [fm] Center of mass momentum */
         double q; /**< [fm] One-body momentum */
         double(*f)(double); /**< [] Correlation function */
