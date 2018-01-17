@@ -7,58 +7,6 @@
 #include "recmosh.h"
 #include "nucleus_iso.h"
 
-int testUnit(Nucleusall& nuc){
-    norm_ob nob(&nuc);
-    struct norm_ob::norm_ob_params nob_params;
-    nob_params.nA = -1;
-    nob_params.nB = -1;
-    nob_params.lA = -1;
-    nob_params.lB = -1;
-    nob_params.t  =  0; // proton (+1) , neutron (-1), both(0)
-
-    double me_sum = 0.;
-    for (int p=0;p<nuc.get_number_of_pairs();p++){
-        Pair* pair = nuc.getPair(p);
-        double me = nob.get_me(pair, (void*) &nob_params);
-        printf("[Info]: me for pair [% 5d] ",p);
-        printf("(n,l,j,mj,t) = (% d,% d,% d,% d,% d)",pair->getn1(),pair->getl1(),pair->gettwo_j1(),pair->gettwo_mj1(),pair->gettwo_t1());
-        printf(",(% d,% d,% d,% d,% d)  ",pair->getn2(),pair->getl2(),pair->gettwo_j2(),pair->gettwo_mj2(),pair->gettwo_t2());
-        printf(" norm : %.2f  ",pair->getfnorm());
-        printf("ME is %f \n",me);
-        me_sum+= me;
-    }
-    printf("\n[Info]: ME sum is %f\n",me_sum);
-    return 0;
-}
-
-int testCentral(Nucleusall& nuc){
-    int np = nuc.get_number_of_pairs(); // force makepairs() to be called
-
-    norm_ob nob(&nuc,false,false,false); // booleans are central,tensor,isospin
-    struct norm_ob::norm_ob_params nob_params;
-    nob_params.nA = -1;
-    nob_params.nB = -1;
-    nob_params.lA = -1;
-    nob_params.lB = -1;
-    nob_params.t  = 0; // proton(+1), neutron (-1), both(0)
-
-    double me_sum = 0.;
-    for (int p=0;p<nuc.get_number_of_pairs();p++){
-        Pair* pair = nuc.getPair(p);
-        //double me = nob.get_me_corr_left(pair, (void*) &nob_params);
-        double me = nob.get_me(pair,(void*) &nob_params);
-        printf("[Info]: pair number [% 5d] ",p);
-        printf("(n,l,j,mj,t) = (% d,% d,% d,% d,% d)",pair->getn1(),pair->getl1(),pair->gettwo_j1(),pair->gettwo_mj1(),pair->gettwo_t1());
-        printf(",(% d,% d,% d,% d,% d)  ",pair->getn2(),pair->getl2(),pair->gettwo_j2(),pair->gettwo_mj2(),pair->gettwo_t2());
-        printf(" norm : %.2f  ",pair->getfnorm());
-        printf("ME is %f \n",me);
-        me_sum+= me;
-    }
-    printf("\n[Info]: ME sum is %f\n",me_sum);
-    printf("[Info]: sum_me_coefs is %f\n",nob.sum_me_coefs((void*)&nob_params));
-    printf("[Info]: sum_me_pairs is %f\n",nob.sum_me_pairs((void*)&nob_params));
-    return 0;
-}
 
 /* check for the results agains
  * table in Journal of Physics G: Particles and Nuclei 42 (2015) 055104
@@ -82,24 +30,25 @@ bool normsRun(int max){
 
 
     bool allpass = true;
-    for (int i=0;i<max;i++){
+    for (int i=1;i<max;i++){
         IsoMatrixElement norm_mf,norm_corr;
         bool pass=0;
         NucleusIso nuc("../data/mosh","../data/mosh",A[i],Z[i]);
         int N=A[i]-Z[i];
-        norm_iso_ob nopp(&nuc,IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1))));
+        IsoMatrixElement prenorm= IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)));
+        norm_iso_ob nopp(&nuc,prenorm);
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
         norm_mf  = nopp.sum_me_coefs( &nob );
         norm_corr= nopp.sum_me_corr( &nob );
-        std::cout << "2pp all " << norm_mf.pp_res << " " << norm_corr.pp_res << " " << norm_mf.pp_res+norm_corr.pp_res <<std::endl;
-        pass = ( fabs(norm_mf.pp_res-double(Z[i]*(Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        std::cout << "2pp all " << (norm_mf*prenorm).pp_res << " " << (norm_corr*prenorm).pp_res << " " << (norm_mf*prenorm).pp_res+(norm_corr*prenorm).pp_res <<std::endl;
+        pass = ( fabs((norm_mf*prenorm).pp_res-double(Z[i]*(Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
         allpass = allpass && pass;
         if (pass){
             printf("[OK pp(all)mf]  \n");
         } else {
             printf("[FAIL  pp(all)mf]\n");
         }
-        pass = ( fabs(norm_mf.pp_res+norm_corr.pp_res-prevpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        pass = ( fabs((norm_mf*prenorm).pp_res+(norm_corr*prenorm).pp_res-prevpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
         allpass = allpass && pass;
         if (pass){
             printf("[OK]  \n");
@@ -109,15 +58,15 @@ bool normsRun(int max){
         
 
 
-        std::cout << "2nn all " << norm_mf.nn_res << " " << norm_corr.nn_res << " " << norm_mf.nn_res+norm_corr.nn_res <<std::endl;
-        pass = ( fabs(norm_mf.nn_res-double((A[i]-Z[i])*(A[i]-Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        std::cout << "2nn all " << (norm_mf*prenorm).nn_res << " " << (norm_corr*prenorm).nn_res << " " << (norm_mf*prenorm).nn_res+(norm_corr*prenorm).nn_res <<std::endl;
+        pass = ( fabs((norm_mf*prenorm).nn_res-double((A[i]-Z[i])*(A[i]-Z[i]-1))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
         allpass = allpass && pass;
         if (pass){
             printf("[OK nn(all)mf]  \n");
         } else {
             printf("[FAIL  nn(all)mf]\n");
         }
-        pass = ( fabs(norm_mf.nn_res+norm_corr.nn_res-prevnn[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        pass = ( fabs((norm_mf*prenorm).nn_res+(norm_corr*prenorm).nn_res-prevnn[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
         allpass = allpass && pass;
         if (pass){
             printf("[OK]  \n");
@@ -125,8 +74,8 @@ bool normsRun(int max){
             printf("[FAIL]\n");
         }
 
-        std::cout << "2np n " << norm_mf.np_n_res << " " << norm_corr.np_n_res << " " << norm_mf.np_n_res+norm_corr.np_n_res <<std::endl;
-        pass = ( fabs(norm_mf.np_n_res-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        std::cout << "2np n " << (norm_mf*prenorm).np_n_res << " " << (norm_corr*prenorm).np_n_res << " " << (norm_mf*prenorm).np_n_res+(norm_corr*prenorm).np_n_res <<std::endl;
+        pass = ( fabs((norm_mf*prenorm).np_n_res-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
         allpass = allpass && pass;
         if (pass){
             printf("[OK np(n)mf]  \n");
@@ -135,15 +84,15 @@ bool normsRun(int max){
         }
 
 
-        std::cout << "2np p " << norm_mf.np_p_res << " " << norm_corr.np_p_res << " " << norm_mf.np_p_res+norm_corr.np_p_res <<std::endl;
-        pass = ( fabs(norm_mf.np_p_res-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        std::cout << "2np p " << (norm_mf*prenorm).np_p_res << " " << (norm_corr*prenorm).np_p_res << " " << (norm_mf*prenorm).np_p_res+(norm_corr*prenorm).np_p_res <<std::endl;
+        pass = ( fabs((norm_mf*prenorm).np_p_res-double(Z[i]*(A[i]-Z[i]))/(A[i]*(A[i]-1))) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
         allpass = allpass && pass;
         if (pass){
             printf("[OK np(p)mf]  \n");
         } else {
             printf("[FAIL  np(p)mf]\n");
         }
-        pass = ( fabs(norm_mf.np_p_res+norm_corr.np_p_res-prevnpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
+        pass = ( fabs((norm_mf*prenorm).np_p_res+(norm_corr*prenorm).np_p_res-prevnpp[i]) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
         allpass = allpass && pass;
         if (pass){
             printf("[OK]  \n");
@@ -151,8 +100,8 @@ bool normsRun(int max){
             printf("[FAIL]\n");
         }
 
-        double totalmf=norm_mf.pp_res+norm_mf.nn_res+norm_mf.np_p_res+norm_mf.np_n_res;
-        double totalcorr=norm_corr.pp_res+norm_corr.nn_res+norm_corr.np_p_res+norm_corr.np_n_res;
+        double totalmf=(norm_mf*prenorm).pp_res+(norm_mf*prenorm).nn_res+(norm_mf*prenorm).np_p_res+(norm_mf*prenorm).np_n_res;
+        double totalcorr=(norm_corr*prenorm).pp_res+(norm_corr*prenorm).nn_res+(norm_corr*prenorm).np_p_res+(norm_corr*prenorm).np_n_res;
         double norm_res=totalmf+totalcorr;
         std::cout << "2all all " << totalmf << " " << totalcorr << " " << totalmf+totalcorr <<std::endl;
         pass = ( fabs(totalmf-1.) < 1e-3); // results rounded to 1e-3, so difference can be up to 1e-3
@@ -203,16 +152,16 @@ int main(int argc,char* argv[]){
     //     norm_corr= nopp.sum_me_corr( &nob );
 
     //     std::cout << "A: " << A[i] << "\tZ: " << Z[i] << std::endl;
-    //     std::cout << "pp norm: " << norm_mf.pp_res << " " << norm_corr.pp_res << " " << norm_mf.pp_res + norm_corr.pp_res << std::endl;
-    //     std::cout << "nn norm: " << norm_mf.nn_res << " " << norm_corr.nn_res << " " << norm_mf.nn_res + norm_corr.nn_res << std::endl;
-    //     std::cout << "np_p norm: " << norm_mf.np_p_res << " " << norm_corr.np_p_res << " " << norm_mf.np_p_res + norm_corr.np_p_res << std::endl;
-    //     std::cout << "np_n norm: " << norm_mf.np_n_res << " " << norm_corr.np_n_res << " " << norm_mf.np_n_res + norm_corr.np_n_res << std::endl;
-    //     std::cout << "p norm: " << norm_mf.pp_res+norm_mf.np_p_res << " " << norm_corr.pp_res+norm_corr.np_p_res << " " 
-    //         << norm_mf.pp_res + norm_corr.pp_res + norm_mf.np_p_res + norm_corr.np_p_res << std::endl;
-    //     std::cout << "n norm: " << norm_mf.nn_res+norm_mf.np_n_res << " " << norm_corr.nn_res+norm_corr.np_n_res << " " 
-    //         << norm_mf.nn_res + norm_corr.nn_res + norm_mf.np_n_res + norm_corr.np_n_res << std::endl;
-    //     std::cout << "total norm: " << norm_mf.norm() << " " << norm_corr.norm() << " " 
-    //         << norm_mf.norm()+norm_corr.norm() << std::endl;
+    //     std::cout << "pp norm: " << (norm_mf*prenorm).pp_res << " " << (norm_corr*prenorm).pp_res << " " << (norm_mf*prenorm).pp_res + (norm_corr*prenorm).pp_res << std::endl;
+    //     std::cout << "nn norm: " << (norm_mf*prenorm).nn_res << " " << (norm_corr*prenorm).nn_res << " " << (norm_mf*prenorm).nn_res + (norm_corr*prenorm).nn_res << std::endl;
+    //     std::cout << "np_p norm: " << (norm_mf*prenorm).np_p_res << " " << (norm_corr*prenorm).np_p_res << " " << (norm_mf*prenorm).np_p_res + (norm_corr*prenorm).np_p_res << std::endl;
+    //     std::cout << "np_n norm: " << (norm_mf*prenorm).np_n_res << " " << (norm_corr*prenorm).np_n_res << " " << (norm_mf*prenorm).np_n_res + (norm_corr*prenorm).np_n_res << std::endl;
+    //     std::cout << "p norm: " << (norm_mf*prenorm).pp_res+(norm_mf*prenorm).np_p_res << " " << (norm_corr*prenorm).pp_res+(norm_corr*prenorm).np_p_res << " " 
+    //         << (norm_mf*prenorm).pp_res + (norm_corr*prenorm).pp_res + (norm_mf*prenorm).np_p_res + (norm_corr*prenorm).np_p_res << std::endl;
+    //     std::cout << "n norm: " << (norm_mf*prenorm).nn_res+(norm_mf*prenorm).np_n_res << " " << (norm_corr*prenorm).nn_res+(norm_corr*prenorm).np_n_res << " " 
+    //         << (norm_mf*prenorm).nn_res + (norm_corr*prenorm).nn_res + (norm_mf*prenorm).np_n_res + (norm_corr*prenorm).np_n_res << std::endl;
+    //     std::cout << "total norm: " << (norm_mf*prenorm).norm() << " " << (norm_corr*prenorm).norm() << " " 
+    //         << (norm_mf*prenorm).norm()+(norm_corr*prenorm).norm() << std::endl;
     // }    
 
     bool succes = normsRun(atoi(argv[1]));

@@ -70,7 +70,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
 
     }
     
-    return {pp_res/norm.norm(), nn_res/norm.norm(), np_p_res/norm.norm(), np_n_res/norm.norm()};
+    return IsoMatrixElement(pp_res,nn_res,np_p_res,np_n_res)/norm;
 }
 
 
@@ -121,7 +121,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
 
     }
     
-    return {pp_res/(A-1.)/norm.norm(),nn_res/(A-1.)/norm.norm(), np_p_res/(A-1.)/norm.norm(), np_n_res/(A-1.)/norm.norm()};
+    return IsoMatrixElement(pp_res,nn_res,np_p_res,np_n_res)/norm/(A-1.);
  
 }
 

@@ -41,6 +41,36 @@ IsoMatrixElement IsoMatrixElement::operator*(const double sc) const{
     return result;
 }
 
+IsoMatrixElement IsoMatrixElement::operator/(const double sc) const{
+    IsoMatrixElement result;
+    result.pp_res=this->pp_res/sc;
+    result.nn_res=this->nn_res/sc;
+    result.np_p_res=this->np_p_res/sc;
+    result.np_n_res=this->np_n_res/sc;
+
+    return result;
+}
+
+IsoMatrixElement IsoMatrixElement::operator*(const IsoMatrixElement &rhs) const{
+    IsoMatrixElement result;
+    result.pp_res=this->pp_res*rhs.pp_res;
+    result.nn_res=this->nn_res*rhs.nn_res;
+    result.np_p_res=this->np_p_res*rhs.np_p_res;
+    result.np_n_res=this->np_n_res*rhs.np_n_res;
+
+    return result;
+}
+
+IsoMatrixElement IsoMatrixElement::operator/(const IsoMatrixElement &rhs) const{
+    IsoMatrixElement result;
+    result.pp_res=this->pp_res/rhs.pp_res;
+    result.nn_res=this->nn_res/rhs.nn_res;
+    result.np_p_res=this->np_p_res/rhs.np_p_res;
+    result.np_n_res=this->np_n_res/rhs.np_n_res;
+
+    return result;
+}
+
 IsoMatrixElement& IsoMatrixElement::operator+=(const IsoMatrixElement& rhs){
     this->pp_res+=rhs.pp_res;
     this->nn_res+=rhs.nn_res;
@@ -52,6 +82,21 @@ IsoMatrixElement& IsoMatrixElement::operator+=(const IsoMatrixElement& rhs){
 
 double IsoMatrixElement::norm() const{
     return fabs(pp_res)+fabs(nn_res)+fabs(np_p_res)+fabs(np_n_res);
+}
+
+double IsoMatrixElement::norm(const int A, const int Z) const{
+    int N=A-Z;
+    return (pp_res*Z*(Z-1)+nn_res*N*(N-1)+(np_p_res+np_n_res)*N*Z)/(A*(A-1));
+}
+
+double IsoMatrixElement::norm_p(const int A, const int Z) const{
+    int N=A-Z;
+    return (pp_res*Z*(Z-1)+(np_p_res)*N*Z)/(A*(A-1));
+}
+
+double IsoMatrixElement::norm_n(const int A, const int Z) const{
+    int N=A-Z;
+    return (nn_res*N*(N-1)+(np_n_res)*N*Z)/(A*(A-1));
 }
 
 double IsoMatrixElement::getValue(const int i) const{

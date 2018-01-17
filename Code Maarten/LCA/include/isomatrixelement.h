@@ -50,6 +50,13 @@ class IsoMatrixElement {
      */
     IsoMatrixElement operator*(const double sc) const;
     /**
+     * @brief right-divide all elements with a scalar
+     * 
+     * @param sc what we multiply with
+     * @return IsoMatrixElement result of the multiplication
+     */
+    IsoMatrixElement operator/(const double sc) const;
+    /**
      * @brief add another matrixelement to this one
      * 
      * @param rhs what we want to add
@@ -58,12 +65,50 @@ class IsoMatrixElement {
     IsoMatrixElement& operator+=(const IsoMatrixElement& rhs);
 
     /**
+     * @brief component-wise multiplication
+     * 
+     * @param rhs what we multiply with
+     * @return IsoMatrixElement& 
+     */
+    IsoMatrixElement operator*(const IsoMatrixElement& rhs) const;
+    /**
+     * @brief component-wise division
+     * 
+     * @param rhs what we divide with
+     * @return IsoMatrixElement& 
+     */
+    IsoMatrixElement operator/(const IsoMatrixElement& rhs) const;
+   /**
      * @brief sum of all the individual isospin contributions
      * 
      * @return double norm 
      */
     double norm() const;
 
+    /**
+     * @brief total sum of individual isospin contributions, isospin renorm undone
+     * 
+     * @param A 
+     * @param Z 
+     * @return double norm 
+     */
+    double norm(const int A, const int Z) const;
+    /**
+     * @brief total sum of individual isospin contributions for neutron, isospin renorm undone
+     * 
+     * @param A 
+     * @param Z 
+     * @return double norm 
+     */
+    double norm_p(const int A, const int Z) const;
+    /**
+     * @brief total sum of individual isospin contributions for proton, isospin renorm undone
+     * 
+     * @param A 
+     * @param Z 
+     * @return double norm 
+     */
+    double norm_n(const int A, const int Z) const;
     /**
      * @brief returns the different possible contributions
      * 

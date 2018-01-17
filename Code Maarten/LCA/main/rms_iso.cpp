@@ -26,10 +26,10 @@ int main(int argc,char* argv[]){
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
         IsoMatrixElement norm_mf= no.sum_me_coefs( &nob );
         IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
-        std::cout << "norm\t"  << norm_mf.getValue(6) << "\t" << norm_corr.getValue(6) << "\t" << (norm_mf+ norm_corr).getValue(6)  << std::endl;
-        double norm= (norm_mf+ norm_corr).getValue(6);
+        IsoMatrixElement norm = norm_mf+norm_corr;
+        std::cout << "norm\t"  << norm_mf.norm(A[i],Z[i]) << "\t" << norm_corr.norm(A[i],Z[i]) << "\t" << (norm_mf+ norm_corr).norm(A[i],Z[i])  << std::endl;
 
-        rms_iso_ob rms_all( &nuc, norm_mf+norm_corr, true, true, true);
+        rms_iso_ob rms_all( &nuc, norm, true, true, true);
         struct rms_iso_ob::rms_ob_params nob_params;
         nob_params.nA = -1;
         nob_params.nB = -1;
@@ -37,11 +37,11 @@ int main(int argc,char* argv[]){
         nob_params.lB = -1;
         IsoMatrixElement ra = rms_all.sum_me_coefs( &nob_params );
         IsoMatrixElement rca = rms_all.sum_me_corr( &nob_params );
-        double rIPM= sqrt(ra.getValue(6)*norm);
-        double rLCA= sqrt( (ra+rca).getValue(6) );
+        double rIPM= sqrt((ra*norm).getValue(6));
+        double rLCA= sqrt( ((ra+rca)*norm).getValue(6)/norm.norm(A[i],Z[i]) );
         std::cout << "A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         std::cout << "RMS";
-        std::cout << "\t" << ra.getValue(6)*norm  << " " << rca.getValue(6) << std::endl;
+        std::cout << "\t" << (ra*norm).getValue(6)  << " " << ((ra+rca)*norm).getValue(6)/norm.norm(A[i],Z[i]) << std::endl;
         std::cout << "MF " << rIPM;
         std::cout << "\t CORR " << rLCA;
         std::cout << std::endl;

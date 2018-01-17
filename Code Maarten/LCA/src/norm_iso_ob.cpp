@@ -120,7 +120,7 @@ double norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef
     int t_check=get_tensor_me( l1, l2, S, j, T, ten );
     int s_check=get_spinisospin_me( l1, l2, S, T, iso);
 
-    double norm= ho_norm( n1, l1)* ho_norm( n2, l2 );
+    double norm_ho= ho_norm( n1, l1)* ho_norm( n2, l2 );
     for( int i= 0; i < n1+1; i++ ) {
         double anli=  laguerre_coeff( n1, l1, i );
         for( int j= 0; j < n2+1; j++ ) {
@@ -135,7 +135,7 @@ double norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef
             }
         }
     }
-    sum*=  norm* 0.5;
+    sum*=  norm_ho* 0.5;
 
     return sum*2./A;
 }
@@ -185,7 +185,7 @@ double norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef&
     int t_check=get_tensor_me( l2, l1, S, j, T, ten );
     int s_check=get_spinisospin_me( l2, l1, S, T, iso);
 
-    double norm= ho_norm( n1, l1)* ho_norm( n2, l2 );
+    double norm_ho= ho_norm( n1, l1)* ho_norm( n2, l2 );
     for( int i= 0; i < n1+1; i++ ) {
         double anli=  laguerre_coeff( n1, l1, i );
         for( int j= 0; j < n2+1; j++ ) {
@@ -200,7 +200,7 @@ double norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef&
             }
         }
     }
-    sum*=  norm* 0.5;
+    sum*=  norm_ho* 0.5;
 
     return sum*2./A*factor_right;
 
@@ -238,7 +238,7 @@ double norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef&
 
     int S= pc1.getS();
     int j= pc1.getj();
-    double norm= ho_norm( n1, l1)* ho_norm( n2, l2 );
+    double norm_ho= ho_norm( n1, l1)* ho_norm( n2, l2 );
 
     double sum= 0;
     for( int k= j-1; k<= j+1; k++ ) {
@@ -289,7 +289,7 @@ double norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef&
             }
         }
     }
-    sum*= norm* 0.5;
+    sum*= norm_ho* 0.5;
     return sum*2./A;
 
 }
