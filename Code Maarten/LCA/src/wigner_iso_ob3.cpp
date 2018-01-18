@@ -91,6 +91,7 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
         *(files[i]) << "    tensor = " << tensor;
         *(files[i]) << "    spinisospin = " << spinisospin;
         *(files[i]) << endl;
+        *(files[i]) << "# norms ";
         for(int j=0;j<4;j++) *(files[i]) << norm.getValue(j) << " ";
         *(files[i]) << norm.norm_p(nucleus->getA(),nucleus->getZ()) << " " << norm.norm_n(nucleus->getA(),nucleus->getZ()) << " " << norm.norm(nucleus->getA(),nucleus->getZ()) << endl;
         *(files[i]) << "#  " << std::setw(6) << "k[fm^-1]";
