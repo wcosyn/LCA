@@ -36,19 +36,19 @@ density_iso_ob3::~density_iso_ob3()
 void density_iso_ob3::write(const string& outputdir, const string& name, double& intmf, double& intcorr, int nA, int lA, int nB, int lB )
 {
     stringstream filenamepp;
-    filenamepp << outputdir << "/dens_iso_ob4." << 1 << 1 << ".";
+    filenamepp << outputdir << "/dens_iso_ob5." << 1 << 1 << ".";
     stringstream filenamenn;
-    filenamenn << outputdir << "/dens_iso_ob4." << -1 << -1 << ".";
+    filenamenn << outputdir << "/dens_iso_ob5." << -1 << -1 << ".";
     stringstream filenamenpp;
-    filenamenpp << outputdir << "/dens_iso_ob4." << -1 << 1 << ".";
+    filenamenpp << outputdir << "/dens_iso_ob5." << -1 << 1 << ".";
     stringstream filenamenpn;
-    filenamenpn << outputdir << "/dens_iso_ob4." << -1 << 1 << ".";
+    filenamenpn << outputdir << "/dens_iso_ob5." << -1 << 1 << ".";
     stringstream filenamep;
-    filenamep << outputdir << "/dens_iso_ob4." << 0 << 0 << ".";
+    filenamep << outputdir << "/dens_iso_ob5." << 0 << 0 << ".";
     stringstream filenamen;
-    filenamen << outputdir << "/dens_iso_ob4." << 0 << 0 << ".";
+    filenamen << outputdir << "/dens_iso_ob5." << 0 << 0 << ".";
     stringstream filenameall;
-    filenameall << outputdir << "/dens_iso_ob4." << 0 << 0 << ".";
+    filenameall << outputdir << "/dens_iso_ob5." << 0 << 0 << ".";
 
 
     filenamepp << bcentral << tensor << spinisospin << "."  << name << "." << nA << lA << nB << lB;
@@ -91,7 +91,9 @@ void density_iso_ob3::write(const string& outputdir, const string& name, double&
         *(files[i]) << "    tensor = " << tensor;
         *(files[i]) << "    spinisospin = " << spinisospin;
         *(files[i]) << endl;
-        *(files[i]) << "# norm = " << norm.getValue(i) << endl;
+        *(files[i]) << "# norm = ";
+        for(int j=0;j<4;j++) *(files[i]) << norm.getValue(j) << " ";
+        *(files[i]) << norm.norm_p(nucleus->getA(),nucleus->getZ()) << " " << norm.norm_n(nucleus->getA(),nucleus->getZ()) << " " << norm.norm(nucleus->getA(),nucleus->getZ()) << endl;
         *(files[i]) << "#  " << std::setw( 6) << "k ";
         *(files[i]) << "   " << std::setw(10) << "mf";
         *(files[i]) << "   " << std::setw(10) << "corr";
@@ -161,7 +163,7 @@ void density_iso_ob3::write(const string& outputdir, const string& name, double&
             // this was taken care of in operator_virtual_ob::sum_me_coefs but that result isn't used here!!
             //rest of the factors is the 4\sqrt{2}/\pi in the master formula (Eq. 56 LCA manual) 
             // + the normalisation supplied with the object (denominator matrix element)            
-            mf= i0.get( cf0, cf0 )*(2./M_PI*sqrt(8)/norm.norm()/(A-1));  // we take info from the density_iso_ob_integrand3 objects
+            mf= i0.get( cf0, cf0 )/norm*(2./M_PI*sqrt(8)/(A-1));  // we take info from the density_iso_ob_integrand3 objects
         }
 
         IsoMatrixElement corr_c=  ic.get( cf0, cfc ) + icc.get( cfc, cfc );
@@ -171,7 +173,7 @@ void density_iso_ob3::write(const string& outputdir, const string& name, double&
         IsoMatrixElement corr_cs= ( ics.get( cfc, cfs ));
         IsoMatrixElement corr_st= ( ist.get( cfs, cft ));
 
-        corr= (corr_c+ corr_t+ corr_s+ corr_ct+ corr_cs+ corr_st)*(2./M_PI*sqrt(8)/norm.norm());
+        corr= (corr_c+ corr_t+ corr_s+ corr_ct+ corr_cs+ corr_st)/norm*(2./M_PI*sqrt(8));
 
         #pragma omp critical(write)
         {   
@@ -181,12 +183,12 @@ void density_iso_ob3::write(const string& outputdir, const string& name, double&
                 *(files[i]) << "   " << std::setw(10) << mf.getValue(i);
                 *(files[i]) << "   " << std::setw(10) << corr.getValue(i);
                 *(files[i]) << "   " << std::setw(10) << (mf+ corr).getValue(i);
-                *(files[i]) << "   " << std::setw(10) << corr_c.getValue(i)*(2./M_PI*sqrt(8)/norm.norm());
-                *(files[i]) << "   " << std::setw(10) << corr_t.getValue(i)*(2./M_PI*sqrt(8)/norm.norm());
-                *(files[i]) << "   " << std::setw(10) << corr_s.getValue(i)*(2./M_PI*sqrt(8)/norm.norm());
-                *(files[i]) << "   " << std::setw(10) << corr_ct.getValue(i)*(2./M_PI*sqrt(8)/norm.norm());
-                *(files[i]) << "   " << std::setw(10) << corr_cs.getValue(i)*(2./M_PI*sqrt(8)/norm.norm());
-                *(files[i]) << "   " << std::setw(10) << corr_st.getValue(i)*(2./M_PI*sqrt(8)/norm.norm());
+                *(files[i]) << "   " << std::setw(10) << (corr_c/norm).getValue(i)*(2./M_PI*sqrt(8));
+                *(files[i]) << "   " << std::setw(10) << (corr_t/norm).getValue(i)*(2./M_PI*sqrt(8));
+                *(files[i]) << "   " << std::setw(10) << (corr_s/norm).getValue(i)*(2./M_PI*sqrt(8));
+                *(files[i]) << "   " << std::setw(10) << (corr_ct/norm).getValue(i)*(2./M_PI*sqrt(8));
+                *(files[i]) << "   " << std::setw(10) << (corr_cs/norm).getValue(i)*(2./M_PI*sqrt(8));
+                *(files[i]) << "   " << std::setw(10) << (corr_st/norm).getValue(i)*(2./M_PI*sqrt(8));
                 *(files[i]) << endl;
                 integral_mf_vec[i]  += kstep*k*k*(mf.getValue(i));
                 integral_vec[i]     += kstep*k*k*(corr.getValue(i));
