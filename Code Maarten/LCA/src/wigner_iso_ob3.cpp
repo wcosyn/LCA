@@ -107,7 +107,7 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
         *(files[i]) << "   " << std::setw(10) << "te/si ";
         *(files[i]) << endl;
     }
-    std::vector<double> integral_vec(7,0.), integral_mf_vec(7,0.);
+    std::vector<double> integral_vec(7,0.), integral_mf_vec(7,0.), integral_tot_vec(7,0.);
     
     std::vector<double> kinenergy_mf_vec(7,0.), kinenergy_co_vec(7,0.);
 
@@ -201,6 +201,7 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
                     *(files[i]) << endl;
                     integral_mf_vec[i]  += kstep*k*k*rstep*r*r*(mf_unnorm.getValue(i));
                     integral_vec[i]     += kstep*k*k*rstep*r*r*(corr.getValue(i));
+                    integral_tot_vec[i] += kstep*k*k*rstep*r*r*((corr+mf).getValue(i));
                     kinenergy_mf_vec[i] += kstep*k*k*k*k*rstep*r*r*(mf_unnorm.getValue(i)); //does not include mass denominator!!!
                     kinenergy_co_vec[i] += kstep*k*k*k*k*rstep*r*r*(corr.getValue(i)); //does not include mass denominator!!!
                 }
@@ -215,7 +216,7 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
     for(int i=0;i<7;i++){
         *(files[i]) << "# mf  integral is: " << integral_mf_vec[i] << endl;
         *(files[i]) << "# cor integral is: " << integral_vec[i] << endl;
-        *(files[i]) << "# tot integral is: " << integral_vec[i]+ integral_mf_vec[i] << endl;
+        *(files[i]) << "# tot integral is: " << integral_tot_vec[i] << endl;
         *(files[i]) << "# elapsed time is: " << std::fixed << difftime(time(0),now) << " s " << endl;
         files[i]->close();
     }
