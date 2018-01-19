@@ -36,19 +36,19 @@ wigner_iso_ob3::~wigner_iso_ob3()
 void wigner_iso_ob3::write(const string& outputdir, const string& name, double& intmf, double& intcorr, int nA, int lA, int nB, int lB )
 {
     stringstream filenamepp;
-    filenamepp << outputdir << "/wigner_iso_ob." << 1 << 1 << ".";
+    filenamepp << outputdir << "/wigner_iso_ob2." << 1 << 1 << ".";
     stringstream filenamenn;
-    filenamenn << outputdir << "/wigner_iso_ob." << -1 << -1 << ".";
+    filenamenn << outputdir << "/wigner_iso_ob2." << -1 << -1 << ".";
     stringstream filenamenpp;
-    filenamenpp << outputdir << "/wigner_iso_ob." << -1 << 1 << ".";
+    filenamenpp << outputdir << "/wigner_iso_ob2." << -1 << 1 << ".";
     stringstream filenamenpn;
-    filenamenpn << outputdir << "/wigner_iso_ob." << -1 << 1 << ".";
+    filenamenpn << outputdir << "/wigner_iso_ob2." << -1 << 1 << ".";
     stringstream filenamep;
-    filenamep << outputdir << "/wigner_iso_ob." << 0 << 0 << ".";
+    filenamep << outputdir << "/wigner_iso_ob2." << 0 << 0 << ".";
     stringstream filenamen;
-    filenamen << outputdir << "/wigner_iso_ob." << 0 << 0 << ".";
+    filenamen << outputdir << "/wigner_iso_ob2." << 0 << 0 << ".";
     stringstream filenameall;
-    filenameall << outputdir << "/wigner_iso_ob." << 0 << 0 << ".";
+    filenameall << outputdir << "/wigner_iso_ob2." << 0 << 0 << ".";
 
 
     filenamepp << bcentral << tensor << spinisospin << "."  << name << "." << nA << lA << nB << lB;
@@ -163,7 +163,7 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
         double obmd=0., obmd_corr=0.;
         for( int int_r=0; int_r<50;int_r++){
             double r=int_r*rstep;
-            IsoMatrixElement mf, corr;
+            IsoMatrixElement mf, corr, mf_unnorm;
 
             {
                 // factor 1/(A-1) because a one-body operator is calculated as 2-body
@@ -171,6 +171,7 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
                 //rest of the factors is the 4\sqrt{2}/\pi in the master formula (Eq. 56 LCA manual) 
                 // + the normalisation supplied with the object (denominator matrix element)            
                 mf= i0.get( r, cf0, cf0 )/norm*(32./M_PI/M_PI/(A-1));  // we take info from the wigner_iso_ob_integrand3 objects
+                mf_unnorm=mf*norm;
             }
 
             IsoMatrixElement corr_c=  ic.get( r, cf0, cfc ) + icc.get( r, cfc, cfc );
@@ -188,7 +189,7 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
                     *(files[i]) << std::scientific << std::setprecision(3);
                     *(files[i]) << std::setw(10) << k;
                     *(files[i]) << std::setw(10) << r;
-                    *(files[i]) << "   " << std::setw(10) << mf.getValue(i);
+                    *(files[i]) << "   " << std::setw(10) << mf_unnorm.getValue(i);
                     *(files[i]) << "   " << std::setw(10) << corr.getValue(i);
                     *(files[i]) << "   " << std::setw(10) << (mf+ corr).getValue(i);
                     *(files[i]) << "   " << std::setw(10) << (corr_c/norm).getValue(i)*(32./M_PI/M_PI);
@@ -198,9 +199,9 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
                     *(files[i]) << "   " << std::setw(10) << (corr_cs/norm).getValue(i)*(32./M_PI/M_PI);
                     *(files[i]) << "   " << std::setw(10) << (corr_st/norm).getValue(i)*(32./M_PI/M_PI);
                     *(files[i]) << endl;
-                    integral_mf_vec[i]  += kstep*k*k*rstep*r*r*(mf.getValue(i));
+                    integral_mf_vec[i]  += kstep*k*k*rstep*r*r*(mf_unnorm.getValue(i));
                     integral_vec[i]     += kstep*k*k*rstep*r*r*(corr.getValue(i));
-                    kinenergy_mf_vec[i] += kstep*k*k*k*k*rstep*r*r*(mf.getValue(i)); //does not include mass denominator!!!
+                    kinenergy_mf_vec[i] += kstep*k*k*k*k*rstep*r*r*(mf_unnorm.getValue(i)); //does not include mass denominator!!!
                     kinenergy_co_vec[i] += kstep*k*k*k*k*rstep*r*r*(corr.getValue(i)); //does not include mass denominator!!!
                 }
             }
