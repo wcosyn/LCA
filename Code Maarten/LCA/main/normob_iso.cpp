@@ -6,7 +6,12 @@
 #include "nucleusnn.h"
 #include "recmosh.h"
 #include "nucleus_iso.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
 
+using namespace std;
 
 /* check for the results agains
  * table in Journal of Physics G: Particles and Nuclei 42 (2015) 055104
@@ -128,6 +133,58 @@ bool normsRun(int max){
     return allpass;
 }
 
+void normscalc(int max){
+    int A[17] = {2,4,9,12,16,27,40,40,48,56,84,108,124,142,184,197,208}; //D,He4,Be9,C12,O16,Al27,Ar40,Ca40,Ca48,Fe56,Kr84,Fe108,Xe142,Nd142,W184,Au197,Pb208
+    int Z[17] = {1,2,4,6,8,13,18,20,20,26,36,47,54,60,74,79,82};
+    ofstream file("../results/norms.dat");
+    file << std::setw(13) << "A";
+    file << std::setw(13) << "Z";
+    file << std::setw(13) << "pp norm";
+    file << std::setw(13) << "nn norm";
+    file << std::setw(13) << "np(p) norm";
+    file << std::setw(13) << "np(n) norm";
+    file << std::setw(13) << "p norm";
+    file << std::setw(13) << "n norm";
+    file << std::setw(13) << "total norm" << endl;
+    
+    for (int i=0;i<max;i++){
+        IsoMatrixElement norm_mf,norm_corr;
+        NucleusIso nuc("../data/mosh","../data/mosh",A[i],Z[i]);
+        int N=A[i]-Z[i];
+        IsoMatrixElement prenorm= IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)));
+        norm_iso_ob nopp(&nuc,prenorm);
+        norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
+        norm_mf  = nopp.sum_me_coefs( &nob );
+        norm_corr= nopp.sum_me_corr( &nob );        
+        if(i>0){
+            file << std::scientific << std::setprecision(4);
+            file << std::setw(13) << A[i];
+            file << std::setw(13) << Z[i];
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(0);
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(1);
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(2);
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(3);
+            file << std::setw(13) << (norm_mf+norm_corr).norm_p(A[i],Z[i])*A[i]/Z[i];
+            file << std::setw(13) << (norm_mf+norm_corr).norm_n(A[i],Z[i])*A[i]/N;
+            file << std::setw(13) << ((norm_mf+norm_corr)*prenorm).norm() << endl;
+        }
+        else{
+            file << std::scientific << std::setprecision(4);
+            file << std::setw(13) << A[i];
+            file << std::setw(13) << Z[i];
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(2);
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(2);
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(2);
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(2);
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(2);
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(2);
+            file << std::setw(13) << (norm_mf+norm_corr).getValue(2) << endl;
+        }               
+    }
+
+}
+
+
 int main(int argc,char* argv[]){
 
     // Nucleusall nuc("../data/mosh","../data/mosh",40,18);
@@ -164,13 +221,14 @@ int main(int argc,char* argv[]){
     //         << (norm_mf*prenorm).norm()+(norm_corr*prenorm).norm() << std::endl;
     // }    
 
-    bool succes = normsRun(atoi(argv[1]));
-    printf("[norm] normsRun() ");
-    if (succes){
-        printf("[OK]  \n");
-    } else {
-        printf("[FAIL]\n");
-    }
+    // bool succes = normsRun(atoi(argv[1]));
+    // printf("[norm] normsRun() ");
+    // if (succes){
+    //     printf("[OK]  \n");
+    // } else {
+    //     printf("[FAIL]\n");
+    // }
+    normscalc(atoi(argv[1]));
 
     // RecMosh *dd=RecMosh::createRecMosh(0,2,0,2,"../data/mosh","../data/mosh");
     // std::cout << dd->getCoefficient(0,1,0,3,2) << std::endl;
