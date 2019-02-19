@@ -165,5 +165,5 @@ int main(int argc,char* argv[]){
         NucleusIso nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
         ob(nucl_name,&nuc);
     }
-    else {std::cerr << "Invalid fifth argument (pairs): select either pp, nn, pn(=np) or all " << pairs << std::endl; exit(-1); assert(1==0);} 
+    else {std::cerr << "Invalid fifth argument (pairs): select either pp, nn, pn(=np) or all or iso " << pairs << std::endl; exit(-1); assert(1==0);} 
 }

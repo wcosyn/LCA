@@ -36,19 +36,19 @@ density_iso_ob3::~density_iso_ob3()
 void density_iso_ob3::write(const string& outputdir, const string& name, double& intmf, double& intcorr, int nA, int lA, int nB, int lB )
 {
     stringstream filenamepp;
-    filenamepp << outputdir << "/dens_iso_ob5." << 1 << 1 << ".";
+    filenamepp << outputdir << "/dens_iso_ob5_VMC." << 1 << 1 << ".";
     stringstream filenamenn;
-    filenamenn << outputdir << "/dens_iso_ob5." << -1 << -1 << ".";
+    filenamenn << outputdir << "/dens_iso_ob5_VMC." << -1 << -1 << ".";
     stringstream filenamenpp;
-    filenamenpp << outputdir << "/dens_iso_ob5." << -1 << 1 << ".";
+    filenamenpp << outputdir << "/dens_iso_ob5_VMC." << -1 << 1 << ".";
     stringstream filenamenpn;
-    filenamenpn << outputdir << "/dens_iso_ob5." << -1 << 1 << ".";
+    filenamenpn << outputdir << "/dens_iso_ob5_VMC." << -1 << 1 << ".";
     stringstream filenamep;
-    filenamep << outputdir << "/dens_iso_ob5." << 0 << 0 << ".";
+    filenamep << outputdir << "/dens_iso_ob5_VMC." << 0 << 0 << ".";
     stringstream filenamen;
-    filenamen << outputdir << "/dens_iso_ob5." << 0 << 0 << ".";
+    filenamen << outputdir << "/dens_iso_ob5_VMC." << 0 << 0 << ".";
     stringstream filenameall;
-    filenameall << outputdir << "/dens_iso_ob5." << 0 << 0 << ".";
+    filenameall << outputdir << "/dens_iso_ob5_VMC." << 0 << 0 << ".";
 
 
     filenamepp << bcentral << tensor << spinisospin << "."  << name << "." << nA << lA << nB << lB;
