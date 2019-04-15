@@ -8,9 +8,10 @@
 using std::endl;
 using std::cerr;
 
+double central_coeff_Hard[] = 
+{1, 0.242591985,-5.659767100, 125.462069938,  -791.088106337, 2320.032495246, -3916.60734015, 4029.447497350, -2493.546793079, 847.209859791, -121.830895978};
 
-double central_coeff[] =
-//{1, 0.242591985,-5.659767100, 125.462069938,  -791.088106337, 2320.032495246, -3916.60734015, 4029.447497350, -2493.546793079, 847.209859791, -121.830895978};
+double central_coeff_VMC[] =
 {0.73544129011098514, 0.052726141236839177, -1.7069164098137324, 7.5468055718744855, -30.383063316463776, 58.542055905733875, -61.772570788117669, 38.555665679557428, -14.332044095186143, 2.9407518589617698, -0.25572423019188556};
 /**
  * The current one, or the new one below, it doesn't really matter for the result.
@@ -32,17 +33,17 @@ double tensor_coeff3[] =
 double spinisospin_coeff[] =
 {0.010367640 ,-0.015011793,0.402817522 ,-6.267727260 ,38.913658454 ,-147.138160991 ,309.698004401 ,-370.982120960 ,236.624583559 ,-64.172341186 };
 
-double get_central_exp()
+double get_central_exp(int hard)
 {
     //return 3.871487617;
-    return 1.2880695357570235;
+    return (hard? 3.871487617:1.2880695357570235);
 //  return 4.564710;
 }
 
 
-double get_central_pow( int lambda )
+double get_central_pow( int lambda, int hard )
 {
-    if( lambda < 11 ) return central_coeff[lambda];
+    if( lambda < 11 ) return (hard? central_coeff_Hard[lambda]: central_coeff_VMC[lambda]);
     else return 0;
 }
 
@@ -81,11 +82,11 @@ double get_spinisospin_pow( int lambda )
 }
 
 
-double min_central_fit( double r )
+double min_central_fit_Hard( double r)
 {
 //  r/= sqrt(2);
     gsl_sf_result exp;
-    int status = gsl_sf_exp_e( -get_central_exp()*r*r, &exp);
+    int status = gsl_sf_exp_e( -get_central_exp(1)*r*r, &exp);
     if( status ) {
         if(status == GSL_EUNDRFLW) {
             return 0;
@@ -94,11 +95,32 @@ double min_central_fit( double r )
     double powr= 1;
     double sum= 0;
     for( int i= 0; i < 11; i++ ) {
-        sum+= central_coeff[i]*powr;
+        sum+= central_coeff_Hard[i]*powr;
         powr*= r;
     }
     return -1*sum* exp.val;
 }
+
+
+double min_central_fit_VMC( double r)
+{
+//  r/= sqrt(2);
+    gsl_sf_result exp;
+    int status = gsl_sf_exp_e( -get_central_exp(0)*r*r, &exp);
+    if( status ) {
+        if(status == GSL_EUNDRFLW) {
+            return 0;
+        } else cerr << "failed, gsl_errno = " << status << endl;
+    }
+    double powr= 1;
+    double sum= 0;
+    for( int i= 0; i < 11; i++ ) {
+        sum+= central_coeff_VMC[i]*powr;
+        powr*= r;
+    }
+    return -1*sum* exp.val;
+}
+
 
 
 double tensor_fit( double r )

@@ -209,7 +209,7 @@ double density_td::get_me_corr_left( Pair* pair, void* params)
             //  )
             //  L+ (= this part) should be equal to L (previous part))
             if( central && get_central_me(l1, l2, S, j, T, &cen ) ) {
-                double cenwf2 = WavefunctionP::wf_central_p( n2, l2, l1, k );
+                double cenwf2 = WavefunctionP::wf_central_Hard_p( n2, l2, l1, k );
                 sum+= relwf1*cen*cenwf2;
             }
             if( tensor && get_tensor_me( l1, l2, S, j, T, &ten ) ) {
@@ -291,7 +291,7 @@ double density_td::get_me_corr_right( Pair* pair, void* params)
             //  )
             //  L+ (= this part) should be equal to L (previous part))
             if( central && get_central_me(l2, l1, S, j, T, &cen ) ) {
-                double cenwf1 = WavefunctionP::wf_central_p( n1, l1, l2, k );
+                double cenwf1 = WavefunctionP::wf_central_Hard_p( n1, l1, l2, k );
                 sum+= relwf2*cen*cenwf1;
             }
             if( tensor && get_tensor_me( l2, l1, S, j, T, &ten ) ) {
@@ -390,11 +390,11 @@ double density_td::get_me_corr_both( Pair* pair, void* params)
                 double stwf2= 0;
                 if( central && get_central_me( k, l1, S, j, T, &cen1 ) ) {
                     // li == k
-                    cenwf1 = WavefunctionP::wf_central_p( n1, l1, k, q );
+                    cenwf1 = WavefunctionP::wf_central_Hard_p( n1, l1, k, q );
                 }
                 if( central && get_central_me( k, l2, S, j, T, &cen2 )  ) {
                     // lj == k
-                    cenwf2 = WavefunctionP::wf_central_p( n2, l2, k, q );
+                    cenwf2 = WavefunctionP::wf_central_Hard_p( n2, l2, k, q );
                 }
 
                 if( spinisospin &&  get_spinisospin_me( k, l1, S, j, T, &st1 ) ) {

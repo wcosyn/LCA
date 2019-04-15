@@ -24,7 +24,8 @@ using std::cerr;
 
 // static public variables
 MapWavefunctionP WavefunctionP::mapwfp = MapWavefunctionP( nothing );
-MapWavefunctionP WavefunctionP::mapwfcentralp = MapWavefunctionP( min_central_fit );
+MapWavefunctionP WavefunctionP::mapwfcentralp_Hard = MapWavefunctionP( min_central_fit_Hard );
+MapWavefunctionP WavefunctionP::mapwfcentralp_VMC = MapWavefunctionP( min_central_fit_VMC );
 MapWavefunctionP WavefunctionP::mapwftensorp = MapWavefunctionP( tensor_fit );
 MapWavefunctionP WavefunctionP::mapwfspinisospinp = MapWavefunctionP( spinisospin_fit );
 
@@ -135,8 +136,10 @@ double WavefunctionP::calculate( int k, int intp )
 
     // correlation functions that use that expansion of Eq C.2 PhD Vanhalst
     //integrals can be calculated analytically
-    if( f == min_central_fit )
-        result= wf_central_p3( n, l, k, intp*pstep);
+    if( f == min_central_fit_Hard )
+        result= wf_central_Hard_p3( n, l, k, intp*pstep);
+    else if( f == min_central_fit_VMC )
+        result= wf_central_VMC_p3( n, l, k, intp*pstep);
     else if( f == nothing )
         result= wf_p3( n, l, k, intp*pstep);
     else if( f == tensor_fit )
@@ -226,23 +229,56 @@ double WavefunctionP::integrand( double r, void* params )
 }
 
 
-double WavefunctionP::wf_central_p( int n, int l, int k, double p )
+double WavefunctionP::wf_central_Hard_p( int n, int l, int k, double p )
 {
 //  return wf_central_p3( n, l, k, p);
-    return mapwfcentralp.get(n, l, k, p );
+    return mapwfcentralp_Hard.get(n, l, k, p );
 }
 
-double WavefunctionP::wf_central_p3( int n, int l, int k, double p )
+double WavefunctionP::wf_central_VMC_p( int n, int l, int k, double p )
 {
-    double nu= mapwfcentralp.getNu();
+//  return wf_central_p3( n, l, k, p);
+    return mapwfcentralp_VMC.get(n, l, k, p );
+}
+
+double WavefunctionP::wf_central_Hard_p3( int n, int l, int k, double p )
+{
+    double nu= mapwfcentralp_Hard.getNu();
     double N= ho_norm( nu , n, l ); //[fm^{-l-3/2}]
     double sum= 0;
-    double e= 0.5*nu+get_central_exp(); //[fm^-2]
+    double e= 0.5*nu+get_central_exp(1); //[fm^-2]
     for( int i= 0; i < n+1; i++ ) { //sum over laguerre coefficients
         double anli = laguerre_coeff( nu, n, l, i ); //[fm^{-2i}]
         double power = pow(p,k); //[fm^-k]
         for( int lambda= 0; lambda < 11; lambda++ ) { //sum over correlation function expansion
-            double alambda= get_central_pow( lambda ); //[fm^-lambda]
+            double alambda= get_central_pow( lambda, 1 ); //[fm^-lambda]
+            double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k); //[fm^{3+2i+k+l+lambda}]
+            gsl_sf_result hyperg;
+            double a= 0.5*(3+2*i+k+l+lambda);
+            double b= 1.5+k;
+            int status = gsl_sf_hyperg_1F1_e ( a,  b, -1.*p*p/4/e, &hyperg);
+            if (status) {
+                if( status == GSL_EUNDRFLW ) {
+                    continue;
+                }
+                cerr << "failed, gsl_errno = " << status << endl;
+            }
+            sum+= (-1)*alambda*anli*f*power* hyperg.val; //factor -1 because of central correlation!! //fm^{3+l}
+        }
+    }
+    return N*sum/sqrt(0.5*M_PI); //[fm^{3/2}]
+}
+double WavefunctionP::wf_central_VMC_p3( int n, int l, int k, double p )
+{
+    double nu= mapwfcentralp_VMC.getNu();
+    double N= ho_norm( nu , n, l ); //[fm^{-l-3/2}]
+    double sum= 0;
+    double e= 0.5*nu+get_central_exp(0); //[fm^-2]
+    for( int i= 0; i < n+1; i++ ) { //sum over laguerre coefficients
+        double anli = laguerre_coeff( nu, n, l, i ); //[fm^{-2i}]
+        double power = pow(p,k); //[fm^-k]
+        for( int lambda= 0; lambda < 11; lambda++ ) { //sum over correlation function expansion
+            double alambda= get_central_pow( lambda, 0 ); //[fm^-lambda]
             double f = pow( 2., -2-k)* pow(e,0.5*(-3-2*i-k-l-lambda))*sqrt(M_PI)* hiGamma( 3+2*i+k+l+lambda)/hiGamma(3+2*k); //[fm^{3+2i+k+l+lambda}]
             gsl_sf_result hyperg;
             double a= 0.5*(3+2*i+k+l+lambda);

@@ -133,9 +133,9 @@ bool normsRun(int max){
     return allpass;
 }
 
-void normscalc(int max){
-    int A[17] = {2,4,9,12,16,27,40,40,48,56,84,108,124,142,184,197,208}; //D,He4,Be9,C12,O16,Al27,Ar40,Ca40,Ca48,Fe56,Kr84,Fe108,Xe142,Nd142,W184,Au197,Pb208
-    int Z[17] = {1,2,4,6,8,13,18,20,20,26,36,47,54,60,74,79,82};
+void normscalc(int max, bool hard){
+    int A[19] = {2,4,9,12,16,18,27,40,40,48,56,63,84,108,124,142,184,197,208}; //D,He4,Be9,C12,O16,O18,Al27,Ar40,Ca40,Ca48,Fe56,Cu63, Kr84,Fe108,Xe142,Nd142,W184,Au197,Pb208
+    int Z[19] = {1,2,4,6,8,8,13,18,20,20,26,29,36,47,54,60,74,79,82};
     ofstream file("../results/norms.dat");
     file << std::setw(13) << "A";
     file << std::setw(13) << "Z";
@@ -152,7 +152,7 @@ void normscalc(int max){
         NucleusIso nuc("../data/mosh","../data/mosh",A[i],Z[i]);
         int N=A[i]-Z[i];
         IsoMatrixElement prenorm= IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)));
-        norm_iso_ob nopp(&nuc,prenorm);
+        norm_iso_ob nopp(&nuc,prenorm,hard);
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
         norm_mf  = nopp.sum_me_coefs( &nob );
         norm_corr= nopp.sum_me_corr( &nob );        
@@ -228,7 +228,7 @@ int main(int argc,char* argv[]){
     // } else {
     //     printf("[FAIL]\n");
     // }
-    normscalc(atoi(argv[1]));
+    normscalc(atoi(argv[1]), atoi(argv[2]));
 
     // RecMosh *dd=RecMosh::createRecMosh(0,2,0,2,"../data/mosh","../data/mosh");
     // std::cout << dd->getCoefficient(0,1,0,3,2) << std::endl;

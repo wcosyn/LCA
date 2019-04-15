@@ -9,8 +9,10 @@ void tbmd_rel(int A,int Z,std::string name )
 {
     WavefunctionP::mapwfp.setA( A );
     WavefunctionP::mapwfp.setpstep( 0.05 );
-    WavefunctionP::mapwfcentralp.setA( A );
-    WavefunctionP::mapwfcentralp.setpstep( 0.05 );
+    WavefunctionP::mapwfcentralp_Hard.setA( A );
+    WavefunctionP::mapwfcentralp_Hard.setpstep( 0.05 );
+    WavefunctionP::mapwfcentralp_VMC.setA( A );
+    WavefunctionP::mapwfcentralp_VMC.setpstep( 0.05 );
     WavefunctionP::mapwftensorp.setA( A );
     WavefunctionP::mapwftensorp.setpstep( 0.05 );
     WavefunctionP::mapwfspinisospinp.setA( A );

@@ -36,7 +36,7 @@ void ob(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     dob3.write(".",name.c_str(),-1,-1,-1,-1, isospin,&mf,&corr); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
-void ob(std::string name, NucleusIso *nuc){
+void ob(std::string name, NucleusIso *nuc, const bool hard){
 
 
     //NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
@@ -46,7 +46,7 @@ void ob(std::string name, NucleusIso *nuc){
     // NucleusIso nucall("../data/mosh","../data/mosh",A,Z);
     int N=nuc->getA()-nuc->getZ();
     norm_iso_ob no(nuc,IsoMatrixElement(double(nuc->getZ())*(nuc->getZ()-1)/(nuc->getA()*(nuc->getA()-1)),double(N)*(N-1)/(nuc->getA()*(nuc->getA()-1)),
-            double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1)),double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1))));
+            double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1)),double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1))),hard);
     norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
     IsoMatrixElement norm_mf  = no.sum_me_coefs( &nob );
     IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
@@ -57,18 +57,19 @@ void ob(std::string name, NucleusIso *nuc){
      * note that this equation is incorrect/incomplete, see manual
      */
     double mf,corr;
-    dob3.write(".",name,mf,corr,-1,-1,-1,-1); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
+    dob3.write(".",name,mf,corr,-1,-1,-1,-1,hard); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
 int main(int argc,char* argv[]){
-    if (argc<6){
-        std::cerr << "[Error] expected five arguments: " << argc << std::endl;
-        std::cerr << "[executable] [A] [Z] [nucleusname] [p/n/all] [pp/nn/np/pn/all]"<< std::endl;
+    if (argc<7){
+        std::cerr << "[Error] expected six arguments: " << argc << std::endl;
+        std::cerr << "[executable] [A] [Z] [nucleusname] [p/n/all] [pp/nn/np/pn/all] [hard=1/soft=0]"<< std::endl;
         std::cerr << argv[1] << std::endl;
         std::cerr << std::endl;
         exit(-1);
     }
     std::string isospin = argv[4];
+    bool hard = atoi(argv[6]);
     int nucl=0;
     if(!isospin.compare("p")) { nucl=1;}
     else if(!isospin.compare("n")) { nucl=-1;}
@@ -163,7 +164,7 @@ int main(int argc,char* argv[]){
     }
     else if(!pairs.compare("iso")){
         NucleusIso nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
-        ob(nucl_name,&nuc);
+        ob(nucl_name,&nuc,hard);
     }
     else {std::cerr << "Invalid fifth argument (pairs): select either pp, nn, pn(=np) or all or iso " << pairs << std::endl; exit(-1); assert(1==0);} 
 }

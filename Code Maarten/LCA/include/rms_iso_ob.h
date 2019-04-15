@@ -18,9 +18,10 @@ public:
      * @param central enable central correlation or not
      * @param tensor enable tensor correlation or not
      * @param isospin enable isospin correlation or not
+     * @param hard [1] hard central corr f, [0] soft (VMC) central corr f
      * @param norm denominator of matrix elements, see norm_iso_ob for calculations
      */
-    rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, bool central= true, bool tensor=true, bool isospin=true );
+    rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, bool hard=true , bool central= true, bool tensor=true, bool isospin=true);
     /**
      * @brief destructor
      * 

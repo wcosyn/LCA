@@ -8,35 +8,35 @@ using std::endl;
 #include "correlation_functions.h"
 #include <cassert> //< testing... Camille
 
-norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool central, bool tensor, bool isospin)
+norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool hard, bool central, bool tensor, bool isospin )
     : operator_virtual_iso_ob( nucleus,norm , central, tensor, isospin ) {
 
     double sqrtnu=sqrt(nu);
     for(int i=0;i<11;i++){
         // division because dimensionless variable x in D.19
-        central_pow_norm[i]=get_central_pow( i )/ pow( sqrtnu, i );
+        central_pow_norm[i]=get_central_pow( i, hard )/ pow( sqrtnu, i );
         tensor_pow_norm[i]=get_tensor_pow( i )/ pow( sqrtnu, i );
         spinisospin_pow_norm[i]=get_spinisospin_pow( i )/ pow( sqrtnu, i );
     }
 
     for(int i=0;i<64;i++){
-        double arg=1./sqrt(1.+get_central_exp()/nu);
+        double arg=1./sqrt(1.+get_central_exp(hard)/nu);
         exp_c_norm[i]=pow(arg, i);
         arg=1./sqrt(1.+get_tensor_exp()/nu);
         exp_t_norm[i]=pow(arg, i);
         arg=1./sqrt(1.+get_spinisospin_exp()/nu);
         exp_s_norm[i]=pow(arg, i);
-        arg=1./sqrt(1.+2.*get_central_exp()/nu);
+        arg=1./sqrt(1.+2.*get_central_exp(hard)/nu);
         exp_cc_norm[i]=pow(arg, i);
         arg=1./sqrt(1.+2.*get_tensor_exp()/nu);
         exp_tt_norm[i]=pow(arg, i);
         arg=1./sqrt(1.+2.*get_spinisospin_exp()/nu);
         exp_ss_norm[i]=pow(arg, i);
-        arg=1./sqrt(1.+(get_central_exp()+get_tensor_exp())/nu);
+        arg=1./sqrt(1.+(get_central_exp(hard)+get_tensor_exp())/nu);
         exp_ct_norm[i]=pow(arg, i);
         arg=1./sqrt(1.+(get_spinisospin_exp()+get_tensor_exp())/nu);
         exp_ts_norm[i]=pow(arg, i);
-        arg=1./sqrt(1.+(get_central_exp()+get_spinisospin_exp())/nu);
+        arg=1./sqrt(1.+(get_central_exp(hard)+get_spinisospin_exp())/nu);
         exp_cs_norm[i]=pow(arg, i);
     }
 

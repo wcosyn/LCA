@@ -15,8 +15,9 @@ public:
      * 
      * @param lmax maximum spherical Bessel function index j_l
      * @param delta grid interval 
+     * @param hard [1] hard central corr f, [0] soft (VMC) central corr f
      */
-    speedy( int lmax, double delta );
+    speedy( int lmax, double delta);
     /**
      * @brief returns spherical Bessel function j_l(r) through grid interpolation
      * 
@@ -31,12 +32,19 @@ public:
      */
     double get_neg_exp( double r);
     /**
-     * @brief central correlation function through grid interpolation
+     * @brief Hard central correlation function through grid interpolation
      * 
      * @param r [fm] argument
      * @return double g_c(r)
      */
-    double get_min_central( double r);
+    double get_min_central_Hard( double r);
+    /**
+     * @brief Soft (VMC) central correlation function through grid interpolation
+     * 
+     * @param r [fm] argument
+     * @return double g_c(r)
+     */
+    double get_min_central_VMC( double r);
     /**
      * @brief tensor correlation function through grid interpolation
      * 
@@ -66,12 +74,19 @@ public:
      */
     static double tensor_fit2( double r );
     /**
-     * @brief static function for central correlation function  through grid interpolation
+     * @brief static function for hard central correlation function  through grid interpolation
      * 
      * @param r [fm] argument
      * @return double f_c(r)
      */
-    static double min_central_fit2( double r );
+    static double min_central_fit2_Hard( double r );
+    /**
+     * @brief static function for soft (VMC) central correlation function  through grid interpolation
+     * 
+     * @param r [fm] argument
+     * @return double f_c(r)
+     */
+    static double min_central_fit2_VMC( double r );
     /**
      * @brief static function for spin-isospin correlation function  through grid interpolation
      * 
@@ -88,7 +103,8 @@ private:
     int imax; ///< max gridindex
     std::vector< double > bessel; ///< grid for the bessel functions
     std::vector< double > neg_exp; ///< grid for the exp(-r)
-    std::vector< double > min_central; ///< grid for g_c(r)
+    std::vector< double > min_central_Hard; ///< grid for g_c(r)
+    std::vector< double > min_central_VMC; ///< grid for g_c(r)
     std::vector< double > tensor; ///< grid for f_t(r)
     std::vector< double > spinisospin; ///< grid for f_s(r)
 

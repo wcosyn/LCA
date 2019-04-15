@@ -337,7 +337,7 @@ double density_angle::get_me_corr_left( Newcoef* coef1, Newcoef* coef2, void* pa
             relwf1 = 0;
             double cen, ten, st;
             if( central && get_central_me(la, l1, S, j1, T, &cen ) ) {
-                double cenwf1 = WavefunctionP::wf_central_p( n1, l1, la, q );
+                double cenwf1 = WavefunctionP::wf_central_Hard_p( n1, l1, la, q );
                 relwf1+= cen*cenwf1;
             }
             if( tensor && get_tensor_me( la, l1, S, j1, T,  &ten ) && tensor ) {
@@ -462,7 +462,7 @@ double density_angle::get_me_corr_right( Newcoef* coef1, Newcoef* coef2, void* p
             relwf2 = 0;
             double cen, ten, st;
             if( central && get_central_me(la, l2, S, j2, T, &cen ) ) {
-                double cenwf2 = WavefunctionP::wf_central_p( n2, l2, la, q );
+                double cenwf2 = WavefunctionP::wf_central_Hard_p( n2, l2, la, q );
                 relwf2+= cen*cenwf2;
             }
             if( tensor && get_tensor_me( la, l2, S, j2, T,  &ten ) && tensor ) {
@@ -595,7 +595,7 @@ double density_angle::get_me_corr_both( Newcoef* coef1, Newcoef* coef2, void* pa
                 relwf1 = 0;
                 double cen, ten, st;
                 if( central && get_central_me(l1a, l1, S, j1, T, &cen ) ) {
-                    double cenwf1 = WavefunctionP::wf_central_p( n1, l1, l1a, q );
+                    double cenwf1 = WavefunctionP::wf_central_Hard_p( n1, l1, l1a, q );
                     relwf1+= cen*cenwf1;
                 }
                 if( tensor && get_tensor_me( l1a, l1, S, j1, T,  &ten ) && tensor ) {
@@ -631,7 +631,7 @@ double density_angle::get_me_corr_both( Newcoef* coef1, Newcoef* coef2, void* pa
                     relwf2 = 0;
                     double cen, ten, st;
                     if( central && get_central_me(l2a, l2, S, j2, T, &cen ) ) {
-                        double cenwf2 = WavefunctionP::wf_central_p( n2, l2, l2a, q );
+                        double cenwf2 = WavefunctionP::wf_central_Hard_p( n2, l2, l2a, q );
                         relwf2+= cen*cenwf2;
                     }
                     if( tensor && get_tensor_me( l2a, l2, S, j2, T,  &ten ) && tensor ) {
