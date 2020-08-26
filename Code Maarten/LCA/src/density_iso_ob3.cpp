@@ -33,22 +33,23 @@ density_iso_ob3::~density_iso_ob3()
 }
 
 
-void density_iso_ob3::write(const string& outputdir, const string& name, double& intmf, double& intcorr, int nA, int lA, int nB, int lB )
+void density_iso_ob3::write(const string& outputdir, const string& name, double& intmf, double& intcorr, int nA, int lA, int nB, int lB, const int hard )
 {
     stringstream filenamepp;
-    filenamepp << outputdir << "/dens_iso_ob5." << 1 << 1 << ".";
+    string prefix = (hard?"/dens_iso_ob5_Hard.": "/dens_iso_ob5_VMC.");
+    filenamepp << outputdir << prefix <<  1 << 1 << ".";
     stringstream filenamenn;
-    filenamenn << outputdir << "/dens_iso_ob5." << -1 << -1 << ".";
+    filenamenn << outputdir << prefix <<  -1 << -1 << ".";
     stringstream filenamenpp;
-    filenamenpp << outputdir << "/dens_iso_ob5." << -1 << 1 << ".";
+    filenamenpp << outputdir << prefix <<  -1 << 1 << ".";
     stringstream filenamenpn;
-    filenamenpn << outputdir << "/dens_iso_ob5." << -1 << 1 << ".";
+    filenamenpn << outputdir << prefix <<  -1 << 1 << ".";
     stringstream filenamep;
-    filenamep << outputdir << "/dens_iso_ob5." << 0 << 0 << ".";
+    filenamep << outputdir << prefix <<  0 << 0 << ".";
     stringstream filenamen;
-    filenamen << outputdir << "/dens_iso_ob5." << 0 << 0 << ".";
+    filenamen << outputdir << prefix <<  0 << 0 << ".";
     stringstream filenameall;
-    filenameall << outputdir << "/dens_iso_ob5." << 0 << 0 << ".";
+    filenameall << outputdir << prefix <<  0 << 0 << ".";
 
 
     filenamepp << bcentral << tensor << spinisospin << "."  << name << "." << nA << lA << nB << lB;
@@ -152,7 +153,7 @@ void density_iso_ob3::write(const string& outputdir, const string& name, double&
 //    cout << int_k << endl;
         double k= int_k* kstep;
         density_ob_integrand_cf cf0 = density_ob_integrand_cf( A, k, nothing );
-        density_ob_integrand_cf cfc = density_ob_integrand_cf( A, k, speedy::min_central_fit2 );
+        density_ob_integrand_cf cfc = density_ob_integrand_cf( A, k, hard? speedy::min_central_fit2_Hard : speedy::min_central_fit2_VMC );
         density_ob_integrand_cf cft = density_ob_integrand_cf( A, k, speedy::tensor_fit2 );
         density_ob_integrand_cf cfs = density_ob_integrand_cf( A, k, speedy::spinisospin_fit2 );
 

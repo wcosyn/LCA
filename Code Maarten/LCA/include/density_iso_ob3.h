@@ -44,6 +44,7 @@ public:
      * @param lA Selects pairs with certain relative OAM qn for the bra. -1 if you want all.
      * @param nB Selects pairs with certain relative n qn for the ket. -1 if you want all.
      * @param lB Selects pairs with certain relative OAM qn for the ket. -1 if you want all.
+     * @param hard [1] hard central corr f, [0] soft (VMC) central corr f
      * @param[out] intmf return integral over mf part of the momentum distribution. 
      * The normalisation will depend on the density_ob3::norm value, but in general for the total momentum distribution the sum of intmf + intcorr divided
      * by the total correlated norm for all nucleons will yield something ~A (within algorithm limitations)
@@ -51,7 +52,7 @@ public:
      * The normalisation will depend on the density_ob3::norm value, but in general for the total momentum distribution the sum of intmf + intcorr divided
      * by the total correlated norm for all nucleons will yield something ~A (within algorithm limitations)
      */
-    void write( const std::string& outputdir , const std::string& name, double& intmf, double& intcorr, int nA= -1, int lA=-1, int nB=-1, int lB=-1);
+    void write( const std::string& outputdir , const std::string& name, double& intmf, double& intcorr, int nA= -1, int lA=-1, int nB=-1, int lB=-1, const int hard=1);
     /**
      * @brief returns the factor arising from a one-body operator acting on a coupled state
      * @param a the power in \f$ i^{a}[ 1 - (-1)^{a} ] \f$

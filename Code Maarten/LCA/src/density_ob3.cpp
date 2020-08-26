@@ -125,7 +125,7 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
 //    cout << int_k << endl;
         double k= int_k* kstep;
         density_ob_integrand_cf* cf0 = new density_ob_integrand_cf( A, k, nothing );
-        density_ob_integrand_cf* cfc = new density_ob_integrand_cf( A, k, speedy::min_central_fit2 );
+        density_ob_integrand_cf* cfc = new density_ob_integrand_cf( A, k, speedy::min_central_fit2_Hard );
         density_ob_integrand_cf* cft = new density_ob_integrand_cf( A, k, speedy::tensor_fit2 );
         density_ob_integrand_cf* cfs = new density_ob_integrand_cf( A, k, speedy::spinisospin_fit2 );
 

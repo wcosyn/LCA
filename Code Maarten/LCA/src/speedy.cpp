@@ -58,10 +58,12 @@ speedy::speedy( int lmax, double delta)
     for( int i= 0; i < imax; i++ ) {
         tensor.at(i)= tensor_fit( i*delta );
     }
-    cout << "[Speedy] create min_central " << endl;
-    min_central= vector< double >( imax, 0 );
+    cout << "[Speedy] create min_central hard and soft" << endl;
+    min_central_Hard= vector< double >( imax, 0 );
+    min_central_VMC= vector< double >( imax, 0 );
     for( int i= 0; i < imax; i++ ) {
-        min_central.at(i)= min_central_fit( i*delta );
+        min_central_Hard.at(i) = min_central_fit_Hard( i*delta );
+        min_central_VMC.at(i) = min_central_fit_VMC( i*delta );
     }
     cout << "[Speedy] create spinisospin " << endl;
     spinisospin= vector< double >( imax, 0 );
@@ -135,15 +137,31 @@ double speedy::get_tensor( double r )
     return res;
 }
 
-double speedy::get_min_central( double r )
+double speedy::get_min_central_Hard( double r )
 {
     if( r > rmax ) {
         return 0;
     }
     int intr= (int)(floor(r/delta));
     double y0, y1;
-    y0= min_central.at(intr);
-    y1= min_central.at(intr+1);
+    y0= min_central_Hard.at(intr);
+    y1= min_central_Hard.at(intr+1);
+    double dy= y1-y0;
+    double dr= r- intr*delta;
+
+    double res= y0+ dy*dr/delta;
+    return res;
+}
+
+double speedy::get_min_central_VMC( double r )
+{
+    if( r > rmax ) {
+        return 0;
+    }
+    int intr= (int)(floor(r/delta));
+    double y0, y1;
+    y0= min_central_VMC.at(intr);
+    y1= min_central_VMC.at(intr+1);
     double dy= y1-y0;
     double dr= r- intr*delta;
 
@@ -177,7 +195,12 @@ double speedy::tensor_fit2( double r )
     return speedies.get_tensor( r );
 }
 
-double speedy::min_central_fit2( double r )
+double speedy::min_central_fit2_Hard( double r )
 {
-    return speedies.get_min_central( r );
+    return speedies.get_min_central_Hard( r );
+}
+
+double speedy::min_central_fit2_VMC( double r )
+{
+    return speedies.get_min_central_VMC( r );
 }

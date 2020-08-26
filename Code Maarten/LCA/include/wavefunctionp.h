@@ -67,7 +67,8 @@ protected:
 public:
     static MapWavefunctionP mapwfspinisospinp; ///< MapWavefunctionP object for spinisospin correlation function
     static MapWavefunctionP mapwfp; ///< MapWavefunctionP object for no correlation function
-    static MapWavefunctionP mapwfcentralp; ///< MapWavefunctionP object for central correlation function
+    static MapWavefunctionP mapwfcentralp_Hard; ///< MapWavefunctionP object for hard central correlation function
+    static MapWavefunctionP mapwfcentralp_VMC; ///< MapWavefunctionP object for soft central correlation function
     static MapWavefunctionP mapwftensorp; ///< MapWavefunctionP object for tensor correlation function
     /**
      * @brief Calculates or gets Eq C.3 for no correlation function using Eq C.11 PhD Vanhalst
@@ -98,7 +99,17 @@ public:
      * @param p [fm] momentum value
      * @return double [fm^{3/2}] result of integral Eq. C.3
      */
-    static double wf_central_p( int n, int l, int k, double p);
+    static double wf_central_Hard_p( int n, int l, int k, double p);
+    /**
+     * @brief Calculates or gets Eq C.3 for central correlation function using Eq C.6 PhD Vanhalst
+     * 
+     * @param n HO quantum number n
+     * @param l HO quantum number l
+     * @param k argument of bessel function in the integrand (can be changed up to +-2 from HO quantum number l by correlation function)
+     * @param p [fm] momentum value
+     * @return double [fm^{3/2}] result of integral Eq. C.3
+     */
+    static double wf_central_VMC_p( int n, int l, int k, double p);
     /**
      * @brief Calculates Eq C.3 for central correlation function using Eq C.6 PhD Vanhalst
      * 
@@ -108,7 +119,17 @@ public:
      * @param p [fm] momentum value
      * @return double [fm^{3/2}] result of integral Eq. C.3
      */
-    static double wf_central_p3( int n, int l, int k, double p);
+    static double wf_central_Hard_p3( int n, int l, int k, double p);
+     /**
+     * @brief Calculates Eq C.3 for central correlation function using Eq C.6 PhD Vanhalst
+     * 
+     * @param n HO quantum number n
+     * @param l HO quantum number l
+     * @param k argument of bessel function in the integrand (can be changed up to +-2 from HO quantum number l by correlation function)
+     * @param p [fm] momentum value
+     * @return double [fm^{3/2}] result of integral Eq. C.3
+     */
+    static double wf_central_VMC_p3( int n, int l, int k, double p);
     /**
      * @brief Calculates or gets Eq C.3 for tensor correlation function using Eq C.6 PhD Vanhalst
      * 

@@ -70,16 +70,19 @@ double ho_norm( int n, int l);
 /**
  * @brief returns the b coefficient for the fit of the central correlation function: see Eq C.2 PhD Vanhalst
  * 
+ * @param hard [1] hard central corr f, [0] soft (VMC) corr f
+ * 
  * \return [fm^-2] b coefficient in exponential for central correlation fit
  */
-double get_central_exp();
+double get_central_exp(int hard=1);
 /**
  * @brief returns the fit coefficient \f$a_\lambda \f$ for the central correlation function.  See Eq. C.2 + Table C.1 PhD Vanhalst
  * 
  * @param lambda index of the coefficient (powers of r)
+ * @param hard [1] hard central corr f, [0] VMC (soft) central corr f
  * @return double [fm^-lambda] coefficienta \f$a_\lambda \f$
  */
-double get_central_pow(int lambda);
+double get_central_pow(int lambda, int hard=1);
 /**
  * @brief returns the b coefficient for the fit of the tensor correlation function PIEPER: see Eq C.2 PhD Vanhalst
  * 
@@ -134,12 +137,19 @@ double uncorrelatedradialwf(int n, int l, double r, int A);
  */
 double nothing( double r );
 /**
- * @brief returns the central correlation function using Eq. C.2 PhD Vanhalst
+ * @brief returns the hard central correlation function using Eq. C.2 PhD Vanhalst
  * 
  * @param r [fm]
  * @return [] double central correlation function at r
  */
-double min_central_fit( double r );
+double min_central_fit_Hard( double r );
+/**
+ * @brief returns the soft (VMC) central correlation function using Eq. C.2 PhD Vanhalst
+ * 
+ * @param r [fm]
+ * @return [] double central correlation function at r
+ */
+double min_central_fit_VMC( double r );
 /**
  * @brief returns the tensor correlation function using Eq. C.2 PhD Vanhalst
  * 
