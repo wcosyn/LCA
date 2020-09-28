@@ -9,7 +9,7 @@
         "panel": "shared"
     },
     "options": {
-        "cwd": "${workspaceRoot}/Code Maarten/LCA/build"
+        "cwd": "${workspaceRoot}/build"
     },
     "tasks": [
         {

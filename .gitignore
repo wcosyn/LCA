@@ -20,11 +20,10 @@
 # using astyle
 *.orig
 
-bin
-lib
-doc
+bin/
+lib/
+doc/
 
-Code Maarten/LCA/data
-results
+results/
 
 .vscode/ipch
