@@ -1,3 +1,0 @@
-# mass number (A) = 109
-# number of protons (Z) = 47
-# P (GeV)	cm two_body (GeV^-3)
