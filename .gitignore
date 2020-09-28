@@ -20,13 +20,11 @@
 # using astyle
 *.orig
 
-Code Maarten/LCA/bin
-Code Maarten/LCA/lib
-Code Maarten/LCA/doc
+bin
+lib
+doc
 
 Code Maarten/LCA/data
-Code Maarten/LCA/results/test_wim
-Code Maarten/LCA/results/dens*
-Code Maarten/LCA/results/wigner*
+results
 
 .vscode/ipch
