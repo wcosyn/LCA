@@ -1,3 +1,10 @@
+
+bin/
+lib/
+doc/
+
+results/
+
 # get rid of mac folder info files
 #
 .DS_Store
@@ -20,10 +27,5 @@
 # using astyle
 *.orig
 
-bin/
-lib/
-doc/
-
-results/
 
 .vscode/ipch
