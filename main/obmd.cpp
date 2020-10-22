@@ -38,7 +38,7 @@ void ob(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     dob3.write(".",name.c_str(),-1,-1,-1,-1, isospin,&mf,&corr); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
-void ob(std::string name, NucleusIso *nuc, const bool hard){
+void ob(std::string name, std::string outputdir ,NucleusIso *nuc, const bool hard){
 
 
     //NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
@@ -59,11 +59,11 @@ void ob(std::string name, NucleusIso *nuc, const bool hard){
      * note that this equation is incorrect/incomplete, see manual
      */
     double mf,corr;
-    dob3.write(".",name,mf,corr,-1,-1,-1,-1,hard); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
+    dob3.write(outputdir,name,mf,corr,-1,-1,-1,-1,hard); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
 int main(int argc,char* argv[]){
-    if (argc<7){
+    if (argc<8){
         std::cerr << "[Error] expected six arguments: " << argc << std::endl;
         std::cerr << "[executable] [A] [Z] [nucleusname] [p/n/all] [pp/nn/np/pn/all/iso] [hard=1/soft=0]"<< std::endl;
         std::cerr << argv[1] << std::endl;
@@ -82,6 +82,7 @@ int main(int argc,char* argv[]){
     int A=atoi(argv[1]);
     int Z=atoi(argv[2]);
     std::string nucl_name=argv[3];
+    std::string outputdir=argv[7];
 
     if(!pairs.compare("all")&&!isospin.compare("all")){
         NucleusPP  nucpp("../data/mosh","../data/mosh",A,Z); // idem
@@ -166,7 +167,7 @@ int main(int argc,char* argv[]){
     }
     else if(!pairs.compare("iso")){
         NucleusIso nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
-        ob(nucl_name,&nuc,hard);
+        ob(nucl_name,outputdir,&nuc,hard);
     }
     else {std::cerr << "Invalid fifth argument (pairs): select either pp, nn, pn(=np) or all or iso " << pairs << std::endl; exit(-1); assert(1==0);} 
 }
