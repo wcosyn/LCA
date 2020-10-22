@@ -14,6 +14,8 @@
 #include "threej.h"
 
 
+
+
 void ob(int A,int Z,std::string name, int isospin, Nucleus *nuc){
 
 
@@ -63,7 +65,7 @@ void ob(std::string name, NucleusIso *nuc, const bool hard){
 int main(int argc,char* argv[]){
     if (argc<7){
         std::cerr << "[Error] expected six arguments: " << argc << std::endl;
-        std::cerr << "[executable] [A] [Z] [nucleusname] [p/n/all] [pp/nn/np/pn/all] [hard=1/soft=0]"<< std::endl;
+        std::cerr << "[executable] [A] [Z] [nucleusname] [p/n/all] [pp/nn/np/pn/all/iso] [hard=1/soft=0]"<< std::endl;
         std::cerr << argv[1] << std::endl;
         std::cerr << std::endl;
         exit(-1);
