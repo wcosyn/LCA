@@ -26,7 +26,10 @@ target_link_libraries(normtb ${LIBS} nmd)
 add_executable(tbmd_rel tbmd_rel.cpp)
 target_link_libraries(tbmd_rel ${LIBS} nmd)
 
-install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel
+add_executable(fitcode fitcode.cpp)
+target_link_libraries(fitcode ${LIBS} nmd)
+
+install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel fitcode
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)
 
 	if(STATIC_BUILD)
@@ -54,7 +57,10 @@ install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel
 	add_executable(tbmd_relST tbmd_rel.cpp)
 	target_link_libraries(tbmd_relST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
 
-	install(TARGETS rmsST rms_isoST rms_calcST normobST normob_isoST obmdST normtbST tbmd_relST
+	add_executable(fitcodeST fitcode.cpp)
+	target_link_libraries(fitcodeST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
+
+	install(TARGETS rmsST rms_isoST rms_calcST normobST normob_isoST obmdST normtbST tbmd_relST fitcodeST
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)
 
 endif(STATIC_BUILD)

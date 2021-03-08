@@ -12,7 +12,7 @@ operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const Is
     : nucleus( nucleus ), bcentral( central ), tensor( tensor ), spinisospin( isospin ), norm( norm )
 {
     A= nucleus->getA();
-    double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
+    double hbaromega = 45. * pow(A, -1./3.) - 25. * pow( A, -2./3.); //MeV
     nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
 }
 
