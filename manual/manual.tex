@@ -461,7 +461,22 @@ $Z/A$ of this number.  For $N=Z$ nuclei this does not make a difference but for
 asymmetric nuclei it does.  In the latter approach this means that proton and 
 neutron densities are not normalized to $Z, N$ resp. any more.  In the first 
 approach this is still valid (up to truncation errors in the expansions in the 
-algorithm).
+algorithm).  
+
+The way this is done in the \texttt{\_iso\_} classes is that results are stored in \texttt{IsoMatrixElement} objects.  These are basically four component vectors with elements corresponding to certain isospin contributions :
+
+\begin{tabular}{cccc}
+0&1&2&3\\
+\hline
+pp&nn&p(n)&n(p)
+\end{tabular}
+\quad where the first nucleon is the one the operator acts on.  Basic operations for vectors (sum, difference, element-wise multiplication and division) are implemented.  \texttt{GetValue(x)} also returns the proton (pp + p(n)) [$x=4$] and neutron (nn+n(p)) [$x=5$] as well as total contribution (sum of all 4 elements) [$x=6$].  For matrix elements calculated in the \texttt{\_iso\_} classes this means that the end result is a four component vector where each of the four individual pieces have been correctly normalised.  The total result is then obtained by \texttt{GetValue(6)}, or the individual proton/neutron pieces by \texttt{GetValue(4),GetValue(5)} rescaled with appropriate $A/Z, A/N$ factors to account of the overall normalisation of the operator.  These would be the ``LCA3'' results in \texttt{rms\_calc} for instance.  
+
+To recover old normalisation results using the new \texttt{\_iso\_} classes, we have to do a bit of extra legwork.  First we recover the \textbf{unnormalized} result by taking out the normalisation by the denominator by multiplying with the ``norm'' \texttt{IsoMatrixElement} object (this is a component-wise multiplication), then we take the total result (summing all components using \texttt{GetValue(6)}) and divide by the total norm value.  These would be the ``LCA2'' results.  For the invidual proton and neutron contributions, the results are then obtained by taking the relevant (proton or neutron) components of the \textbf{unrenormalized} result, dividing by the \textbf{total} norm and then scaling by an appropriate $A/Z,A/N$ factor.
+
+Lastly, the ``LCA1'' results are a bit in between, as the individual proton and neutron contributions are normalized correctly (but the pp, p(n) or nn, n(p) within are not.  Again this is done by taking the \textbf{unrenormalized} result but now dividing it by the appropriate proton and neutron piece only of the norm.  
+
+Note that for the IPM results we also need to work with the unrenormalized vector as in the IPM the denominator is 1 of course.
 
 \end{itemize}
 
