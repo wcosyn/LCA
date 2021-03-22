@@ -41,7 +41,7 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
         {
         NucleusIso nuc( "../data/mosh","../data/mosh" , A[i], Z[i] );
         int M=A[i]-Z[i];
-        norm_iso_ob no( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(M)*(M-1)/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1))), true, true, true );
+        norm_iso_ob no( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(M)*(M-1)/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1))), true, true, true, a, b );
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
         IsoMatrixElement norm_mf= no.sum_me_coefs( &nob );
         IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
@@ -57,6 +57,7 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
         double rLCA = sqrt((((ra+rca)*norm).getValue(4)/norm.norm_p(A[i],Z[i])*Z[i]+((ra+rca)*norm).getValue(5)/norm.norm_n(A[i],Z[i])*M)/A[i]);
         double Yi = rLCA;
         gsl_vector_set (f, i , Yi - y[i]); 
+        printf ("sanity check: %g %g %g\n",Yi, y[i], a, b);
         }
 
     return GSL_SUCCESS;
@@ -134,12 +135,8 @@ int main (void){
     
     
     for (i = 0; i < n; i++)
-    {
-        double yi = y[i];
-        double si = s[i];
-        double weightsi = weights[i];
-        
-        printf ("data: %g %g %g\n", yi, si, weightsi);
+    { 
+        printf ("data: %g %g %g\n", y[i], s[i], weights[i]);
     };
 
     /* allocate workspace with default parameters */

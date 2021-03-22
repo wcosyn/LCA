@@ -25,7 +25,7 @@ public:
      * @param coefficient A^(-1/3) of hbaromega calculation for nu
      * @param coefficient A^(-2/3) of hbaromega calculation for nu
      */
-    operator_virtual_iso_ob( NucleusIso* nucleus, const IsoMatrixElement &norm, bool central=true, bool tensor=true, bool isospin=false, int a = 45, int b = 25);
+    operator_virtual_iso_ob( NucleusIso* nucleus, const IsoMatrixElement &norm, bool central=true, bool tensor=true, bool isospin=false, double a = 45, double b = 25);
 
     /**
      * \brief Gives the two-body operator EV of the mean field part, using sum over coupled states in NucleusIso::isopaircoefs map

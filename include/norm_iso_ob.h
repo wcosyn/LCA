@@ -24,7 +24,7 @@ public:
      * @param coefficient A^(-1/3) of hbaromega calculation for nu
      * @param coefficient A^(-2/3) of hbaromega calculation for nu
      */
-    norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, bool hard=true, bool central= true, bool tensor=true, bool isospin=true, int a = 45, int b = 25);
+    norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, bool hard=true, bool central= true, bool tensor=true, bool isospin=true, double a = 45, double b = 25);
     /**
      * \brief Destructor
      */

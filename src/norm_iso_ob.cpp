@@ -8,7 +8,7 @@ using std::endl;
 #include "correlation_functions.h"
 #include <cassert> //< testing... Camille
 
-norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool hard, bool central, bool tensor, bool isospin, int a, int b)
+norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool hard, bool central, bool tensor, bool isospin, double a, double b)
     : operator_virtual_iso_ob( nucleus,norm , central, tensor, isospin, a, b) {
 
     double sqrtnu=sqrt(nu);

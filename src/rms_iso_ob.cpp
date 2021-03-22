@@ -6,7 +6,7 @@ using std::endl;
 using std::cout;
 using std::cerr;
 
-rms_iso_ob::rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool hard, bool central, bool tensor, bool isospin, int a, int b)
+rms_iso_ob::rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool hard, bool central, bool tensor, bool isospin, double a, double b)
     : operator_virtual_iso_ob( nucleus, norm , central, tensor, isospin, a, b)
 {
     //cout << "ob_d rms operator made" << endl;

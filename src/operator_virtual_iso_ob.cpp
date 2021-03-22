@@ -8,7 +8,7 @@ using std::cout;
 using std::endl;
 using std::cerr;
 
-operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const IsoMatrixElement &norm, bool central, bool tensor, bool isospin, int a,int b)
+operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const IsoMatrixElement &norm, bool central, bool tensor, bool isospin, double a,double b)
     : nucleus( nucleus ), bcentral( central ), tensor( tensor ), spinisospin( isospin ), norm( norm )
 {
     A= nucleus->getA();
