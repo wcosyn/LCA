@@ -8,11 +8,11 @@ using std::cout;
 using std::endl;
 using std::cerr;
 
-operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const IsoMatrixElement &norm, bool central, bool tensor, bool isospin)
+operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const IsoMatrixElement &norm, bool central, bool tensor, bool isospin, int a,int b)
     : nucleus( nucleus ), bcentral( central ), tensor( tensor ), spinisospin( isospin ), norm( norm )
 {
     A= nucleus->getA();
-    double hbaromega = 45. * pow(A, -1./3.) - 25. * pow( A, -2./3.); //MeV
+    double hbaromega = a * pow(A, -1./3.) - b * pow( A, -2./3.); //MeV
     nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
 }
 

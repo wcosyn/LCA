@@ -19,7 +19,7 @@ using namespace std;
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multifit_nlinear.h>
 
-#define N 11 /* number of data points to fit*/
+#define N 5 /* number of data points to fit*/
 
 
 struct data {
@@ -27,9 +27,8 @@ struct data {
     double * y;
 };
 
-int ho_f (const gsl_vector * x, void *data, gsl_vector * f)
-{
-    size_t n = ((struct data *)data)->n; 
+int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
+    size_t n = N; //((struct data *)data)->n; 
     double *y = ((struct data *)data)->y;
 
     double a = gsl_vector_get (x,0);
@@ -47,7 +46,7 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f)
         IsoMatrixElement norm_mf= no.sum_me_coefs( &nob );
         IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
         IsoMatrixElement norm=norm_mf+norm_corr;
-        rms_iso_ob rms_all( &nuc, norm, true, true, true);
+        rms_iso_ob rms_all( &nuc, norm, true, true, true, a, b);
         struct rms_iso_ob::rms_ob_params nob_params;
         nob_params.nA = -1;
         nob_params.nB = -1;
@@ -61,7 +60,7 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f)
         }
 
     return GSL_SUCCESS;
-}
+};
 
 // int ho_df (const gsl_vector * x, void *data, gsl_matrix * J)
 // {
@@ -80,10 +79,9 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f)
 //             gsl_matrix_set(J, i , 1, pow(*A,-2./3.));
 //         }
 //         return GSL_SUCCESS;
-// }
+// } 
 
-void callback (const size_t iter, void *params, const gsl_multifit_nlinear_workspace *w)
-{
+void callback (const size_t iter, void *params, const gsl_multifit_nlinear_workspace *w) {
     gsl_vector *f = gsl_multifit_nlinear_residual(w);
     gsl_vector *x = gsl_multifit_nlinear_position(w);
     double rcond;
@@ -95,9 +93,9 @@ void callback (const size_t iter, void *params, const gsl_multifit_nlinear_works
     gsl_vector_get(x,1),
     1.0 / rcond,
     gsl_blas_dnrm2(f));
-}
-int main (void)
-{
+};
+
+int main (void){
     const gsl_multifit_nlinear_type *T = gsl_multifit_nlinear_trust;
     gsl_multifit_nlinear_workspace *w;
     gsl_multifit_nlinear_fdf fdf;
@@ -111,20 +109,18 @@ int main (void)
     gsl_matrix *covar = gsl_matrix_alloc (p, p);
     double s[11] = {0.0028,0.0120,0.0022,0.0052,0.0031,0.0019,0.0020,0.0016,0.0025,0.0038,0.0013};
     double y[11] = {1.6755,2.5190,2.4702,2.6991,3.0610,3.4776,3.4771,3.7377,4.6538,5.4371,5.5012};
-    double weights[N];
+    double weights[11] = {1/(s[1]*s[1]),1/(s[2]*s[2]),1/(s[3]*s[3]),1/(s[4]*s[4]),1/(s[5]*s[5]),1/(s[6]*s[6]),1/(s[7]*s[7]),1/(s[8]*s[8]),1/(s[9]*s[9]),1/(s[10]*s[10]),1/(s[11]*s[11])};
     struct data d = { n, y};
     double x_init[2] = { 45.,25.}; /* starting values */
     gsl_vector_view x = gsl_vector_view_array (x_init, p);
     gsl_vector_view wts = gsl_vector_view_array(weights, n);
-     double chisq, chisq0;
+    double chisq, chisq0;
     int status, info;
     size_t i;
 
     const double xtol = 1e-4;
     const double gtol = 1e-4;
     const double ftol = 0.0;
-
-    gsl_rng_env_setup();
 
     fdf.f = ho_f;
     fdf.df = NULL;
@@ -141,8 +137,9 @@ int main (void)
     {
         double yi = y[i];
         double si = s[i];
-        weights[i] = 1.0 / (si * si);
-        printf ("data: %g %g %g\n", y[i], si);
+        double weightsi = weights[i];
+        
+        printf ("data: %g %g %g\n", yi, si, weightsi);
     };
 
     /* allocate workspace with default parameters */
@@ -196,4 +193,4 @@ int main (void)
     gsl_matrix_free (covar);
 
   return 0;
-}
+};

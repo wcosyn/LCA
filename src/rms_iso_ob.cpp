@@ -6,8 +6,8 @@ using std::endl;
 using std::cout;
 using std::cerr;
 
-rms_iso_ob::rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool hard, bool central, bool tensor, bool isospin )
-    : operator_virtual_iso_ob( nucleus, norm , central, tensor, isospin)
+rms_iso_ob::rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool hard, bool central, bool tensor, bool isospin, int a, int b)
+    : operator_virtual_iso_ob( nucleus, norm , central, tensor, isospin, a, b)
 {
     //cout << "ob_d rms operator made" << endl;
     double sqrtnu=sqrt(nu);
