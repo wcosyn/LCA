@@ -41,12 +41,12 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
         {
         NucleusIso nuc( "../data/mosh","../data/mosh" , A[i], Z[i] );
         int M=A[i]-Z[i];
-        norm_iso_ob no( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(M)*(M-1)/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1))), true, true, true, a, b );
+        norm_iso_ob no( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(M)*(M-1)/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1))), true, true, true, true, a, b );
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
         IsoMatrixElement norm_mf= no.sum_me_coefs( &nob );
         IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
         IsoMatrixElement norm=norm_mf+norm_corr;
-        rms_iso_ob rms_all( &nuc, norm, true, true, true, a, b);
+        rms_iso_ob rms_all( &nuc, norm, true, true, true, true, a, b);
         struct rms_iso_ob::rms_ob_params nob_params;
         nob_params.nA = -1;
         nob_params.nB = -1;
@@ -57,7 +57,7 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
         double rLCA = sqrt((((ra+rca)*norm).getValue(4)/norm.norm_p(A[i],Z[i])*Z[i]+((ra+rca)*norm).getValue(5)/norm.norm_n(A[i],Z[i])*M)/A[i]);
         double Yi = rLCA;
         gsl_vector_set (f, i , Yi - y[i]); 
-        printf ("sanity check: %g %g %g\n",Yi, y[i], a, b);
+        printf ("sanity check: %g %g %g %g\n",Yi, y[i], a, b);
         }
 
     return GSL_SUCCESS;
@@ -110,7 +110,7 @@ int main (void){
     gsl_matrix *covar = gsl_matrix_alloc (p, p);
     double s[11] = {0.0028,0.0120,0.0022,0.0052,0.0031,0.0019,0.0020,0.0016,0.0025,0.0038,0.0013};
     double y[11] = {1.6755,2.5190,2.4702,2.6991,3.0610,3.4776,3.4771,3.7377,4.6538,5.4371,5.5012};
-    double weights[11] = {1/(s[1]*s[1]),1/(s[2]*s[2]),1/(s[3]*s[3]),1/(s[4]*s[4]),1/(s[5]*s[5]),1/(s[6]*s[6]),1/(s[7]*s[7]),1/(s[8]*s[8]),1/(s[9]*s[9]),1/(s[10]*s[10]),1/(s[11]*s[11])};
+    double weights[11];
     struct data d = { n, y};
     double x_init[2] = { 45.,25.}; /* starting values */
     gsl_vector_view x = gsl_vector_view_array (x_init, p);
@@ -135,8 +135,8 @@ int main (void){
     
     
     for (i = 0; i < n; i++)
-    { 
-        printf ("data: %g %g %g\n", y[i], s[i], weights[i]);
+    {   weights[i] = 1/(s[i]*s[i]);
+        printf ("data: %g %g %g \n", y[i], s[i], weights[i]);
     };
 
     /* allocate workspace with default parameters */
