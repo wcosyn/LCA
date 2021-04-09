@@ -183,4 +183,3 @@ int operator_virtual_iso_ob::get_spinisospin_me( int la, int l, int S, int T, do
     } else
         return 0;
 }
-

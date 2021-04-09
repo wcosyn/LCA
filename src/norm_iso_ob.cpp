@@ -7,6 +7,8 @@ using std::cout;
 using std::endl;
 #include "correlation_functions.h"
 #include <cassert> //< testing... Camille
+#include <gsl/gsl_vector.h>
+#include <tuple>
 
 norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool hard, bool central, bool tensor, bool isospin, double a, double b)
     : operator_virtual_iso_ob( nucleus,norm , central, tensor, isospin, a, b) {
@@ -42,8 +44,6 @@ norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , boo
 
 
 }
-
-
 
 double norm_iso_ob::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link)
 {
@@ -345,5 +345,55 @@ double norm_iso_ob::getExp_cs(const int i) const{
 double norm_iso_ob::getExp_ts(const int i) const{
     if(i<64) return exp_ts_norm[i];
     else {std::cerr << "exp_ts_norm array not big enough" << std::endl; exit(1); }
+}
 
+double norm_iso_ob:: nunorm (bool hard)
+{
+    double sqrtnu=sqrt(nu);
+
+    for(int i=0;i<11;i++){
+        // division because dimensionless variable x in D.19
+        central_pow_norm[i]=get_central_pow( i, hard )/ pow( sqrtnu, i );
+        tensor_pow_norm[i]=get_tensor_pow( i )/ pow( sqrtnu, i );
+        spinisospin_pow_norm[i]=get_spinisospin_pow( i )/ pow( sqrtnu, i );
+    }
+
+    for(int i=0;i<64;i++){
+        double arg=1./sqrt(1.+get_central_exp(hard)/nu);
+        exp_c_norm[i]=pow(arg, i);
+        arg=1./sqrt(1.+get_tensor_exp()/nu);
+        exp_t_norm[i]=pow(arg, i);
+        arg=1./sqrt(1.+get_spinisospin_exp()/nu);
+        exp_s_norm[i]=pow(arg, i);
+        arg=1./sqrt(1.+2.*get_central_exp(hard)/nu);
+        exp_cc_norm[i]=pow(arg, i);
+        arg=1./sqrt(1.+2.*get_tensor_exp()/nu);
+        exp_tt_norm[i]=pow(arg, i);
+        arg=1./sqrt(1.+2.*get_spinisospin_exp()/nu);
+        exp_ss_norm[i]=pow(arg, i);
+        arg=1./sqrt(1.+(get_central_exp(hard)+get_tensor_exp())/nu);
+        exp_ct_norm[i]=pow(arg, i);
+        arg=1./sqrt(1.+(get_spinisospin_exp()+get_tensor_exp())/nu);
+        exp_ts_norm[i]=pow(arg, i);
+        arg=1./sqrt(1.+(get_central_exp(hard)+get_spinisospin_exp())/nu);
+        exp_cs_norm[i]=pow(arg, i);
+    }
+}
+
+double norm_iso_ob::geta(const gsl_vector *x){
+    double a = gsl_vector_get (x,0);
+    return a;
+}
+
+double norm_iso_ob::getb(const gsl_vector *x){
+    double b = gsl_vector_get (x,1);
+    return b;
+}
+
+double norm_iso_ob::getnu(const gsl_vector *x){
+    double a = gsl_vector_get (x,0);
+    double b = gsl_vector_get (x,1);
+    double hbaromega = a * pow(A,-1./3.) - b * pow(A,-2./3.);
+    nu = 938. * hbaromega * 197.327/197.327;
+    return nu;
 }

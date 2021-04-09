@@ -12,8 +12,6 @@ using namespace std;
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
 #include <gsl/gsl_matrix.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_blas.h>
@@ -25,62 +23,33 @@ using namespace std;
 struct data {
     size_t n;
     double * y;
+    norm_iso_ob **no = new norm_iso_ob*[n];
+    rms_iso_ob **rms_all = new rms_iso_ob*[n];
 };
 
 int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
-    size_t n = N; //((struct data *)data)->n; 
+    size_t n = N; 
+    size_t i;
+    
     double *y = ((struct data *)data)->y;
-
+    
     double a = gsl_vector_get (x,0);
     double b = gsl_vector_get(x,1);
- 
-    size_t i;
+   
     int A[11] = {4,9,12,16,27,40,48,56,108,197,208};
     int Z[11] = {2,4,6,8,13,20,20,26,47,79,82};
+
     for (i = 0; i < n; i++)
         {
-        NucleusIso nuc( "../data/mosh","../data/mosh" , A[i], Z[i] );
         int M=A[i]-Z[i];
-        norm_iso_ob no( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(M)*(M-1)/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1))), true, true, true, true, a, b );
-        norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
-        IsoMatrixElement norm_mf= no.sum_me_coefs( &nob );
-        IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
-        IsoMatrixElement norm=norm_mf+norm_corr;
-        rms_iso_ob rms_all( &nuc, norm, true, true, true, true, a, b);
-        struct rms_iso_ob::rms_ob_params nob_params;
-        nob_params.nA = -1;
-        nob_params.nB = -1;
-        nob_params.lA = -1;
-        nob_params.lB = -1;
-        IsoMatrixElement ra = rms_all.sum_me_coefs( &nob_params );
-        IsoMatrixElement rca = rms_all.sum_me_corr( &nob_params );
-        double rLCA = sqrt((((ra+rca)*norm).getValue(4)/norm.norm_p(A[i],Z[i])*Z[i]+((ra+rca)*norm).getValue(5)/norm.norm_n(A[i],Z[i])*M)/A[i]);
-        double Yi = rLCA;
+
+        double Yi = sqrt((((ra[i]+rca[i])*norm).getValue(4)/norm->norm_p(A[i],Z[i])*Z[i]+((ra[i]+rca[i])*norm).getValue(5)/norm->norm_n(A[i],Z[i])*M)/A[i]);
         gsl_vector_set (f, i , Yi - y[i]); 
         printf ("sanity check: %g %g %g %g\n",Yi, y[i], a, b);
         }
 
     return GSL_SUCCESS;
 };
-
-// int ho_df (const gsl_vector * x, void *data, gsl_matrix * J)
-// {
-//     size_t n = ((struct data *)data)->n;
-//     double *A = ((struct data *)data)->A;
-
-//     double a = gsl_vector_get (x,0);
-//     double b = gsl_vector_get(x,1);
-
-//     size_t i;
-
-//     for (i = 0; i <n; i++)
-//         {
-//             /*Jacobian Matrix J(i,j) = dfi/dxj , fi = (Yi - yi)/sigma[i], Yi = a * pow(A,-1/3) + b * pow(A,-2/3)*/
-//             gsl_matrix_set(J, i , 0, pow(*A,-1./3.));
-//             gsl_matrix_set(J, i , 1, pow(*A,-2./3.));
-//         }
-//         return GSL_SUCCESS;
-// } 
 
 void callback (const size_t iter, void *params, const gsl_multifit_nlinear_workspace *w) {
     gsl_vector *f = gsl_multifit_nlinear_residual(w);
@@ -100,27 +69,69 @@ int main (void){
     const gsl_multifit_nlinear_type *T = gsl_multifit_nlinear_trust;
     gsl_multifit_nlinear_workspace *w;
     gsl_multifit_nlinear_fdf fdf;
-    gsl_multifit_nlinear_parameters fdf_params =
-    gsl_multifit_nlinear_default_parameters();
+    gsl_multifit_nlinear_parameters fdf_params = gsl_multifit_nlinear_default_parameters();
+
     const size_t n = N;
     const size_t p = 2;
+    size_t i;
 
     gsl_vector *f;
     gsl_matrix *J;
     gsl_matrix *covar = gsl_matrix_alloc (p, p);
+
+    /* this is the data to be fitted */
     double s[11] = {0.0028,0.0120,0.0022,0.0052,0.0031,0.0019,0.0020,0.0016,0.0025,0.0038,0.0013};
     double y[11] = {1.6755,2.5190,2.4702,2.6991,3.0610,3.4776,3.4771,3.7377,4.6538,5.4371,5.5012};
     double weights[11];
-    struct data d = { n, y};
+
+    for (i = 0; i < n; i++)
+    {   weights[i] = (1/(s[i]*s[i]));
+        printf ("data: %g %g %g \n", y[i], s[i], weights[i]);
+    };
+
+    int A[11] = {4,9,12,16,27,40,48,56,108,197,208};
+    int Z[11] = {2,4,6,8,13,20,20,26,47,79,82};
+
+    norm_iso_ob **no = new norm_iso_ob*[n];
+    rms_iso_ob **rms_all = new rms_iso_ob*[n];
+
+    struct data d = { n, y, no, rms_all};//, rms_all, no};
     double x_init[2] = { 45.,25.}; /* starting values */
     gsl_vector_view x = gsl_vector_view_array (x_init, p);
     gsl_vector_view wts = gsl_vector_view_array(weights, n);
     double chisq, chisq0;
     int status, info;
-    size_t i;
 
-    const double xtol = 1e-4;
-    const double gtol = 1e-4;
+for (i = 0; i < n; i++){
+        NucleusIso nuc( "../data/mosh","../data/mosh" , A[i], Z[i] );
+        int M=A[i]-Z[i];
+        no[i] -> geta(f);
+        no[i] -> getb(f);
+        no[i] -> getnu(f);
+        no[i] -> nunorm(true);
+        no[i] = new norm_iso_ob(&nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(M)*(M-1)/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1))), true, true, true, true, a, b );
+        norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
+        IsoMatrixElement norm_mf= no[i]->sum_me_coefs( &nob );
+        IsoMatrixElement norm_corr= no[i]->sum_me_corr( &nob );
+        IsoMatrixElement norm=norm_mf+norm_corr;
+
+        rms_all[i]-> geta(f);
+        rms_all[i]-> getb(f);
+        rms_all[i]-> getnu(f);
+        rms_all[i]-> nunorm(true);
+        rms_all[i] = new rms_iso_ob( &nuc, norm, true, true, true, true, a, b);
+        struct rms_iso_ob::rms_ob_params nob_params;
+        nob_params.nA = -1;
+        nob_params.nB = -1;
+        nob_params.lA = -1;
+        nob_params.lB = -1;
+
+        IsoMatrixElement ra[i] = rms_all[i]->sum_me_coefs( &nob_params );
+        IsoMatrixElement rca[i] = rms_all[i]->sum_me_corr( &nob_params );
+    }  
+    
+    const double xtol = 1e-8;
+    const double gtol = 1e-8;
     const double ftol = 0.0;
 
     fdf.f = ho_f;
@@ -129,15 +140,6 @@ int main (void){
     fdf.n = n;
     fdf.p = p;
     fdf.params = &d;
-
-    /* this is the data to be fitted */
-    
-    
-    
-    for (i = 0; i < n; i++)
-    {   weights[i] = 1/(s[i]*s[i]);
-        printf ("data: %g %g %g \n", y[i], s[i], weights[i]);
-    };
 
     /* allocate workspace with default parameters */
     w = gsl_multifit_nlinear_alloc (T, &fdf_params, n, p);
@@ -150,7 +152,7 @@ int main (void){
     gsl_blas_ddot(f, f, &chisq0);
 
     /* solve the system with a maximum of 100 iterations */
-    status = gsl_multifit_nlinear_driver(20, xtol, gtol, ftol,callback, NULL, &info, w);
+    status = gsl_multifit_nlinear_driver(100, xtol, gtol, ftol,callback, NULL, &info, w);
 
     /* compute covariance of best fit parameters */
     J = gsl_multifit_nlinear_jac(w);
