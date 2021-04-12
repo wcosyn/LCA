@@ -17,7 +17,7 @@ using namespace std;
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multifit_nlinear.h>
 
-#define N 2 /* number of data points to fit*/
+#define N 11 /* number of data points to fit*/
 
 
 struct data {
@@ -38,32 +38,35 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
 
     double a = gsl_vector_get(x,0);
     double b = gsl_vector_get(x,1);
-
-    int A[11];
-    int Z[11];
+    int A[11] = {4,9,12,16,27,40,48,56,108,197,208};
+    int Z[11] = {2,4,6,8,13,20,20,26,47,79,82};
 
     for (i = 0; i < n; i++)
     {
-        int M=A[i]-Z[i];
-        norm_all[i]-> nunorm(a,b);
-        norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
-        IsoMatrixElement norm_mf = norm_all[i]->sum_me_coefs( &nob );
-        IsoMatrixElement norm_corr = norm_all[i]->sum_me_corr( &nob );
-        IsoMatrixElement norm= norm_mf + norm_corr;
-        cout << "normfit " << norm.getValue(6) << endl;
-        rms_all[i]-> nunorm(a,b,norm);
-        struct rms_iso_ob::rms_ob_params nob_params;
-        nob_params.nA = -1;
-        nob_params.nB = -1;
-        nob_params.lA = -1;
-        nob_params.lB = -1;
-        IsoMatrixElement ra = rms_all[i]->sum_me_coefs( &nob_params );
-        IsoMatrixElement rca = rms_all[i]->sum_me_corr( &nob_params );
+        double hbaromega = a * pow(A[i],-1./3.) - b * pow(A[i],-2./3.);
+        //cout << endl << endl << i << " CALLING " << a << " " << b << " " << 938. * hbaromega / 197.327/197.327 << endl << endl;
+        double Yi;
+        if (hbaromega<0) Yi=0.;
+        else{
+            int M=A[i]-Z[i];
+            norm_all[i]-> nunorm(a,b);
+            norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
+            IsoMatrixElement norm_mf = norm_all[i]->sum_me_coefs( &nob );
+            IsoMatrixElement norm_corr = norm_all[i]->sum_me_corr( &nob );
+            IsoMatrixElement norm= norm_mf + norm_corr;
+            rms_all[i]-> nunorm(a,b,norm);
 
-        double Yi = sqrt((((ra+rca)*norm).getValue(4)/norm.norm_p(A[i],Z[i])*Z[i]+((ra+rca)*norm).getValue(5)/norm.norm_n(A[i],Z[i])*M)/A[i]);
+            struct rms_iso_ob::rms_ob_params nob_params= {-1, -1, -1, -1};
+            IsoMatrixElement ra = rms_all[i]->sum_me_coefs( &nob_params);
+            IsoMatrixElement rca = rms_all[i]->sum_me_corr( &nob_params );
+
+            //Yi = sqrt((((ra+rca)*norm).getValue(4)/norm.norm_p(A[i],Z[i])*Z[i]+((ra+rca)*norm).getValue(5)/norm.norm_n(A[i],Z[i])*M)/A[i]);
+            Yi = sqrt((ra+rca).getValue(6));
+        }
         gsl_vector_set (f, i , Yi - y[i]); 
         printf ("Fitted RMS, Data RMS , a parameter, b parameter: %g %g %g %g\n",Yi, y[i], a, b);
-    };
+        
+    }
 
     return GSL_SUCCESS;
 };
@@ -87,6 +90,7 @@ int main (void){
     gsl_multifit_nlinear_workspace *w;
     gsl_multifit_nlinear_fdf fdf;
     gsl_multifit_nlinear_parameters fdf_params = gsl_multifit_nlinear_default_parameters();
+    //fdf_params.h_df = 0.01;
 
     const size_t n = N;
     const size_t p = 2;
@@ -124,19 +128,20 @@ int main (void){
         int M = A[i]-Z[i];
         IsoMatrixElement prenorm = IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(M)*(M-1)/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)));
         norm_all[i] = new norm_iso_ob(nuc_all[i], prenorm, true, true, true, true);
-        NucleusIso nuc("../data/mosh","../data/mosh" , A[i], Z[i] );  
-        norm_iso_ob normhere(&nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(M)*(M-1)/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1))), true, true, true, true);
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
         IsoMatrixElement norm_mf = norm_all[i]->sum_me_coefs( &nob );
         IsoMatrixElement norm_corr = norm_all[i]->sum_me_corr( &nob );
         IsoMatrixElement norm= norm_mf + norm_corr;
-        IsoMatrixElement norm2_mf = norm_all[i]->sum_me_coefs( &nob );
-        IsoMatrixElement norm2_corr = norm_all[i]->sum_me_corr( &nob );
-        IsoMatrixElement norm2= norm_mf + norm_corr;
-        cout << "norm0 " << ((norm)*prenorm).norm() << " " << ((norm2)*prenorm).norm() << endl;
+
+        // NucleusIso nuc("../data/mosh","../data/mosh" , A[i], Z[i] );  
+        // norm_iso_ob normhere(&nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(M)*(M-1)/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1))), true, true, true, true);
+        // IsoMatrixElement norm2_mf = normhere.sum_me_coefs( &nob );
+        // IsoMatrixElement norm2_corr = normhere.sum_me_corr( &nob );
+        // IsoMatrixElement norm2= norm2_mf + norm2_corr;
+        // cout << "norm0 " << ((norm)*prenorm).norm() << " " << ((norm2)*prenorm).norm() << endl;
+
         rms_all[i] = new rms_iso_ob( nuc_all[i], norm, true, true, true, true);
     };
-    exit(1);
     struct data d = { n, y, norm_all, rms_all};
     double x_init[2] = { 45.,25.}; /* starting values */
     gsl_vector_view x = gsl_vector_view_array (x_init, p);
