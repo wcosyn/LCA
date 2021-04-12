@@ -78,6 +78,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
 IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
 {
     int max= nucleus->get_number_of_iso_paircoefs();
+     //   cout << "coefs " << max <<  " " << A << " " << nucleus->getA() << " " << this << " " << nucleus  << endl;
     /*
      * Sum over the paircoefs in the nucleus,
      * and the links between the paircoefs
