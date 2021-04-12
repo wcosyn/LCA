@@ -36,10 +36,8 @@ public:
     virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link);
     virtual double get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link);
     
-    virtual double nunorm(bool hard);
-    virtual double geta(const gsl_vector *x);
-    virtual double getb(const gsl_vector *x);
-    virtual double getnu(const gsl_vector *x);
+    virtual void nunorm();
+    virtual void setnu();
     
     struct rms_ob_params {
         int nA;

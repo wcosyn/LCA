@@ -3,6 +3,7 @@
         "random": "cpp",
         "*.tcc": "cpp",
         "complex": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "new": "cpp"
     }
 }

@@ -5,7 +5,6 @@
 using std::endl;
 using std::cout;
 using std::cerr;
-#include <gsl/gsl_vector.h>
 
 rms_iso_ob::rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool hard, bool central, bool tensor, bool isospin, double a, double b)
     : operator_virtual_iso_ob( nucleus, norm , central, tensor, isospin, a, b)
@@ -442,8 +441,10 @@ double rms_iso_ob::getExp_ts(const int i) const{
 
 }
 
-double rms_iso_ob::nunorm(bool hard){
-    double sqrtnu=sqrt(nu);
+void rms_iso_ob::nunorm(){
+    bool hard;
+    double nu;
+    double sqrtnu = sqrt(nu);
 
     for(int i=0;i<11;i++){
         central_pow_norm[i]=get_central_pow( i, hard )/ pow( sqrtnu, i );
@@ -475,20 +476,9 @@ double rms_iso_ob::nunorm(bool hard){
     
 }
 
-double rms_iso_ob::geta(const gsl_vector *x){
-    double a = gsl_vector_get (x,0);
-    return a;
-}
-
-double rms_iso_ob::getb(const gsl_vector *x){
-    double b = gsl_vector_get (x,1);
-    return b;
-}
-
-double rms_iso_ob::getnu(const gsl_vector *x){
-    double a = gsl_vector_get (x,0);
-    double b = gsl_vector_get (x,1);
+void rms_iso_ob::setnu(){
+    double a;
+    double b;
     double hbaromega = a * pow(A,-1./3.) - b * pow(A,-2./3.);
-    nu = 938. * hbaromega * 197.327/197.327;
-    return nu;
+    double nu = 938. * hbaromega * 197.327/197.327;
 }

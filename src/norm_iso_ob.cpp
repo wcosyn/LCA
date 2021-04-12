@@ -347,9 +347,11 @@ double norm_iso_ob::getExp_ts(const int i) const{
     else {std::cerr << "exp_ts_norm array not big enough" << std::endl; exit(1); }
 }
 
-double norm_iso_ob:: nunorm (bool hard)
+void norm_iso_ob:: nunorm()
 {
+    double nu;
     double sqrtnu=sqrt(nu);
+    bool hard;
 
     for(int i=0;i<11;i++){
         // division because dimensionless variable x in D.19
@@ -380,20 +382,9 @@ double norm_iso_ob:: nunorm (bool hard)
     }
 }
 
-double norm_iso_ob::geta(const gsl_vector *x){
-    double a = gsl_vector_get (x,0);
-    return a;
-}
-
-double norm_iso_ob::getb(const gsl_vector *x){
-    double b = gsl_vector_get (x,1);
-    return b;
-}
-
-double norm_iso_ob::getnu(const gsl_vector *x){
-    double a = gsl_vector_get (x,0);
-    double b = gsl_vector_get (x,1);
+void norm_iso_ob::setnu(){
+    double a;
+    double b;
     double hbaromega = a * pow(A,-1./3.) - b * pow(A,-2./3.);
     nu = 938. * hbaromega * 197.327/197.327;
-    return nu;
 }
