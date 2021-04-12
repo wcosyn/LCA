@@ -21,7 +21,7 @@ using std::string;
 #include <cassert> // for testing purposes
 
 density_iso_ob3::density_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement &norm, bool central, bool tensor, bool isospin,  int qmax )
-    : operator_virtual_iso_ob( nucleus,norm , central, tensor, isospin ),
+    : operator_virtual_iso_ob( nucleus,norm , hard, central, tensor, isospin ),
       qmax( qmax )
 {
     cout << "[Density_ob3] ob density operator made" << endl;
