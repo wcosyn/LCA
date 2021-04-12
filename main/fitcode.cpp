@@ -17,7 +17,7 @@ using namespace std;
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multifit_nlinear.h>
 
-#define N 5 /* number of data points to fit*/
+#define N 2 /* number of data points to fit*/
 
 
 struct data {
@@ -45,15 +45,13 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
     {
         int M=A[i]-Z[i];
 
-        norm_all[i]-> setnu();
-        norm_all[i]-> nunorm();
+        norm_all[i]-> nunorm(a,b);
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
         IsoMatrixElement norm_mf = norm_all[i]->sum_me_coefs( &nob );
         IsoMatrixElement norm_corr = norm_all[i]->sum_me_corr( &nob );
         IsoMatrixElement norm= norm_mf + norm_corr;
 
-        rms_all[i]-> setnu();
-        rms_all[i]-> nunorm();
+        rms_all[i]-> nunorm(a,b);
         struct rms_iso_ob::rms_ob_params nob_params;
         nob_params.nA = -1;
         nob_params.nB = -1;

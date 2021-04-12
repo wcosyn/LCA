@@ -441,11 +441,11 @@ double rms_iso_ob::getExp_ts(const int i) const{
 
 }
 
-void rms_iso_ob::nunorm(){
-    bool hard;
-    double nu;
+void rms_iso_ob::nunorm(double a, double b){
+    double hbaromega = a * pow(A,-1./3.) - b * pow(A,-2./3.);
+    double nu = 938. * hbaromega * 197.327/197.327;
     double sqrtnu = sqrt(nu);
-
+    
     for(int i=0;i<11;i++){
         central_pow_norm[i]=get_central_pow( i, hard )/ pow( sqrtnu, i );
         tensor_pow_norm[i]=get_tensor_pow( i )/ pow( sqrtnu, i );
@@ -474,11 +474,4 @@ void rms_iso_ob::nunorm(){
     }
 
     
-}
-
-void rms_iso_ob::setnu(){
-    double a;
-    double b;
-    double hbaromega = a * pow(A,-1./3.) - b * pow(A,-2./3.);
-    double nu = 938. * hbaromega * 197.327/197.327;
 }

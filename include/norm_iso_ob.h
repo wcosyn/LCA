@@ -36,8 +36,7 @@ public:
     virtual double get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link);
     virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link);
     virtual double get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link);
-    virtual void nunorm();
-    virtual void setnu();
+    virtual void nunorm(double a, double b);
     
     /**
      * @struct norm_ob_params

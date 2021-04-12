@@ -347,11 +347,11 @@ double norm_iso_ob::getExp_ts(const int i) const{
     else {std::cerr << "exp_ts_norm array not big enough" << std::endl; exit(1); }
 }
 
-void norm_iso_ob:: nunorm()
+void norm_iso_ob:: nunorm(double a, double b)
 {
-    double nu;
-    double sqrtnu=sqrt(nu);
-    bool hard;
+    double hbaromega = a * pow(A,-1./3.) - b * pow(A,-2./3.);
+    nu = 938. * hbaromega * 197.327/197.327;
+    double sqrtnu = sqrt(nu);
 
     for(int i=0;i<11;i++){
         // division because dimensionless variable x in D.19
@@ -380,11 +380,4 @@ void norm_iso_ob:: nunorm()
         arg=1./sqrt(1.+(get_central_exp(hard)+get_spinisospin_exp())/nu);
         exp_cs_norm[i]=pow(arg, i);
     }
-}
-
-void norm_iso_ob::setnu(){
-    double a;
-    double b;
-    double hbaromega = a * pow(A,-1./3.) - b * pow(A,-2./3.);
-    nu = 938. * hbaromega * 197.327/197.327;
 }
