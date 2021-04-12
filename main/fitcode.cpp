@@ -23,8 +23,8 @@ using namespace std;
 struct data {
     size_t n;
     double * y;
-    //norm_iso_ob *no;
-    //rms_iso_ob *rms_all;
+    norm_iso_ob **norm_all;
+    rms_iso_ob **rms_all;
 };
 
 int ho_f (const gsl_vector * x, void *data, gsl_vector * f) { 
@@ -32,8 +32,8 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
     size_t n = N;
     double *y = ((struct data *)data)->y;
 
-    rms_iso_ob **rms_all;
-    norm_iso_ob **norm_all;
+    norm_iso_ob **norm_all = ((struct data *)data)->norm_all;
+    rms_iso_ob **rms_all = ((struct data *)data)->rms_all;
 
 
     double a = gsl_vector_get(x,0);
@@ -52,7 +52,7 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
         IsoMatrixElement norm_corr = norm_all[i]->sum_me_corr( &nob );
         IsoMatrixElement norm= norm_mf + norm_corr;
 
-        rms_all[i]-> nunorm(a,b);
+        rms_all[i]-> nunorm(a,b,norm);
         struct rms_iso_ob::rms_ob_params nob_params;
         nob_params.nA = -1;
         nob_params.nB = -1;
@@ -65,15 +65,6 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
         gsl_vector_set (f, i , Yi - y[i]); 
         printf ("Fitted RMS, Data RMS , a parameter, b parameter: %g %g %g %g\n",Yi, y[i], a, b);
     };
-
-    for (i = 0; i < n;i++)
-    {
-        delete rms_all[i];
-        delete norm_all[i];
-    };
-
-    delete[] rms_all;
-    delete[] norm_all;
 
     return GSL_SUCCESS;
 };
@@ -141,7 +132,7 @@ int main (void){
         rms_all[i] = new rms_iso_ob( &nuc, norm, true, true, true);
     };
 
-    struct data d = { n, y};//, rms_all, no};
+    struct data d = { n, y, norm_all, rms_all};
     double x_init[2] = { 45.,25.}; /* starting values */
     gsl_vector_view x = gsl_vector_view_array (x_init, p);
     gsl_vector_view wts = gsl_vector_view_array(weights, n);
@@ -208,6 +199,15 @@ int main (void){
 
     gsl_multifit_nlinear_free (w);
     gsl_matrix_free (covar);
+    
+    for (i = 0; i < n;i++)
+    {
+        delete rms_all[i];
+        delete norm_all[i];
+    };
 
+    delete[] rms_all;
+    delete[] norm_all;
+    
   return 0;
 };
