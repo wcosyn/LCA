@@ -11,7 +11,7 @@ using std::endl;
 #include <tuple>
 
 norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , bool hard, bool central, bool tensor, bool isospin, double a, double b)
-    : operator_virtual_iso_ob( nucleus,norm , central, tensor, isospin, a, b) {
+    : operator_virtual_iso_ob( nucleus,norm , hard, central, tensor, isospin, a, b) {
 
     double sqrtnu=sqrt(nu);
     for(int i=0;i<11;i++){
@@ -350,7 +350,7 @@ double norm_iso_ob::getExp_ts(const int i) const{
 void norm_iso_ob:: nunorm(double a, double b)
 {
     double hbaromega = a * pow(A,-1./3.) - b * pow(A,-2./3.);
-    nu = 938. * hbaromega * 197.327/197.327;
+    nu = 938. * hbaromega / 197.327/197.327;
     double sqrtnu = sqrt(nu);
 
     for(int i=0;i<11;i++){
