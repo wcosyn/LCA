@@ -110,7 +110,7 @@ public:
      */
     virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link) =0;
 
-
+    void setHard(bool sethard){ hard = sethard;} ///< reset the hard boolean that selects soft (AV18) or hard central correlation
  
 
 

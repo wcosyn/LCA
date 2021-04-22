@@ -30,11 +30,7 @@ int main(int argc,char* argv[]){
         std::cout << "norm\t"  << norm_mf.norm(A[i],Z[i]) << "\t" << norm_corr.norm(A[i],Z[i]) << "\t" << (norm_mf+ norm_corr).norm(A[i],Z[i])  << std::endl;
 
         rms_iso_ob rms_all( &nuc, norm, true, true, true);
-        struct rms_iso_ob::rms_ob_params nob_params;
-        nob_params.nA = -1;
-        nob_params.nB = -1;
-        nob_params.lA = -1;
-        nob_params.lB = -1;
+        struct rms_iso_ob::rms_ob_params nob_params = {-1, -1, -1, -1};
         IsoMatrixElement ra = rms_all.sum_me_coefs( &nob_params );
         IsoMatrixElement rca = rms_all.sum_me_corr( &nob_params );
         double rIPM= sqrt((ra*norm).getValue(6));

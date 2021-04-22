@@ -15,13 +15,14 @@ using std::cout;
 using std::cerr;
 #include <string>
 using std::string;
+using std::to_string;
 #include<iomanip>
 #include<vector>
 
 #include <cassert> // for testing purposes
 
-wigner_iso_ob3::wigner_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement & norm, bool central, bool tensor, bool isospin, int qmax )
-    : operator_virtual_iso_ob( nucleus, norm, hard, central, tensor, isospin),
+wigner_iso_ob3::wigner_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement & norm, bool hard, bool central, bool tensor, bool isospin, int qmax, double a, double b )
+    : operator_virtual_iso_ob( nucleus, norm, hard, central, tensor, isospin, a,b),
       qmax( qmax )
 {
     cout << "[Wigner_ob3] ob density operator made" << endl;
@@ -36,19 +37,19 @@ wigner_iso_ob3::~wigner_iso_ob3()
 void wigner_iso_ob3::write(const string& outputdir, const string& name, double& intmf, double& intcorr, int nA, int lA, int nB, int lB )
 {
     stringstream filenamepp;
-    filenamepp << outputdir << "/wigner_iso_ob2." << 1 << 1 << ".";
+    filenamepp << outputdir << "/wigner_iso_ob2.hard" << to_string(hard) << ".nu" << to_string(nu) << "." << 1 << 1 << ".";
     stringstream filenamenn;
-    filenamenn << outputdir << "/wigner_iso_ob2." << -1 << -1 << ".";
+    filenamenn << outputdir << "/wigner_iso_ob2.hard" << to_string(hard) << ".nu" << to_string(nu) << "." << -1 << -1 << ".";
     stringstream filenamenpp;
-    filenamenpp << outputdir << "/wigner_iso_ob2." << -1 << 1 << ".";
+    filenamenpp << outputdir << "/wigner_iso_ob2.hard" << to_string(hard) << ".nu" << to_string(nu) << "." << -1 << 1 << ".";
     stringstream filenamenpn;
-    filenamenpn << outputdir << "/wigner_iso_ob2." << -1 << 1 << ".";
+    filenamenpn << outputdir << "/wigner_iso_ob2.hard" << to_string(hard) << ".nu" << to_string(nu) << "." << -1 << 1 << ".";
     stringstream filenamep;
-    filenamep << outputdir << "/wigner_iso_ob2." << 0 << 0 << ".";
+    filenamep << outputdir << "/wigner_iso_ob2.hard" << to_string(hard) << ".nu" << to_string(nu) << "." << 0 << 0 << ".";
     stringstream filenamen;
-    filenamen << outputdir << "/wigner_iso_ob2." << 0 << 0 << ".";
+    filenamen << outputdir << "/wigner_iso_ob2.hard" << to_string(hard) << ".nu" << to_string(nu) << "." << 0 << 0 << ".";
     stringstream filenameall;
-    filenameall << outputdir << "/wigner_iso_ob2." << 0 << 0 << ".";
+    filenameall << outputdir << "/wigner_iso_ob2.hard" << to_string(hard) << ".nu" << to_string(nu) << "." << 0 << 0 << ".";
 
 
     filenamepp << bcentral << tensor << spinisospin << "."  << name << "." << nA << lA << nB << lB;
