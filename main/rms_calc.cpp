@@ -86,14 +86,14 @@ int main(int argc,char* argv[]){
 
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
 
-        a=41.5040; b=23.4981;
+        a=41.5040; b=23.4984;
         no.setHard(1);
         rms_all.setHard(1);
         std::cout << "hardfit A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "hardfit ";
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
 
-        a = 41.6970, b = 21.1524;
+        a = 41.7015, b = 21.1711;
         no.setHard(0);
         rms_all.setHard(0);
         std::cout << "softfit A: " << A[i] << "\tZ: " << Z[i] << std::endl;
