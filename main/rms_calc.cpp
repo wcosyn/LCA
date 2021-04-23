@@ -12,7 +12,7 @@ using namespace std;
 
 #include "isomatrixelement.h"
 
-void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myfile, int a, int b){
+void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myfile, double a, double b){
 
     int N=A-Z;
     norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
