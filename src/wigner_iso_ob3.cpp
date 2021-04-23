@@ -152,7 +152,7 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
     double Rmax=2.5*pow(nucleus->getA(),1./3.); //[fm]
     double rstep=Rmax/50.; //[fm]
 
-    #pragma omp parallel for schedule( dynamic, 1 ) num_threads(12)
+    #pragma omp parallel for schedule( dynamic, 1 ) num_threads(omp_get_max_threads())
     for( int int_k= 0; int_k< 50; int_k++ ) {
 //    cout << int_k << endl;
         double k= int_k* kstep;
