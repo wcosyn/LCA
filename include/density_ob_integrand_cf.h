@@ -30,8 +30,9 @@ public:
      * @param q [fm^-1] ONMD momentum
      * @param f correlation function
      * @param pstep [fm^-1] stepsize for parameter P, used for interpolation grid
+     * @param nu [fm^-2] Nucleus HO parameter
      */
-    density_ob_integrand_cf( int A, double q, double (*f)(double), double pstep = 0.10 );
+    density_ob_integrand_cf( int A, double q, double (*f)(double), double nu, double pstep = 0.10 );
     ~density_ob_integrand_cf();
     /**
      * @brief calculated chi(P) for certain parameter values at calculated grid points used for interpolation.
@@ -60,6 +61,7 @@ public:
      * @return double [fm^{3/2}] result of the chi integral
      */
     double get_value( int k, int l, int nA, int lA, double P );
+
 
 private:
     /// Mass number

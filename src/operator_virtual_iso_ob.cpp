@@ -7,12 +7,13 @@
 using std::cout;
 using std::endl;
 using std::cerr;
+#include <omp.h>
 
-operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const IsoMatrixElement &norm, bool hard, bool central, bool tensor, bool isospin, double a,double b)
+operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const IsoMatrixElement &norm, double nu1, double nu2, bool hard, bool central, bool tensor, bool isospin)
     : nucleus( nucleus ), hard(hard), bcentral( central ), tensor( tensor ), spinisospin( isospin ), norm( norm )
 {
     A= nucleus->getA();
-    double hbaromega = a * pow(A, -1./3.) - b * pow( A, -2./3.); //MeV
+    double hbaromega = nu1 * pow(A, -1./3.) - nu2 * pow( A, -2./3.); //MeV
     nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
 }
 
@@ -35,7 +36,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
     }
 
     double pp_res=0.,nn_res=0.,np_p_res=0.,np_n_res=0.;
-    #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:pp_res, nn_res, np_p_res, np_n_res) //num_threads(1)
+    #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:pp_res, nn_res, np_p_res, np_n_res) num_threads(omp_get_max_threads())
     for( unsigned int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
         const IsoPaircoef* pc1= loop_array[i];
 
@@ -92,7 +93,7 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
     }
 
     double pp_res=0.,nn_res=0.,np_p_res=0.,np_n_res=0.;
-    #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:pp_res, nn_res, np_p_res, np_n_res) //num_threads(1)
+    #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:pp_res, nn_res, np_p_res, np_n_res) num_threads(omp_get_max_threads())
     for( unsigned int i= 0; i < nucleus->getIsoPaircoefs().size() ; i++ ) {
         const IsoPaircoef* pc1= loop_array[i];
 

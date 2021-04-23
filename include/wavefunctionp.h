@@ -59,7 +59,7 @@ private:
         int n;  ///< HO quantum number n
         int l;///< HO quantum number l
         int k;///< argument of bessel function in the integrand (can be changed up to +-2 from HO quantum number l by correlation function)
-        int A; ///< nucleus number
+        double nu;  ///< [fm^-2] Nucleus HO parameter
         double mom; ///< [fm^-1] momentum variable 
         double(*f)(double); ///< pointer to a correlation function, argument in [fm]
     };
@@ -261,7 +261,7 @@ public:
     /**
      * @brief set nucleus number A and HO parameter nu
      */
-    void setA( int A );
+    void setA( int A, double nu1, double nu2 );
     /**
      * @brief getter for HO parameter nu [fm^-2] nucleus dependent
      */

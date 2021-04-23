@@ -15,13 +15,14 @@ using std::cout;
 using std::cerr;
 #include <string>
 using std::string;
+using std::to_string;
 #include<iomanip>
 #include<vector>
 
 #include <cassert> // for testing purposes
 
-density_iso_ob3::density_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement &norm, bool central, bool tensor, bool isospin,  int qmax )
-    : operator_virtual_iso_ob( nucleus,norm , hard, central, tensor, isospin ),
+density_iso_ob3::density_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement &norm, double a, double b, bool hard, bool central, bool tensor, bool isospin,  int qmax)
+    : operator_virtual_iso_ob( nucleus,norm , a, b , hard, central, tensor, isospin),
       qmax( qmax )
 {
     cout << "[Density_ob3] ob density operator made" << endl;
@@ -36,20 +37,20 @@ density_iso_ob3::~density_iso_ob3()
 void density_iso_ob3::write(const string& outputdir, const string& name, double& intmf, double& intcorr, int nA, int lA, int nB, int lB, const int hard )
 {
     stringstream filenamepp;
-    string prefix = (hard?"/dens_iso_ob5_Hard.": "/dens_iso_ob5_VMC.");
-    filenamepp << outputdir << prefix <<  1 << 1 << ".";
+    string prefix = "/dens_iso_ob5."; 
+    filenamepp << outputdir << prefix <<  "hard" << to_string(hard) << ".nu" << to_string(nu) << "." << 1 << 1 << ".";
     stringstream filenamenn;
-    filenamenn << outputdir << prefix <<  -1 << -1 << ".";
+    filenamenn << outputdir << prefix <<  "hard" << to_string(hard) << ".nu" << to_string(nu) << "." <<-1 << -1 << ".";
     stringstream filenamenpp;
-    filenamenpp << outputdir << prefix <<  -1 << 1 << ".";
+    filenamenpp << outputdir << prefix <<  "hard" << to_string(hard) << ".nu" << to_string(nu) << "." <<-1 << 1 << ".";
     stringstream filenamenpn;
-    filenamenpn << outputdir << prefix <<  -1 << 1 << ".";
+    filenamenpn << outputdir << prefix <<  "hard" << to_string(hard) << ".nu" << to_string(nu) << "." <<-1 << 1 << ".";
     stringstream filenamep;
-    filenamep << outputdir << prefix <<  0 << 0 << ".";
+    filenamep << outputdir << prefix <<  "hard" << to_string(hard) << ".nu" << to_string(nu) << "." <<0 << 0 << ".";
     stringstream filenamen;
-    filenamen << outputdir << prefix <<  0 << 0 << ".";
+    filenamen << outputdir << prefix <<  "hard" << to_string(hard) << ".nu" << to_string(nu) << "." <<0 << 0 << ".";
     stringstream filenameall;
-    filenameall << outputdir << prefix <<  0 << 0 << ".";
+    filenameall << outputdir << prefix <<  "hard" << to_string(hard) << ".nu" << to_string(nu) << "." << 0 << 0 << ".";
 
 
     filenamepp << bcentral << tensor << spinisospin << "."  << name << "." << nA << lA << nB << lB;
@@ -123,16 +124,16 @@ void density_iso_ob3::write(const string& outputdir, const string& name, double&
      * Works similar as density_rel
      */
     cout << "[Density_ob3] start initialization" << endl;
-    density_iso_ob_integrand3 icc = density_iso_ob_integrand3( A);
-    density_iso_ob_integrand3 itt = density_iso_ob_integrand3( A);
-    density_iso_ob_integrand3 iss = density_iso_ob_integrand3( A);
-    density_iso_ob_integrand3 ict = density_iso_ob_integrand3( A);
-    density_iso_ob_integrand3 ics = density_iso_ob_integrand3( A);
-    density_iso_ob_integrand3 ist = density_iso_ob_integrand3( A);
-    density_iso_ob_integrand3 i0  = density_iso_ob_integrand3( A);
-    density_iso_ob_integrand3 ic  = density_iso_ob_integrand3( A);
-    density_iso_ob_integrand3 it  = density_iso_ob_integrand3( A);
-    density_iso_ob_integrand3 is  = density_iso_ob_integrand3( A);
+    density_iso_ob_integrand3 icc = density_iso_ob_integrand3(nu);
+    density_iso_ob_integrand3 itt = density_iso_ob_integrand3(nu);
+    density_iso_ob_integrand3 iss = density_iso_ob_integrand3(nu);
+    density_iso_ob_integrand3 ict = density_iso_ob_integrand3(nu);
+    density_iso_ob_integrand3 ics = density_iso_ob_integrand3(nu);
+    density_iso_ob_integrand3 ist = density_iso_ob_integrand3(nu);
+    density_iso_ob_integrand3 i0  = density_iso_ob_integrand3(nu);
+    density_iso_ob_integrand3 ic  = density_iso_ob_integrand3(nu);
+    density_iso_ob_integrand3 it  = density_iso_ob_integrand3(nu);
+    density_iso_ob_integrand3 is  = density_iso_ob_integrand3(nu);
     dens_ob_params dop = { 0, nA, lA, nB, lB, &i0, &ic, &it, &is, &icc, &ict, &itt, &iss, &ics, &ist}; // first param (0) is for momentum
 
     cout << "[Density_ob3] : initializing MF " << endl; cout.flush();
@@ -148,14 +149,14 @@ void density_iso_ob3::write(const string& outputdir, const string& name, double&
      */
 
     double kstep= 0.10; //fm^-1
-    #pragma omp parallel for schedule( dynamic, 1 )
+    #pragma omp parallel for schedule( dynamic, 1 ) num_threads(omp_get_max_threads())
     for( int int_k= 0; int_k< 50; int_k++ ) {
 //    cout << int_k << endl;
         double k= int_k* kstep;
-        density_ob_integrand_cf cf0 = density_ob_integrand_cf( A, k, nothing );
-        density_ob_integrand_cf cfc = density_ob_integrand_cf( A, k, hard? speedy::min_central_fit2_Hard : speedy::min_central_fit2_VMC );
-        density_ob_integrand_cf cft = density_ob_integrand_cf( A, k, speedy::tensor_fit2 );
-        density_ob_integrand_cf cfs = density_ob_integrand_cf( A, k, speedy::spinisospin_fit2 );
+        density_ob_integrand_cf cf0 = density_ob_integrand_cf( A, k, nothing, nu );
+        density_ob_integrand_cf cfc = density_ob_integrand_cf( A, k, hard? speedy::min_central_fit2_Hard : speedy::min_central_fit2_VMC, nu );
+        density_ob_integrand_cf cft = density_ob_integrand_cf( A, k, speedy::tensor_fit2, nu );
+        density_ob_integrand_cf cfs = density_ob_integrand_cf( A, k, speedy::spinisospin_fit2, nu );
 
         IsoMatrixElement mf, corr;
 

@@ -15,12 +15,16 @@ using std::ofstream;
 #include <vector>
 using std::vector;
 
-WSexpansion::WSexpansion( WSWF* wf, int A, char* outputPath)
+WSexpansion::WSexpansion( WSWF* wf, int A, double nu1, double nu2, char* outputPath)
     : wf( wf),
       coeff(),
       A(A),
       outputPath( outputPath)
 {
+    double hbaromega = nu1 * pow(A, -1./3.) - nu2 * pow( A, -2./3.); //MeV
+    nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
+
+    
     cout << " start expansion ...";
     cout.flush();
     coeff.reserve(100);
@@ -158,7 +162,7 @@ void WSexpansion::integrate( int n_HO, int l_HO, double* result)
 {
 // 	cout << "start integration" << endl;
 
-    struct wsexpf_params params = { wf, n_HO, l_HO, A};
+    struct wsexpf_params params = { wf, n_HO, l_HO, nu};
 
     int status;
     gsl_integration_workspace *w = gsl_integration_workspace_alloc( 1e6 );
@@ -213,13 +217,13 @@ double WSexpansion::wsexpf( double x, void * p )
     struct wsexpf_params* params = (struct wsexpf_params *)p;
     int n_HO = (params->n_HO);
     int l_HO = (params->l_HO);
-    int A = params->A;
+    double nu = params->nu;
     WSWF* wf = (params->wf);
-    return x*radialwf(n_HO, l_HO, x, A)* wf->getRadialWF(x);
+    return x*radialwf(n_HO, l_HO, x, nu)* wf->getRadialWF(x);
 }
 
-double WSexpansion::radialwf( int n_HO, int l_HO, double x, int A )
+double WSexpansion::radialwf( int n_HO, int l_HO, double x, double nu )
 {
-    return uncorrelatedradialwf( n_HO, l_HO, x, A);
+    return uncorrelatedradialwf( n_HO, l_HO, x, nu);
 }
 

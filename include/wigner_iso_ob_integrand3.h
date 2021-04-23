@@ -26,8 +26,9 @@ public:
      * \brief Constructor.
      *
      * @param A mass number needed for HO wave function parametrization
+     * @param nu [fm^-2] Nucleus HO parameter
      */
-    wigner_iso_ob_integrand3( const int A );
+    wigner_iso_ob_integrand3( const int A, double nu );
     ~wigner_iso_ob_integrand3();
 
     /**
@@ -67,6 +68,8 @@ public:
      * \return [] double sum of all the integrals
      */
     IsoMatrixElement get( const double r, density_ob_integrand_cf& doic1, density_ob_integrand_cf& doic2 );
+
+
 
 private:
     /// Mass number

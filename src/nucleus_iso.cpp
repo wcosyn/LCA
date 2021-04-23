@@ -16,6 +16,7 @@ using std::ofstream;
 using std::cout;
 using std::endl;
 using std::cerr;
+#include <omp.h>
 
 NucleusIso::NucleusIso( const std::string & iinputdir, const std::string & iresultdir, const int A, const int Z)
     : inputdir(iinputdir), resultdir(iresultdir), Z(Z), A(A)
@@ -60,7 +61,7 @@ void NucleusIso::makeisopaircoefs()
     Shell::get_shell_max(Z, shell2_max, max2 );
 
 
-    #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2) num_threads(omp_get_max_threads())
     //loops run over closed filled shells!!
     for( int i1= 0; i1 <= shell1_max; i1++ ) {
         for( int i2= 0; i2 <= shell2_max; i2++ ) { 
@@ -192,7 +193,7 @@ void NucleusIso::makeisopaircoefs()
     Shell::get_shell_max(N, shell2_max, max2 );
 
 
-    #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2) num_threads(omp_get_max_threads())
     //loops run over closed filled shells!!
     for( int i1= 0; i1 <= shell1_max; i1++ ) {
         for( int i2= 0; i2 <= shell2_max; i2++ ) { 
@@ -326,7 +327,7 @@ void NucleusIso::makeisopaircoefs()
     Shell::get_shell_max(Z, shell2_max, max2 );
 
 
-    #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2) num_threads(omp_get_max_threads())
     //loops run over closed filled shells!!
     for( int i1= 0; i1 <= shell1_max; i1++ ) {
         for( int i2= 0; i2 <= shell2_max; i2++ ) {

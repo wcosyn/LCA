@@ -13,14 +13,12 @@ using std::endl;
 using std::cerr;
 
 
-density_ob_integrand_cf::density_ob_integrand_cf( int A, double q, double(*f)(double), double pstep )
-    : A( A ), pstep( pstep ), q(q) , f(f)
+density_ob_integrand_cf::density_ob_integrand_cf( int A, double q, double(*f)(double), double nu, double pstep)
+    : A( A ), pstep( pstep ), q(q) , f(f), nu(nu)
 {
     //this->f=f;
     pmax= 10;
     max= int(pmax/pstep);
-    double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
-    nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm = fm^-2
     nu75= pow( nu, 0.75 ); // fm^-3/2
 
     w= gsl_integration_workspace_alloc( 200000 );
@@ -151,7 +149,6 @@ double density_ob_integrand_cf::get_value( int k, int l, int nA, int lA, double 
 double density_ob_integrand_cf::calculate( int k, int l, uint i, int intp )
 {
     double result;
-
     double p= pstep* intp;
     gsl_function F ;
     struct params_doic params = { k, l, i, sqrt(nu), p, q, f };

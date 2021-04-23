@@ -24,9 +24,9 @@ public:
     /**
      * \brief Constructor.
      *
-     * @param A mass number needed for HO wave function parametrization
+     * @param nu [fm^-2] Nucleus HO parameter
      */
-    density_iso_ob_integrand3( int A );
+    density_iso_ob_integrand3( double nu );
     ~density_iso_ob_integrand3();
 
     /**
@@ -67,7 +67,7 @@ public:
 
 private:
     /// Mass number
-    int A;
+    //int A;
     /// HO parameter
     double nu;
 

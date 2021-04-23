@@ -29,7 +29,8 @@ public:
      * @param norm the renormalization factor needed to renormalize .
      * @param qmax max q for summation .
      */
-    density_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement &norm, bool central= true, bool tensor=true, bool isospin=false, int qmax= 7 );
+    density_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement &norm, double a , double b , bool hard, bool central= true, bool tensor=true, 
+            bool isospin=false, int qmax= 7);
     /**
      * \brief Destructor
      */

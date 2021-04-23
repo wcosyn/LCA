@@ -207,12 +207,12 @@ double WavefunctionP::integrand( double r, void* params )
     int n = (p->n);
     int l = (p->l);
     int k = (p->k);
-    int A = (p->A);
+    double nu = (p-> nu);
     double(*f)(double)= (p->f);
 
     double mom = (p->mom);
 
-    double radial = (*f)(r)* uncorrelatedradialwf( n, l, r, A);// [fm^{-3/2}] corr functions times Eq D.17 PhD Vanhalst
+    double radial = (*f)(r)* uncorrelatedradialwf( n, l, r, nu);// [fm^{-3/2}] corr functions times Eq D.17 PhD Vanhalst
     gsl_sf_result bessel;
     int status = gsl_sf_bessel_jl_e(k, r*mom, &bessel );
     if( status ) {
@@ -485,10 +485,10 @@ int MapWavefunctionP::setpstep( double pstep )
     return 1;
 }
 
-void MapWavefunctionP::setA( int A )
+void MapWavefunctionP::setA( int A, double nu1, double nu2 )
 {
     this->A = A;
-    double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
+    double hbaromega =nu1*pow(A, -1./3.) - nu2 * pow( A, -2./3.); //MeV
     nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
 }
 

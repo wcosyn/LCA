@@ -15,11 +15,9 @@ using std::vector;
 using std::cerr;
 using std::endl;
 
-density_iso_ob_integrand3::density_iso_ob_integrand3( int A )
-    : A(A)
+density_iso_ob_integrand3::density_iso_ob_integrand3( double nu )
+    : nu(nu)
 {
-    double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
-    nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm = fm^-2
 }
 
 density_iso_ob_integrand3::~density_iso_ob_integrand3()
@@ -115,6 +113,7 @@ double density_iso_ob_integrand3::calculate( int nA, int lA, int la, int nB, int
 
     gsl_integration_workspace* w = gsl_integration_workspace_alloc( 10000 );
     gsl_function F ;
+    // std::cout << "density_iso_ob_integrand3::" << nu << endl;
     struct params_int2 params= { nA, lA, la, nB, lB, l, k, index, sqrt(nu), &doic1, &doic2 };
     F.function = &integrand;
     F.params = &params;

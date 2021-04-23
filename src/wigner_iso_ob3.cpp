@@ -21,8 +21,8 @@ using std::to_string;
 
 #include <cassert> // for testing purposes
 
-wigner_iso_ob3::wigner_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement & norm, bool hard, bool central, bool tensor, bool isospin, int qmax, double a, double b )
-    : operator_virtual_iso_ob( nucleus, norm, hard, central, tensor, isospin, a,b),
+wigner_iso_ob3::wigner_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement & norm, double a, double b, bool hard, bool central, bool tensor, bool isospin, int qmax)
+    : operator_virtual_iso_ob( nucleus, norm, a,b, hard, central, tensor, isospin),
       qmax( qmax )
 {
     cout << "[Wigner_ob3] ob density operator made" << endl;
@@ -124,16 +124,16 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
      * Works similar as density_rel
      */
     cout << "[Wigner_ob] start initialization" << endl;
-    wigner_iso_ob_integrand3 icc = wigner_iso_ob_integrand3( A);
-    wigner_iso_ob_integrand3 itt = wigner_iso_ob_integrand3( A);
-    wigner_iso_ob_integrand3 iss = wigner_iso_ob_integrand3( A);
-    wigner_iso_ob_integrand3 ict = wigner_iso_ob_integrand3( A);
-    wigner_iso_ob_integrand3 ics = wigner_iso_ob_integrand3( A);
-    wigner_iso_ob_integrand3 ist = wigner_iso_ob_integrand3( A);
-    wigner_iso_ob_integrand3 i0  = wigner_iso_ob_integrand3( A);
-    wigner_iso_ob_integrand3 ic  = wigner_iso_ob_integrand3( A);
-    wigner_iso_ob_integrand3 it  = wigner_iso_ob_integrand3( A);
-    wigner_iso_ob_integrand3 is  = wigner_iso_ob_integrand3( A);
+    wigner_iso_ob_integrand3 icc = wigner_iso_ob_integrand3( A, nu);
+    wigner_iso_ob_integrand3 itt = wigner_iso_ob_integrand3( A, nu);
+    wigner_iso_ob_integrand3 iss = wigner_iso_ob_integrand3( A, nu);
+    wigner_iso_ob_integrand3 ict = wigner_iso_ob_integrand3( A, nu);
+    wigner_iso_ob_integrand3 ics = wigner_iso_ob_integrand3( A, nu);
+    wigner_iso_ob_integrand3 ist = wigner_iso_ob_integrand3( A, nu);
+    wigner_iso_ob_integrand3 i0  = wigner_iso_ob_integrand3( A, nu);
+    wigner_iso_ob_integrand3 ic  = wigner_iso_ob_integrand3( A, nu);
+    wigner_iso_ob_integrand3 it  = wigner_iso_ob_integrand3( A, nu);
+    wigner_iso_ob_integrand3 is  = wigner_iso_ob_integrand3( A, nu);
     wigner_ob_params dop = { 0, nA, lA, nB, lB, &i0, &ic, &it, &is, &icc, &ict, &itt, &iss, &ics, &ist}; // first param (0) is for momentum
 
     cout << "[Wigner_ob] : initializing MF " << endl; cout.flush();
@@ -156,10 +156,10 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
     for( int int_k= 0; int_k< 50; int_k++ ) {
 //    cout << int_k << endl;
         double k= int_k* kstep;
-        density_ob_integrand_cf cf0 = density_ob_integrand_cf( A, k, nothing );
-        density_ob_integrand_cf cfc = density_ob_integrand_cf( A, k, speedy::min_central_fit2_Hard );
-        density_ob_integrand_cf cft = density_ob_integrand_cf( A, k, speedy::tensor_fit2 );
-        density_ob_integrand_cf cfs = density_ob_integrand_cf( A, k, speedy::spinisospin_fit2 );
+        density_ob_integrand_cf cf0 = density_ob_integrand_cf( A, k, nothing, nu );
+        density_ob_integrand_cf cfc = density_ob_integrand_cf( A, k, speedy::min_central_fit2_Hard, nu );
+        density_ob_integrand_cf cft = density_ob_integrand_cf( A, k, speedy::tensor_fit2, nu );
+        density_ob_integrand_cf cfs = density_ob_integrand_cf( A, k, speedy::spinisospin_fit2, nu );
 
         double obmd=0., obmd_corr=0.;
         for( int int_r=0; int_r<50;int_r++){
@@ -200,7 +200,7 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
                     *(files[i]) << "   " << std::setw(10) << (corr_cs/norm).getValue(i)*(32./M_PI/M_PI);
                     *(files[i]) << "   " << std::setw(10) << (corr_st/norm).getValue(i)*(32./M_PI/M_PI);
                     *(files[i]) << endl;
-                    integral_mf_vec[i]  += kstep*k*k*rstep*r*r*(mf_unnorm.getValue(i));
+                    integral_mf_vec[i]  += kstep*k*k*rstep*r*r*(mf_unnorm.getValue(i));  //not normalized with SRC correction, so pure MF norm to A!
                     integral_vec[i]     += kstep*k*k*rstep*r*r*(corr.getValue(i));
                     integral_tot_vec[i] += kstep*k*k*rstep*r*r*((corr+mf).getValue(i));
                     kinenergy_mf_vec[i] += kstep*k*k*k*k*rstep*r*r*(mf_unnorm.getValue(i)); //does not include mass denominator!!!

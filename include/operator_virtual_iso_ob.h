@@ -23,10 +23,10 @@ public:
      * @param tensor turn on/off the tensor correlations.
      * @param isospin turn on/off the spin-isospin correlations.
      * @param norm normalisation factor: denominator which is not 1 due to correlations generally
-     * @param coefficient A^(-1/3) of hbaromega calculation for nu
-     * @param coefficient A^(-2/3) of hbaromega calculation for nu
+     * @param nu1 coefficient A^(-1/3) of hbaromega calculation for nu
+     * @param nu2 coefficient A^(-2/3) of hbaromega calculation for nu
      */
-    operator_virtual_iso_ob( NucleusIso* nucleus, const IsoMatrixElement &norm, bool hard = true, bool central=true, bool tensor=true, bool isospin=false, double a = 45, double b = 25);
+    operator_virtual_iso_ob( NucleusIso* nucleus, const IsoMatrixElement &norm, double nu1, double nu2, bool hard, bool central=true, bool tensor=true, bool isospin=false);
 
     /**
      * \brief Gives the two-body operator EV of the mean field part, using sum over coupled states in NucleusIso::isopaircoefs map

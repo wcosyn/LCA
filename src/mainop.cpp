@@ -95,15 +95,19 @@ int main( int argc, char* argv[] )
     A= atoi( argv[3] );
     Z= atoi( argv[4] );
     name= string(argv[5]);
-    WavefunctionP::mapwfp.setA( A );
+    double nu1 = atof(argv[6]);
+    double nu2 = atof(argv[7]);
+
+
+    WavefunctionP::mapwfp.setA( A, nu1, nu2);
     WavefunctionP::mapwfp.setpstep( 0.05 );
-    WavefunctionP::mapwfcentralp_Hard.setA( A );
+    WavefunctionP::mapwfcentralp_Hard.setA( A, nu1, nu2);
     WavefunctionP::mapwfcentralp_Hard.setpstep( 0.05 );
-    WavefunctionP::mapwfcentralp_VMC.setA( A );
+    WavefunctionP::mapwfcentralp_VMC.setA( A, nu1, nu2);
     WavefunctionP::mapwfcentralp_VMC.setpstep( 0.05 );
-    WavefunctionP::mapwftensorp.setA( A );
+    WavefunctionP::mapwftensorp.setA( A, nu1, nu2);
     WavefunctionP::mapwftensorp.setpstep( 0.05 );
-    WavefunctionP::mapwfspinisospinp.setA( A );
+    WavefunctionP::mapwfspinisospinp.setA( A, nu1, nu2);
     WavefunctionP::mapwfspinisospinp.setpstep( 0.05 );
 
     all_norm= new Nucleusall( input, output , A, Z );

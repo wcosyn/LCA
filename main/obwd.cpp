@@ -13,13 +13,13 @@ void ob(std::string name, NucleusIso *nuc, bool hard, double a, double b){
     int N=nuc->getA()-nuc->getZ();
     norm_iso_ob no(nuc,IsoMatrixElement(double(nuc->getZ())*(nuc->getZ()-1)/(nuc->getA()*(nuc->getA()-1)),double(N)*(N-1)/(nuc->getA()*(nuc->getA()-1)),
             double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1)),double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1))),
-            hard, true,true, true,a,b);
+            a,b, hard, true,true, true);
     norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB
     IsoMatrixElement norm_mf  = no.sum_me_coefs( &nob );
     IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
     IsoMatrixElement norm_all = norm_mf+norm_corr;
 
-    wigner_iso_ob3 dob3(nuc,norm_all,hard,true,true,true,10,a,b); // nuc, central,tensor,nucl,norm,qmax (default=7)
+    wigner_iso_ob3 dob3(nuc,norm_all,a,b,hard,true,true,true,10); // nuc, central,tensor,nucl,norm,qmax (default=7)
     /* qmax is the maximum value of q in the sum in Eq. D.37 in Maartens thesis
      * note that this equation is incorrect/incomplete, see manual
      */

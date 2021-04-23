@@ -23,6 +23,7 @@ private:
     void get_alpha(  int two_j_HO, int two_mj_HO, double res, double* result);
     void integrate( int n_HO, int l_HO, double* result);
     double normalize();
+    double nu; ///< [fm^-2] Nucleus HO parameter
     struct normf_params {
         std::vector<double> coeff;
         int l;
@@ -32,14 +33,14 @@ private:
         WSWF* wf;
         int n_HO;
         int l_HO;
-        int A;
+        double nu;
     };
     static double wsexpf( double x, void *p);
     static double normf( double x, void *p);
-    static double radialwf( int n_HO, int l_HO, double x, int A );
+    static double radialwf( int n_HO, int l_HO, double x, double nu );
 
 public:
-    WSexpansion(WSWF* wf, int A, char* outputPath);
+    WSexpansion(WSWF* wf, int A, double nu1, double nu2, char* outputPath);
     ~WSexpansion();
     std::vector<double> getCoeff();
     void writeToFile(const char* fileName);

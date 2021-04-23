@@ -28,10 +28,10 @@ public:
      * @param isospin turn on/off the spin-isospin correlations .
      * @param norm the renormalization factor needed to renormalize .
      * @param qmax max q for summation .
-     * @param a hbaromega parameter1
-     * @param b hbaromega parameter2
+     * @param nu1 hbaromega parameter1
+     * @param nu2 hbaromega parameter2
      */
-    wigner_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement &norm, bool hard = true, bool central= true, bool tensor=true, bool isospin=false, int qmax= 7, double a = 45., double b = 25. );
+    wigner_iso_ob3(NucleusIso* nucleus, const IsoMatrixElement &norm, double a, double b, bool hard, bool central= true, bool tensor=true, bool isospin=false, int qmax= 7);
     /**
      * \brief Destructor
      */

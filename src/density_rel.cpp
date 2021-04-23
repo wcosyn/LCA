@@ -121,10 +121,10 @@ void density_rel::write( const char* outputdir, const char* name, int nA, int lA
         // A sqrt(2) from transformation to jacobi coord and a sqrt(2), due to
         // difference in expression (see appendix eq (D.34) vs (D.66) , for ob, factor sqrt(2), for tb_rel, factor 2 )
 
-        density_ob_integrand_cf* cf0 = new density_ob_integrand_cf( A, k*2, nothing );
-        density_ob_integrand_cf* cfc = new density_ob_integrand_cf( A, k*2, speedy::min_central_fit2_Hard );
-        density_ob_integrand_cf* cft = new density_ob_integrand_cf( A, k*2, speedy::tensor_fit2 );
-        density_ob_integrand_cf* cfs = new density_ob_integrand_cf( A, k*2, speedy::spinisospin_fit2 );
+        density_ob_integrand_cf* cf0 = new density_ob_integrand_cf( A, k*2, nothing, nu );
+        density_ob_integrand_cf* cfc = new density_ob_integrand_cf( A, k*2, speedy::min_central_fit2_Hard, nu );
+        density_ob_integrand_cf* cft = new density_ob_integrand_cf( A, k*2, speedy::tensor_fit2, nu );
+        density_ob_integrand_cf* cfs = new density_ob_integrand_cf( A, k*2, speedy::spinisospin_fit2, nu );
 
         dens_rel_params drp = { k*sqrt(2), nA, lA, nB, lB, S, T, ic, it, is, icc, ict, ics, itt, its, iss };
         double mf= sum_me( &drp );

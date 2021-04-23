@@ -16,11 +16,9 @@ using std::cerr;
 using std::endl;
 #include <gsl/gsl_sf_bessel.h>
 
-wigner_iso_ob_integrand3::wigner_iso_ob_integrand3( const int A)
-    : A(A)
+wigner_iso_ob_integrand3::wigner_iso_ob_integrand3( const int A, double nu)
+    : A(A),nu(nu)
 {
-    double hbaromega =45.*pow(A, -1./3.) - 25 * pow( A, -2./3.); //MeV
-    nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm = fm^-2
 }
 
 wigner_iso_ob_integrand3::~wigner_iso_ob_integrand3()
@@ -87,7 +85,7 @@ IsoMatrixElement wigner_iso_ob_integrand3::get( const double r, density_ob_integ
 {
 
     IsoMatrixElement sum(0.,0.,0.,0.);
-
+    // std::cout << "wigner_iso_ob_integrand3::get "  << nu << endl;
     for( map <string,doi3_struct>::iterator it = mapintegrals.begin(); it != mapintegrals.end(); it++ ) {
         doi3_struct integral= it->second;
 

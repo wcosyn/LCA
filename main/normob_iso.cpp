@@ -41,7 +41,7 @@ bool normsRun(int max){
         NucleusIso nuc("../data/mosh","../data/mosh",A[i],Z[i]);
         int N=A[i]-Z[i];
         IsoMatrixElement prenorm= IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)));
-        norm_iso_ob nopp(&nuc,prenorm);
+        norm_iso_ob nopp(&nuc,prenorm,45.,25.,1);
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
         norm_mf  = nopp.sum_me_coefs( &nob );
         norm_corr= nopp.sum_me_corr( &nob );
@@ -152,7 +152,7 @@ void normscalc(int max, bool hard){
         NucleusIso nuc("../data/mosh","../data/mosh",A[i],Z[i]);
         int N=A[i]-Z[i];
         IsoMatrixElement prenorm= IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)));
-        norm_iso_ob nopp(&nuc,prenorm,hard);
+        norm_iso_ob nopp(&nuc,prenorm,hard,45.,25.,1);
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
         norm_mf  = nopp.sum_me_coefs( &nob );
         norm_corr= nopp.sum_me_corr( &nob );        

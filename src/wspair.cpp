@@ -59,7 +59,7 @@ void WSPair::readExpansion( char* wsexpPath)
         stringstream wfname;
         wfname << wsexpPath << "/WF" << A << n1 << l1 << j1 << t1 << ".dat";
         WSWF* wswf = new WSWF( wfname.str().c_str() );
-        WSexpansion* wsexp = new WSexpansion( wswf, A, output );
+        WSexpansion* wsexp = new WSexpansion( wswf, A, 45., 25., output);  ///DEFAULT nu values!!
         delete wsexp;
         delete wswf;
         name.str( "" );
@@ -114,7 +114,7 @@ void WSPair::readExpansion( char* wsexpPath)
         stringstream wfname;
         wfname << wsexpPath << "/WF" << A << n2 << l2 << j2 << t2 << ".dat";
         WSWF* wswf = new WSWF( wfname.str().c_str() );
-        WSexpansion* wsexp = new WSexpansion( wswf, A, output );
+        WSexpansion* wsexp = new WSexpansion( wswf, A, 45., 25., output);  /// DEFAULT nu values
         delete wsexp;
         delete wswf;
         name2.str( "" );

@@ -21,10 +21,11 @@ public:
      * @param isospin turn on/off the spin-isospin correlations .
      * @param norm the renormalization factor needed to renormalize.
      * @param hard [1] hard central corr f, [0] soft (VMC) central corr function
-     * @param coefficient A^(-1/3) of hbaromega calculation for nu
-     * @param coefficient A^(-2/3) of hbaromega calculation for nu
+     * @param nu1 coefficient A^(-1/3) of hbaromega calculation for nu
+     * @param nu2 coefficient A^(-2/3) of hbaromega calculation for nu
      */
-    norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, bool hard=true, bool central= true, bool tensor=true, bool isospin=true, double a = 45, double b = 25);
+    norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, double nu1, double nu2, 
+                bool hard, bool central= true, bool tensor=true, bool isospin=true);
     /**
      * \brief Destructor
      */

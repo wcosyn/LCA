@@ -127,10 +127,10 @@ double get_spinisospin_pow(int lambda);
  * @param n HO n quantum number
  * @param l HO l quantum number
  * @param r [fm] radial argument
- * @param A number of nucleons A, controls the HO parameter nu
+ * @param nu [fm^-2] Nucleus HO parameter
  * @return [fm^{-3/2}] double radial wave function value at r, see Eq. D.17 PhD Vanhalst
  */
-double uncorrelatedradialwf(int n, int l, double r, int A);
+double uncorrelatedradialwf(int n, int l, double r, double nu);
 
 /**
  * @brief returns 1. all the time.  Used in uncorrelated calculations

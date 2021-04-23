@@ -33,7 +33,7 @@ int main( int argc, char *argv[])
         WSWF* wswf = new WSWF( E0, rmatch, A, Z, n, l, two_j, two_t );
         wswf->writeToFile( argv[1], argv[2] );
         //wswf->write_momentum_density( argv[1], argv[5] );
-        WSexpansion* wsexp = new WSexpansion( wswf, A, argv[1] );
+        WSexpansion* wsexp = new WSexpansion( wswf, A, 45. ,25., argv[1] );
         delete wsexp;
         delete wswf;
         return 0;
