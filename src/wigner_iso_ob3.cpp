@@ -157,7 +157,7 @@ void wigner_iso_ob3::write(const string& outputdir, const string& name, double& 
 //    cout << int_k << endl;
         double k= int_k* kstep;
         density_ob_integrand_cf cf0 = density_ob_integrand_cf( A, k, nothing, nu );
-        density_ob_integrand_cf cfc = density_ob_integrand_cf( A, k, speedy::min_central_fit2_Hard, nu );
+        density_ob_integrand_cf cfc = density_ob_integrand_cf( A, k, hard? speedy::min_central_fit2_Hard : speedy::min_central_fit2_VMC, nu );
         density_ob_integrand_cf cft = density_ob_integrand_cf( A, k, speedy::tensor_fit2, nu );
         density_ob_integrand_cf cfs = density_ob_integrand_cf( A, k, speedy::spinisospin_fit2, nu );
 
