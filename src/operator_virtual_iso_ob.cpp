@@ -70,7 +70,12 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
         }
 
     }
-    
+    // cout << "me_corr" << endl;
+    // cout << pp_res << " " << norm.getValue(0) << endl;
+    // cout << nn_res << " " <<  norm.getValue(1) << endl;
+    // cout << np_p_res << " " <<  norm.getValue(2) << endl;
+    // cout << np_n_res << " " <<  norm.getValue(3) << endl;
+
     return IsoMatrixElement(pp_res,nn_res,np_p_res,np_n_res)/norm;
 }
 
@@ -122,6 +127,11 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
         }
 
     }
+    // cout << "me_ipm" << endl;
+    // cout << pp_res/(A-1.) << " " <<  norm.getValue(0) << endl;
+    // cout << nn_res/(A-1.) << " " <<  norm.getValue(1) << endl;
+    // cout << np_p_res/(A-1.) << " " <<  norm.getValue(2) << endl;
+    // cout << np_n_res/(A-1.) << " " <<  norm.getValue(3) << endl;
     
     return IsoMatrixElement(pp_res,nn_res,np_p_res,np_n_res)/norm/(A-1.);
  

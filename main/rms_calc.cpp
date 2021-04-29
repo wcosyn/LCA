@@ -15,6 +15,10 @@ using namespace std;
 void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myfile, double a, double b){
 
     int N=A-Z;
+
+    // IsoMatrixElement defnorm(double(Z)*(Z-1)/(A*(A-1)),double(N)*(N-1)/(A*(A-1)),
+    //                                             double(N)*Z/(A*(A-1)),double(N)*Z/(A*(A-1)));
+
     norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
     no.nunorm(a,b);
     IsoMatrixElement norm_mf= no.sum_me_coefs( &nob );
@@ -23,9 +27,14 @@ void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myf
     std::cout << "norm\t"  << norm_mf.norm(A,Z) << "\t" << norm_corr.norm(A,Z) << "\t" << norm.norm(A,Z)  << std::endl;
     std::cout << "norm p\t"  << norm_mf.norm_p(A,Z) << "\t" << norm_corr.norm_p(A,Z) << "\t" << norm.norm_p(A,Z)  << "\t" << norm.norm_p(A,Z)/norm.norm(A,Z)*A/Z << std::endl;
     std::cout << "norm n\t"  << norm_mf.norm_n(A,Z) << "\t" << norm_corr.norm_n(A,Z) << "\t" << norm.norm_n(A,Z)  << "\t" << norm.norm_n(A,Z)/norm.norm(A,Z)*A/N << std::endl;
+    // cout << norm_mf.norm_p(A,Z) << " " << (norm_mf*defnorm).getValue(4) <<  endl;
+    // cout << norm.getValue(0) << " " << norm.getValue(1)  << " " << norm.getValue(2)  << " " << norm.getValue(3)  << endl;
     struct rms_iso_ob::rms_ob_params nob_params =  {-1, -1, -1, -1};
     rms_all.nunorm(a,b,norm);
     IsoMatrixElement ra = rms_all.sum_me_coefs( &nob_params );
+    // cout << "blaaa " << sqrt((ra).getValue(4)*A/Z) << " " << sqrt((ra).getValue(5)*A/N) << " " << sqrt((ra).getValue(6)) << endl;
+    // exit(1);
+
     IsoMatrixElement rca = rms_all.sum_me_corr( &nob_params );
     double rIPM= sqrt((ra*norm).getValue(6));
     double rLCA2= sqrt( ((ra+rca)*norm).getValue(6)/norm.norm(A,Z) );
@@ -61,7 +70,7 @@ int main(int argc,char* argv[]){
     int Z[11] = {2,4,6,8,13,20,20,26,47,79,82};
 
     ofstream myfile;
-    myfile.open ("rms2.txt");
+    myfile.open ("rms3.txt");
     myfile << "#A\tZ\tallIPM\tallLCA\tallLCA2\tallLCA3\tp IPM\tp LCA1\tp LCA2\tp LCA3\tn IPM\tn LCA1\tn LCA2\tn LCA3\ts IPM\ts LCA1\ts LCA2\ts LCA3" << std::endl;
 
     for(int i=0;i<limit;i++){
@@ -70,12 +79,11 @@ int main(int argc,char* argv[]){
         int N=A[i]-Z[i];
         norm_iso_ob no( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),
                                                 double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1))), 
-                                                true, true, true, true, a,b );
+                                                a,b,true, true, true, true);
         std::cout << "hard A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "hard ";
 
-        rms_iso_ob rms_all( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),
-                                                double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1))), true, true, true, true, a, b);
+        rms_iso_ob rms_all( &nuc, IsoMatrixElement(1.,1.,1.,1.), a,b,true, true, true, true);
  
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
 

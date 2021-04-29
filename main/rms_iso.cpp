@@ -22,14 +22,14 @@ int main(int argc,char* argv[]){
     for(int i=0;i<limit;i++){
         NucleusIso nuc( "../data/mosh","../data/mosh" , A[i], Z[i] );
         int N=A[i]-Z[i];
-        norm_iso_ob no( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1))), true, true, true );
+        norm_iso_ob no( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1))), 45.,25., true, true, true, true );
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
         IsoMatrixElement norm_mf= no.sum_me_coefs( &nob );
         IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
         IsoMatrixElement norm = norm_mf+norm_corr;
         std::cout << "norm\t"  << norm_mf.norm(A[i],Z[i]) << "\t" << norm_corr.norm(A[i],Z[i]) << "\t" << (norm_mf+ norm_corr).norm(A[i],Z[i])  << std::endl;
 
-        rms_iso_ob rms_all( &nuc, norm, true, true, true);
+        rms_iso_ob rms_all( &nuc, norm, 45. ,25.,true, true, true,true);
         struct rms_iso_ob::rms_ob_params nob_params = {-1, -1, -1, -1};
         IsoMatrixElement ra = rms_all.sum_me_coefs( &nob_params );
         IsoMatrixElement rca = rms_all.sum_me_corr( &nob_params );
