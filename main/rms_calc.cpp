@@ -34,8 +34,10 @@ void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myf
     IsoMatrixElement ra = rms_all.sum_me_coefs( &nob_params );
     // cout << "blaaa " << sqrt((ra).getValue(4)*A/Z) << " " << sqrt((ra).getValue(5)*A/N) << " " << sqrt((ra).getValue(6)) << endl;
     // exit(1);
-
     IsoMatrixElement rca = rms_all.sum_me_corr( &nob_params );
+
+    cout << (ra*norm).getValue(0) << " " << (ra*norm).getValue(1) << " " << (ra*norm).getValue(2) << " " << (ra*norm).getValue(3) << endl;
+    cout << (ra+rca).getValue(0) << " " << (ra+rca).getValue(1) << " " << (ra+rca).getValue(2) << " " << (ra+rca).getValue(3) << endl;
     double rIPM= sqrt((ra*norm).getValue(6));
     double rLCA2= sqrt( ((ra+rca)*norm).getValue(6)/norm.norm(A,Z) );
     double rLCA3 = sqrt( (ra+rca).getValue(6));
@@ -56,7 +58,6 @@ void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myf
     myfile << std::fixed << std::setprecision(4) << A << "\t" << Z << "\t" << rIPM << "\t" << rLCA << "\t" << rLCA2 << "\t" << rLCA3 << "\t" << rIPMp << "\t" << rLCAp1 
             << "\t" << rLCAp2 << "\t" << rLCAp3 << "\t" << rIPMn << "\t" << rLCAn1 << "\t" << rLCAn2 << "\t" << rLCAn3
             << "\t" << rIPMn-rIPMp << "\t" << rLCAn1-rLCAp1 << "\t" << rLCAn2-rLCAp2 << "\t" << rLCAn3-rLCAp3 <<  std::endl;
-
 
 
 }

@@ -57,7 +57,7 @@ double norm_iso_ob::get_me( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void
     if( pc1.getS() != pc2.getS() ) return 0.;
     if( pc1.getj() != pc2.getj() ) return 0.;
     if( pc1.getmj() != pc2.getmj() ) return 0.;
-    // if( pc1.getT() != pc2.getT() ) return 0.;
+    if( pc1.getT() != pc2.getT() ) return 0.;  // 1+(-1)^TA_TB factor from operator (see 10.3 section manual)
     // if( pc1.getMT() != pc2.getMT() ) return 0.;
     if( pc1.getN() != pc2.getN() ) return 0.;
     if( pc1.getL() != pc2.getL() ) return 0.;
@@ -101,6 +101,7 @@ double norm_iso_ob::get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef
     if( pc1.getN()  != pc2.getN()  ) return 0.;
     if( pc1.getL()  != pc2.getL()  ) return 0.;
     if( pc1.getML() != pc2.getML() ) return 0.;
+    if( pc1.getT() != pc2.getT() ) return 0.;  // 1+(-1)^TA_TB factor from operator (see 10.3 section manual)    
     int l1= pc1.getl();
     int l2= pc2.getl();
     int n1= pc1.getn();
@@ -167,6 +168,7 @@ double norm_iso_ob::get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef&
     if( pc1.getN() != pc2.getN() ) return 0.;
     if( pc1.getL() != pc2.getL() ) return 0.;
     if( pc1.getML() != pc2.getML() ) return 0.;
+    if( pc1.getT() != pc2.getT() ) return 0.;  // 1+(-1)^TA_TB factor from operator (see 10.3 section manual)    
     int l1= pc1.getl();
     int l2= pc2.getl();
     int n1= pc1.getn();
@@ -223,6 +225,7 @@ double norm_iso_ob::get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef&
     if( pc1.getN() != pc2.getN() ) return 0.;
     if( pc1.getL() != pc2.getL() ) return 0.;
     if( pc1.getML() != pc2.getML() ) return 0.;
+    if( pc1.getT() != pc2.getT() ) return 0.;  // 1+(-1)^TA_TB factor from operator (see 10.3 section manual)
     int l1= pc1.getl();
     int l2= pc2.getl();
     int n1= pc1.getn();
