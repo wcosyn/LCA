@@ -61,7 +61,9 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
             IsoMatrixElement rca = rms_all[i]->sum_me_corr( &nob_params );
 
             //Yi = sqrt((((ra+rca)*norm).getValue(4)/norm.norm_p(A[i],Z[i])*Z[i]+((ra+rca)*norm).getValue(5)/norm.norm_n(A[i],Z[i])*M)/A[i]);
-            Yi = sqrt((ra+rca).getValue(6));
+            //Yi = sqrt((ra+rca).getValue(6));
+            //Yi = sqrt((ra+rca).getValue(4)*A[i]/Z[i]);
+            Yi = sqrt((ra+rca).getValue(4)*A[i]/Z[i]+0.769-(A[i]-Z[i])/Z[i]*0.116+0.033);
         }
         gsl_vector_set (f, i , Yi - y[i]); 
         printf ("Fitted RMS, Data RMS , a parameter, b parameter: %g %g %g %g\n",Yi, y[i], a, b);
@@ -127,7 +129,7 @@ int main (void){
         nuc_all[i] = new NucleusIso( "../data/mosh","../data/mosh" , A[i], Z[i] );  
         int M = A[i]-Z[i];
         IsoMatrixElement prenorm = IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(M)*(M-1)/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)),double(M)*Z[i]/(A[i]*(A[i]-1)));
-        norm_all[i] = new norm_iso_ob(nuc_all[i], prenorm, 45.,25., true, true, true, true);
+        norm_all[i] = new norm_iso_ob(nuc_all[i], prenorm, 45.,25., true);
         norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
         IsoMatrixElement norm_mf = norm_all[i]->sum_me_coefs( &nob );
         IsoMatrixElement norm_corr = norm_all[i]->sum_me_corr( &nob );
@@ -140,7 +142,7 @@ int main (void){
         // IsoMatrixElement norm2= norm2_mf + norm2_corr;
         // cout << "norm0 " << ((norm)*prenorm).norm() << " " << ((norm2)*prenorm).norm() << endl;
 
-        rms_all[i] = new rms_iso_ob( nuc_all[i], norm, 45.,25.,true, true, true, true);
+        rms_all[i] = new rms_iso_ob( nuc_all[i], norm, 45.,25.,1);
     };
     struct data d = { n, y, norm_all, rms_all};
     double x_init[2] = { 45.,25.}; /* starting values */

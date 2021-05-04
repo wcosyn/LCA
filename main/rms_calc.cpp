@@ -71,7 +71,7 @@ int main(int argc,char* argv[]){
     int Z[11] = {2,4,6,8,13,20,20,26,47,79,82};
 
     ofstream myfile;
-    myfile.open ("rms3.txt");
+    myfile.open ("rms4.txt");
     myfile << "#A\tZ\tallIPM\tallLCA\tallLCA2\tallLCA3\tp IPM\tp LCA1\tp LCA2\tp LCA3\tn IPM\tn LCA1\tn LCA2\tn LCA3\ts IPM\ts LCA1\ts LCA2\ts LCA3" << std::endl;
 
     for(int i=0;i<limit;i++){
@@ -95,20 +95,49 @@ int main(int argc,char* argv[]){
 
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
 
-        a=41.5040; b=23.4984;
+
+        //MF fitted
+        //a=46.19588; b=26.90295;  //old fit to total matter radius
+        //proton charge radius direct
+        a = 41.3478, b = 15.6617;
+        std::cout << "MFfit A:" << A[i] << "\tZ: " << Z[i] << std::endl;
+        myfile << "MFfit ";
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+        //proton charge radius with corr
+        a = 40.0221, b = 2.7847;
+        std::cout << "MFfitcorr A:" << A[i] << "\tZ: " << Z[i] << std::endl;
+        myfile << "MFfitcorr ";
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+
+
+        //hard fitted
+        //a=41.5040; b=23.4984;
+        a = 37.7716, b = 14.8646;
         no.setHard(1);
         rms_all.setHard(1);
         std::cout << "hardfit A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "hardfit ";
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
 
-        a = 41.7015, b = 21.1711;
+        a = 36.6787, b = 4.1070;
+        std::cout << "hardfitcorr A: " << A[i] << "\tZ: " << Z[i] << std::endl;
+        myfile << "hardfitcorr ";
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+
+
+    //soft fitted
+    //    a = 41.7015, b = 21.1711;
+        a = 37.7306, b = 11.8701;
         no.setHard(0);
         rms_all.setHard(0);
         std::cout << "softfit A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "softfit ";
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
 
+        a = 36.4603, b = 0.0113;
+        std::cout << "softfitcorr A: " << A[i] << "\tZ: " << Z[i] << std::endl;
+        myfile << "softfitcorr ";
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
 
     }
     myfile.close();
