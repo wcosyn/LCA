@@ -86,17 +86,17 @@ double IsoMatrixElement::norm() const{
 
 double IsoMatrixElement::norm(const int A, const int Z) const{
     int N=A-Z;
-    return (pp_res*Z*(Z-1)+nn_res*N*(N-1)+(np_p_res+np_n_res)*N*Z)/(A*(A-1));
+    return ((Z>1? pp_res*Z*(Z-1):0.)+ (N>1? nn_res*N*(N-1):0.)+(np_p_res+np_n_res)*N*Z)/(A*(A-1));
 }
 
 double IsoMatrixElement::norm_p(const int A, const int Z) const{
     int N=A-Z;
-    return (pp_res*Z*(Z-1)+(np_p_res)*N*Z)/(A*(A-1));
+    return ((Z>1? pp_res*Z*(Z-1):0.)+(np_p_res)*N*Z)/(A*(A-1));
 }
 
 double IsoMatrixElement::norm_n(const int A, const int Z) const{
     int N=A-Z;
-    return (nn_res*N*(N-1)+(np_n_res)*N*Z)/(A*(A-1));
+    return ((N>1? nn_res*N*(N-1):0.)+(np_n_res)*N*Z)/(A*(A-1));
 }
 
 double IsoMatrixElement::getValue(const int i) const{

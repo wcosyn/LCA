@@ -7,6 +7,7 @@
 using std::cout;
 using std::endl;
 using std::cerr;
+using std::isnan;
 #include <omp.h>
 
 operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const IsoMatrixElement &norm, double nu1, double nu2, bool hard, bool central, bool tensor, bool isospin)
@@ -75,7 +76,11 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_corr( void* params )
     // cout << nn_res << " " <<  norm.getValue(1) << endl;
     // cout << np_p_res << " " <<  norm.getValue(2) << endl;
     // cout << np_n_res << " " <<  norm.getValue(3) << endl;
-
+    
+    //for N=1 or Z=1 nuclei there is no pp or nn
+    if(nucleus->getZ()==1) pp_res=1.;
+    if(nucleus->getN()==1) nn_res=1.;
+    
     return IsoMatrixElement(pp_res,nn_res,np_p_res,np_n_res)/norm;
 }
 
@@ -133,6 +138,9 @@ IsoMatrixElement operator_virtual_iso_ob::sum_me_coefs( void* params )
     // cout << np_p_res/(A-1.) << " " <<  norm.getValue(2) << endl;
     // cout << np_n_res/(A-1.) << " " <<  norm.getValue(3) << endl;
     
+    //for N=1 or Z=1 nuclei there is no pp or nn
+    if(nucleus->getZ()==1) pp_res=1.;
+    if(nucleus->getN()==1) nn_res=1.;
     return IsoMatrixElement(pp_res,nn_res,np_p_res,np_n_res)/norm/(A-1.);
  
 }

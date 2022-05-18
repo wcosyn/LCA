@@ -47,7 +47,7 @@ void ob(std::string name, std::string outputdir ,NucleusIso *nuc, const bool har
 
     // NucleusIso nucall("../data/mosh","../data/mosh",A,Z);
     int N=nuc->getA()-nuc->getZ();
-    norm_iso_ob no(nuc,IsoMatrixElement(double(nuc->getZ())*(nuc->getZ()-1)/(nuc->getA()*(nuc->getA()-1)),double(N)*(N-1)/(nuc->getA()*(nuc->getA()-1)),
+    norm_iso_ob no(nuc,IsoMatrixElement((nuc->getZ()>1? double(nuc->getZ())*(nuc->getZ()-1)/(nuc->getA()*(nuc->getA()-1)):1),(N>1? double(N)*(N-1)/(nuc->getA()*(nuc->getA()-1)):1),
             double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1)),double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1))),a,b,hard,true,true,true);
     norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
     IsoMatrixElement norm_mf  = no.sum_me_coefs( &nob );
