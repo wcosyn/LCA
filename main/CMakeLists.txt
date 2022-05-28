@@ -26,10 +26,13 @@ target_link_libraries(normtb ${LIBS} nmd)
 add_executable(tbmd_rel tbmd_rel.cpp)
 target_link_libraries(tbmd_rel ${LIBS} nmd)
 
-add_executable(fitcode fitcode.cpp)
-target_link_libraries(fitcode ${LIBS} nmd)
+#add_executable(fitcode fitcode.cpp)
+#target_link_libraries(fitcode ${LIBS} nmd)
 
-install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel fitcode
+add_executable(fitcode_NZ fitcode_NZ.cpp)
+target_link_libraries(fitcode_NZ ${LIBS} nmd)
+
+install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel fitcode_NZ
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)
 
 	if(STATIC_BUILD)

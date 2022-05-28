@@ -22,8 +22,9 @@ public:
      * @param norm denominator of matrix elements, see norm_iso_ob for calculations
      * @param nu1 coefficient A^(-1/3) of hbaromega calculation for nu
      * @param nu2 coefficient A^(-2/3) of hbaromega calculation for nu
+     * @param nu3 coefficient (N-Z) of hbaromega calculation for nu
      */
-    rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, double nu1, double nu2, bool hard, bool central= true, bool tensor=true, bool isospin=true);
+    rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, double nu1, double nu2, double nu3,bool hard, bool central= true, bool tensor=true, bool isospin=true);
     /**
      * @brief destructor
      * 
@@ -36,7 +37,7 @@ public:
     virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link);
     virtual double get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link);
     
-    virtual void nunorm(double a, double b, IsoMatrixElement newnorm);
+    virtual void nunorm(double a, double b, double c,IsoMatrixElement newnorm);
     
     struct rms_ob_params {
         int nA;

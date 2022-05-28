@@ -10,8 +10,8 @@ using std::endl;
 #include <gsl/gsl_vector.h>
 #include <tuple>
 
-norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , double a, double b, bool hard, bool central, bool tensor, bool isospin)
-    : operator_virtual_iso_ob( nucleus,norm , a, b, hard, central, tensor, isospin) {
+norm_iso_ob::norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , double a, double b,double c, bool hard, bool central, bool tensor, bool isospin)
+    : operator_virtual_iso_ob( nucleus,norm , a, b,c, hard, central, tensor, isospin) {
 
     double sqrtnu=sqrt(nu);
     for(int i=0;i<11;i++){
@@ -350,9 +350,9 @@ double norm_iso_ob::getExp_ts(const int i) const{
     else {std::cerr << "exp_ts_norm array not big enough" << std::endl; exit(1); }
 }
 
-void norm_iso_ob:: nunorm(double nu1, double nu2)
+void norm_iso_ob:: nunorm(double nu1, double nu2,double nu3)
 {
-    double hbaromega = nu1 * pow(A,-1./3.) - nu2 * pow(A,-2./3.);
+    double hbaromega = nu1 * pow(A,-1./3.) - nu2 * pow(A,-2./3.)+nu3*(N-Z);
     nu = 938. * hbaromega / 197.327/197.327;
     double sqrtnu = sqrt(nu);
 

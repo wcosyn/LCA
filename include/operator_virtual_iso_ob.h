@@ -25,8 +25,9 @@ public:
      * @param norm normalisation factor: denominator which is not 1 due to correlations generally
      * @param nu1 coefficient A^(-1/3) of hbaromega calculation for nu
      * @param nu2 coefficient A^(-2/3) of hbaromega calculation for nu
+     * @param nu3 coefficient (N-Z) of hbaromega calculation for nu
      */
-    operator_virtual_iso_ob( NucleusIso* nucleus, const IsoMatrixElement &norm, double nu1, double nu2, bool hard, bool central=true, bool tensor=true, bool isospin=false);
+    operator_virtual_iso_ob( NucleusIso* nucleus, const IsoMatrixElement &norm, double nu1, double nu2,double nu3, bool hard, bool central=true, bool tensor=true, bool isospin=false);
 
     /**
      * \brief Gives the two-body operator EV of the mean field part, using sum over coupled states in NucleusIso::isopaircoefs map
@@ -132,6 +133,8 @@ protected:
 
     /// Nucleus mass number
     int A;
+    int Z;
+    int N;
     /// [fm^-2] Nucleus HO parameter
     double nu;
 

@@ -10,11 +10,14 @@ using std::cerr;
 using std::isnan;
 #include <omp.h>
 
-operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const IsoMatrixElement &norm, double nu1, double nu2, bool hard, bool central, bool tensor, bool isospin)
+operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const IsoMatrixElement &norm, double nu1, double nu2,double nu3, bool hard, bool central, bool tensor, bool isospin)
     : nucleus( nucleus ), hard(hard), bcentral( central ), tensor( tensor ), spinisospin( isospin ), norm( norm )
 {
     A= nucleus->getA();
-    double hbaromega = nu1 * pow(A, -1./3.) - nu2 * pow( A, -2./3.); //MeV
+    N=nucleus->getN();
+    Z=nucleus->getZ();
+
+    double hbaromega = nu1 * pow(A, -1./3.) - nu2 * pow( A, -2./3.)+nu3 *(N-Z); //MeV
     nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
 }
 

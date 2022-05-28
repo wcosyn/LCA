@@ -23,8 +23,9 @@ public:
      * @param hard [1] hard central corr f, [0] soft (VMC) central corr function
      * @param nu1 coefficient A^(-1/3) of hbaromega calculation for nu
      * @param nu2 coefficient A^(-2/3) of hbaromega calculation for nu
+     * @param nu3 coefficient (N-Z) of hbaromega calculation for nu
      */
-    norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, double nu1, double nu2, 
+    norm_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, double nu1, double nu2,double nu3, 
                 bool hard, bool central= true, bool tensor=true, bool isospin=true);
     /**
      * \brief Destructor
@@ -37,7 +38,7 @@ public:
     virtual double get_me_corr_left( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link);
     virtual double get_me_corr_right( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link);
     virtual double get_me_corr_both( const IsoPaircoef& pc1, const IsoPaircoef& pc2, void* params, const Isolinkstrength& link);
-    virtual void nunorm(double a, double b);
+    virtual void nunorm(double a, double b,double c);
     
     /**
      * @struct norm_ob_params

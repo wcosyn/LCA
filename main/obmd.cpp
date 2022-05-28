@@ -38,7 +38,7 @@ void ob(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     dob3.write(".",name.c_str(),-1,-1,-1,-1, isospin,&mf,&corr); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
-void ob(std::string name, std::string outputdir ,NucleusIso *nuc, const bool hard, double a, double b){
+void ob(std::string name, std::string outputdir ,NucleusIso *nuc, const bool hard, double a, double b,double c){
 
 
     //NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
@@ -48,13 +48,13 @@ void ob(std::string name, std::string outputdir ,NucleusIso *nuc, const bool har
     // NucleusIso nucall("../data/mosh","../data/mosh",A,Z);
     int N=nuc->getA()-nuc->getZ();
     norm_iso_ob no(nuc,IsoMatrixElement((nuc->getZ()>1? double(nuc->getZ())*(nuc->getZ()-1)/(nuc->getA()*(nuc->getA()-1)):1),(N>1? double(N)*(N-1)/(nuc->getA()*(nuc->getA()-1)):1),
-            double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1)),double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1))),a,b,hard,true,true,true);
+            double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1)),double(N)*nuc->getZ()/(nuc->getA()*(nuc->getA()-1))),a,b,c,hard,true,true,true);
     norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1}; // nA,lA,nB,lB,t
     IsoMatrixElement norm_mf  = no.sum_me_coefs( &nob );
     IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
     IsoMatrixElement norm_all = norm_mf+norm_corr;
 
-    density_iso_ob3 dob3(nuc,norm_all,a,b,hard,true,true,true,10); // nuc, central,tensor,nucl,norm,qmax (default=7)
+    density_iso_ob3 dob3(nuc,norm_all,a,b,c,hard,true,true,true,10); // nuc, central,tensor,nucl,norm,qmax (default=7)
     /* qmax is the maximum value of q in the sum in Eq. D.37 in Maartens thesis
      * note that this equation is incorrect/incomplete, see manual
      */
@@ -85,6 +85,7 @@ int main(int argc,char* argv[]){
     std::string outputdir=argv[7];
     double a=atof(argv[8]);
     double b = atof(argv[9]);
+    double c = atof(argv[10]);
 
     if(!pairs.compare("all")&&!isospin.compare("all")){
         NucleusPP  nucpp("../data/mosh","../data/mosh",A,Z); // idem
@@ -169,7 +170,7 @@ int main(int argc,char* argv[]){
     }
     else if(!pairs.compare("iso")){
         NucleusIso nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
-        ob(nucl_name,outputdir,&nuc,hard,a,b);
+        ob(nucl_name,outputdir,&nuc,hard,a,b,c);
     }
     else {std::cerr << "Invalid fifth argument (pairs): select either pp, nn, pn(=np) or all or iso " << pairs << std::endl; exit(-1); assert(1==0);} 
 }

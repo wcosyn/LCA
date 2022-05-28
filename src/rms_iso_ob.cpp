@@ -6,8 +6,8 @@ using std::endl;
 using std::cout;
 using std::cerr;
 
-rms_iso_ob::rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , double a, double b, bool hard, bool central, bool tensor, bool isospin)
-    : operator_virtual_iso_ob( nucleus, norm ,  a, b, hard, central, tensor, isospin)
+rms_iso_ob::rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm , double a, double b, double c,bool hard, bool central, bool tensor, bool isospin)
+    : operator_virtual_iso_ob( nucleus, norm ,  a, b,c, hard, central, tensor, isospin)
 {
     //cout << "ob_d rms operator made" << endl;
     double sqrtnu=sqrt(nu);
@@ -828,8 +828,8 @@ double rms_iso_ob::getExp_ts(const int i) const{
 
 }
 
-void rms_iso_ob::nunorm(double nu1, double nu2, IsoMatrixElement newnorm){
-    double hbaromega = nu1 * pow(A,-1./3.) - nu2 * pow(A,-2./3.);
+void rms_iso_ob::nunorm(double nu1, double nu2, double nu3,IsoMatrixElement newnorm){
+    double hbaromega = nu1 * pow(A,-1./3.) - nu2 * pow(A,-2./3.)+nu3*(N-Z);
     nu = 938. * hbaromega / 197.327/197.327;
     double sqrtnu = sqrt(nu);
     norm = newnorm;

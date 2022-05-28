@@ -12,7 +12,7 @@ using namespace std;
 
 #include "isomatrixelement.h"
 
-void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myfile, double a, double b){
+void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myfile, double a, double b,double c){
 
     int N=A-Z;
 
@@ -20,7 +20,7 @@ void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myf
     //                                             double(N)*Z/(A*(A-1)),double(N)*Z/(A*(A-1)));
 
     norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
-    no.nunorm(a,b);
+    no.nunorm(a,b,c);
     IsoMatrixElement norm_mf= no.sum_me_coefs( &nob );
     IsoMatrixElement norm_corr= no.sum_me_corr( &nob );
     IsoMatrixElement norm=norm_mf+norm_corr;
@@ -30,7 +30,7 @@ void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myf
     // cout << norm_mf.norm_p(A,Z) << " " << (norm_mf*defnorm).getValue(4) <<  endl;
     // cout << norm.getValue(0) << " " << norm.getValue(1)  << " " << norm.getValue(2)  << " " << norm.getValue(3)  << endl;
     struct rms_iso_ob::rms_ob_params nob_params =  {-1, -1, -1, -1};
-    rms_all.nunorm(a,b,norm);
+    rms_all.nunorm(a,b,c,norm);
     IsoMatrixElement ra = rms_all.sum_me_coefs( &nob_params );
     // cout << "blaaa " << sqrt((ra).getValue(4)*A/Z) << " " << sqrt((ra).getValue(5)*A/N) << " " << sqrt((ra).getValue(6)) << endl;
     // exit(1);
@@ -67,77 +67,81 @@ int main(int argc,char* argv[]){
 
     int limit=atoi(argv[1]);
 
-    int A[11] = {4,9,12,16,27,40,48,56,108,197,208};
-    int Z[11] = {2,4,6,8,13,20,20,26,47,79,82};
+    int A[13] = {3,3,4,9,12,16,27,40,48,56,108,197,208};
+    int Z[13] = {1,2,2,4,6,8,13,20,20,26,47,79,82};
 
     ofstream myfile;
     myfile.open ("rms4.txt");
     myfile << "#A\tZ\tallIPM\tallLCA\tallLCA2\tallLCA3\tp IPM\tp LCA1\tp LCA2\tp LCA3\tn IPM\tn LCA1\tn LCA2\tn LCA3\ts IPM\ts LCA1\ts LCA2\ts LCA3" << std::endl;
 
     for(int i=0;i<limit;i++){
-        double a=45.,b=25.;
+        double a=45.,b=25.,c=0.0;
         NucleusIso nuc( "../data/mosh","../data/mosh" , A[i], Z[i] );
         int N=A[i]-Z[i];
-        norm_iso_ob no( &nuc, IsoMatrixElement(double(Z[i])*(Z[i]-1)/(A[i]*(A[i]-1)),double(N)*(N-1)/(A[i]*(A[i]-1)),
+        norm_iso_ob no( &nuc, IsoMatrixElement((Z[i]==1? 1. : double(Z[i])*(Z[i]-1))/(A[i]*(A[i]-1)),(N==1? 1. : double(N)*(N-1))/(A[i]*(A[i]-1)),
                                                 double(N)*Z[i]/(A[i]*(A[i]-1)),double(N)*Z[i]/(A[i]*(A[i]-1))), 
-                                                a,b,true, true, true, true);
+                                                a,b,c,true, true, true, true);
         std::cout << "hard A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "hard ";
 
-        rms_iso_ob rms_all( &nuc, IsoMatrixElement(1.,1.,1.,1.), a,b,true, true, true, true);
+        rms_iso_ob rms_all( &nuc, IsoMatrixElement(1.,1.,1.,1.), a,b,c,true, true, true, true);
  
-        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
         no.setHard(0);
         rms_all.setHard(0);
         std::cout << "soft A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "soft ";
 
-        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
 
         //MF fitted
         //a=46.19588; b=26.90295;  //old fit to total matter radius
         //proton charge radius direct
-        a = 41.3478, b = 15.6617;
+        a = 41.3478, b = 15.6617,c=0.0;
+        
         std::cout << "MFfit A:" << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "MFfit ";
-        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
         //proton charge radius with corr
-        a = 40.0221, b = 2.7847;
+        //a=41.25803,b=10.35233,c=-0.01580;
+        a = 40.0221, b = 2.7847,c=0.0;
         std::cout << "MFfitcorr A:" << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "MFfitcorr ";
-        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
 
         //hard fitted
-        //a=41.5040; b=23.4984;
-        a = 37.7716, b = 14.8646;
+        a=41.5040; b=23.4984;
+        //a = 37.7716, b = 14.8646,c=0.0;
         no.setHard(1);
         rms_all.setHard(1);
         std::cout << "hardfit A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "hardfit ";
-        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
-        a = 36.6787, b = 4.1070;
+        a = 36.38594, b = 4.1070,c=0.0; 
+        //a=36.63285,b=6.70381,c=-0.00441; 
         std::cout << "hardfitcorr A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "hardfitcorr ";
-        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
 
     //soft fitted
     //    a = 41.7015, b = 21.1711;
-        a = 37.7306, b = 11.8701;
+        a = 37.7306, b = 11.8701,c=0.0;
         no.setHard(0);
         rms_all.setHard(0);
         std::cout << "softfit A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "softfit ";
-        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c=1.);
 
-        a = 36.4603, b = 0.0113;
+        a = 36.4603, b = 0.0113,c=0.0;
+        //a=36.40906,b=3.43292,c=-0.00750; 
         std::cout << "softfitcorr A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "softfitcorr ";
-        calcrms(A[i],Z[i],no,rms_all,myfile,a,b);
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
     }
     myfile.close();
