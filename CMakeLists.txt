@@ -36,7 +36,7 @@ set(PROFILE_FLAGS ${RELEASE_FLAGS})
 
 if (CMAKE_COMPILER_IS_GNUCXX)
 MESSAGE("--- Found GNU compiler collection")
-  set(RELEASE_FLAGS ${RELEASE_FLAGS} -march=native -mtune=native -pipe -fopenmp)
+  set(RELEASE_FLAGS ${RELEASE_FLAGS} -march=native -mtune=native -pipe -fopenmp -std=c++11)
   # set(DEBUG_FLAGS ${DEBUG_FLAGS} -g )
   set(PROFILE_FLAGS ${PROFILE_FLAGS} -g -O3 -fopenmp)
 endif (CMAKE_COMPILER_IS_GNUCXX)
