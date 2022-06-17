@@ -829,7 +829,7 @@ double rms_iso_ob::getExp_ts(const int i) const{
 }
 
 void rms_iso_ob::nunorm(double nu1, double nu2, double nu3,IsoMatrixElement newnorm){
-    double hbaromega = nu1 * pow(A,-1./3.) - nu2 * pow(A,-2./3.)+nu3*(N-Z);
+    double hbaromega = nu1 * pow(A,-1./3.) - nu2 * pow(A,-2./3.)+nu3*(N-Z)/((double)A);
     nu = 938. * hbaromega / 197.327/197.327;
     double sqrtnu = sqrt(nu);
     norm = newnorm;

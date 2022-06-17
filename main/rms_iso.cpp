@@ -29,7 +29,7 @@ int main(int argc,char* argv[]){
         IsoMatrixElement norm = norm_mf+norm_corr;
         std::cout << "norm\t"  << norm_mf.norm(A[i],Z[i]) << "\t" << norm_corr.norm(A[i],Z[i]) << "\t" << (norm_mf+ norm_corr).norm(A[i],Z[i])  << std::endl;
         std::cout << norm.getValue(0) << std::endl;
-        rms_iso_ob rms_all( &nuc, norm, 45. ,25.,true, true, true,true);
+        rms_iso_ob rms_all( &nuc, norm, 45. ,25.,1.0,true, true, true,true);
         struct rms_iso_ob::rms_ob_params nob_params = {-1, -1, -1, -1};
         IsoMatrixElement ra = rms_all.sum_me_coefs( &nob_params );
         IsoMatrixElement rca = rms_all.sum_me_corr( &nob_params );

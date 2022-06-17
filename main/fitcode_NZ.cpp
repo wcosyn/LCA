@@ -46,11 +46,12 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
     {
         
         int M1=A[i]-Z[i];
-        double hbaromega = a * pow(A[i],-1./3.) - b * pow(A[i],-2./3.)+c*(M1-Z[i]);
+        double hbaromega = a * pow(A[i],-1./3.) - b * pow(A[i],-2./3.)+c*(M1-Z[i])/A[i];
         //cout << endl << endl << i << " CALLING " << a << " " << b << " " << c << " " << 938. * hbaromega / 197.327/197.327 << endl << endl;
         double Yi;
         if (hbaromega<0) Yi=0.;
         else{
+            int M = A[i]-Z[i];
             norm_all[i]-> nunorm(a,b,c);
             norm_iso_ob::norm_ob_params nob= {-1, -1, -1, -1};
             IsoMatrixElement norm_mf = norm_all[i]->sum_me_coefs( &nob );
@@ -65,7 +66,7 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
             //Yi = sqrt((((ra+rca)*norm).getValue(4)/norm.norm_p(A[i],Z[i])*Z[i]+((ra+rca)*norm).getValue(5)/norm.norm_n(A[i],Z[i])*M)/A[i]);
             //Yi = sqrt((ra+rca).getValue(6));
             //Yi = sqrt((ra+rca).getValue(4)*A[i]/Z[i]);
-            Yi = sqrt((ra+rca).getValue(4)*A[i]/Z[i]+0.769-(A[i]-Z[i])/Z[i]*0.36+0.033);
+            Yi = sqrt((ra+rca).getValue(4)*A[i]/Z[i]+0.769-(A[i]-Z[i])/Z[i]*0.116+0.033);  //check 0.36 to 0.116
         }
         gsl_vector_set (f, i , Yi - y[i]); 
         cout << A[i] << " " << Z[i] << " " ;
@@ -92,7 +93,7 @@ void callback (const size_t iter, void *params, const gsl_multifit_nlinear_works
 };
 
 int main (void){
-    const gsl_multifit_nlinear_type *T = gsl_multifit_nlinear_trust;
+    const gsl_multifit_nlinear_type *T = gsl_multifit_nlinear_trust;    
     gsl_multifit_nlinear_workspace *w;
     gsl_multifit_nlinear_fdf fdf;
     gsl_multifit_nlinear_parameters fdf_params = gsl_multifit_nlinear_default_parameters();
