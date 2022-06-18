@@ -127,10 +127,18 @@ int main(int argc,char* argv[]){
 
 
         a = 45.0, b= 25.0, c=0.0;   
-        //a = 36.6787, b = 4.1070,c=0.0;  //og
         //a=36.63285,b=6.70381,c=-0.00441;  //10
-        //a= 35.85733, b=5.49903, c= 0.00424; //13 new
         std::cout << "hardfitcorr basic A: " << A[i] << "\tZ: " << Z[i] << std::endl;
+        myfile << "hardfitcorr ";
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
+
+        a = 36.6787, b = 4.1070,c=0.0;  //old
+        std::cout << "hardfitcorr old A: " << A[i] << "\tZ: " << Z[i] << std::endl;
+        myfile << "hardfitcorr ";
+        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
+
+        a= 35.85733, b=5.49903, c= 0.00424; //13 new
+        std::cout << "hardfitcorr new A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "hardfitcorr ";
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
@@ -145,35 +153,14 @@ int main(int argc,char* argv[]){
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
         a = 45.0, b= 25.0, c=0.0;
-        //a = 36.4603, b = 0.0113,c=0.0; //og
-        //a=36.40906,b=3.43292,c=-0.00750; // 10
-        //a= 35.67156, b=1.73896, c=0.00431; //13 new
         std::cout << "softfitcorr basic A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "softfitcorr ";
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
 
-
-        a = 36.6787, b = 4.1070,c=0.0;  //old
-        //a=36.63285,b=6.70381,c=-0.00441;  //10
-        //a= 35.85733, b=5.49903, c= 0.00424; //13 new
-        std::cout << "hardfitcorr old A: " << A[i] << "\tZ: " << Z[i] << std::endl;
-        myfile << "hardfitcorr ";
-        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
-
-
         a = 36.4603, b = 0.0113,c=0.0; //old
-        //a=36.40906,b=3.43292,c=-0.00750; // 10
-        //a= 35.67156, b=1.73896, c=0.00431; //13 new
         std::cout << "softfitcorr old A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "softfitcorr ";
-        calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
-
-
-
-        a= 35.85733, b=5.49903, c= 0.00424; //13 new
-        std::cout << "hardfitcorr new A: " << A[i] << "\tZ: " << Z[i] << std::endl;
-        myfile << "hardfitcorr ";
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
 
