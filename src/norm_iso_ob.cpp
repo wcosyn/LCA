@@ -352,7 +352,7 @@ double norm_iso_ob::getExp_ts(const int i) const{
 
 void norm_iso_ob:: nunorm(double nu1, double nu2,double nu3)
 {
-    double hbaromega = nu1 * pow(A,-1./3.) - nu2 * pow(A,-2./3.)+nu3*(N-Z)/((double)A);
+    double hbaromega = nu1 * pow(A,-1./3.) - pow(pow(nu2,2.0),0.5) * pow(A,-2./3.)+nu3*((N-Z)/(A));
     nu = 938. * hbaromega / 197.327/197.327;
     double sqrtnu = sqrt(nu);
 

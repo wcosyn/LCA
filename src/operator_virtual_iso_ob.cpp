@@ -17,7 +17,7 @@ operator_virtual_iso_ob::operator_virtual_iso_ob( NucleusIso* nucleus,  const Is
     N=nucleus->getN();
     Z=nucleus->getZ();
 
-    double hbaromega = nu1 * pow(A, -1./3.) - nu2 * pow( A, -2./3.)+nu3 *(N-Z)/((double)A); //MeV
+    double hbaromega = nu1 * pow(A, -1./3.) - pow(pow(nu2,2.0),0.5) * pow( A, -2./3.)+nu3 *(N-Z)/(A); //MeV
     nu = 938.*hbaromega/197.327/197.327; // Mev*Mev/MeV/MeV/fm/fm
 }
 

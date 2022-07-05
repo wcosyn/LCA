@@ -17,7 +17,7 @@ using namespace std;
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multifit_nlinear.h>
 
-#define N 13 /* number of data points to fit*/
+#define N 6 /* number of data points to fit*/
 
 
 struct data {
@@ -46,7 +46,7 @@ int ho_f (const gsl_vector * x, void *data, gsl_vector * f) {
     {
         
         int M1=A[i]-Z[i];
-        double hbaromega = a * pow(A[i],-1./3.) - b * pow(A[i],-2./3.)+c*(M1-Z[i])/A[i];
+        double hbaromega = a * pow(A[i],-1./3.) - pow(pow(b,2.0),0.5) * pow(A[i],-2./3.)+c*(M1-Z[i])/A[i];
         //cout << endl << endl << i << " CALLING " << a << " " << b << " " << c << " " << 938. * hbaromega / 197.327/197.327 << endl << endl;
         double Yi;
         if (hbaromega<0) Yi=0.;

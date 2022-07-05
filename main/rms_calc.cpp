@@ -33,7 +33,7 @@ void calcrms(int A, int Z, norm_iso_ob & no, rms_iso_ob & rms_all, ofstream &myf
     rms_all.nunorm(a,b,c,norm);
     IsoMatrixElement ra = rms_all.sum_me_coefs( &nob_params );
     // cout << "blaaa " << sqrt((ra).getValue(4)*A/Z) << " " << sqrt((ra).getValue(5)*A/N) << " " << sqrt((ra).getValue(6)) << endl;
-    // exit(1);
+    // exit(1); 
     IsoMatrixElement rca = rms_all.sum_me_corr( &nob_params );
 
     cout << (ra*norm).getValue(0) << " " << (ra*norm).getValue(1) << " " << (ra*norm).getValue(2) << " " << (ra*norm).getValue(3) << endl;
@@ -97,7 +97,7 @@ int main(int argc,char* argv[]){
 
 
         //MF fitted
-        //a=46.19588; b=26.90295;  //old fit to total matter radius
+        //a=46.19588; b=26.90295;  //old fit to total matter radius 
         //proton charge radius direct
         a = 41.3478, b = 15.6617,c=0.0;
         
@@ -137,7 +137,10 @@ int main(int argc,char* argv[]){
         myfile << "hardfitcorr ";
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
-        a= 35.85733, b=5.49903, c= 0.00424; //13 new
+        //a= 35.85733, b=5.49903, c= 0.00424; //13 new original (N-Z) fit
+        //a = 34.07552, b=-1.47857, c= 1.63229; //(N-Z)/A fit 
+        //a = 16.61334,b = -40.28310,c = 39.37076; //small nuclei b is negative
+        a = 35.06472, b = -0.00618,c = 17.73591;
         std::cout << "hardfitcorr new A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "hardfitcorr ";
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
@@ -164,11 +167,14 @@ int main(int argc,char* argv[]){
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
 
 
-        a= 35.67156, b=1.73896, c=0.00431; //13 new
+        //a= 35.67156, b=1.73896, c=0.00431; //13 new original N-Z fit
+        //a = 33.69099, b = -6.04923, c = 1.69830;
+        //a = 14.15977,b = -49.86365,c = 39.71734; //small nuclei b is negative
+        a = 37.31138,b = 0.01837,c = 16.88126;
         std::cout << "softfitcorr new A: " << A[i] << "\tZ: " << Z[i] << std::endl;
         myfile << "softfitcorr ";
         calcrms(A[i],Z[i],no,rms_all,myfile,a,b,c);
-
+        
     }
     myfile.close();
     return 0;

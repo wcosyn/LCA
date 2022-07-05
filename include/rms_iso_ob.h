@@ -22,7 +22,7 @@ public:
      * @param norm denominator of matrix elements, see norm_iso_ob for calculations
      * @param nu1 coefficient A^(-1/3) of hbaromega calculation for nu
      * @param nu2 coefficient A^(-2/3) of hbaromega calculation for nu
-     * @param nu3 coefficient (N-Z) of hbaromega calculation for nu
+     * @param nu3 coefficient (N-Z)/A of hbaromega calculation for nu
      */
     rms_iso_ob(NucleusIso* nucleus, const IsoMatrixElement &norm, double nu1, double nu2, double nu3,bool hard, bool central= true, bool tensor=true, bool isospin=true);
     /**
