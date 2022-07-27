@@ -32,7 +32,10 @@ target_link_libraries(tbmd_rel ${LIBS} nmd)
 add_executable(fitcode_NZ fitcode_NZ.cpp)
 target_link_libraries(fitcode_NZ ${LIBS} nmd)
 
-install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel fitcode_NZ
+add_executable(SpecMF SpecMF.cpp)
+target_link_libraries(SpecMF ${LIBS} nmd)
+
+install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel fitcode_NZ SpecMF
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)
 
 	if(STATIC_BUILD)
@@ -62,6 +65,9 @@ install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel
 
 	add_executable(fitcodeST fitcode.cpp)
 	target_link_libraries(fitcodeST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
+
+	add_executable(SpecMF ST SpecMF.cpp)
+	target_link_libraries(SpecMFST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
 
 	install(TARGETS rmsST rms_isoST rms_calcST normobST normob_isoST obmdST normtbST tbmd_relST fitcodeST
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)

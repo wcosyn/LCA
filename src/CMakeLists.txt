@@ -33,6 +33,7 @@ set( SRC
 	rms_ob.cpp
 	rms_iso_ob.cpp
 	shell.cpp
+	spectralFunction.cpp
 	speedy.cpp
 	threebodycoef.cpp
 	threej.cpp
