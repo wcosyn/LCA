@@ -108,7 +108,7 @@ void spectralFunction::write( char* outputdir, const char* name, int nA, int lA,
     dens_ob_params dop = { 0, nA, lA, nB, lB, t, i0, ic, it, is, icc, ict, itt, iss, ics, ist}; // first param (0) is for momentum
 
     cout << "[Density_ob3] : initializing MF " << endl; cout.flush();
-    sum_me_coefs( &dop );
+    sum_me_pairs( &dop );
     cout << "[Density_ob3] : initialize corr " << endl; cout.flush();
     sum_me_corr( &dop );
     cout << "[Density_ob3] initialization done ... " << endl; cout.flush();
@@ -129,7 +129,7 @@ void spectralFunction::write( char* outputdir, const char* name, int nA, int lA,
         density_ob_integrand_cf* cft = new density_ob_integrand_cf( A, k, speedy::tensor_fit2, nu );
         density_ob_integrand_cf* cfs = new density_ob_integrand_cf( A, k, speedy::spinisospin_fit2, nu );
 
-        double mf= 0, corr= 0;
+        double mf= 0;
 
         /*
         if( every selection is -1 )
@@ -148,20 +148,8 @@ void spectralFunction::write( char* outputdir, const char* name, int nA, int lA,
             mf= i0->get( cf0, cf0 )*2/M_PI*sqrt(8)/norm/(A-1);  // we take info from the density_ob_integrand3 objects
         }
 
-        double corr_c= ( ic->get( cf0, cfc )+ icc->get( cfc, cfc ));
-        double corr_t= ( it->get( cf0, cft )+ itt->get( cft, cft ));
-        double corr_s= ( is->get( cf0, cfs )+ iss->get( cfs, cfs ));
-        double corr_ct= ( ict->get( cfc, cft ));
-        double corr_cs= ( ics->get( cfc, cfs ));
-        double corr_st= ( ist->get( cfs, cft ));
-
-        corr= (corr_c+ corr_t+ corr_s+ corr_ct+ corr_cs+ corr_st)*2/M_PI*sqrt(8)/norm;
-
 
         delete cf0;
-        delete cfc;
-        delete cft;
-        delete cfs;
 
 
         #pragma omp critical(write)
@@ -169,19 +157,9 @@ void spectralFunction::write( char* outputdir, const char* name, int nA, int lA,
             file << std::scientific << std::setprecision(3);
             file << std::setw(10) << k;
             file << "   " << std::setw(10) << mf;
-            file << "   " << std::setw(10) << corr;
-            file << "   " << std::setw(10) << mf+ corr;
-            file << "   " << std::setw(10) << corr_c*2/M_PI*sqrt(8)/norm;
-            file << "   " << std::setw(10) << corr_t*2/M_PI*sqrt(8)/norm;
-            file << "   " << std::setw(10) << corr_s*2/M_PI*sqrt(8)/norm;
-            file << "   " << std::setw(10) << corr_ct*2/M_PI*sqrt(8)/norm;
-            file << "   " << std::setw(10) << corr_cs*2/M_PI*sqrt(8)/norm;
-            file << "   " << std::setw(10) << corr_st*2/M_PI*sqrt(8)/norm;
             file << endl;
             integral_mf  += kstep*k*k*(mf);
-            integral     += kstep*k*k*(corr);
             kinenergy_mf += kstep*k*k*k*k*(mf); //does not include mass denominator!!!
-            kinenergy_co += kstep*k*k*k*k*(corr); //does not include mass denominator!!!
         }
         if ( !(int_k%10) ) {
             cout << k << " done by " << omp_get_thread_num() << "/" << omp_get_num_threads() << endl;
@@ -203,15 +181,6 @@ void spectralFunction::write( char* outputdir, const char* name, int nA, int lA,
     *intmf= integral_mf;
     *intcorr= integral;
     delete i0;
-    delete ic;
-    delete it;
-    delete icc;
-    delete itt;
-    delete ict;
-    delete is;
-    delete ics;
-    delete ist;
-    delete iss;
 }
 
 

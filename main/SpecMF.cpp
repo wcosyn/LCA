@@ -12,6 +12,10 @@
 #include <sstream>
 #include "threej.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 
 
 
@@ -25,8 +29,23 @@ void SpecMF(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     Nucleusall nucall("../data/mosh","../data/mosh",A,Z);
     norm_ob no(&nucall);
     norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
-    double norm_mf  = no.sum_me_pairs( &nob );
-
+    double norm_mf  = no.sum_me_pairs1( &nob );
+    no.sum_me_pairs2(&nob);
+    double me_sum = 0.;
+    /*
+    for (int p=0;p<nucall.get_number_of_pairs();p++){
+        Pair* pair = nucall.getPair(p);
+        double me = no.get_me(pair, (void*) &nob);
+        printf("[Info]: me for pair [% 5d] ",p);
+        printf("(n,l,j,mj,t) = (% d,% d,% d,% d,% d)",pair->getn1(),pair->getl1(),pair->gettwo_j1(),pair->gettwo_mj1(),pair->gettwo_t1());
+        printf(",(% d,% d,% d,% d,% d)  ",pair->getn2(),pair->getl2(),pair->gettwo_j2(),pair->gettwo_mj2(),pair->gettwo_t2());
+        printf(" norm : %.2f  ",pair->getfnorm());
+        double normP = pair->getfnorm(); 
+        printf("ME is %f \n",me);
+        me_sum+= me*normP;
+    }
+    printf("\n[Info]: ME sum is %f\n",me_sum);
+    */
     spectralFunction spectralFunction(nuc,true,true,true,norm_mf,10); // nuc, central,tensor,nucl,norm,qmax (default=7)
     /* qmax is the maximum value of q in the sum in Eq. D.37 in Maartens thesis
      * note that this equation is incorrect/incomplete, see manual
@@ -34,7 +53,6 @@ void SpecMF(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     double mf;
     spectralFunction.write("../results",name.c_str(),-1,-1,-1,-1, isospin,&mf); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
-
 
 int main(int argc,char* argv[]){
     if (argc<8){

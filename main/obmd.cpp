@@ -30,6 +30,19 @@ void ob(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     double norm_corr= no.sum_me_corr( &nob );
     double norm_all = norm_mf+norm_corr;
 
+    double me_sum = 0.;
+    for (int p=0;p<nucall.get_number_of_pairs();p++){
+        Pair* pair = nucall.getPair(p);
+        double me = no.get_me(pair, (void*) &nob);
+        printf("[Info]: me for pair [% 5d] ",p);
+        printf("(n,l,j,mj,t) = (% d,% d,% d,% d,% d)",pair->getn1(),pair->getl1(),pair->gettwo_j1(),pair->gettwo_mj1(),pair->gettwo_t1());
+        printf(",(% d,% d,% d,% d,% d)  ",pair->getn2(),pair->getl2(),pair->gettwo_j2(),pair->gettwo_mj2(),pair->gettwo_t2());
+        printf(" norm : %.2f  ",pair->getfnorm());
+        double normP = pair->getfnorm(); 
+        printf("ME is %f \n",me);
+        me_sum+= me*normP;
+    }
+    printf("\n[Info]: ME sum is %f\n",me_sum);
     density_ob3 dob3(nuc,true,true,true,norm_all,10); // nuc, central,tensor,nucl,norm,qmax (default=7)
     /* qmax is the maximum value of q in the sum in Eq. D.37 in Maartens thesis
      * note that this equation is incorrect/incomplete, see manual

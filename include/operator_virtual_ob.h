@@ -30,7 +30,21 @@ public:
      * @param params parameter specific to child class
      * @see sum_me_coefs Similar function but uses sum over paircoefs
      */
-    double sum_me_pairs( void* params );
+    double sum_me_pairs( void* params);
+    /**
+     * \brief Gives the two-body operator EV of the mean field part, using sum over coupled states in Nucleus::paircoefs map
+     *
+     * @param params parameter specific to child class.
+     * @see sum_me_pairs Similar function but uses sum over pairs.
+     */
+    double sum_me_pairs1( void* params);
+    /**
+     * \brief Gives the two-body operator EV of the mean field part, using sum over coupled states in Nucleus::paircoefs map
+     *
+     * @param params parameter specific to child class.
+     * @see sum_me_pairs Similar function but uses sum over pairs.
+     */
+    void sum_me_pairs2( void* params);
     /**
      * \brief Gives the two-body operator EV of the mean field part, using sum over coupled states in Nucleus::paircoefs map
      *

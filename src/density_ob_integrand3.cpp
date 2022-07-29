@@ -1,5 +1,5 @@
 #include "density_ob_integrand3.h"
-
+#include "nucleus.h"
 #include <map>
 using std::map;
 #include <string>
