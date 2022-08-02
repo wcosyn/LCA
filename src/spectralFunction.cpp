@@ -108,7 +108,7 @@ void spectralFunction::write( char* outputdir, const char* name, int nA, int lA,
     dens_ob_params dop = { 0, nA, lA, nB, lB, t, i0, ic, it, is, icc, ict, itt, iss, ics, ist}; // first param (0) is for momentum
 
     cout << "[Density_ob3] : initializing MF " << endl; cout.flush();
-    sum_me_pairs( &dop );
+    sum_me_pairs1( &dop );
     cout << "[Density_ob3] : initialize corr " << endl; cout.flush();
     sum_me_corr( &dop );
     cout << "[Density_ob3] initialization done ... " << endl; cout.flush();
