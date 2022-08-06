@@ -160,6 +160,9 @@ double operator_virtual_ob::sum_me_pairs1( void* params )
 
         double me=
             get_me( pair, params );
+        
+        sum+= pair_norm* me ;
+        /*
         int n1 = pair->getn1();
         int l1 = pair->getl1();
         int j1 = pair->gettwo_j1();
@@ -171,6 +174,8 @@ double operator_virtual_ob::sum_me_pairs1( void* params )
         int j2 = pair->gettwo_j2();
         int mj2 = pair->gettwo_mj2();
         int t2 = pair->gettwo_t2();
+        */
+        /*
         if(sh==0){
             if(l1==0 && l2==0 && (t1==1 || t2==1)){
                 sum+= pair_norm* me ;
@@ -214,6 +219,8 @@ double operator_virtual_ob::sum_me_pairs1( void* params )
                 sum+=  pair_norm* me ;
             }
         }
+        */
+        
     }
 
     return sum/ (A-1.)/ norm; //factor A-1 is because we compute a one-body operator as a two-body one for coupled states: O(1)+O(2)
@@ -256,11 +263,15 @@ void operator_virtual_ob::sum_me_pairs2( void* params )
         int j2 = pair->gettwo_j2();
         int mj2 = pair->gettwo_mj2();
         int t2 = pair->gettwo_t2();
+        
         if(sh==0){
             if(l1==0 && l2==0 && (t1==1 || t2==1)){
                 sum+= pair_norm* me ;
                 c1+=1;
+                cout<< "n1= " <<n1 << " l1= "<<l1<< " j1= "<<j1<< " mj1= " << mj1<< " t1= " <<t1<<endl;
+                cout<< "n2= " <<n2 << " l2= "<<l2<< " j2= "<<j2<< " mj2= " << mj2<< " t2= " <<t2<<endl;
             }
+            /*
             else if (l1==0 &&l2==1 && t1 ==1 && t2==1 )
             {
                 sum+= 0.5 * pair_norm* me ;
@@ -281,13 +292,17 @@ void operator_virtual_ob::sum_me_pairs2( void* params )
                 sum+=  pair_norm* me ;
                 c3+=1;
             }
+            */
         }
         else if(sh==1)
         {
             if(l1==1 && l2==1 && (t1==1 || t2==1)){
                 sum+= pair_norm* me ;
                 c1+=1;
+                cout<< "n1= " <<n1 << " l1= "<<l1<< " j1= "<<j1<< " mj1= " << mj1<< " t1= " <<t1<<endl;
+                cout<< "n2= " <<n2 << " l2= "<<l2<< " j2= "<<j2<< " mj2= " << mj2<< " t2= " <<t2<<endl;
             }
+            /*
             else if (l1==0 &&l2==1 && t1 ==1 && t2==1 )
             {
                 sum+= 0.5 * pair_norm* me ;
@@ -308,15 +323,18 @@ void operator_virtual_ob::sum_me_pairs2( void* params )
                 sum+=  pair_norm* me ;
                 c3+=1;
             }
+            */
         }
+        
     }
-
+    /*
     cout<< "sum= "<<sum/ (A-1.)/ norm<<endl; //factor A-1 is because we compute a one-body operator as a two-body one for coupled states: O(1)+O(2)
     cout<<"norm= "<<norm<<endl;
     cout<<"c1 = "<<c1<<endl;
     cout<<"c2 = "<< c2<<endl;
     cout<<"c3 = "<< c3<<endl;
     cout<<"shell = "<< sh<<endl;
+    */
 }
 //mean-field paircoefs
 double operator_virtual_ob::sum_me_coefs( void* params )

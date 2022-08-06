@@ -25,12 +25,14 @@ void SpecMF(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     //NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
     // NucleusNP  nuc("../data/mosh","../data/mosh",A,Z); // idem
     // NucleusNN  nuc("../data/mosh","../data/mosh",A,Z); // idem
-
+    WavefunctionP::mapwfp.setA( A, 45, 25);
+    WavefunctionP::mapwfp.setpstep( 0.05 );
+  
     Nucleusall nucall("../data/mosh","../data/mosh",A,Z);
     norm_ob no(&nucall);
     norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
     double norm_mf  = no.sum_me_pairs1( &nob );
-    no.sum_me_pairs2(&nob);
+    //no.sum_me_pairs(&nob);
     double me_sum = 0.;
     /*
     for (int p=0;p<nucall.get_number_of_pairs();p++){
@@ -88,46 +90,46 @@ int main(int argc,char* argv[]){
 
         norm_ob no(&nucall);
         norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
-        double norm_mf  = no.sum_me_pairs( &nob );
+        double norm_mf  = no.sum_me_pairs1( &nob );
         std::cout << "all all " << norm_mf  <<std::endl;
         nob.t=-1;
-        norm_mf  = no.sum_me_pairs( &nob );
+        norm_mf  = no.sum_me_pairs1( &nob );
         std::cout << "all n " << norm_mf  <<std::endl;
         nob.t=1;
-        norm_mf  = no.sum_me_pairs( &nob );
+        norm_mf  = no.sum_me_pairs1( &nob );
         std::cout << "all p " << norm_mf  <<std::endl;
         
         norm_ob nopp(&nucpp);
         nob.t=0;
-        norm_mf  = nopp.sum_me_pairs( &nob );
+        norm_mf  = nopp.sum_me_pairs1( &nob );
         std::cout << "pp all " << norm_mf  <<std::endl;
         nob.t=-1;
-        norm_mf  = nopp.sum_me_pairs( &nob );
+        norm_mf  = nopp.sum_me_pairs1( &nob );
         std::cout << "pp n " << norm_mf <<std::endl;
         nob.t=1;
-        norm_mf  = nopp.sum_me_pairs( &nob );
+        norm_mf  = nopp.sum_me_pairs1( &nob );
         std::cout << "pp p " << norm_mf <<std::endl;
 
         norm_ob nonn(&nucnn);
         nob.t=0;
-        norm_mf  = nonn.sum_me_pairs( &nob );
+        norm_mf  = nonn.sum_me_pairs1( &nob );
         std::cout << "nn all " << norm_mf <<std::endl;
         nob.t=-1;
-        norm_mf  = nonn.sum_me_pairs( &nob );
+        norm_mf  = nonn.sum_me_pairs1( &nob );
         std::cout << "nn n " << norm_mf <<std::endl;
         nob.t=1;
-        norm_mf  = nonn.sum_me_pairs( &nob );
+        norm_mf  = nonn.sum_me_pairs1( &nob );
         std::cout << "nn p " << norm_mf <<std::endl;
 
         norm_ob nonp(&nucnp);
         nob.t=0;
-        norm_mf  = nonp.sum_me_pairs( &nob );
+        norm_mf  = nonp.sum_me_pairs1( &nob );
         std::cout << "np all " << norm_mf <<std::endl;
         nob.t=-1;
-        norm_mf  = nonp.sum_me_pairs( &nob );
+        norm_mf  = nonp.sum_me_pairs1( &nob );
         std::cout << "np n " << norm_mf <<std::endl;
         nob.t=1;
-        norm_mf  = nonp.sum_me_pairs( &nob );
+        norm_mf  = nonp.sum_me_pairs1( &nob );
         std::cout << "np p " << norm_mf <<std::endl;
     }
 
