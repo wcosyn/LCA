@@ -27,7 +27,6 @@ void SpecMF(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     // NucleusNN  nuc("../data/mosh","../data/mosh",A,Z); // idem
     WavefunctionP::mapwfp.setA( A, 45, 25);
     WavefunctionP::mapwfp.setpstep( 0.05 );
-  
     Nucleusall nucall("../data/mosh","../data/mosh",A,Z);
     norm_ob no(&nucall);
     norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
@@ -53,7 +52,7 @@ void SpecMF(int A,int Z,std::string name, int isospin, Nucleus *nuc){
      * note that this equation is incorrect/incomplete, see manual
      */
     double mf;
-    spectralFunction.write("../results",name.c_str(),-1,-1,-1,-1, isospin,&mf); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
+    spectralFunction.write("../../spyder/CosynResults",name.c_str(),-1,-1,-1,-1, isospin,&mf); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
 int main(int argc,char* argv[]){

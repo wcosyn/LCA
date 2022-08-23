@@ -134,7 +134,7 @@ double operator_virtual_ob::sum_me_pairs( void* params )
     return sum/ (A-1.)/ norm; //factor A-1 is because we compute a one-body operator as a two-body one for coupled states: O(1)+O(2)
 }
 
-double operator_virtual_ob::sum_me_pairs1( void* params )
+double operator_virtual_ob::sum_me_pairs1( void* params)
 {
     double sum= 0;
     int max= nucleus->get_number_of_pairs();
@@ -145,7 +145,6 @@ double operator_virtual_ob::sum_me_pairs1( void* params )
     int c1=0;
     int c2=0;
     int c3=0;
-    int sh = 0;
     /*
      * Sum over the pairs in the nucleus
      */
@@ -222,120 +221,10 @@ double operator_virtual_ob::sum_me_pairs1( void* params )
         */
         
     }
-
+    //cout<< "sum= "<<sum<< " norm= "<< norm<<endl;
     return sum/ (A-1.)/ norm; //factor A-1 is because we compute a one-body operator as a two-body one for coupled states: O(1)+O(2)
 }
 
-void operator_virtual_ob::sum_me_pairs2( void* params )
-{
-    double sum= 0;
-    int max= nucleus->get_number_of_pairs();
-    // Of course when not necessary, the sum over one particle ( A terms)
-    // is faster than this sum over pairs ( A(A-1)/2 ) terms
-    // but generally a sum over pairs is needed,
-    // and the time gain is only marginal.
-    int c1 =0;
-    int c2 =0;
-    int c3=0;
-    int sh=0;
-    /*
-     * Sum over the pairs in the nucleus
-     */
-    #pragma omp parallel for schedule( dynamic, 10 ) reduction(+:sum) //num_threads(1)
-    for( int i= 0; i < max; i++ ) {
-        Pair* pair= nucleus->getPair(i);
-        nucleus->printPairsPerShell();
-        double pair_norm= pair->getfnorm(); // take normalisation of partially filled shell into account.  Diagonal matrix element so fnorm is ok.
-        if( pair_norm == 0 ) {
-            continue;
-        }
-
-        double me=
-            get_me( pair, params );
-        int n1 = pair->getn1();
-        int l1 = pair->getl1();
-        int j1 = pair->gettwo_j1();
-        int mj1 = pair->gettwo_mj1();
-        int t1 = pair->gettwo_t1();
-        
-        int n2 = pair->getn2();
-        int l2 = pair->getl2();
-        int j2 = pair->gettwo_j2();
-        int mj2 = pair->gettwo_mj2();
-        int t2 = pair->gettwo_t2();
-        
-        if(sh==0){
-            if(l1==0 && l2==0 && (t1==1 || t2==1)){
-                sum+= pair_norm* me ;
-                c1+=1;
-                cout<< "n1= " <<n1 << " l1= "<<l1<< " j1= "<<j1<< " mj1= " << mj1<< " t1= " <<t1<<endl;
-                cout<< "n2= " <<n2 << " l2= "<<l2<< " j2= "<<j2<< " mj2= " << mj2<< " t2= " <<t2<<endl;
-            }
-            /*
-            else if (l1==0 &&l2==1 && t1 ==1 && t2==1 )
-            {
-                sum+= 0.5 * pair_norm* me ;
-                c2+=1;
-            }
-            else if (l1==1 &&l2==0 && t1 ==1 && t2==1 )
-            {
-                sum+= 0.5 * pair_norm* me ;
-                c2+=1;
-            }
-            else if (l1==0 &&l2==1 && t1 ==1 && t2==-1 )
-            {
-                sum+=  pair_norm* me ;
-                c3+=1;
-            }
-            else if (l1==1 &&l2==0 && t1 ==-1 && t2==1 )
-            {
-                sum+=  pair_norm* me ;
-                c3+=1;
-            }
-            */
-        }
-        else if(sh==1)
-        {
-            if(l1==1 && l2==1 && (t1==1 || t2==1)){
-                sum+= pair_norm* me ;
-                c1+=1;
-                cout<< "n1= " <<n1 << " l1= "<<l1<< " j1= "<<j1<< " mj1= " << mj1<< " t1= " <<t1<<endl;
-                cout<< "n2= " <<n2 << " l2= "<<l2<< " j2= "<<j2<< " mj2= " << mj2<< " t2= " <<t2<<endl;
-            }
-            /*
-            else if (l1==0 &&l2==1 && t1 ==1 && t2==1 )
-            {
-                sum+= 0.5 * pair_norm* me ;
-                c2+=1;
-            }
-            else if (l1==1 &&l2==0 && t1 ==1 && t2==1 )
-            {
-                sum+= 0.5 * pair_norm* me ;
-                c2+=1;
-            }
-            else if (l1==1 &&l2==0 && t1 ==1 && t2==-1 )
-            {
-                sum+=  pair_norm* me ;
-                c3+=1;
-            }
-            else if (l1==0 &&l2==1 && t1 ==-1 && t2==1 )
-            {
-                sum+=  pair_norm* me ;
-                c3+=1;
-            }
-            */
-        }
-        
-    }
-    /*
-    cout<< "sum= "<<sum/ (A-1.)/ norm<<endl; //factor A-1 is because we compute a one-body operator as a two-body one for coupled states: O(1)+O(2)
-    cout<<"norm= "<<norm<<endl;
-    cout<<"c1 = "<<c1<<endl;
-    cout<<"c2 = "<< c2<<endl;
-    cout<<"c3 = "<< c3<<endl;
-    cout<<"shell = "<< sh<<endl;
-    */
-}
 //mean-field paircoefs
 double operator_virtual_ob::sum_me_coefs( void* params )
 {
