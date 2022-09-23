@@ -35,10 +35,16 @@ target_link_libraries(fitcode_NZ ${LIBS} nmd)
 add_executable(SpecMF SpecMF.cpp)
 target_link_libraries(SpecMF ${LIBS} nmd)
 
-install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel fitcode_NZ SpecMF
+add_executable(corrSpec corrSpec.cpp)
+target_link_libraries(corrSpec ${LIBS} nmd)
+
+install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel fitcode_NZ SpecMF corrSpec
 	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin)
 
 	if(STATIC_BUILD)
+	add_executable(corrSpecST corrSpec.cpp)
+	target_link_libraries(corrSpecST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
+
 	add_executable(normobST normob.cpp)
 	target_link_libraries(normobST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
 
@@ -66,7 +72,7 @@ install(TARGETS obwd rms rms_iso rms_calc normob normob_iso obmd normtb tbmd_rel
 	add_executable(fitcodeST fitcode.cpp)
 	target_link_libraries(fitcodeST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
 
-	add_executable(SpecMF ST SpecMF.cpp)
+	add_executable(SpecMFST SpecMF.cpp)
 	target_link_libraries(SpecMFST PUBLIC "-static" ${LIBS} nmdST -Wl,-no-whole-archive)
 
 	install(TARGETS rmsST rms_isoST rms_calcST normobST normob_isoST obmdST normtbST tbmd_relST fitcodeST

@@ -37,6 +37,7 @@ public:
      * @param Z the nucleus' number of protons
      */
     NucleusIso( const std::string & inputdir, const std::string & resultdir, const int A, const int Z);
+    NucleusIso( const std::string & inputdir, const std::string & resultdir, const int A, const int Z,const int s,const int s2);
     /**
      * \brief Destructor
      */
@@ -84,6 +85,7 @@ private:
      * \brief Make IsoPaircoefs from list of pairs that is first generated
      */
     void makeisopaircoefs();
+    void makeisopaircoefs(int s,int s2);
 
 
     /**

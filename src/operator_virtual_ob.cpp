@@ -21,7 +21,7 @@ double operator_virtual_ob::sum_me_corr_pairs( void* params )
 {
     double sum= 0;
     int max= nucleus->get_number_of_pairs();
-
+    int sh=0;
     /*
      * Sum over the pairs in the nucleus
      */
@@ -29,16 +29,72 @@ double operator_virtual_ob::sum_me_corr_pairs( void* params )
     for( int i= 0; i < max; i++ ) {
         Pair* pair= nucleus->getPair(i);
         double pair_norm= pair->getfnorm();  //probability! so ok for diagonal matrix elements here... partially filled shells taken into account
+        
+        int n1= pair->getn1();
+        int l1= pair->getl1();
+        int j1 = pair->gettwo_j1();
+        int mj1 = pair->gettwo_mj1();
+        int t1= pair->gettwo_t1();
+        int n2= pair->getn2();
+        int l2= pair->getl2();
+        int j2 = pair->gettwo_j2();
+        int mj2 = pair->gettwo_mj2();
+        int t2= pair->gettwo_t2();
+        double me=0;
+        int s1=1;
+        int s2=1;
+
         if( pair_norm == 0 ) {
             cerr << "CHECK SHOULDN'T HAPPEN " << __FILE__ << __LINE__ << endl;
             continue;
         }
         //symmetries in left & right taken care of in the derived class when applicable
-        double me=
-            get_me_corr_left( pair, params )
-            + get_me_corr_right( pair, params )
-            + get_me_corr_both( pair, params );
+        if(s1==-1 || s2==-1)
+        {
 
+                double me=
+                    get_me_corr_left( pair, params )
+                    + get_me_corr_right( pair, params )
+                    + get_me_corr_both( pair, params );
+        }
+           if(s1==0&&s2==0){
+
+            if(l1==0 && l2==0)
+            {
+                cout <<"ss= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<<" t1= "<<t1<<" t2= "<<t2<<endl;
+                double me=
+                    get_me_corr_left( pair, params )
+                    + get_me_corr_right( pair, params )
+                    + get_me_corr_both( pair, params );
+            }
+           }
+
+
+           else if(s1==1&&s2==1){
+
+            if(l1==1 && l2==1)
+            {
+                cout <<"pp= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<<" t1= "<<t1<<" t2= "<<t2<<endl;
+                double me=
+                    get_me_corr_left( pair, params )
+                    + get_me_corr_right( pair, params )
+                    + get_me_corr_both( pair, params );
+            }
+           }
+           else if(s1==0&& s2==1){
+
+            if(l1==1 || l2==1)
+            {
+                cout <<"ps= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<<" t1= "<<t1<<" t2= "<<t2<<endl;
+                double me=
+                    get_me_corr_left( pair, params )
+                    + get_me_corr_right( pair, params )
+                    + get_me_corr_both( pair, params );
+            }
+           }
+
+        //double a = get_me_corr_left(pair, params);
+        //cout<<"me= "<<me<<endl;
         sum+= me*pair_norm ;
 
         if( !(i%1000) ) {
@@ -104,7 +160,7 @@ double operator_virtual_ob::sum_me_corr( void* params )
 }
 
 //mean-field pairs
-double operator_virtual_ob::sum_me_pairs( void* params )
+double operator_virtual_ob::sum_me_pairs( void* params)
 {
     double sum= 0;
     int max= nucleus->get_number_of_pairs();
@@ -126,13 +182,14 @@ double operator_virtual_ob::sum_me_pairs( void* params )
         }
 
         double me=
-            get_me( pair, params );
+            get_me( pair, params);
 
         sum+= pair_norm* me ;
     }
 
     return sum/ (A-1.)/ norm; //factor A-1 is because we compute a one-body operator as a two-body one for coupled states: O(1)+O(2)
 }
+//mean-field pairs
 
 double operator_virtual_ob::sum_me_pairs1( void* params)
 {

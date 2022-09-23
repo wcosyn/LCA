@@ -100,7 +100,7 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
     density_ob_integrand3* iss = new density_ob_integrand3( A);
     density_ob_integrand3* ict = new density_ob_integrand3( A);
     density_ob_integrand3* ics = new density_ob_integrand3( A);
-    density_ob_integrand3* ist = new density_ob_integrand3( A);
+    density_ob_integrand3* ist = new density_ob_integrand3( A); 
     density_ob_integrand3* i0  = new density_ob_integrand3( A);
     density_ob_integrand3* ic  = new density_ob_integrand3( A);
     density_ob_integrand3* it  = new density_ob_integrand3( A);
@@ -129,7 +129,7 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
         density_ob_integrand_cf* cft = new density_ob_integrand_cf( A, k, speedy::tensor_fit2, nu );
         density_ob_integrand_cf* cfs = new density_ob_integrand_cf( A, k, speedy::spinisospin_fit2, nu );
 
-        double mf= 0, corr= 0;
+        double mf= 0,corr =0;
 
         /*
         if( every selection is -1 )
@@ -140,14 +140,18 @@ void density_ob3::write( char* outputdir, const char* name, int nA, int lA, int 
         }
         else
         */
+        dens_ob_params dop = { k, nA, lA, nB, lB, t, i0, ic, it, is, icc, ict, itt, iss, ics, ist};
         {
             // factor 1/(A-1) because a one-body operator is calculated as 2-body
             // this was taken care of in operator_virtual_ob::sum_me_coefs but that result isn't used here!!
             //rest of the factors is the 4\sqrt{2}/\pi in the master formula (Eq. 56 LCA manual) 
             // + the normalisation supplied with the object (denominator matrix element)            
             mf= i0->get( cf0, cf0 )*2/M_PI*sqrt(8)/norm/(A-1);  // we take info from the density_ob_integrand3 objects
-        }
 
+            //mf= sum_me_pairs(&dop);
+            //corr = sum_me_corr_pairs(&dop);
+        }
+        
         double corr_c= ( ic->get( cf0, cfc )+ icc->get( cfc, cfc ));
         double corr_t= ( it->get( cf0, cft )+ itt->get( cft, cft ));
         double corr_s= ( is->get( cf0, cfs )+ iss->get( cfs, cfs ));
@@ -414,7 +418,11 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
     int factor_right= 1;
     // If diagonal is left = right,
     // so it is not necessary to calculate right
+    
 
+    
+    //if(l1==0 && l2==0 && (t1==1&& t2==1))
+    {
     if( nAs == nBs && lAs == lBs )
         factor_right*=2;
 
@@ -564,6 +572,7 @@ double density_ob3::get_me_corr_left( Pair* pair, void* params )
             }//q
         }//coefj
     }//coefi
+    }
     return 0;
 }
 
@@ -577,7 +586,7 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
     int lBs= dop->lB;
     // If diagonal is left = right,
     // so it is not necessary to calculate right
-
+    
     if( nAs == nBs && lAs == lBs )
         return 0;
 
@@ -731,6 +740,7 @@ double density_ob3::get_me_corr_right( Pair* pair, void* params )
             } //q
         }//coefj
     }//coefi
+    
     return 0;
 }
 
@@ -752,6 +762,12 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
     density_ob_integrand3* integrand_st = dop->ist;
     double pair_norm= pair->getfnorm(); // probability <1 for partially filled shell
 
+
+
+
+    
+    //if(l1==0 && l2==0 && (t1==1&& t2==1))
+    {
     for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
         Newcoef coefi=pair->getCoeff(ci);
         for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
@@ -931,6 +947,7 @@ double density_ob3::get_me_corr_both( Pair* pair, void* params )
             }//q
         }//coefj
     }//coefi
+    }
     return 0;
 }
 
