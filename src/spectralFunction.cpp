@@ -209,8 +209,13 @@ double spectralFunction::get_me( Pair* pair, void* params)
 
     //return get_me_proj( pair, params );
 
+
+
+
+    // sh corresponds to shell l quantum number and ns corresponds to isospin and nj to j quantum number
     int sh=0;
-    int ns=-1;
+    int ns=1;
+    int nj=1;
     /* THE FOLLOWING IS ALSO CORRECT WHEN nA=lA=nB=lB= -1, BUT NO LONGER USED
      * THIS WAY */
 
@@ -230,109 +235,42 @@ double spectralFunction::get_me( Pair* pair, void* params)
     //cout<< "n2= " <<n2 << " l2= "<<l2<< " j2= "<<j2<< " mj2= " << mj2<< " t2= " <<t2<<endl;
 if(sh!=-1)
 {
-            if(l1==sh && l2==sh && (t1==ns&& t2==ns)){
+            if( t!=0  ) {
                 
-                if( t!=0  ) {
-                    if( t1 == t )
+                if( t1 == t )
+                    {
+                    if(l1==sh && t1==ns && j1==nj)
+                    {
                         wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                        cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                        //cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                    }
+                    }
                     if( t2 == t )
+                    {
+                    if(l2==sh && t2==ns && j2==nj)
+                    {
                         wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout << " t2=t "<< " l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                } else {
-                    wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                    wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout <<"else= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                //cout << " t2=t "<< " l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                    }
+                    }
                 }
-            }
-            
-            else if (l1==sh &&l2==sh && (t1==ns && t2!=ns) )
-            {
-                
-                if( t!=0  ) {
-                    if( t1 == t )
+                else {
+                    if(l1==sh && t1==ns && j1==nj)
+                    {
                         wf1= WavefunctionP::wf_p( n1, l1, l1, p );
                         cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                    if( t2 == t )
-                       //wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout << " t2=t "<< " l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                } else {
-                    wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                    //wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout <<"else= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                }
-            }
-            else if (l1==sh &&l2==sh && (t1!=ns && t2==ns) )
-            {
-                
-                if( t!=0  ) {
-                    if( t1 == t )
-                        //wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                        cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                    if( t2 == t )
-                       wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout << " t2=t "<< " l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                } else {
-                    //wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                    wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout <<"else= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                }
-            }
-            
-            else if (l1==sh &&l2!=sh && t1 ==ns )
-            {
-                
-                if( t!=0  ) {
-                    if( t1 == t )
-                        wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                        cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                    if( t2 == t )
-                       // wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout << " t2=t "<< " l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                } else {
-                    wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                    //wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout <<"else= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                }
-            }
-            
-            else if (l1!=sh &&l2==sh  && t2==ns)
-            {
-                
-                if( t!=0  ) {
-                    if( t1 == t )
-                      //  wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                        cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                    if( t2 == t )
+                    }
+                    if(l2==sh && t2==ns && j2==nj)
+                    {
                         wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout << " t2=t "<< " l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                } else {
-                    //wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                    wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout <<"else= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                //cout << " t2=t "<< " l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                    }
+                //cout <<"else= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
                 }
-            }
-}
-        else if(sh==-1)
-        {
-
-                
-                if( t!=0  ) {
-                    if( t1 == t )
-                        wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                        cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                    if( t2 == t )
-                        wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout << " t2=t "<< " l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                } else {
-                    wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                    wf2= WavefunctionP::wf_p( n2, l2, l2, p );
-                cout <<"else= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
-                }
-        }
     //cout << "l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
     return (wf1*wf1+wf2*wf2);
 
+}
 }
 
 
