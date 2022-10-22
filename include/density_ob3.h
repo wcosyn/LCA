@@ -67,6 +67,14 @@ public:
      * @param params will be of the dens_ob_params form.  Has all the necessary parameters.
      * @return double [fm^3] mean-field momentum distribution from a certain uncoupled pair.
      */
+    virtual double get_me1( Pair* pair, void* params,int sh,int ns, int nj);
+    /**
+     * @brief Computes the meanfield contribution to the momentum distribution from a certain pair.  
+     * 
+     * @param pair pointer to an uncoupled pair object
+     * @param params will be of the dens_ob_params form.  Has all the necessary parameters.
+     * @return double [fm^3] mean-field momentum distribution from a certain uncoupled pair.
+     */
     double get_me_proj( Pair* pair, void* params);
     /**
      * @brief returns the factor arising from a one-body operator acting on a coupled state

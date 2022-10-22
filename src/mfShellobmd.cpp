@@ -1,4 +1,4 @@
-#include "spectralFunction.h"
+#include "mfShellobmd.h"
 
 #include "threej.h"
 #include <omp.h>
@@ -17,20 +17,20 @@ using std::cerr;
 
 #include <cassert> // for testing purposes
 
-spectralFunction::spectralFunction(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm, int qmax )
+mfShellobmd::mfShellobmd(Nucleus* nucleus, bool central, bool tensor, bool isospin, double norm, int qmax )
     : operator_virtual_ob( nucleus, central, tensor, isospin, norm ),
       qmax( qmax )
 {
     cout << "[Density_ob3] ob density operator made" << endl;
 }
 
-spectralFunction::~spectralFunction()
+mfShellobmd::~mfShellobmd()
 {
 
 }
 
 
-void spectralFunction::write( char* outputdir, const char* name, int nA, int lA, int nB, int lB, int t, double* intmf, double* intcorr )
+void mfShellobmd::write( char* outputdir, const char* name, int nA, int lA, int nB, int lB, int t, double* intmf,int sh,int ns, int nj )
 {
     nucleus->get_number_of_pairs();
     int t1= nucleus->getT1();
@@ -148,7 +148,7 @@ void spectralFunction::write( char* outputdir, const char* name, int nA, int lA,
             //rest of the factors is the 4\sqrt{2}/\pi in the master formula (Eq. 56 LCA manual) 
             // + the normalisation supplied with the object (denominator matrix element)            
             //mf= i0->get( cf0, cf0 )*2/M_PI*sqrt(8)/norm/(A-1);  // we take info from the density_ob_integrand3 objects
-            mf= sum_me_pairs1(&dop);
+            mf= sum_me_pairs(&dop,sh,ns,nj);
         }
 
 
@@ -185,12 +185,56 @@ void spectralFunction::write( char* outputdir, const char* name, int nA, int lA,
     cout << "[Density_ob3] kin energy co is: " << kinenergy_co << endl;
     cout << "[Density_ob3] kin energy to is: " << kinenergy_mf+ kinenergy_co << endl;
     *intmf= integral_mf;
-    *intcorr= integral;
     delete i0;
 }
 
 
-double spectralFunction::get_me( Pair* pair, void* params)
+double mfShellobmd::get_me( Pair* pair, void* params )
+{
+    struct dens_ob_params* dop = (struct dens_ob_params*) params;
+    /*
+    int nA= dop->nA;
+    int lA= dop->lA;
+    int nB= dop->nB;
+    int lB= dop->lB;
+    */
+    int t= dop->t;
+
+    /*
+    if( !(nA+lA+nB+lB<-3) )
+    {
+      return get_me_proj( pair, params );
+    }
+    */
+
+    return get_me_proj( pair, params );
+
+    /* THE FOLLOWING IS ALSO CORRECT WHEN nA=lA=nB=lB= -1, BUT NO LONGER USED
+     * THIS WAY */
+
+    double p= dop->p;
+    int n1= pair->getn1();
+    int l1= pair->getl1();
+    int t1= pair->gettwo_t1();
+    int n2= pair->getn2();
+    int l2= pair->getl2();
+    int t2= pair->gettwo_t2();
+    double wf1= 0, wf2= 0;
+    if( t!=0  ) {
+        if( t1 == t )
+            wf1= WavefunctionP::wf_p( n1, l1, l1, p );
+        if( t2 == t )
+            wf2= WavefunctionP::wf_p( n2, l2, l2, p );
+    } else {
+        wf1= WavefunctionP::wf_p( n1, l1, l1, p );
+        wf2= WavefunctionP::wf_p( n2, l2, l2, p );
+    }
+
+    return (wf1*wf1+wf2*wf2);
+
+}
+
+double mfShellobmd::get_me1( Pair* pair, void* params,int sh,int ns, int nj)
 {
     struct dens_ob_params* dop = (struct dens_ob_params*) params;
     /*
@@ -213,9 +257,6 @@ double spectralFunction::get_me( Pair* pair, void* params)
 
 
     // sh corresponds to shell l quantum number and ns corresponds to isospin and nj to j quantum number
-    int sh=0;
-    int ns=1;
-    int nj=1;
     /* THE FOLLOWING IS ALSO CORRECT WHEN nA=lA=nB=lB= -1, BUT NO LONGER USED
      * THIS WAY */
 
@@ -258,7 +299,7 @@ if(sh!=-1)
                     if(l1==sh && t1==ns && j1==nj)
                     {
                         wf1= WavefunctionP::wf_p( n1, l1, l1, p );
-                        cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                        //cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
                     }
                     if(l2==sh && t2==ns && j2==nj)
                     {
@@ -276,7 +317,7 @@ if(sh!=-1)
 
 
 
-double spectralFunction::get_me_proj( Pair* pair, void* params )
+double mfShellobmd::get_me_proj( Pair* pair, void* params )
 {
     struct dens_ob_params* dop = (struct dens_ob_params*) params;
     int nAs= dop->nA;
@@ -419,7 +460,7 @@ double spectralFunction::get_me_proj( Pair* pair, void* params )
     return 0;
 }
 
-double spectralFunction::get_me_corr_left( Pair* pair, void* params )
+double mfShellobmd::get_me_corr_left( Pair* pair, void* params )
 {
     struct dens_ob_params* dop = (struct dens_ob_params*) params;
     int t= dop->t;
@@ -583,7 +624,7 @@ double spectralFunction::get_me_corr_left( Pair* pair, void* params )
     return 0;
 }
 
-double spectralFunction::get_me_corr_right( Pair* pair, void* params )
+double mfShellobmd::get_me_corr_right( Pair* pair, void* params )
 {
     struct dens_ob_params* dop = (struct dens_ob_params*) params;
     int t= dop->t;
@@ -751,7 +792,7 @@ double spectralFunction::get_me_corr_right( Pair* pair, void* params )
 }
 
 
-double spectralFunction::get_me_corr_both( Pair* pair, void* params )
+double mfShellobmd::get_me_corr_both( Pair* pair, void* params )
 {
     struct dens_ob_params* dop = (struct dens_ob_params*) params;
     int nAs= dop->nA;
@@ -950,7 +991,7 @@ double spectralFunction::get_me_corr_both( Pair* pair, void* params )
     return 0;
 }
 
-double spectralFunction::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double val )
+double mfShellobmd::get_me( Paircoef* pc1, Paircoef* pc2, void* params, double val )
 {
     struct dens_ob_params* dop = (struct dens_ob_params*) params;
     int nAs= dop->nA;
@@ -1087,7 +1128,7 @@ double spectralFunction::get_me( Paircoef* pc1, Paircoef* pc2, void* params, dou
     return 0;
 }
 
-double spectralFunction::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, double val )
+double mfShellobmd::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* params, double val )
 {
     struct dens_ob_params* dop = (struct dens_ob_params*) params;
     int t= dop->t;
@@ -1235,7 +1276,7 @@ double spectralFunction::get_me_corr_right( Paircoef* pc1, Paircoef* pc2, void* 
     return 0;
 }
 
-double spectralFunction::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, double val )
+double mfShellobmd::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* params, double val )
 {
     struct dens_ob_params* dop = (struct dens_ob_params*) params;
     int t= dop->t;
@@ -1389,7 +1430,7 @@ double spectralFunction::get_me_corr_left( Paircoef* pc1, Paircoef* pc2, void* p
     return 0;
 }
 
-double spectralFunction::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, double val )
+double mfShellobmd::get_me_corr_both( Paircoef* pc1, Paircoef* pc2, void* params, double val )
 {
     struct dens_ob_params* dop = (struct dens_ob_params*) params;
     int nAs= dop->nA;

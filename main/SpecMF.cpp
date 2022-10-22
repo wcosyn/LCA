@@ -1,4 +1,4 @@
-#include "spectralFunction.h"
+#include "mfShellobmd.h"
 #include "nucleusall.h"
 #include "nucleusnp.h"
 #include "nucleuspp.h"
@@ -19,7 +19,7 @@ using std::endl;
 
 
 
-void SpecMF(int A,int Z,std::string name, int isospin, Nucleus *nuc){
+void SpecMF(int A,int Z,std::string name, int isospin, Nucleus *nuc,int sh, int ns, int nj){
 
 
     //NucleusPP  nuc("../data/mosh","../data/mosh",A,Z); // idem
@@ -30,7 +30,7 @@ void SpecMF(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     Nucleusall nucall("../data/mosh","../data/mosh",A,Z);
     norm_ob no(&nucall);
     norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
-    double norm_mf  = no.sum_me_pairs1( &nob);
+    double norm_mf  = no.sum_me_pairs( &nob,sh,ns,nj);
     //no.sum_me_pairs(&nob);
     double me_sum = 0.;
     /*
@@ -47,12 +47,12 @@ void SpecMF(int A,int Z,std::string name, int isospin, Nucleus *nuc){
     }
     printf("\n[Info]: ME sum is %f\n",me_sum);
     */
-    spectralFunction spectralFunction(nuc,true,true,true,norm_mf,10); // nuc, central,tensor,nucl,norm,qmax (default=7)
+    mfShellobmd mfShellobmd(nuc,true,true,true,norm_mf,10); // nuc, central,tensor,nucl,norm,qmax (default=7)
     /* qmax is the maximum value of q in the sum in Eq. D.37 in Maartens thesis
      * note that this equation is incorrect/incomplete, see manual
      */
     double mf;
-    spectralFunction.write("../../spyder/CosynResults",name.c_str(),-1,-1,-1,-1, isospin,&mf); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
+    mfShellobmd.write("../../spyder/CosynResults",name.c_str(),-1,-1,-1,-1, isospin,&mf,sh,ns,nj); // outputdir, outputname, nA,lA,nB,lB,t,mean field integral,corr integral
 }
 
 int main(int argc,char* argv[]){
@@ -79,6 +79,9 @@ int main(int argc,char* argv[]){
     double a=atof(argv[8]);
     double b = atof(argv[9]);
     double c = atof(argv[10]);
+    int sh = atof(argv[11]);
+    int ns = atof(argv[12]);
+    int nj = atof(argv[13]);
 
     if(!pairs.compare("all")&&!isospin.compare("all")){
         NucleusPP  nucpp("../data/mosh","../data/mosh",A,Z); // idem
@@ -89,13 +92,13 @@ int main(int argc,char* argv[]){
 
         norm_ob no(&nucall);
         norm_ob::norm_ob_params nob= {-1, -1, -1, -1, 0}; // nA,lA,nB,lB,t
-        double norm_mf  = no.sum_me_pairs1( &nob );
+        double norm_mf  = no.sum_me_pairs( &nob,sh,ns,nj );
         std::cout << "all all " << norm_mf  <<std::endl;
         nob.t=-1;
-        norm_mf  = no.sum_me_pairs1( &nob );
+        norm_mf  = no.sum_me_pairs( &nob,sh,ns,nj );
         std::cout << "all n " << norm_mf  <<std::endl;
         nob.t=1;
-        norm_mf  = no.sum_me_pairs1( &nob );
+        norm_mf  = no.sum_me_pairs( &nob,sh,ns,nj );
         std::cout << "all p " << norm_mf  <<std::endl;
         
         norm_ob nopp(&nucpp);
@@ -135,19 +138,19 @@ int main(int argc,char* argv[]){
     // the inputdir and resultdir are only used for storage of the moshinskybrackets, always, everywhere
     if(!pairs.compare("all")){
         Nucleusall nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
-        SpecMF( A, Z, nucl_name,nucl, &nuc);
+        SpecMF( A, Z, nucl_name,nucl, &nuc,sh,ns,nj);
     }
     else if(!pairs.compare("pp")){
         NucleusPP nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
-        SpecMF( A, Z, nucl_name,nucl, &nuc);
+        SpecMF( A, Z, nucl_name,nucl, &nuc,sh,ns,nj);
     }
     else if(!pairs.compare("nn")){
         NucleusNN nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
-        SpecMF( A, Z, nucl_name,nucl, &nuc);
+        SpecMF( A, Z, nucl_name,nucl, &nuc,sh,ns,nj);
     }
     else if(!pairs.compare("np")||!pairs.compare("pn")){
         NucleusNP nuc("../data/mosh","../data/mosh",A,Z);   // inputdir,resultdir,A,Z
-        SpecMF( A, Z, nucl_name,nucl, &nuc);
+        SpecMF( A, Z, nucl_name,nucl, &nuc,sh,ns,nj);
     }
     else {std::cerr << "Invalid fifth argument (pairs): select either pp, nn, pn(=np) or all or iso " << pairs << std::endl; exit(-1); assert(1==0);} 
     

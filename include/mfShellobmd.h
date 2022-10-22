@@ -11,9 +11,9 @@
  *
  * - See appendix D3 of PhD Vanhalst for information about the formulas.  
  * - Also see LCA manual Sec. 9 for some more derivations/explanation.  Eq (56) is the master formula [the one with missing bits coloured in red]
- * - Everywhere a void* pointer appears in the virtual functions a spectralFunction::dens_ob_params pointer is expected!
+ * - Everywhere a void* pointer appears in the virtual functions a mfShellobmd::dens_ob_params pointer is expected!
  */
-class spectralFunction : public operator_virtual_ob
+class mfShellobmd : public operator_virtual_ob
 {
 public:
     /**
@@ -26,11 +26,11 @@ public:
      * @param norm the renormalization factor needed to renormalize .
      * @param qmax max q for summation .
      */
-    spectralFunction(Nucleus* nucleus, bool central= true, bool tensor=true, bool isospin=false, double norm= 1, int qmax= 7 );
+    mfShellobmd(Nucleus* nucleus, bool central= true, bool tensor=true, bool isospin=false, double norm= 1, int qmax= 7 );
     /**
      * \brief Destructor
      */
-    virtual ~spectralFunction();
+    virtual ~mfShellobmd();
 
     /**
      * \brief Write OBMD to a file.  And computes them of course.  Iterating over coupled states is used in the calculations.
@@ -43,15 +43,15 @@ public:
      * @param lB Selects pairs with certain relative OAM qn for the ket. -1 if you want all.
      * @param t  -1 for neutron, +1 for proton, 0 for both.
      * @param[out] intmf return integral over mf part of the momentum distribution. 
-     * The normalisation will depend on the spectralFunction::norm value, but in general for the total momentum distribution the sum of intmf + intcorr divided
+     * The normalisation will depend on the mfShellobmd::norm value, but in general for the total momentum distribution the sum of intmf + intcorr divided
      * by the total correlated norm for all nucleons will yield something ~A (within algorithm limitations)
      * @param[out] intcorr return integral over corr part of the momentum distribution. [NORMALISATION?]
-     * The normalisation will depend on the spectralFunction::norm value, but in general for the total momentum distribution the sum of intmf + intcorr divided
+     * The normalisation will depend on the mfShellobmd::norm value, but in general for the total momentum distribution the sum of intmf + intcorr divided
      * by the total correlated norm for all nucleons will yield something ~A (within algorithm limitations)
      */
-    void write( char* outputdir , const char* name, int nA= -1, int lA=-1, int nB=-1, int lB=-1, int t= 0, double* intmf=NULL, double* intcorr=NULL );
+    void write( char* outputdir , const char* name, int nA= -1, int lA=-1, int nB=-1, int lB=-1, int t= 0, double* intmf=NULL,int sh=-1, int ns=-1, int nj=-1 );
     /**
-     * @brief Computes the meanfield contribution to the momentum distribution from a certain pair.  Seems to just call spectralFunction::get_me_proj now.
+     * @brief Computes the meanfield contribution to the momentum distribution from a certain pair.  Seems to just call mfShellobmd::get_me_proj now.
      * 
      * @param pair pointer to an uncoupled pair object
      * @param params will be of the dens_ob_params form.  Has all the necessary parameters.
@@ -60,6 +60,14 @@ public:
      * @see get_me_proj
      */
     virtual double get_me( Pair* pair, void* params);
+    /**
+     * @brief Computes the meanfield contribution to the momentum distribution from a certain pair.  
+     * 
+     * @param pair pointer to an uncoupled pair object
+     * @param params will be of the dens_ob_params form.  Has all the necessary parameters.
+     * @return double [fm^3] mean-field momentum distribution from a certain uncoupled pair.
+     */
+    virtual double get_me1( Pair* pair, void* params,int sh,int ns, int nj);
     /**
      * @brief Computes the meanfield contribution to the momentum distribution from a certain pair.  
      * 
@@ -104,7 +112,7 @@ private:
 protected:
     /**
      * @struct dens_ob_params
-     * \brief Structure used by the spectralFunction class, used where the base class functions have void* pointers as arguments.
+     * \brief Structure used by the mfShellobmd class, used where the base class functions have void* pointers as arguments.
      *
      * @var dens_ob_params::p
      * \brief [fm^-1] nucleon momentum.

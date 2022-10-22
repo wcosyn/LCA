@@ -103,6 +103,96 @@ double norm_ob::get_me( Pair* pair, void* params )
     return sum* 2./A; // normalisation 2/A, factor two because sum is 1 < 2 instead of 1 \neq 2
 }
 
+double norm_ob::get_me1( Pair* pair, void* params,int sh,int ns,int nj )
+{
+    struct norm_ob_params* nob= (struct norm_ob_params*) params;
+    int nAs= nob->nA;
+    int lAs= nob->lA;
+    int nBs= nob->nB;
+    int lBs= nob->lB;
+    int t= nob->t;
+    int t1= pair->gettwo_t1();
+    int t2= pair->gettwo_t2();
+    /*if( nAs+lAs+nBs+lBs < -3 ) { // if you set n_a l_a n_b l_b to -1-1-1-1 we get -4, select all. Better would be to do explicit check?
+        if( t == 0 )   // both neutron and proton
+            return 2./A;
+        if( t1 != t2 ) // proton neutron pair, ob -> one body, we want half of the pair, divide by 2
+            return 1./A;
+        if( t == t1 ) //  t of ob same as t1 of pair (t==t1==t2 because above!)
+            return 2./A;
+        return 0; // t1==t2 != t (e.g. geting neutron contribution from pp-pair = 0)
+    }*/
+
+    double sum= 0;
+    for( int ci= 0; ci < pair->get_number_of_coeff(); ci++ ) {
+        Newcoef coefi=pair->getCoeff(ci);
+        for( int cj= 0; cj < pair->get_number_of_coeff(); cj++ ) {
+            Newcoef coefj=pair->getCoeff(cj);
+            // The correlation operator keeps S j m_j unchanged
+
+            double vali = coefi.getCoef(); // < a_1 a_2 | A > not corrected for partially filled shells!
+            double valj = coefj.getCoef(); // < a_1 a_2 | B > not corrected for partially filled shells!
+            
+            // the following block is delta in
+            // n l S j m_j N L M_L T M_T, which characterizes a
+            // rcm state A = | n l S j m_j N L M_L T M_T >
+            if( coefi.getS()  != coefj.getS()  ) continue;
+            if( coefi.getj()  != coefj.getj()  ) continue;
+            if( coefi.getmj() != coefj.getmj() ) continue;
+            // if( coefi.getT()  != coefj.getT()  ) continue;
+            if( coefi.getMT() != coefj.getMT() ) continue;
+            if( coefi.getN()  != coefj.getN()  ) continue;
+            if( coefi.getL()  != coefj.getL()  ) continue;
+            if( coefi.getML() != coefj.getML() ) continue;
+            if( coefi.getn()  != coefj.getn()  ) continue;
+            if( coefi.getl()  != coefj.getl()  ) continue;
+            
+            if( fabs(vali - valj) > 1e-12){ //< testing camille
+                //-- camille testing: because of "kron. delta" above this should not never be true
+                std::cerr << " ci  , cj   " << ci << ", " << cj << std::endl;
+                std::cerr << " vali, valj " << vali << ", " << valj << std::endl;
+                exit(-1);
+            }
+            // the following block is to select contribution from
+            // specific relative qn's n l
+            // n_i == nAs, n_j == nBs, l_i == lAs, l_j == lBs
+            // trough the above delta functions we already have
+            // n_i == n_j and l_i == l_j
+            // if nAs \neq nBs continue will always be triggered.
+            // The only way to get past the continues if (AND negation)
+            // all of the following are true:
+            // nAs == -1 || n == nAs
+            // nBs == -1 || n == nBs
+            // lAs == -1 || l == lAs
+            // lBs == -1 || l == lBs
+            int l= coefi.getl();
+            int n= coefi.getn();
+            if( nAs > -1 && n != nAs ) continue;
+            if( nBs > -1 && n != nBs ) continue;
+            if( lAs > -1 && l != lAs ) continue;
+            if( lBs > -1 && l != lBs ) continue;
+
+
+            int TA= coefi.getT();
+            int TB= coefj.getT();
+            int MT= coefi.getMT();
+            double preifactor=1.;
+            if( t != 0 ) {      // t = +1 or -1 (proton or neutron)
+                if( t == -MT  ) // MT opposite sign of t, meaning a nn pair for a proton, and a pp pair for a neutron. SKIP for loop iteration!
+                    continue;
+                if( MT == 0 ) {
+                    preifactor*= 0.5;
+                    if( TA != TB ) preifactor *= t; // you have a singlet and a triplet state. For a proton this will generate a + sign, for a neutron a - sign.
+                }
+            }
+            if( t == 0 && TA != TB ) // operators don't change isospin, only isospin projection. different isospin -> orthonormal. Note that delta in M_T has already happened earlier
+                continue;
+
+            sum+=  vali* valj*preifactor;
+        }
+    }
+    return sum* 2./A; // normalisation 2/A, factor two because sum is 1 < 2 instead of 1 \neq 2
+}
 double norm_ob::get_me_corr_right( Pair* pair, void* params )
 {
     struct norm_ob_params* nob= (struct norm_ob_params*) params;

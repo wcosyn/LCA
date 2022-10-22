@@ -37,6 +37,13 @@ public:
      * @param params parameter specific to child class.
      * @see sum_me_pairs Similar function but uses sum over pairs.
      */
+    double sum_me_pairs( void* params,int sh, int ns, int nj);
+    /**
+     * \brief Gives the two-body operator EV of the mean field part, using sum over coupled states in Nucleus::paircoefs map
+     *
+     * @param params parameter specific to child class.
+     * @see sum_me_pairs Similar function but uses sum over pairs.
+     */
     double sum_me_pairs1( void* params);
     /**
      * \brief Gives the two-body operator EV of the mean field part, using sum over coupled states in Nucleus::paircoefs map
@@ -80,6 +87,17 @@ public:
      * @param params Parameter specific to the child class
      */
     virtual double get_me( Pair* pair, void* params) =0;
+    /**
+     * \brief Calculates the correlated diagonal EV of an uncoupled 2-nucleon pair with the correlation operator working to the left.
+     *
+     * e.g. \f$\left< \alpha_1 \alpha_2 \right| \hat{l}^\dagger (1,2)
+     * \left(\widehat{\Omega}(1)+ \widehat{\Omega}(2)\right)  \left| \alpha_1 \alpha_2 \right>\f$.
+     * Function is used by the corresponding sum_me_* function.
+     *
+     * @param pair The considered pair
+     * @param params Parameter specific to the child class
+     */
+    virtual double get_me1( Pair* pair, void* params,int sh, int ns, int nj) =0;
     /**
      * \brief Calculates the correlated diagonal EV of an uncoupled 2-nucleon pair with the correlation operator working to the left.
      *

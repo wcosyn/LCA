@@ -264,6 +264,85 @@ double density_ob3::get_me( Pair* pair, void* params )
 
 }
 
+double density_ob3::get_me1( Pair* pair, void* params,int sh,int ns, int nj)
+{
+    struct dens_ob_params* dop = (struct dens_ob_params*) params;
+    /*
+    int nA= dop->nA;
+    int lA= dop->lA;
+    int nB= dop->nB;
+    int lB= dop->lB;
+    */
+    int t= dop->t;
+    /*
+    if( !(nA+lA+nB+lB<-3) )
+    {
+      return get_me_proj( pair, params );
+    }
+    */
+
+    //return get_me_proj( pair, params );
+
+
+
+
+    // sh corresponds to shell l quantum number and ns corresponds to isospin and nj to j quantum number
+    /* THE FOLLOWING IS ALSO CORRECT WHEN nA=lA=nB=lB= -1, BUT NO LONGER USED
+     * THIS WAY */
+
+    double p= dop->p;
+    int n1= pair->getn1();
+    int l1= pair->getl1();
+    int j1 = pair->gettwo_j1();
+    int mj1 = pair->gettwo_mj1();
+    int t1= pair->gettwo_t1();
+    int n2= pair->getn2();
+    int l2= pair->getl2();
+    int j2 = pair->gettwo_j2();
+    int mj2 = pair->gettwo_mj2();
+    int t2= pair->gettwo_t2();
+    double wf1= 0, wf2= 0;
+    //cout<< "n1= " <<n1 << " l1= "<<l1<< " j1= "<<j1<< " mj1= " << mj1<< " t1= " <<t1<<endl;
+    //cout<< "n2= " <<n2 << " l2= "<<l2<< " j2= "<<j2<< " mj2= " << mj2<< " t2= " <<t2<<endl;
+if(sh!=-1)
+{
+            if( t!=0  ) {
+                
+                if( t1 == t )
+                    {
+                    if(l1==sh && t1==ns && j1==nj)
+                    {
+                        wf1= WavefunctionP::wf_p( n1, l1, l1, p );
+                        //cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                    }
+                    }
+                    if( t2 == t )
+                    {
+                    if(l2==sh && t2==ns && j2==nj)
+                    {
+                        wf2= WavefunctionP::wf_p( n2, l2, l2, p );
+                //cout << " t2=t "<< " l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                    }
+                    }
+                }
+                else {
+                    if(l1==sh && t1==ns && j1==nj)
+                    {
+                        wf1= WavefunctionP::wf_p( n1, l1, l1, p );
+                        //cout << " t1=t  "<<" l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                    }
+                    if(l2==sh && t2==ns && j2==nj)
+                    {
+                        wf2= WavefunctionP::wf_p( n2, l2, l2, p );
+                //cout << " t2=t "<< " l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                    }
+                //cout <<"else= " <<"l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+                }
+    //cout << "l1= "<< l1<< " l2= "<<l2 <<" j1= "<<j1<< " j2= "<< j2<< " mj1 = " <<mj1 << " mj2= "<< mj2<< " k= " << p << " " << wf1 << " " << wf2 << endl;
+    return (wf1*wf1+wf2*wf2);
+
+}
+}
 double density_ob3::get_me_proj( Pair* pair, void* params )
 {
     struct dens_ob_params* dop = (struct dens_ob_params*) params;

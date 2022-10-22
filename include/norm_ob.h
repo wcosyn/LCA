@@ -29,6 +29,7 @@ public:
 
     //these are commented in the base class
     virtual double get_me( Pair* pair, void* params);
+    virtual double get_me1( Pair* pair, void* params,int sh, int ns, int nj);
     virtual double get_me_corr_left( Pair* pair, void* params);
     virtual double get_me_corr_right( Pair* pair, void* params);
     virtual double get_me_corr_both( Pair* pair, void* params);
